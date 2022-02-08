@@ -14,13 +14,27 @@
  * limitations under the License.
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { uuid } from '@mds-core/mds-utils'
-import test from 'unit.js'
-import { parseRequest } from '../index'
+import { asJsonApiLinks, parseRequest } from '../index'
 
 const arraysEqual = <T>(array1?: T[], array2?: T[]) => JSON.stringify(array1) === JSON.stringify(array2)
 
 describe('mds-api-helpers Tests', () => {
+  describe('asJsonApiLinks test', () => {
+    it('outputs links', () => {
+      const uuid1 = uuid()
+      const req: any = { query: { provider_id: uuid1 }, get: () => 'host-prot' }
+
+      expect(asJsonApiLinks(req, 10, 20, 5)).toStrictEqual({
+        first: `host-prot:host-prot?provider_id=${uuid1}&skip=0&take=20`,
+        last: undefined,
+        next: undefined,
+        prev: undefined
+      })
+    })
+  })
   describe('parseRequest tests', () => {
     describe('tests parseRequest(...).single()', () => {
       describe('no parser', () => {
@@ -29,8 +43,8 @@ describe('mds-api-helpers Tests', () => {
 
           const { provider_id } = parseRequest(req).single().query('provider_id')
 
-          test.assert(req.query.provider_id === provider_id)
-          test.assert(typeof provider_id === 'string')
+          expect(req.query.provider_id).toStrictEqual(provider_id)
+          expect(typeof provider_id).toStrictEqual('string')
         })
 
         it('list in query', () => {
@@ -38,8 +52,8 @@ describe('mds-api-helpers Tests', () => {
 
           const { provider_id } = parseRequest(req).single().query('provider_id')
 
-          test.assert(req.query.provider_id[0] === provider_id)
-          test.assert(typeof provider_id === 'string')
+          expect(req.query.provider_id[0]).toStrictEqual(provider_id)
+          expect(typeof provider_id).toStrictEqual('string')
         })
 
         it('nothing in query', () => {
@@ -47,7 +61,7 @@ describe('mds-api-helpers Tests', () => {
 
           const { provider_id } = parseRequest(req).single().query('provider_id')
 
-          test.assert(provider_id === undefined)
+          expect(provider_id).toBeUndefined()
         })
       })
 
@@ -58,8 +72,8 @@ describe('mds-api-helpers Tests', () => {
 
           const { skip } = parseRequest(req).single({ parser }).query('skip')
 
-          test.assert(parser(req.query.skip) === skip)
-          test.assert(typeof skip === 'number')
+          expect(parser(req.query.skip)).toStrictEqual(skip)
+          expect(typeof skip).toStrictEqual('number')
         })
 
         it('list in query', () => {
@@ -68,8 +82,8 @@ describe('mds-api-helpers Tests', () => {
 
           const { skip } = parseRequest(req).single({ parser }).query('skip')
 
-          test.assert(parser(req.query.skip[0]) === skip)
-          test.assert(typeof skip === 'number')
+          expect(parser(req.query.skip[0])).toStrictEqual(skip)
+          expect(typeof skip).toStrictEqual('number')
         })
 
         it('nothing in query', () => {
@@ -78,7 +92,7 @@ describe('mds-api-helpers Tests', () => {
 
           const { skip } = parseRequest(req).single({ parser }).query('skip')
 
-          test.assert(skip === undefined)
+          expect(skip).toBeUndefined()
         })
       })
     })
@@ -90,8 +104,8 @@ describe('mds-api-helpers Tests', () => {
 
           const { provider_id } = parseRequest(req).list().query('provider_id')
 
-          test.assert(arraysEqual([req.query.provider_id], provider_id))
-          test.assert(Array.isArray(provider_id))
+          expect(arraysEqual([req.query.provider_id], provider_id)).toBeTruthy()
+          expect(Array.isArray(provider_id)).toBeTruthy()
         })
 
         it('list in query', () => {
@@ -99,8 +113,8 @@ describe('mds-api-helpers Tests', () => {
 
           const { provider_id } = parseRequest(req).list().query('provider_id')
 
-          test.assert(arraysEqual(req.query.provider_id, provider_id))
-          test.assert(Array.isArray(provider_id))
+          expect(arraysEqual(req.query.provider_id, provider_id)).toBeTruthy()
+          expect(Array.isArray(provider_id)).toBeTruthy()
         })
 
         it('nothing in query', () => {
@@ -108,7 +122,7 @@ describe('mds-api-helpers Tests', () => {
 
           const { provider_id } = parseRequest(req).list().query('provider_id')
 
-          test.assert(provider_id === undefined)
+          expect(provider_id).toBeUndefined()
         })
       })
 
@@ -119,8 +133,8 @@ describe('mds-api-helpers Tests', () => {
 
           const { skip } = parseRequest(req).list({ parser }).query('skip')
 
-          test.assert(arraysEqual(parser([req.query.skip]), skip))
-          test.assert(Array.isArray(skip))
+          expect(arraysEqual(parser([req.query.skip]), skip)).toBeTruthy()
+          expect(Array.isArray(skip)).toBeTruthy()
         })
 
         it('list in query', () => {
@@ -129,8 +143,8 @@ describe('mds-api-helpers Tests', () => {
 
           const { skip } = parseRequest(req).list({ parser }).query('skip')
 
-          test.assert(arraysEqual(parser(req.query.skip), skip))
-          test.assert(Array.isArray(skip))
+          expect(arraysEqual(parser(req.query.skip), skip)).toBeTruthy()
+          expect(Array.isArray(skip)).toBeTruthy()
         })
 
         it('nothing in query', () => {
@@ -139,7 +153,7 @@ describe('mds-api-helpers Tests', () => {
 
           const { skip } = parseRequest(req).list({ parser }).query('skip')
 
-          test.assert(skip === undefined)
+          expect(skip).toBeUndefined()
         })
       })
     })
