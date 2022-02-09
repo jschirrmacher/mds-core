@@ -66,8 +66,8 @@ export const csvStreamFromRepository: <
 
   let next = cursor.next
   const headlessParser = new Parser({
-    header: false,
-    ...parserConfig
+    ...parserConfig,
+    header: false
   })
   while (next !== null) {
     const { [rowsKey]: rows, cursor: current } = await cursorGetter(next)
