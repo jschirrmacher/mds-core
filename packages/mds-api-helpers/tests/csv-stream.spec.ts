@@ -18,8 +18,6 @@ import type { ApiResponse } from '@mds-core/mds-api-server'
 import { Nullable } from '@mds-core/mds-types'
 import { csvStreamFromRepository, RowsWithCursor } from '../csv-stream'
 
-// TODO either convert this test file to mocha, convert the others to jest, or do something weird
-
 describe('csvStreamFromRepository', () => {
   type Row = { a: string; b: number; c: Nullable<string> }
   type Getter = () => Promise<RowsWithCursor<Row, 'rows'>>

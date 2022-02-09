@@ -228,7 +228,7 @@ export const GetTransactionsAsCsvHandler = async (
       { label: 'Receipt', value: 'receipt.receipt_id' },
       { label: 'Receipt Timestamp', value: 'receipt.timestamp' },
       { label: 'Receipt Origin URL', value: 'receipt.origin_url' },
-      { label: 'Receipt Details (JSON)', value: 'receipt.receipt_details' } // TODO test this
+      { label: 'Receipt Details (JSON)', value: 'receipt.receipt_details' }
     ]
 
     const mapper: (_: {
