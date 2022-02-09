@@ -28,7 +28,7 @@ export type RowsWithCursor<Row, RowsKey extends string> = {
   cursor: { prev: Nullable<string>; next: Nullable<string> }
 }
 
-export const csvStreamFromRepository = async <
+export const csvStreamFromRepository: <
   Row,
   RowsKey extends string,
   Col extends DeepPickPath<Row>,
@@ -40,7 +40,7 @@ export const csvStreamFromRepository = async <
   res: R,
   fields: Array<{ label: string; value: Col }>,
   pick_columns?: Array<Col>
-) => {
+) => Promise<void> = async (getter, cursorGetter, rowsKey, res, fields, pick_columns) => {
   const conf = {
     fields: pick_columns
       ? fields
