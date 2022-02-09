@@ -1,5 +1,23 @@
 # @mds-core/mds-schema-validators
 
+## 0.5.3
+
+### Patch Changes
+
+- Updated dependencies [bce81d4d]
+  - @mds-core/mds-utils@0.4.0
+  - @mds-core/mds-test-data@0.4.17
+
+## 0.5.2
+
+### Patch Changes
+
+- 7b061ba5: Making calls to mds-provider async as preparation for migrating the static providers list in mds-providers to a database
+- Updated dependencies [7b061ba5]
+- Updated dependencies [7b061ba5]
+  - @mds-core/mds-providers@0.2.7
+  - @mds-core/mds-test-data@0.4.16
+
 ## 0.5.1
 
 ### Patch Changes

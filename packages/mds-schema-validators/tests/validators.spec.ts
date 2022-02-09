@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { providers } from '@mds-core/mds-providers' // map of uuids -> obj
 import { makeDevices, makeEventsWithTelemetry } from '@mds-core/mds-test-data'
 import { AUDIT_EVENT_TYPES } from '@mds-core/mds-types'
 import { now, uuid } from '@mds-core/mds-utils'
@@ -28,7 +27,6 @@ import {
   isValidDeviceId,
   isValidEvent,
   isValidNumber,
-  isValidProviderId,
   isValidProviderVehicleId,
   isValidTelemetry,
   isValidTimestamp,
@@ -97,18 +95,6 @@ describe('Tests validators', () => {
     expect(isValidTimestamp('1567695019935', { assert: false })).toBe(false)
 
     expect(isValidTimestamp(Date.now())).toBe(true)
-  })
-
-  it('verifies Provider ID validator', async () => {
-    await expect(async () => isValidProviderId(undefined)).rejects.toThrow(ValidationError)
-
-    await expect(async () => isValidProviderId(null)).rejects.toThrow(ValidationError)
-
-    await expect(async () => isValidProviderId(uuid())).rejects.toThrow(ValidationError)
-
-    expect(isValidProviderId('invalid', { assert: false })).toBe(false)
-
-    expect(isValidProviderId(Object.keys(providers)[0])).toBe(true)
   })
 
   it('verifies Device ID validator', async () => {

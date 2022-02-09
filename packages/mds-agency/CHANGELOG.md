@@ -1,5 +1,37 @@
 # @mds-core/mds-agency
 
+## 0.4.14
+
+### Patch Changes
+
+- Updated dependencies [49110532]
+- Updated dependencies [bce81d4d]
+- Updated dependencies [bce81d4d]
+  - @mds-core/mds-ingest-service@0.9.8
+  - @mds-core/mds-utils@0.4.0
+  - @mds-core/mds-db@0.5.4
+  - @mds-core/mds-agency-cache@0.4.16
+  - @mds-core/mds-api-helpers@0.2.5
+  - @mds-core/mds-api-server@0.4.4
+  - @mds-core/mds-schema-validators@0.5.3
+  - @mds-core/mds-service-helpers@0.6.3
+  - @mds-core/mds-stream@0.2.9
+
+## 0.4.13
+
+### Patch Changes
+
+- 7b061ba5: Making calls to mds-provider async as preparation for migrating the static providers list in mds-providers to a database
+- Updated dependencies [7b061ba5]
+- Updated dependencies [7b061ba5]
+  - @mds-core/mds-providers@0.2.7
+  - @mds-core/mds-ingest-service@0.9.7
+  - @mds-core/mds-schema-validators@0.5.2
+  - @mds-core/mds-api-server@0.4.3
+  - @mds-core/mds-db@0.5.3
+  - @mds-core/mds-agency-cache@0.4.15
+  - @mds-core/mds-api-helpers@0.2.4
+
 ## 0.4.12
 
 ### Patch Changes

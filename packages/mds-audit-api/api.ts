@@ -203,7 +203,7 @@ function api(app: express.Express): express.Express {
           // Find provider device and event by vehicle id lookup
           const provider_device = await getVehicle(provider_id, provider_vehicle_id)
           const provider_device_id = provider_device ? provider_device.device_id : null
-          const provider_name = providerName(provider_id)
+          const provider_name = await providerName(provider_id)
 
           // Create the audit
           await writeAudit({

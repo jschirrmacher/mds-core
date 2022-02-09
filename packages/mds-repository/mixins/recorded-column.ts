@@ -18,6 +18,7 @@ import { AnyConstructor, Timestamp } from '@mds-core/mds-types'
 import { Column, Index } from 'typeorm'
 import { ColumnCommonOptions } from 'typeorm/decorator/options/ColumnCommonOptions'
 import { ColumnWithWidthOptions } from 'typeorm/decorator/options/ColumnWithWidthOptions'
+import { DesignType } from '../decorators'
 import { BigintTransformer } from '../transformers'
 
 export interface RecordedColumn {
@@ -35,6 +36,7 @@ export const RecordedColumn = <T extends AnyConstructor>(
       ...options
     })
     @Index()
+    @DesignType(Number)
     recorded: Timestamp
   }
   return RecordedColumnMixin

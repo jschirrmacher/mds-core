@@ -35,10 +35,13 @@ const serviceErrorWrapper = async <T>(method: string, exec: () => Promise<T>) =>
 
 export const PolicyServiceProvider: ServiceProvider<PolicyService, PolicyServiceRequestContext> & ProcessController = {
   start: async () => {
-    await Promise.all([PolicyRepository.initialize(), PolicyStreamKafka.initialize()])
+    await Promise.all([
+      PolicyRepository.initialize(),
+      ...(process.env.KAFKA_HOST ? [PolicyStreamKafka.initialize()] : [])
+    ])
   },
   stop: async () => {
-    await Promise.all([PolicyRepository.shutdown(), PolicyStreamKafka.shutdown()])
+    await Promise.all([PolicyRepository.shutdown(), ...(process.env.KAFKA_HOST ? [PolicyStreamKafka.shutdown()] : [])])
   },
   name: async context => ServiceResult('mds-policy-service'),
   writePolicy: (context, policy) =>
@@ -83,7 +86,7 @@ export const PolicyServiceProvider: ServiceProvider<PolicyService, PolicyService
         throw new DependencyMissingError(`some geographies not published!`)
 
       const publishedPolicy = await PolicyRepository.publishPolicy(policy_id, publish_date, {
-        beforeCommit: async policy => PolicyStreamKafka.write(policy)
+        beforeCommit: process.env.KAFKA_HOST ?  async policy => PolicyStreamKafka.write(policy) : undefined
       })
 
       if (prev_policies) {

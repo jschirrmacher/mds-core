@@ -154,34 +154,36 @@ export const ComplianceServiceProvider: ServiceProvider<ComplianceService, Compl
   getComplianceViolationPeriods: async (context, options) => {
     try {
       const violationPeriodEntities = await ComplianceRepository.getComplianceViolationPeriods(options)
-      const complianceAggregateMap = violationPeriodEntities.reduce((acc, violationPeriodEntity) => {
+      const complianceAggregateMap = violationPeriodEntities.reduce<{
+        [k: string]: ComplianceViolationPeriodDomainModel[]
+      }>((acc, violationPeriodEntity) => {
         const { provider_id, policy_id } = violationPeriodEntity
         const key = `${provider_id}:${policy_id}`
 
-        if (!isDefined(acc.get(key))) {
+        if (!isDefined(acc[key])) {
           // eslint-disable-next-line no-param-reassign
-          acc.set(key, [])
+          acc[key] = []
         }
         if (violationPeriodEntity.sum_total_violations > 0) {
-          const arr = acc.get(key) ?? []
+          const arr = acc[key] ?? []
           arr.push(ComplianceViolationPeriodEntityToDomainCreate.map(violationPeriodEntity))
-          acc.set(key, arr)
+          acc[key] = arr
         }
         return acc
-      }, new Map<string, ComplianceViolationPeriodDomainModel[]>())
+      }, {})
 
-      const results: ComplianceAggregateDomainModel[] = []
-
-      complianceAggregateMap.forEach((value, key) => {
-        const [provider_id, policy_id] = key.split(':')
-
-        results.push({
-          provider_id,
-          policy_id,
-          provider_name: providerName(provider_id),
-          violation_periods: value
+      const results: ComplianceAggregateDomainModel[] = await Promise.all(
+        Object.keys(complianceAggregateMap).map(async key => {
+          const [provider_id, policy_id] = key.split(':')
+          const provider_name = await providerName(provider_id)
+          return {
+            provider_id,
+            policy_id,
+            provider_name,
+            violation_periods: complianceAggregateMap[key]
+          }
         })
-      })
+      )
 
       return ServiceResult(results)
     } catch (error) {

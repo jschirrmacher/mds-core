@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export type ModelMapper = <From, To, Options = Partial<{}>>(
-  map: (model: From, options?: Options | undefined) => To
-) => {
+export type ModelMapper<From, To, Options = Partial<{}>> = {
   map: (model: From, options?: Options | undefined) => To
   mapper: (options?: Options | undefined) => (model: From) => To
 }
 
-export const ModelMapper: ModelMapper = map => ({
+export const ModelMapper = <From, To, Options = Partial<{}>>(
+  map: (model: From, options?: Options | undefined) => To
+): ModelMapper<From, To, Options> => ({
   map,
   mapper: options => model => map(model, options)
 })

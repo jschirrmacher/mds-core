@@ -18,7 +18,7 @@ import { getProviderInputs, getSupersedingPolicies, processPolicy } from '@mds-c
 import { ComplianceServiceClient, ComplianceSnapshotDomainModel } from '@mds-core/mds-compliance-service'
 import { GeographyDomainModel, GeographyServiceClient } from '@mds-core/mds-geography-service'
 import { PolicyDomainModel, PolicyServiceClient } from '@mds-core/mds-policy-service'
-import { providers } from '@mds-core/mds-providers'
+import { getProviders } from '@mds-core/mds-providers'
 import { SerializedBuffers } from '@mds-core/mds-service-helpers'
 import { now } from '@mds-core/mds-utils'
 import { ComplianceBatchProcessorLogger } from './logger'
@@ -43,7 +43,7 @@ export async function computeSnapshot() {
   })
   const compliance_as_of = now() // The timestamp right after we fetch the inputs (latest state as of that time)
 
-  const provider_ids = Object.keys(providers)
+  const provider_ids = Object.keys(await getProviders())
 
   /**
    * This is intentionally an async (for) loop, as opposed to being concurrent (Promise.all()).
@@ -53,9 +53,9 @@ export async function computeSnapshot() {
     const providerInputs = {
       [provider_id]: await getProviderInputs(provider_id, compliance_as_of)
     }
-    const snapshots = policies
-      .map(policy => processPolicy(policy, geographies, providerInputs, compliance_as_of))
-      .flat()
+    const snapshots = (
+      await Promise.all(policies.map(policy => processPolicy(policy, geographies, providerInputs, compliance_as_of)))
+    ).flat()
 
     await batchComplianceSnapshots(snapshots)
   }

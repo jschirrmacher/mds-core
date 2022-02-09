@@ -1,5 +1,11 @@
 # @mds-core/mds-providers
 
+## 0.2.7
+
+### Patch Changes
+
+- 7b061ba5: Asyncifying mds-providers methods as prep for creating a true mds-providers service'
+
 ## 0.2.6
 
 ### Patch Changes

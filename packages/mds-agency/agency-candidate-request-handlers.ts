@@ -16,7 +16,7 @@
 
 import { parseRequest } from '@mds-core/mds-api-helpers'
 import db from '@mds-core/mds-db'
-import { providerName } from '@mds-core/mds-providers'
+import { getProviders } from '@mds-core/mds-providers'
 import { isUUID } from '@mds-core/mds-utils'
 import { AgencyApiRequest, AgencyApiResponse } from './types'
 
@@ -34,14 +34,16 @@ export const readAllVehicleIds = async (req: AgencyApiRequest, res: AgencyApiRes
   const items = await db.readDeviceIds(query_provider_id)
   const data: { [s: string]: string[] } = {}
   const summary: { [s: string]: number } = {}
-  items.map(item => {
+  const names = await getProviders()
+  items.forEach(item => {
     const { device_id, provider_id } = item
+    const name = names[provider_id].provider_name
     if (data[provider_id]) {
       data[provider_id].push(device_id)
-      summary[providerName(provider_id)] += 1
+      summary[name] += 1
     } else {
       data[provider_id] = [device_id]
-      summary[providerName(provider_id)] = 1
+      summary[name] = 1
     }
   })
 

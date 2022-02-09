@@ -37,10 +37,6 @@ spec:
       serviceAccountName: {{ include "mds.serviceAccountName" $ }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      volumes:
-        - name: mds-config-files
-          configMap:
-            name: mds-config-files
       containers:
         - name: {{ $name }}
           securityContext:
@@ -52,9 +48,6 @@ spec:
           image: "{{ $name }}:{{ $version }}"
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          volumeMounts:
-            - name: mds-config-files
-              mountPath: /mds-config/
           ports:
             - containerPort: {{ .Values.httpPort }}
               name: http

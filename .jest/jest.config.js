@@ -18,5 +18,8 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
   testTimeout: 30000,
+  transform: {
+    '^.+\\.(t|j)sx?$': ['@swc/jest', { configFile: '../../.swcrc' }]
+  },
   verbose: true
 }

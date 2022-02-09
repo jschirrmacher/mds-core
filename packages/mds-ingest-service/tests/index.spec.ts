@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-import { TEST1_PROVIDER_ID } from '@mds-core/mds-providers'
 import { Device, UUID } from '@mds-core/mds-types'
 import { now, uuid } from '@mds-core/mds-utils'
 import { EventAnnotationDomainCreateModel, EventDomainCreateModel, TelemetryDomainCreateModel } from '../@types'
@@ -23,6 +22,7 @@ import { IngestServiceClient } from '../client'
 import { IngestRepository } from '../repository'
 import { IngestServiceManager } from '../service/manager'
 
+const TEST1_PROVIDER_ID = uuid()
 const DEVICE_UUID_A = uuid()
 const DEVICE_UUID_B = uuid()
 const TRIP_UUID_A = uuid()
@@ -702,6 +702,61 @@ describe('Ingest Service Tests', () => {
         skip: trip_id as UUID
       })
       expect(Object.keys(trips1).length).toStrictEqual(1)
+    })
+  })
+
+  describe('getDeviceEvents', () => {
+    beforeEach(async () => {
+      await IngestRepository.createEvents([TEST_EVENT_A1, TEST_EVENT_B1])
+      await IngestRepository.createEvents([TEST_EVENT_A2, TEST_EVENT_B2])
+    })
+
+    it('loads all events, with telemetry and gps embeded', async () => {
+      const devices = await IngestServiceClient.getDeviceEvents({})
+      const events1 = devices[DEVICE_UUID_A]
+      const events2 = devices[DEVICE_UUID_B]
+
+      expect(events1?.length).toStrictEqual(2)
+      expect(events2?.length).toStrictEqual(2)
+
+      expect(events1[0].telemetry?.gps.lat).toStrictEqual(TEST_TELEMETRY_A1.gps.lat)
+      expect(events1[1].telemetry?.gps.lat).toStrictEqual(TEST_TELEMETRY_A2.gps.lat)
+    })
+    it('loads device events filtered by time', async () => {
+      const noEventsInBounds = await IngestServiceClient.getDeviceEvents({
+        start_time: TEST_EVENT_A2.timestamp + 100,
+        end_time: TEST_EVENT_A2.timestamp + 200
+      })
+      expect(Object.keys(noEventsInBounds).length).toStrictEqual(0)
+
+      const someEventsInBounds = await IngestServiceClient.getDeviceEvents({
+        start_time: TEST_EVENT_A1.timestamp - 1,
+        end_time: TEST_EVENT_A1.timestamp + 1
+      })
+
+      expect(Object.keys(someEventsInBounds).length).toStrictEqual(2)
+
+      Object.values(someEventsInBounds).forEach(events => {
+        expect(events.length).toStrictEqual(1)
+      })
+    })
+    it('loads device events filtered by provider', async () => {
+      const events = await IngestServiceClient.getDeviceEvents({
+        provider_id: TEST_EVENT_A2.provider_id
+      })
+      expect(Object.keys(events).length).toStrictEqual(2)
+
+      const noEvents = await IngestServiceClient.getDeviceEvents({
+        provider_id: uuid()
+      })
+      expect(Object.keys(noEvents).length).toStrictEqual(0)
+    })
+    it('loads device events skipping some device_id', async () => {
+      const [device_id] = [TEST_EVENT_A1.device_id, TEST_EVENT_B1.device_id].sort()
+      const events = await IngestServiceClient.getDeviceEvents({
+        skip: device_id
+      })
+      expect(Object.keys(events).length).toStrictEqual(1)
     })
   })
 

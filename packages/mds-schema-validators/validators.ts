@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { providers } from '@mds-core/mds-providers' // map of uuids -> obb
 import {
   ACCESSIBILITY_OPTIONS,
   AUDIT_EVENT_TYPE,
@@ -54,7 +53,7 @@ export const uuidSchema = stringSchema.guid()
 
 export const timestampSchema = numberSchema.min(1420099200000)
 
-export const providerIdSchema = uuidSchema.valid(...Object.keys(providers))
+export const providerIdSchema = uuidSchema
 
 export const vehicleIdSchema = stringSchema.max(255)
 
@@ -216,9 +215,6 @@ export const isValidAuditEventType = (
 
 export const isValidTimestamp = (value: unknown, options: Partial<ValidatorOptions> = {}): value is Timestamp =>
   ValidateSchema(value, timestampSchema, { property: 'timestamp', ...options })
-
-export const isValidProviderId = (value: unknown, options: Partial<ValidatorOptions> = {}): value is UUID =>
-  ValidateSchema(value, providerIdSchema, { property: 'provider_id', ...options })
 
 export const isValidProviderVehicleId = (value: unknown, options: Partial<ValidatorOptions> = {}): value is string =>
   ValidateSchema(value, vehicleIdSchema, { property: 'provider_vehicle_id', ...options })

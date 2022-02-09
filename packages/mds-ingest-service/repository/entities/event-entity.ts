@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { BigintTransformer, DesignType, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Nullable, Timestamp, TRIP_STATE, UUID, VEHICLE_EVENT, VEHICLE_STATE } from '@mds-core/mds-types'
 import { Column, Entity, Index, OneToOne } from 'typeorm'
 import { MigratedEntity } from '../mixins/migrated-entity'
@@ -35,18 +35,21 @@ export class EventEntity extends MigratedEntity(IdentityColumn(RecordedColumn(cl
 
   @Column('bigint', { transformer: BigintTransformer, primary: true })
   @Index()
+  @DesignType(Number)
   timestamp: Timestamp
 
   @Column('varchar', { array: true, length: 31 })
   event_types: VEHICLE_EVENT[]
 
   @Column('varchar', { length: 31 })
+  @DesignType(String)
   vehicle_state: VEHICLE_STATE
 
   @Column('varchar', { length: 31, nullable: true })
   trip_state: Nullable<TRIP_STATE>
 
   @Column('bigint', { transformer: BigintTransformer })
+  @DesignType(Number)
   telemetry_timestamp: Timestamp
 
   @Column('uuid', { nullable: true })

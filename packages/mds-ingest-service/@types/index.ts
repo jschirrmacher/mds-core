@@ -128,6 +128,14 @@ export interface ReadTripEventsQueryParams {
   provider_id?: UUID
 }
 
+export interface ReadDeviceEventsQueryParams {
+  skip?: UUID
+  take?: number
+  start_time?: number | string
+  end_time?: number | string
+  provider_id?: UUID
+}
+
 export interface EventDomainModel extends RecordedColumn {
   device_id: UUID
   provider_id: UUID
@@ -228,11 +236,21 @@ export interface IngestService {
   getLatestTelemetryForDevices: (device_ids: UUID[]) => TelemetryDomainModel[]
   writeEvents: (event: EventDomainCreateModel[]) => EventDomainModel[]
   writeEventAnnotations: (params: EventAnnotationDomainCreateModel[]) => EventAnnotationDomainModel[]
+  /**
+   * Gets all trip-related events grouped by trip_id, with an optional time_range.
+   * When a time_range is supplied, all trip_ids within that time_range will be considered,
+   * however some events for that trip_id may be outside of the time_range, and **will still be returned**.
+   */
   getTripEvents: (params: ReadTripEventsQueryParams) => Record<UUID, EventDomainModel[]>
   getEventsWithDeviceAndTelemetryInfoUsingOptions: (
     options?: GetEventsWithDeviceAndTelemetryInfoOptions
   ) => GetEventsWithDeviceAndTelemetryInfoResponse
   getEventsWithDeviceAndTelemetryInfoUsingCursor: (cursor: string) => GetEventsWithDeviceAndTelemetryInfoResponse
+  /**
+   * Gets all events grouped by device_id, with an optional time_range.
+   * When a time_range is supplied, only the events within that time range will be returned.
+   */
+  getDeviceEvents: (params: ReadDeviceEventsQueryParams) => Record<UUID, EventDomainModel[]>
 }
 
 export interface IngestMigrationService {
@@ -263,7 +281,8 @@ export const IngestServiceDefinition: RpcServiceDefinition<IngestService & Inges
   getEventsWithDeviceAndTelemetryInfoUsingOptions:
     RpcRoute<IngestService['getEventsWithDeviceAndTelemetryInfoUsingOptions']>(),
   getEventsWithDeviceAndTelemetryInfoUsingCursor:
-    RpcRoute<IngestService['getEventsWithDeviceAndTelemetryInfoUsingCursor']>()
+    RpcRoute<IngestService['getEventsWithDeviceAndTelemetryInfoUsingCursor']>(),
+  getDeviceEvents: RpcRoute<IngestService['getDeviceEvents']>()
 }
 
 export type IngestServiceRequestContext = RpcEmptyRequestContext

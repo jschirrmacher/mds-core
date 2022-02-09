@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { BigintTransformer, DesignType, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Nullable, Timestamp, UUID } from '@mds-core/mds-types'
 import { Column, Entity, Index } from 'typeorm'
 import { MigratedEntity } from '../mixins/migrated-entity'
@@ -28,6 +28,7 @@ export class TelemetryEntity extends MigratedEntity(IdentityColumn(RecordedColum
 
   @Column('bigint', { transformer: BigintTransformer, primary: true })
   @Index()
+  @DesignType(Number)
   timestamp: Timestamp
 
   @Column('double precision')

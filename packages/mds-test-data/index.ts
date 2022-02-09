@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { BIRD_PROVIDER_ID, JUMP_PROVIDER_ID, LIME_PROVIDER_ID, TEST1_PROVIDER_ID } from '@mds-core/mds-providers'
 import {
   Device,
   MODALITY,
@@ -40,6 +39,13 @@ import { Geometry } from 'geojson'
 import { DISTRICT_SEVEN } from './test-areas/district-seven'
 import { LA_CITY_BOUNDARY } from './test-areas/la-city-boundary'
 import { restrictedAreas, serviceAreaMap, venice, veniceSpecOps } from './test-areas/test-areas'
+
+const JUMP_PROVIDER_ID = 'c20e08cf-8488-46a6-a66c-5d8fb827f7e0'
+const LIME_PROVIDER_ID = '63f13c48-34ff-49d2-aca7-cf6a5b6171c3'
+const BIRD_PROVIDER_ID = '2411d395-04f2-47c9-ab66-d09e9e3c3251'
+
+const TEST1_PROVIDER_ID = '5f7114d1-4091-46ee-b492-e55875f7de00'
+const TEST2_PROVIDER_ID = '45f37d69-73ca-4ca6-a461-e7283cffa01a'
 
 const PROVIDER_SCOPES = 'admin:all'
 
@@ -299,8 +305,12 @@ export {
   BAD_PROVIDER_UUID,
   PROVIDER_AUTH,
   COMPLIANCE_AUTH,
+  TEST1_PROVIDER_ID,
+  TEST2_PROVIDER_ID,
   JUMP_TEST_DEVICE_1,
   JUMP_PROVIDER_ID,
+  LIME_PROVIDER_ID,
+  BIRD_PROVIDER_ID,
   PROVIDER_SCOPES,
   LA_CITY_BOUNDARY,
   DISTRICT_SEVEN,

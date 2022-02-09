@@ -279,5 +279,15 @@ export const IngestServiceProvider: ServiceProvider<
       IngestServiceLogger.error('getEventsWithDeviceAndTelemetryInfoUsingCursor exception', { exception, error })
       return exception
     }
+  },
+
+  getDeviceEvents: async (context, options) => {
+    try {
+      return ServiceResult(await IngestRepository.getDeviceEvents(options))
+    } catch (error) {
+      const exception = ServiceException('Error in getDeviceEvents', error)
+      IngestServiceLogger.error('getDeviceEvents exception', { exception, error })
+      return exception
+    }
   }
 }

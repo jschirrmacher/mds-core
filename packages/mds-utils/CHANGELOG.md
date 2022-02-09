@@ -1,5 +1,11 @@
 # @mds-core/mds-utils
 
+## 0.4.0
+
+### Minor Changes
+
+- bce81d4d: Add taxi state machine validation support to isEventSequenceValid, require mode as an option.
+
 ## 0.3.1
 
 ### Patch Changes

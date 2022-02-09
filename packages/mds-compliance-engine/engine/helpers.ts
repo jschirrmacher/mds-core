@@ -10,7 +10,7 @@ import {
   TimePolicy,
   TIME_FORMAT
 } from '@mds-core/mds-policy-service'
-import { providers } from '@mds-core/mds-providers'
+import { getProviders } from '@mds-core/mds-providers'
 import { Device, UUID, VehicleEvent } from '@mds-core/mds-types'
 import { areThereCommonElements, days, isDefined, now, RuntimeError } from '@mds-core/mds-utils'
 import { DateTime } from 'luxon'
@@ -47,6 +47,7 @@ export function isPolicyUniversal(policy: PolicyDomainModel) {
 }
 
 export async function getAllInputs() {
+  const providers = await getProviders()
   const inputs = await Promise.all(Object.keys(providers).map(provider_id => getProviderInputs(provider_id)))
   return inputs.reduce((acc: ProviderInputs, cur) => {
     acc[cur.provider_id] = cur
@@ -277,12 +278,12 @@ export function annotateVehicleMap<T extends Rule<Exclude<RULE_TYPE, 'rate'>>>(
   return Object.values(vehiclesFoundMap)
 }
 
-export function getProviderIDs(provider_ids: UUID[] | undefined | null) {
+export async function getProviderIDs(provider_ids: UUID[] | undefined | null) {
   if (!isDefined(provider_ids) || !Array.isArray(provider_ids)) {
-    return Object.keys(providers)
+    return Object.keys(await getProviders())
   }
   if (provider_ids.length < 1) {
-    return Object.keys(providers)
+    return Object.keys(await getProviders())
   }
   return provider_ids
 }

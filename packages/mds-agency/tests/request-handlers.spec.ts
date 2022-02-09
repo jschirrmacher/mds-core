@@ -4,7 +4,6 @@ import { IngestServiceClient } from '@mds-core/mds-ingest-service'
 import stream from '@mds-core/mds-stream'
 import { Device } from '@mds-core/mds-types'
 import { uuid } from '@mds-core/mds-utils'
-import assert from 'assert'
 import Sinon from 'sinon'
 import {
   getVehicleById,
@@ -61,8 +60,8 @@ describe('Agency API request handlers', () => {
       res.status = statusHandler
       res.locals = getLocals(provider_id) as any
       await registerVehicle({ body } as AgencyApiRegisterVehicleRequest, res)
-      assert.equal(statusHandler.calledWith(400), true)
-      assert.equal(sendHandler.called, true)
+      expect(statusHandler.calledWith(400)).toBeTruthy()
+      expect(sendHandler.called).toBeTruthy()
       Sinon.restore()
     })
 
@@ -78,8 +77,8 @@ describe('Agency API request handlers', () => {
       res.locals = getLocals(provider_id) as any
       Sinon.replace(db, 'writeDevice', Sinon.fake.rejects('fake-rejects-db'))
       await registerVehicle({ body } as AgencyApiRegisterVehicleRequest, res)
-      assert.equal(statusHandler.calledWith(500), true)
-      assert.equal(sendHandler.called, true)
+      expect(statusHandler.calledWith(500)).toBeTruthy()
+      expect(sendHandler.called).toBeTruthy()
       Sinon.restore()
     })
 
@@ -95,8 +94,8 @@ describe('Agency API request handlers', () => {
       res.locals = getLocals(provider_id) as any
       Sinon.replace(db, 'writeDevice', Sinon.fake.rejects('fake-rejects-other'))
       await registerVehicle({ body } as AgencyApiRegisterVehicleRequest, res)
-      assert.equal(statusHandler.calledWith(500), true)
-      assert.equal(sendHandler.called, true)
+      expect(statusHandler.calledWith(500)).toBeTruthy()
+      expect(sendHandler.called).toBeTruthy()
       Sinon.restore()
     })
 
@@ -112,8 +111,8 @@ describe('Agency API request handlers', () => {
       res.locals = getLocals(provider_id) as any
       Sinon.replace(db, 'writeDevice', Sinon.fake.rejects('fake-rejects-duplicate'))
       await registerVehicle({ body } as AgencyApiRegisterVehicleRequest, res)
-      assert.equal(statusHandler.calledWith(409), true)
-      assert.equal(sendHandler.called, true)
+      expect(statusHandler.calledWith(409)).toBeTruthy()
+      expect(sendHandler.called).toBeTruthy()
       Sinon.restore()
     })
 
@@ -131,8 +130,8 @@ describe('Agency API request handlers', () => {
       Sinon.replace(cache, 'writeDevices', Sinon.fake.resolves('it-worked'))
       Sinon.replace(stream, 'writeDevice', Sinon.fake.resolves('it-worked'))
       await registerVehicle({ body } as AgencyApiRegisterVehicleRequest, res)
-      assert.equal(statusHandler.calledWith(201), true)
-      assert.equal(sendHandler.called, true)
+      expect(statusHandler.calledWith(201)).toBeTruthy()
+      expect(sendHandler.called).toBeTruthy()
       Sinon.restore()
     })
 
@@ -150,38 +149,13 @@ describe('Agency API request handlers', () => {
       Sinon.replace(cache, 'writeDevices', Sinon.fake.rejects('it-broke'))
       Sinon.replace(stream, 'writeDevice', Sinon.fake.resolves('it-worked'))
       await registerVehicle({ body } as AgencyApiRegisterVehicleRequest, res)
-      assert.equal(statusHandler.calledWith(201), true)
-      assert.equal(sendHandler.called, true)
+      expect(statusHandler.calledWith(201)).toBeTruthy()
+      expect(sendHandler.called).toBeTruthy()
       Sinon.restore()
     })
   })
 
   describe('Get vehicle by id', () => {
-    it('Fails to read device', async () => {
-      const provider_id = uuid()
-      const device_id = uuid()
-      const res: AgencyApiResponse = {} as AgencyApiResponse
-      const sendHandler = Sinon.fake.returns('asdf')
-      const statusHandler = Sinon.fake.returns({
-        send: sendHandler
-      } as any)
-      res.status = statusHandler
-      res.locals = getLocals(provider_id) as any
-      Sinon.replace(db, 'readDevice', Sinon.fake.rejects('it-broke'))
-      Sinon.replace(db, 'readEvent', Sinon.fake.resolves('it-worked'))
-      Sinon.replace(db, 'readTelemetry', Sinon.fake.resolves('it-worked'))
-      await getVehicleById(
-        {
-          params: { device_id },
-          query: { cached: false }
-        } as unknown as AgencyApiGetVehicleByIdRequest,
-        res
-      )
-      assert.equal(statusHandler.calledWith(404), true)
-      assert.equal(sendHandler.called, true)
-      Sinon.restore()
-    })
-
     it('Reads device data and returns composite', async () => {
       const provider_id = uuid()
       const device_id = uuid()
@@ -211,8 +185,8 @@ describe('Agency API request handlers', () => {
         } as unknown as AgencyApiGetVehicleByIdRequest,
         res
       )
-      assert.equal(statusHandler.calledWith(200), true)
-      assert.equal(sendHandler.called, true)
+      expect(statusHandler.calledWith(200)).toBeTruthy()
+      expect(sendHandler.called).toBeTruthy()
       Sinon.restore()
     })
   })
@@ -237,8 +211,8 @@ describe('Agency API request handlers', () => {
         } as unknown as AgencyApiGetVehiclesByProviderRequest,
         res
       )
-      assert.equal(statusHandler.calledWith(500), true)
-      assert.equal(sendHandler.called, true)
+      expect(statusHandler.calledWith(500)).toBeTruthy()
+      expect(sendHandler.called).toBeTruthy()
       Sinon.restore()
     })
 
@@ -263,8 +237,8 @@ describe('Agency API request handlers', () => {
         } as unknown as AgencyApiGetVehiclesByProviderRequest,
         res
       )
-      assert.equal(statusHandler.calledWith(200), true)
-      assert.equal(sendHandler.calledWith({ ...stubbedResponse }), true)
+      expect(statusHandler.calledWith(200)).toBeTruthy()
+      expect(sendHandler.calledWith({ ...stubbedResponse })).toBeTruthy()
       Sinon.restore()
     })
   })
@@ -293,8 +267,8 @@ describe('Agency API request handlers', () => {
           device_id,
           'not found'
         )
-        assert.equal(statusHandler.calledWith(404), true)
-        assert.equal(sendHandler.called, true)
+        expect(statusHandler.calledWith(404)).toBeTruthy()
+        expect(sendHandler.called).toBeTruthy()
         Sinon.restore()
       })
 
@@ -320,14 +294,13 @@ describe('Agency API request handlers', () => {
           device_id,
           'invalid'
         )
-        assert.equal(statusHandler.calledWith(400), true)
-        assert.equal(
+        expect(statusHandler.calledWith(400)).toBeTruthy()
+        expect(
           sendHandler.calledWith({
             error: 'bad_param',
             error_description: 'Invalid parameters for vehicle were sent'
-          }),
-          true
-        )
+          })
+        ).toBeTruthy()
         Sinon.restore()
       })
 
@@ -353,8 +326,8 @@ describe('Agency API request handlers', () => {
           device_id,
           'not found'
         )
-        assert.equal(statusHandler.calledWith(404), true)
-        assert.equal(sendHandler.called, true)
+        expect(statusHandler.calledWith(404)).toBeTruthy()
+        expect(sendHandler.called).toBeTruthy()
         Sinon.restore()
       })
 
@@ -380,8 +353,8 @@ describe('Agency API request handlers', () => {
           device_id,
           'misc-error'
         )
-        assert.equal(statusHandler.calledWith(500), true)
-        assert.equal(sendHandler.called, true)
+        expect(statusHandler.calledWith(500)).toBeTruthy()
+        expect(sendHandler.called).toBeTruthy()
         Sinon.restore()
       })
     })
@@ -405,8 +378,8 @@ describe('Agency API request handlers', () => {
         } as unknown as AgencyApiRequest,
         res
       )
-      assert.equal(statusHandler.calledWith(500), true)
-      assert.equal(sendHandler.called, true)
+      expect(statusHandler.calledWith(500)).toBeTruthy()
+      expect(sendHandler.called).toBeTruthy()
       Sinon.restore()
     })
 
@@ -431,8 +404,8 @@ describe('Agency API request handlers', () => {
         } as unknown as AgencyApiUpdateVehicleRequest,
         res
       )
-      assert.equal(statusHandler.calledWith(404), true)
-      assert.equal(sendHandler.called, true)
+      expect(statusHandler.calledWith(404)).toBeTruthy()
+      expect(sendHandler.called).toBeTruthy()
       Sinon.restore()
     })
 
@@ -457,8 +430,8 @@ describe('Agency API request handlers', () => {
         } as unknown as AgencyApiUpdateVehicleRequest,
         res
       )
-      assert.equal(statusHandler.calledWith(404), true)
-      assert.equal(sendHandler.called, true)
+      expect(statusHandler.calledWith(404)).toBeTruthy()
+      expect(sendHandler.called).toBeTruthy()
       Sinon.restore()
     })
 
@@ -486,8 +459,8 @@ describe('Agency API request handlers', () => {
         } as unknown as AgencyApiUpdateVehicleRequest,
         res
       )
-      assert.equal(statusHandler.calledWith(201), true)
-      assert.equal(sendHandler.called, true)
+      expect(statusHandler.calledWith(201)).toBeTruthy()
+      expect(sendHandler.called).toBeTruthy()
       Sinon.restore()
     })
   })

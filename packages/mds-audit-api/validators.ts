@@ -15,7 +15,6 @@
  */
 
 import { TelemetryCreateSchema } from '@mds-core/mds-ingest-service'
-import { providers } from '@mds-core/mds-providers'
 import { SchemaValidator } from '@mds-core/mds-schema-validators'
 import { AUDIT_EVENT_TYPES, VEHICLE_EVENTS } from '@mds-core/mds-types'
 import {
@@ -34,7 +33,7 @@ export const { validate: validateAuditApiAuditStartRequest } = SchemaValidator<A
     type: 'object',
     properties: {
       timestamp: timestampSchema,
-      provider_id: { ...uuidSchema, enum: Object.keys(providers) },
+      provider_id: uuidSchema,
       provider_vehicle_id: { type: 'string', maxLength: 255 },
       audit_event_id: uuidSchema,
       audit_device_id: uuidSchema,

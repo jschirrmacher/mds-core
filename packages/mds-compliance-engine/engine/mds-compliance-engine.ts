@@ -78,14 +78,14 @@ export function createComplianceSnapshot(
  * The geographies should be the result of calling
  * `await readGeographies({ get_published: true })`
  */
-export function processPolicy(
+export async function processPolicy(
   policy: PolicyDomainModel,
   geographies: GeographyDomainModel[],
   providerInputs: ProviderInputs,
   compliance_as_of?: Timestamp
 ) {
   if (isPolicyActive(policy)) {
-    const provider_ids = getProviderIDs(policy.provider_ids)
+    const provider_ids = await getProviderIDs(policy.provider_ids)
     const results = provider_ids.map(provider_id => {
       /**
        * If there's no data for this provider, skip it.

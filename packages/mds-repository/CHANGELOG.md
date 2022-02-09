@@ -1,5 +1,21 @@
 # @mds-core/mds-repository
 
+## 0.1.35
+
+### Patch Changes
+
+- 49110532: Add DesignType decorator to Recorded column class
+- Updated dependencies [bce81d4d]
+  - @mds-core/mds-utils@0.4.0
+
+## 0.1.34
+
+### Patch Changes
+
+- ca45bfaf: Rework ModelMapper type
+- Updated dependencies [7b061ba5]
+  - @mds-core/mds-providers@0.2.7
+
 ## 0.1.33
 
 ### Patch Changes

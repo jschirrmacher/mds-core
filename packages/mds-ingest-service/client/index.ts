@@ -56,7 +56,11 @@ export const IngestServiceClientFactory = (
     getEventsWithDeviceAndTelemetryInfoUsingOptions: (...args) =>
       RpcRequest(options, IngestServiceRpcClient.getEventsWithDeviceAndTelemetryInfoUsingOptions, args),
     getEventsWithDeviceAndTelemetryInfoUsingCursor: (...args) =>
-      RpcRequest(options, IngestServiceRpcClient.getEventsWithDeviceAndTelemetryInfoUsingCursor, args)
+      RpcRequest(options, IngestServiceRpcClient.getEventsWithDeviceAndTelemetryInfoUsingCursor, args),
+    getDeviceEvents: (...args) =>
+      process.env.ENABLE_RPC === 'true'
+        ? RpcRequest(options, IngestServiceRpcClient.getDeviceEvents, args)
+        : UnwrapServiceResult(IngestServiceProvider.getDeviceEvents)(context, ...args)
   }
 }
 

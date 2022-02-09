@@ -1,8 +1,8 @@
-import { TEST1_PROVIDER_ID } from '@mds-core/mds-providers'
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { PROVIDER_SCOPES } from '@mds-core/mds-test-data'
+import { PROVIDER_SCOPES, TEST1_PROVIDER_ID } from '@mds-core/mds-test-data'
 import { Device, TripMetadata, UUID, VehicleEvent } from '@mds-core/mds-types'
 import { now, uuid } from '@mds-core/mds-utils'
+import { StatusCodes } from 'http-status-codes'
 import type supertest from 'supertest'
 
 export type POSTableVehicleEvent = Omit<VehicleEvent, 'provider_id' | 'recorded'>
@@ -56,21 +56,22 @@ export const fakeEvent = ({ device_id }: Pick<Device, 'device_id'>): Omit<Vehicl
 export const registerVehicleRequest = (
   request: supertest.SuperTest<supertest.Test>,
   vehicle: Omit<Device, 'recorded'>
-) => request.post(`/agency/vehicles`).set('Authorization', AUTH).send(vehicle).expect(201)
+) => request.post(`/agency/vehicles`).set('Authorization', AUTH).send(vehicle)
 
 export const postEventRequest = (
   request: supertest.SuperTest<supertest.Test>,
   event: Omit<VehicleEvent, 'recorded' | 'provider_id'>
-) => request.post(`/agency/vehicles/${event.device_id}/event`).set('Authorization', AUTH).send(event).expect(201)
+) => request.post(`/agency/vehicles/${event.device_id}/event`).set('Authorization', AUTH).send(event)
 
 export const postEvent = (
   request: supertest.SuperTest<supertest.Test>,
   eventsContext: POSTableVehicleEvent[],
   device: Omit<Device, 'recorded'>,
+  expectStatusResponse: StatusCodes,
   overrides?: Partial<POSTableVehicleEvent>
 ) => {
   const event = { ...fakeEvent(device), ...overrides }
-  const result = postEventRequest(request, event)
+  const result = postEventRequest(request, event).expect(expectStatusResponse)
   eventsContext.push(event)
   return { result, event }
 }
@@ -106,7 +107,7 @@ export const postTripMetadata = (
   request: supertest.SuperTest<supertest.Test>,
   metadata: Omit<TripMetadata, 'provider_id'>
 ) => {
-  return request.post(`/agency/trips`).set('Authorization', AUTH).send(metadata).expect(201)
+  return request.post(`/agency/trips`).set('Authorization', AUTH).send(metadata)
 }
 
 /**
@@ -150,37 +151,40 @@ export const basicTripFlow = async (
   vehicle: Omit<Device, 'recorded'>,
   trip_id: UUID = uuid()
 ) => {
-  await postEvent(request, eventsContext, vehicle, { event_types: ['service_start'], vehicle_state: 'available' })
+  await postEvent(request, eventsContext, vehicle, StatusCodes.CREATED, {
+    event_types: ['service_start'],
+    vehicle_state: 'available'
+  })
 
-  await postEvent(request, eventsContext, vehicle, {
+  await postEvent(request, eventsContext, vehicle, StatusCodes.CREATED, {
     event_types: ['reservation_start'],
     vehicle_state: 'reserved',
     trip_state: 'reserved',
     trip_id
   })
 
-  await postEvent(request, eventsContext, vehicle, {
+  await postEvent(request, eventsContext, vehicle, StatusCodes.CREATED, {
     event_types: ['reservation_stop'],
     vehicle_state: 'stopped',
     trip_state: 'stopped',
     trip_id
   })
 
-  await postEvent(request, eventsContext, vehicle, {
+  await postEvent(request, eventsContext, vehicle, StatusCodes.CREATED, {
     event_types: ['trip_start'],
     vehicle_state: 'on_trip',
     trip_state: 'on_trip',
     trip_id
   })
 
-  await postEvent(request, eventsContext, vehicle, {
+  await postEvent(request, eventsContext, vehicle, StatusCodes.CREATED, {
     event_types: ['trip_stop'],
     vehicle_state: 'stopped',
     trip_state: 'stopped',
     trip_id
   })
 
-  await postEvent(request, eventsContext, vehicle, {
+  await postEvent(request, eventsContext, vehicle, StatusCodes.CREATED, {
     event_types: ['trip_end'],
     vehicle_state: 'available',
     trip_id

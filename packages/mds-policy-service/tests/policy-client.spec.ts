@@ -18,8 +18,6 @@ import { createPolicyAndGeographyFactory, PolicyFactory, RulesFactory } from './
 const GeographyServer = GeographyServiceManager.controller()
 const PolicyServer = PolicyServiceManager.controller()
 
-const mockStream = stream.mockStream(PolicyStreamKafka)
-
 describe('spot check unit test policy functions with SimplePolicy', () => {
   describe('Policy Client Tests', () => {
     beforeAll(async () => {
@@ -395,6 +393,15 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
     })
 
     describe('Tests Kafka publishing', () => {
+      const mockStream = stream.mockStream(PolicyStreamKafka)
+
+      beforeAll(() => {
+        process.env.KAFKA_HOST = 'localhost:7375'
+      })
+
+      afterAll(() => {
+        delete process.env.KAFKA_HOST
+      })
       beforeEach(() => {
         mockStream.write.mockReset()
       })

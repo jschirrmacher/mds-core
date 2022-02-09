@@ -124,4 +124,3 @@ export * from './trip'
 export * from './utils'
 export * from './vehicle/vehicle_states'
 export * from './vehicle/vehicle_types'
-

@@ -18,8 +18,7 @@ import { ComplianceSnapshotDomainModel } from '@mds-core/mds-compliance-service/
 import db from '@mds-core/mds-db'
 import { GeographyDomainModel } from '@mds-core/mds-geography-service'
 import { PolicyDomainModel } from '@mds-core/mds-policy-service'
-import { TEST1_PROVIDER_ID } from '@mds-core/mds-providers'
-import { LA_CITY_BOUNDARY, makeDevices, makeEventsWithTelemetry } from '@mds-core/mds-test-data'
+import { LA_CITY_BOUNDARY, makeDevices, makeEventsWithTelemetry, TEST1_PROVIDER_ID } from '@mds-core/mds-test-data'
 import { Device, VehicleEvent } from '@mds-core/mds-types'
 import assert from 'assert'
 import { FeatureCollection } from 'geojson'
@@ -149,7 +148,7 @@ describe('Verifies compliance engine processes by vehicle most recent event', ()
     }, []) as VehicleEventWithTelemetry[]
     await db.seed({ devices, events, telemetry: events.map(({ telemetry }) => telemetry) })
     const inputs = await getAllInputs()
-    const complianceResults = processPolicy(ARBITRARY_EVENT_TYPES_POLICY, geographies, inputs)
+    const complianceResults = await processPolicy(ARBITRARY_EVENT_TYPES_POLICY, geographies, inputs)
     const { 0: result } = complianceResults.filter(
       complianceResult => complianceResult?.provider_id === TEST1_PROVIDER_ID
     ) as ComplianceSnapshotDomainModel[]
@@ -170,7 +169,7 @@ describe('Verifies compliance engine processes by vehicle most recent event', ()
     }, []) as VehicleEventWithTelemetry[]
     await db.seed({ devices, events, telemetry: events.map(({ telemetry }) => telemetry) })
     const inputs = await getAllInputs()
-    const complianceResults = processPolicy(ARBITRARY_EVENT_TYPES_POLICY, geographies, inputs)
+    const complianceResults = await processPolicy(ARBITRARY_EVENT_TYPES_POLICY, geographies, inputs)
     const { 0: result } = complianceResults.filter(
       complianceResult => complianceResult?.provider_id === TEST1_PROVIDER_ID
     )
@@ -191,7 +190,7 @@ describe('Verifies compliance engine processes by vehicle most recent event', ()
     }, []) as VehicleEventWithTelemetry[]
     await db.seed({ devices, events, telemetry: events.map(({ telemetry }) => telemetry) })
     const inputs = await getAllInputs()
-    const complianceResults = processPolicy(COUNT_POLICY_JSON, geographies, inputs)
+    const complianceResults = await processPolicy(COUNT_POLICY_JSON, geographies, inputs)
     const { 0: result } = complianceResults.filter(
       complianceResult => complianceResult?.provider_id === TEST1_PROVIDER_ID
     ) as ComplianceSnapshotDomainModel[]

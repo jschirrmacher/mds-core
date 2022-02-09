@@ -105,7 +105,7 @@ describe('Tests Utilities', () => {
                 isEventValid(eventB),
                 MICRO_MOBILITY_EVENT_STATES_MAP[event_type_B].includes(eventBState)
               )
-              const actual = isEventSequenceValid(eventA, eventB)
+              const actual = isEventSequenceValid(eventA, eventB, 'micromobility')
               const transitionKey =
                 `eventA :{ vehicle_state: ${eventAState}, event_types: [${event_type_A}] }, ` +
                 `eventB: { vehicle_state: ${eventBState}, event_types: [${event_type_B} }]`
@@ -123,7 +123,7 @@ describe('Tests Utilities', () => {
         vehicle_state: 'unknown',
         event_types: ['trip_leave_jurisdiction', 'comms_lost']
       } as MicroMobilityVehicleEvent
-      assert(isEventSequenceValid(eventA, eventB))
+      assert(isEventSequenceValid(eventA, eventB, 'micromobility'))
     })
 
     it('isEventSequenceValid returns false when the multiple event_types are invalid', () => {
@@ -132,7 +132,7 @@ describe('Tests Utilities', () => {
         vehicle_state: 'unknown',
         event_types: ['comms_lost', 'comms_lost']
       } as MicroMobilityVehicleEvent
-      assert(!isEventSequenceValid(eventA, eventB))
+      assert(!isEventSequenceValid(eventA, eventB, 'micromobility'))
     })
   })
 })

@@ -18,7 +18,6 @@ import cache from '@mds-core/mds-agency-cache'
 import { parseRequest } from '@mds-core/mds-api-helpers'
 import db from '@mds-core/mds-db'
 import { validateDeviceDomainModel } from '@mds-core/mds-ingest-service'
-import { providerName } from '@mds-core/mds-providers'
 import { SchemaValidator } from '@mds-core/mds-schema-validators'
 import stream from '@mds-core/mds-stream'
 import {
@@ -112,7 +111,10 @@ export const registerVehicle = async (req: AgencyApiRegisterVehicleRequest, res:
       })
     }
 
-    AgencyLogger.error('register vehicle failed:', { err: error, providerName: providerName(res.locals.provider_id) })
+    AgencyLogger.error('register vehicle failed:', {
+      err: error,
+      provider_id: res.locals.provider_id
+    })
     return res.status(500).send(AgencyServerError)
   }
 }
@@ -180,7 +182,7 @@ export async function updateVehicleFail(
     res.status(404).send({})
   } else {
     AgencyLogger.error(`fail PUT /vehicles/${device_id}`, {
-      providerName: providerName(provider_id),
+      provider_id,
       body: req.body,
       error
     })

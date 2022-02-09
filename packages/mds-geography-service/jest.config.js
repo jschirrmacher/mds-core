@@ -1,1 +1,1 @@
-module.exports = { ...require('../../.jest/jest.config.js') }
+module.exports = { ...require('../../.jest/jest.config.js'), coverageThreshold: { global: { lines: 81 } } }

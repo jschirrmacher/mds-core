@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { MOCHA_PROVIDER_ID } from '@mds-core/mds-providers'
 import { uuid } from '@mds-core/mds-utils'
 import express from 'express'
 import jwt from 'jsonwebtoken'
@@ -24,17 +23,18 @@ import { AuthorizationHeaderApiAuthorizer, CustomClaim, WebSocketAuthorizer } fr
 const PROVIDER_SCOPES = 'admin:all'
 const PROVIDER_SUBJECT = uuid()
 const PROVIDER_EMAIL = 'user@test.ai'
+const PROVIDER_ID = uuid()
 
 const { env } = process
 
-const Basic = () => `Basic ${Buffer.from(`${MOCHA_PROVIDER_ID}|${PROVIDER_SCOPES}`).toString('base64')}`
+const Basic = () => `Basic ${Buffer.from(`${PROVIDER_ID}|${PROVIDER_SCOPES}`).toString('base64')}`
 
 const Bearer = () =>
   `Bearer ${jwt.sign(
     {
       sub: PROVIDER_SUBJECT,
       [CustomClaim('user_email')]: PROVIDER_EMAIL,
-      [CustomClaim('provider_id')]: MOCHA_PROVIDER_ID,
+      [CustomClaim('provider_id')]: PROVIDER_ID,
       scope: PROVIDER_SCOPES
     },
     'secret'
@@ -67,8 +67,8 @@ describe('Test API Authorizer', () => {
             headers: { authorization: Basic() }
           } as express.Request)
         )
-        .hasProperty('principalId', MOCHA_PROVIDER_ID)
-        .hasProperty('provider_id', MOCHA_PROVIDER_ID)
+        .hasProperty('principalId', PROVIDER_ID)
+        .hasProperty('provider_id', PROVIDER_ID)
         .hasProperty('scope', PROVIDER_SCOPES)
     })
 
@@ -80,7 +80,7 @@ describe('Test API Authorizer', () => {
           } as express.Request)
         )
         .hasProperty('principalId', PROVIDER_SUBJECT)
-        .hasProperty('provider_id', MOCHA_PROVIDER_ID)
+        .hasProperty('provider_id', PROVIDER_ID)
         .hasProperty('user_email', PROVIDER_EMAIL)
         .hasProperty('scope', PROVIDER_SCOPES)
     })
@@ -90,8 +90,8 @@ describe('Test API Authorizer', () => {
     it('Basic Authorization', async () => {
       test
         .object(WebSocketAuthorizer(Basic()))
-        .hasProperty('principalId', MOCHA_PROVIDER_ID)
-        .hasProperty('provider_id', MOCHA_PROVIDER_ID)
+        .hasProperty('principalId', PROVIDER_ID)
+        .hasProperty('provider_id', PROVIDER_ID)
         .hasProperty('scope', PROVIDER_SCOPES)
     })
 
@@ -99,7 +99,7 @@ describe('Test API Authorizer', () => {
       test
         .object(WebSocketAuthorizer(Bearer()))
         .hasProperty('principalId', PROVIDER_SUBJECT)
-        .hasProperty('provider_id', MOCHA_PROVIDER_ID)
+        .hasProperty('provider_id', PROVIDER_ID)
         .hasProperty('user_email', PROVIDER_EMAIL)
         .hasProperty('scope', PROVIDER_SCOPES)
     })

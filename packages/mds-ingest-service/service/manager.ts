@@ -42,7 +42,8 @@ export const IngestServiceManager = RpcServer<IngestService & IngestMigrationSer
     getEventsWithDeviceAndTelemetryInfoUsingOptions: (args, context) =>
       IngestServiceProvider.getEventsWithDeviceAndTelemetryInfoUsingOptions(context, ...args),
     getEventsWithDeviceAndTelemetryInfoUsingCursor: (args, context) =>
-      IngestServiceProvider.getEventsWithDeviceAndTelemetryInfoUsingCursor(context, ...args)
+      IngestServiceProvider.getEventsWithDeviceAndTelemetryInfoUsingCursor(context, ...args),
+    getDeviceEvents: (args, context) => IngestServiceProvider.getDeviceEvents(context, ...args)
   },
   {
     port: process.env.INGEST_SERVICE_RPC_PORT,
