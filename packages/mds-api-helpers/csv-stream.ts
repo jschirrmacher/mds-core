@@ -41,14 +41,14 @@ export const csvStreamFromRepository: <
   fields: Array<{ label: string; value: Col }>,
   pick_columns?: Array<Col>
 ) => Promise<void> = async (getter, cursorGetter, rowsKey, res, fields, pick_columns) => {
-  const conf = {
+  const parserConfig = {
     fields: pick_columns
       ? fields
           .filter(({ value }) => pick_columns.includes(value))
           .sort((a, b) => pick_columns.indexOf(a.value) - pick_columns.indexOf(b.value))
       : fields
   }
-  const parser = new Parser(conf)
+  const parser = new Parser(parserConfig)
 
   const { [rowsKey]: rows, cursor } = await getter()
 
@@ -67,7 +67,7 @@ export const csvStreamFromRepository: <
   let next = cursor.next
   const headlessParser = new Parser({
     header: false,
-    ...conf
+    ...parserConfig
   })
   while (next !== null) {
     const { [rowsKey]: rows, cursor: current } = await cursorGetter(next)
