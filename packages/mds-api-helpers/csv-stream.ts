@@ -15,34 +15,32 @@
  */
 
 import type { ApiResponse } from '@mds-core/mds-api-server'
+import { Nullable } from '@mds-core/mds-types'
+import { deepPickProperties } from '@mds-core/mds-utils'
 import { StatusCodes } from 'http-status-codes'
 import { Parser } from 'json2csv'
 import { DateTime } from 'luxon'
 import { DeepPickPath } from 'ts-deep-pick'
-import { Cursor } from 'typeorm-cursor-pagination'
-import { deepPickProperties } from './deep-pick-properties'
 
-type RowsWithCursor<Row, RowsKey extends string> = {
+export type RowsWithCursor<Row, RowsKey extends string> = {
   [key in RowsKey]: Row[]
-} & { cursor: Cursor }
+} & {
+  cursor: { prev: Nullable<string>; next: Nullable<string> }
+}
 
 export const csvStreamFromRepository = async <
   Row,
   RowsKey extends string,
-  Opts extends { after?: string },
   Col extends DeepPickPath<Row>,
   R extends ApiResponse<string>
 >(
-  getter: (options: Opts) => Promise<RowsWithCursor<Row, RowsKey>>,
-  getterOptions: Opts,
+  getter: () => Promise<RowsWithCursor<Row, RowsKey>>,
+  cursorGetter: (cursor: string) => Promise<RowsWithCursor<Row, RowsKey>>,
   rowsKey: RowsKey,
   res: R,
   fields: Array<{ label: string; value: Col }>,
   pick_columns?: Array<Col>
 ) => {
-  if (getterOptions.after !== undefined) {
-    throw 'Must pass first options without cursor'
-  }
   const conf = {
     fields: pick_columns
       ? fields
@@ -52,7 +50,7 @@ export const csvStreamFromRepository = async <
   }
   const parser = new Parser(conf)
 
-  const { [rowsKey]: rows, cursor } = await getter(getterOptions)
+  const { [rowsKey]: rows, cursor } = await getter()
 
   const chunk = pick_columns ? rows.map(row => deepPickProperties(row, pick_columns)) : rows
 
@@ -66,19 +64,16 @@ export const csvStreamFromRepository = async <
     )
     .write(parser.parse(chunk))
 
-  let next = cursor.afterCursor
+  let next = cursor.next
   const headlessParser = new Parser({
     header: false,
     ...conf
   })
   while (next !== null) {
-    const { [rowsKey]: rows, cursor: current } = await getter({
-      ...getterOptions,
-      after: next
-    })
+    const { [rowsKey]: rows, cursor: current } = await cursorGetter(next)
     const chunk = pick_columns ? rows.map(row => deepPickProperties(row, pick_columns)) : rows
     res.write('\n' + headlessParser.parse(chunk))
-    next = current.afterCursor
+    next = current.next
   }
   return res.end()
 }

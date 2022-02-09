@@ -16,15 +16,15 @@
 
 import type { ApiResponse } from '@mds-core/mds-api-server'
 import { Nullable } from '@mds-core/mds-types'
-import { Cursor } from 'typeorm-cursor-pagination'
-import { csvStreamFromRepository } from '../csv-stream'
+import { csvStreamFromRepository, RowsWithCursor } from '../csv-stream'
 
 // TODO either convert this test file to mocha, convert the others to jest, or do something weird
 
 describe('csvStreamFromRepository', () => {
-  type Getter = (options: {
-    after?: string
-  }) => Promise<{ rows: [{ a: string; b: number; c: Nullable<string> }]; cursor: Cursor }>
+  type Row = { a: string; b: number; c: Nullable<string> }
+  type Getter = () => Promise<RowsWithCursor<Row, 'rows'>>
+  type CursorGetter = (cursor: string) => Promise<RowsWithCursor<Row, 'rows'>>
+
   const mockResponse = () => {
     const res = {} as unknown as ApiResponse<string>
     res.status = jest.fn().mockReturnValue(res)
@@ -44,13 +44,15 @@ describe('csvStreamFromRepository', () => {
   it('Can produce CSV from one chunk', async () => {
     const getter: Getter = jest.fn().mockReturnValueOnce({
       rows: [{ a: 'A', b: 20, c: 'NOT NULL' }],
-      cursor: { beforeCursor: null, afterCursor: null }
+      cursor: { prev: null, next: null }
     })
+    const cursorGetter = jest.fn()
 
     const res = mockResponse()
-    await csvStreamFromRepository(getter, {}, 'rows', res, fields)
+    await csvStreamFromRepository(getter, cursorGetter, 'rows', res, fields)
 
     expect(getter).toBeCalledTimes(1)
+    expect(cursorGetter).toHaveBeenCalledTimes(0)
     expect(res.status).toHaveBeenCalledWith(200)
     expect(res.contentType).toHaveBeenCalledWith('text/csv')
     expect(res.header).toHaveBeenNthCalledWith(
@@ -63,21 +65,20 @@ describe('csvStreamFromRepository', () => {
   })
 
   it('Can produce CSV from two chunks', async () => {
-    const getter: Getter = jest
-      .fn()
-      .mockReturnValueOnce({
-        rows: [{ a: 'A', b: 20, c: 'NOT NULL' }],
-        cursor: { beforeCursor: null, afterCursor: 'AFTER' }
-      })
-      .mockReturnValueOnce({
-        rows: [{ a: 'AAA', b: 400, c: null }],
-        cursor: { beforeCursor: null, afterCursor: null }
-      })
+    const getter: Getter = jest.fn().mockReturnValueOnce({
+      rows: [{ a: 'A', b: 20, c: 'NOT NULL' }],
+      cursor: { prev: null, next: 'AFTER' }
+    })
+    const cursorGetter: CursorGetter = jest.fn().mockReturnValueOnce({
+      rows: [{ a: 'AAA', b: 400, c: null }],
+      cursor: { prev: null, next: null }
+    })
 
     const res = mockResponse()
-    await csvStreamFromRepository(getter, {}, 'rows', res, fields)
+    await csvStreamFromRepository(getter, cursorGetter, 'rows', res, fields)
 
-    expect(getter).toBeCalledTimes(2)
+    expect(getter).toHaveBeenCalledTimes(1)
+    expect(cursorGetter).toHaveBeenCalledTimes(1)
     expect(res.status).toHaveBeenCalledWith(200)
     expect(res.contentType).toHaveBeenCalledWith('text/csv')
     expect(res.header).toHaveBeenNthCalledWith(
@@ -93,13 +94,13 @@ describe('csvStreamFromRepository', () => {
   it('Can produce CSV with picked columns', async () => {
     const getter: Getter = jest.fn().mockReturnValueOnce({
       rows: [{ a: 'A', b: 20, c: 'NOT NULL' }],
-      cursor: { beforeCursor: null, afterCursor: null }
+      cursor: { prev: null, next: null }
     })
 
     const pick_columns = [<const>'c', <const>'a']
 
     const res = mockResponse()
-    await csvStreamFromRepository(getter, {}, 'rows', res, fields, pick_columns)
+    await csvStreamFromRepository(getter, jest.fn(), 'rows', res, fields, pick_columns)
 
     expect(getter).toBeCalledTimes(1)
     expect(res.status).toHaveBeenCalledWith(200)

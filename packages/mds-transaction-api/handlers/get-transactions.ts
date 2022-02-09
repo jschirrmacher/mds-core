@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { parseRequest } from '@mds-core/mds-api-helpers'
+import { csvStreamFromRepository, parseRequest, RowsWithCursor } from '@mds-core/mds-api-helpers'
 import { ApiRequestParams, ApiResponse } from '@mds-core/mds-api-server'
 import {
   PaginationLinks,
@@ -24,8 +24,9 @@ import {
   TransactionSearchParams,
   TransactionServiceClient
 } from '@mds-core/mds-transaction-service'
-import { csvStreamFromRepository, ValidationError } from '@mds-core/mds-utils'
+import { ValidationError } from '@mds-core/mds-utils'
 import express from 'express'
+import { Cursor } from 'typeorm-cursor-pagination'
 import { TransactionApiRequest, TransactionApiResponse } from '../@types'
 
 export type TransactionApiGetTransactionsRequest = TransactionApiRequest &
@@ -230,9 +231,29 @@ export const GetTransactionsAsCsvHandler = async (
       { label: 'Receipt Details (JSON)', value: 'receipt.receipt_details' } // TODO test this
     ]
 
+    const mapper: (_: {
+      transactions: TransactionDomainModel[]
+      cursor: Cursor
+    }) => RowsWithCursor<TransactionDomainModel, 'transactions'> = ({ transactions, cursor }) => ({
+      transactions,
+      cursor: { prev: cursor.beforeCursor, next: cursor.afterCursor }
+    })
+    const options = {
+      provider_id,
+      start_timestamp,
+      end_timestamp,
+      order,
+      limit
+    }
     return csvStreamFromRepository(
-      TransactionServiceClient.getTransactions,
-      { provider_id, start_timestamp, end_timestamp, order, limit },
+      async () => mapper(await TransactionServiceClient.getTransactions(options)),
+      async (cursor: string) =>
+        mapper(
+          await TransactionServiceClient.getTransactions({
+            ...options,
+            after: cursor
+          })
+        ),
       'transactions',
       res,
       fields,

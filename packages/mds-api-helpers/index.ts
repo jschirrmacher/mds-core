@@ -22,6 +22,7 @@ import {
   ParseObjectPropertiesOptionsSingle,
   parseObjectPropertiesSingle
 } from './object-properties-parser'
+export * from './csv-stream'
 
 const jsonApiLink = (req: ApiRequest, skip: number, take: number): string =>
   urls.format({

@@ -17,7 +17,6 @@
 import type { UUID } from '@mds-core/mds-types'
 import { v4 } from 'uuid'
 
-export * from './csv-stream'
 export * from './deep-pick-properties'
 export * from './exceptions/exception-messages'
 export * from './exceptions/exceptions'
