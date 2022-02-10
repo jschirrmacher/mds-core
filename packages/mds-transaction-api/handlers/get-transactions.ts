@@ -207,7 +207,8 @@ export const GetTransactionsAsCsvHandler = async (
       'receipt.receipt_id',
       'receipt.timestamp',
       'receipt.origin_url',
-      'receipt.receipt_details'
+      'receipt.receipt_details',
+      'receipt.receipt_details.policy_id'
     ]
 
     type PickableColumn = typeof PICKABLE_COLUMNS[number]
@@ -228,7 +229,8 @@ export const GetTransactionsAsCsvHandler = async (
       { label: 'Receipt', value: 'receipt.receipt_id' },
       { label: 'Receipt Timestamp', value: 'receipt.timestamp' },
       { label: 'Receipt Origin URL', value: 'receipt.origin_url' },
-      { label: 'Receipt Details (JSON)', value: 'receipt.receipt_details' }
+      { label: 'Receipt Details (JSON)', value: 'receipt.receipt_details' },
+      { label: 'Policy', value: 'receipt.receipt_details.policy_id' }
     ]
 
     const mapper: (_: {

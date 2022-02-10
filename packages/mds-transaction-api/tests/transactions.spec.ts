@@ -387,23 +387,30 @@ describe('Test Transactions API: Transactions', () => {
 
       expect(result.status).toStrictEqual(200)
       expect(transactions).toMatch(
-        /^"Transaction","Provider","Device","Timestamp","Fee Type","Amount","Receipt","Receipt Timestamp","Receipt Origin URL","Receipt Details \(JSON\)"/
+        /^"Transaction","Provider","Device","Timestamp","Fee Type","Amount","Receipt","Receipt Timestamp","Receipt Origin URL","Receipt Details \(JSON\)","Policy"/
       )
       const lines = transactions.split(/\r\n|\r|\n/)
       expect(lines.length).toEqual(31)
       lines.forEach((line: string, i: number) => {
         if (i === 0) {
           expect(line).toMatch(
-            /^"Transaction","Provider","Device","Timestamp","Fee Type","Amount","Receipt","Receipt Timestamp","Receipt Origin URL","Receipt Details \(JSON\)"$/m
+            /^"Transaction","Provider","Device","Timestamp","Fee Type","Amount","Receipt","Receipt Timestamp","Receipt Origin URL","Receipt Details \(JSON\)","Policy"$/m
           )
         } else if (i > 0 && i <= 15) {
           expect(line).toMatch(new RegExp(`^"${mockTransactionsA[i - 1].transaction_id}"`))
           const expectedJSON = JSON.stringify(mockTransactionsA[i - 1].receipt.receipt_details).replace(/"/g, '""')
-          expect(line).toMatch(new RegExp(`"${expectedJSON}"$`))
+          expect(line).toMatch(
+            new RegExp(
+              `"${expectedJSON}","${mockTransactionsA[i - 1].receipt.receipt_details.policy_id as string | undefined}"$`
+            )
+          )
         } else if (i > 15 && i <= 30) {
           expect(line).toMatch(new RegExp(`^"${mockTransactionsB[i - 16].transaction_id}"`))
           const expectedJSON = JSON.stringify(mockTransactionsB[i - 16].receipt.receipt_details).replace(/"/g, '""')
-          expect(line).toMatch(new RegExp(`"${expectedJSON}"$`))
+          const expectedPolicy: string | undefined = mockTransactionsB[i - 16].receipt.receipt_details.policy_id as
+            | string
+            | undefined
+          expect(line).toMatch(new RegExp(`"${expectedJSON}","${expectedPolicy}"$`))
         } else {
           throw 'csv too long'
         }
