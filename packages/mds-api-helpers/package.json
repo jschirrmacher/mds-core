@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "test": "DOTENV_CONFIG_PATH=../../.env jest --runInBand --forceExit "
+    "test": "DOTENV_CONFIG_PATH=../../.env jest --runInBand"
   },
   "dependencies": {
     "@mds-core/mds-agency-cache": "workspace:0.4.16",

@@ -24,11 +24,11 @@ const arraysEqual = <T>(array1?: T[], array2?: T[]) => JSON.stringify(array1) ==
 describe('mds-api-helpers Tests', () => {
   describe('asJsonApiLinks test', () => {
     it('outputs links', () => {
-      const uuid1 = uuid()
-      const req: any = { query: { provider_id: uuid1 }, get: () => 'host-prot' }
+      const provider_id = uuid()
+      const req: any = { query: { provider_id }, get: () => 'host-prot' }
 
       expect(asJsonApiLinks(req, 10, 20, 5)).toStrictEqual({
-        first: `host-prot:host-prot?provider_id=${uuid1}&skip=0&take=20`,
+        first: `host-prot:host-prot?provider_id=${provider_id}&skip=0&take=20`,
         last: undefined,
         next: undefined,
         prev: undefined

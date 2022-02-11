@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "test": "DOTENV_CONFIG_PATH=../../.env nyc --use-spawn-wrap  ts-mocha --project ../../tsconfig.json"
+    "test": "DOTENV_CONFIG_PATH=../../.env jest --runInBand "
   },
   "dependencies": {
     "@mds-core/mds-test-data": "workspace:0.4.17",

@@ -20,7 +20,6 @@
 import { pathPrefix } from '@mds-core/mds-utils'
 import HttpStatus from 'http-status-codes'
 import supertest from 'supertest'
-import test from 'unit.js'
 import { ApiVersionedResponse } from '../@types'
 import { ApiServer } from '../api-server'
 import { HttpServer } from '../http-server'
@@ -44,163 +43,132 @@ const request = supertest(api)
 const APP_JSON = 'application/json; charset=utf-8'
 
 describe('Testing API Server', () => {
-  afterEach(done => {
+  afterEach(async () => {
     delete process.env.MAINTENANCE
-    done()
   })
 
-  it('verifies get root (MAINTENANCE)', done => {
+  it('verifies get root (MAINTENANCE)', async () => {
     process.env.MAINTENANCE = 'Testing'
-    request
-      .get('/')
-      .expect(HttpStatus.SERVICE_UNAVAILABLE)
-      .end((err, result) => {
-        test.value(result).hasHeader('content-type', APP_JSON)
-        test.object(result.body).hasProperty('name')
-        test.object(result.body).hasProperty('version')
-        test.object(result.body).hasProperty('node')
-        test.object(result.body).hasProperty('build')
-        test.object(result.body).hasProperty('status', 'Testing (MAINTENANCE)')
-        done(err)
-      })
+    const result = await request.get('/').expect(HttpStatus.SERVICE_UNAVAILABLE)
+    expect(result.headers['content-type']).toStrictEqual(APP_JSON)
+    expect(result.body).toMatchObject({
+      name: expect.any(String),
+      version: expect.any(String),
+      node: expect.any(String),
+      build: expect.any(Object),
+      process: expect.any(Number),
+      memory: expect.any(Object),
+      uptime: expect.any(Number),
+      status: expect.stringContaining('Testing (MAINTENANCE)')
+    })
   })
 
-  it('verifies health', done => {
-    request
-      .get(pathPrefix('/health'))
-      .expect(HttpStatus.OK)
-      .end((err, result) => {
-        test.value(result).hasHeader('content-type', APP_JSON)
-        test.object(result.body).hasProperty('name')
-        test.object(result.body).hasProperty('version')
-        test.object(result.body).hasProperty('node')
-        test.object(result.body).hasProperty('build')
-        test.object(result.body).hasProperty('process')
-        test.object(result.body).hasProperty('memory')
-        test.object(result.body).hasProperty('uptime')
-        test.object(result.body).hasProperty('status', 'Running')
-        done(err)
-      })
+  it('verifies health', async () => {
+    const result = await request.get(pathPrefix('/health')).expect(HttpStatus.OK)
+    expect(result.headers['content-type']).toStrictEqual(APP_JSON)
+    expect(result.body).toMatchObject({
+      name: expect.any(String),
+      version: expect.any(String),
+      node: expect.any(String),
+      build: expect.any(Object),
+      process: expect.any(Number),
+      memory: expect.any(Object),
+      uptime: expect.any(Number),
+      status: expect.stringContaining('Running')
+    })
   })
 
-  it('verifies health (MAINTENANCE)', done => {
+  it('verifies health (MAINTENANCE)', async () => {
     process.env.MAINTENANCE = 'Testing'
-    request
-      .get('/health')
-      .expect(HttpStatus.OK)
-      .end((err, result) => {
-        test.value(result).hasHeader('content-type', APP_JSON)
-        test.object(result.body).hasProperty('name')
-        test.object(result.body).hasProperty('version')
-        test.object(result.body).hasProperty('node')
-        test.object(result.body).hasProperty('build')
-        test.object(result.body).hasProperty('process')
-        test.object(result.body).hasProperty('memory')
-        test.object(result.body).hasProperty('uptime')
-        test.object(result.body).hasProperty('status', 'Testing (MAINTENANCE)')
-        done(err)
-      })
+    const result = await request.get('/health').expect(HttpStatus.OK)
+
+    expect(result.headers['content-type']).toStrictEqual(APP_JSON)
+    expect(result.body).toMatchObject({
+      name: expect.any(String),
+      version: expect.any(String),
+      node: expect.any(String),
+      build: expect.any(Object),
+      process: expect.any(Number),
+      memory: expect.any(Object),
+      uptime: expect.any(Number),
+      status: expect.stringContaining('Testing (MAINTENANCE)')
+    })
   })
 
-  it('verifies MAINTENANCE repsonse', done => {
+  it('verifies MAINTENANCE repsonse', async () => {
     process.env.MAINTENANCE = 'Testing'
-    request
+    const result = await request
       .get('/this-is-a-bad-route-but-it-should-return-503-in-maintenance-mode')
       .expect(HttpStatus.SERVICE_UNAVAILABLE)
-      .end((err, result) => {
-        test.value(result).hasHeader('content-type', APP_JSON)
-        test.object(result.body).hasProperty('status', 'Testing (MAINTENANCE)')
-        done(err)
-      })
+
+    expect(result.headers['content-type']).toStrictEqual(APP_JSON)
+    expect(result.body.status).toStrictEqual('Testing (MAINTENANCE)')
   })
 
-  it('verifies MAINTENANCE passthrough', done => {
-    request
-      .get('/this-is-a-bad-route-so-it-should-normally-return-404')
-      .expect(HttpStatus.NOT_FOUND)
-      .end(err => {
-        done(err)
-      })
+  it('verifies MAINTENANCE passthrough', async () => {
+    await request.get('/this-is-a-bad-route-so-it-should-normally-return-404').expect(HttpStatus.NOT_FOUND)
   })
 
-  it('verifies keepAliveTimeout setting', done => {
-    let error
+  it('verifies keepAliveTimeout setting', async () => {
     process.env.HTTP_KEEP_ALIVE_TIMEOUT = '3000'
     const server = HttpServer(api)
-    try {
-      test.value(server.keepAliveTimeout).is(Number(process.env.HTTP_KEEP_ALIVE_TIMEOUT))
-    } catch (err) {
-      error = err
-    }
+
+    expect(server.keepAliveTimeout).toStrictEqual(Number(process.env.HTTP_KEEP_ALIVE_TIMEOUT))
+
     server.close()
-    done(error)
   })
 
-  it('verifies version middleware OPTIONS request (version not acceptable)', done => {
-    request
+  it('verifies version middleware OPTIONS request (version not acceptable)', async () => {
+    const result = await request
       .options('/api-version-middleware-test')
       .set('accept', `${TEST_API_MIME_TYPE};version=0.4;q=.9,${TEST_API_MIME_TYPE};version=0.5;`)
       .expect(HttpStatus.NOT_ACCEPTABLE)
-      .end((err, result) => {
-        test.value(result.text).is('Not Acceptable')
-        done(err)
-      })
+
+    expect(result.text).toStrictEqual('Not Acceptable')
   })
 
-  it('verifies version middleware OPTIONS request (with versions)', done => {
-    request
+  it('verifies version middleware OPTIONS request (with versions)', async () => {
+    const result = await request
       .options('/api-version-middleware-test')
       .set('accept', `${TEST_API_MIME_TYPE};version=0.2`)
       .expect(HttpStatus.OK)
-      .end((err, result) => {
-        test.value(result.header['content-type']).is(`${TEST_API_MIME_TYPE};version=0.2`)
-        done(err)
-      })
+
+    expect(result.header['content-type']).toStrictEqual(`${TEST_API_MIME_TYPE};version=0.2`)
   })
 
-  it('verifies version middleware (default version)', done => {
-    request
-      .get('/api-version-middleware-test')
-      .expect(HttpStatus.OK)
-      .end((err, result) => {
-        test.value(result.header['content-type']).is(`${TEST_API_MIME_TYPE}; charset=utf-8; version=0.1`)
-        test.value(result.body.version).is(DEFAULT_TEST_API_VERSION)
-        done(err)
-      })
+  it('verifies version middleware (default version)', async () => {
+    const result = await request.get('/api-version-middleware-test').expect(HttpStatus.OK)
+
+    expect(result.header['content-type']).toStrictEqual(`${TEST_API_MIME_TYPE}; charset=utf-8; version=0.1`)
+    expect(result.body.version).toStrictEqual(DEFAULT_TEST_API_VERSION)
   })
 
-  it('verifies version middleware (with versions)', done => {
-    request
+  it('verifies version middleware (with versions)', async () => {
+    const result = await request
       .get('/api-version-middleware-test')
       .set('accept', `${TEST_API_MIME_TYPE};version=0.2`)
       .expect(HttpStatus.OK)
-      .end((err, result) => {
-        test.value(result.header['content-type']).is(`${TEST_API_MIME_TYPE}; charset=utf-8; version=0.2`)
-        test.value(result.body.version).is(ALTERNATE_TEST_API_VERSION)
-        done(err)
-      })
+
+    expect(result.header['content-type']).toStrictEqual(`${TEST_API_MIME_TYPE}; charset=utf-8; version=0.2`)
+    expect(result.body.version).toStrictEqual(ALTERNATE_TEST_API_VERSION)
   })
 
-  it('verifies version middleware (versions with q)', done => {
-    request
+  it('verifies version middleware (versions with q)', async () => {
+    const result = await request
       .get('/api-version-middleware-test')
       .set('accept', `${TEST_API_MIME_TYPE};version=0.2;q=.9,${TEST_API_MIME_TYPE};version=0.1;`)
       .expect(HttpStatus.OK)
-      .end((err, result) => {
-        test.value(result.header['content-type']).is(`${TEST_API_MIME_TYPE}; charset=utf-8; version=0.1`)
-        test.value(result.body.version).is(DEFAULT_TEST_API_VERSION)
-        done(err)
-      })
+
+    expect(result.header['content-type']).toStrictEqual(`${TEST_API_MIME_TYPE}; charset=utf-8; version=0.1`)
+    expect(result.body.version).toStrictEqual(DEFAULT_TEST_API_VERSION)
   })
 
-  it('verifies version middleware (version not acceptable)', done => {
-    request
+  it('verifies version middleware (version not acceptable)', async () => {
+    const result = await request
       .get('/api-version-middleware-test')
       .set('accept', `${TEST_API_MIME_TYPE};version=0.4;q=.9,${TEST_API_MIME_TYPE};version=0.5;`)
       .expect(HttpStatus.NOT_ACCEPTABLE)
-      .end((err, result) => {
-        test.value(result.text).is('Not Acceptable')
-        done(err)
-      })
+
+    expect(result.text).toStrictEqual('Not Acceptable')
   })
 })
