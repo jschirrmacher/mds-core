@@ -357,7 +357,6 @@ describe('Test Transactions API: Transactions', () => {
         .set('Authorization', SCOPED_AUTH(['transactions:read']))
         .buffer()
         .parse((res, callback) => {
-          // res.setEncoding('binary') // csv is not json
           let data = ''
           res.on('data', chunk => {
             data += chunk
