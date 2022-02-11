@@ -21,7 +21,7 @@ import {
   transactionsGenerator
 } from '@mds-core/mds-transaction-service'
 // import { SCOPED_AUTH } from '@mds-core/mds-test-data'
-import { NotFoundError, pathPrefix, uuid } from '@mds-core/mds-utils'
+import { hasOwnProperty, NotFoundError, pathPrefix, uuid } from '@mds-core/mds-utils'
 import supertest from 'supertest'
 import { api } from '../api'
 // FIXME: Should be importing from @mds-core/mds-test-data, but that's resulting an OOM crash...
@@ -329,7 +329,9 @@ describe('Test Transactions API: Transactions', () => {
 
     it('Can GET bulk transactions as csv', async () => {
       const mockTransactionsA = [...transactionsGenerator(15)]
-      const mockTransactionsB = [...transactionsGenerator(15)]
+      const mockTransactionsB = [
+        ...transactionsGenerator(15, { receipt_details: { custom_description: 'do not care' } })
+      ]
 
       const basicOptions = {
         provider_id: uuid(),
@@ -386,31 +388,24 @@ describe('Test Transactions API: Transactions', () => {
       const transactions = result.body
 
       expect(result.status).toStrictEqual(200)
-      expect(transactions).toMatch(
-        /^"Transaction","Provider","Device","Timestamp","Fee Type","Amount","Receipt","Receipt Timestamp","Receipt Origin URL","Receipt Details \(JSON\)","Policy"/
-      )
       const lines = transactions.split(/\r\n|\r|\n/)
       expect(lines.length).toEqual(31)
       lines.forEach((line: string, i: number) => {
         if (i === 0) {
           expect(line).toMatch(
-            /^"Transaction","Provider","Device","Timestamp","Fee Type","Amount","Receipt","Receipt Timestamp","Receipt Origin URL","Receipt Details \(JSON\)","Policy"$/m
+            /^"Transaction ID","Provider ID","Provider Name","Device ID","Timestamp","Fee Type","Currency","Amount","Receipt ID","Receipt Timestamp","Receipt Origin URL","Receipt Details \(JSON\)","Policy ID","Trip ID"$/m
           )
-        } else if (i > 0 && i <= 15) {
-          expect(line).toMatch(new RegExp(`^"${mockTransactionsA[i - 1].transaction_id}"`))
-          const expectedJSON = JSON.stringify(mockTransactionsA[i - 1].receipt.receipt_details).replace(/"/g, '""')
-          expect(line).toMatch(
-            new RegExp(
-              `"${expectedJSON}","${mockTransactionsA[i - 1].receipt.receipt_details.policy_id as string | undefined}"$`
-            )
-          )
-        } else if (i > 15 && i <= 30) {
-          expect(line).toMatch(new RegExp(`^"${mockTransactionsB[i - 16].transaction_id}"`))
-          const expectedJSON = JSON.stringify(mockTransactionsB[i - 16].receipt.receipt_details).replace(/"/g, '""')
-          const expectedPolicy: string | undefined = mockTransactionsB[i - 16].receipt.receipt_details.policy_id as
-            | string
-            | undefined
-          expect(line).toMatch(new RegExp(`"${expectedJSON}","${expectedPolicy}"$`))
+        } else if (i > 0 && i <= 30) {
+          const mockRow = i > 15 ? mockTransactionsB[i - 16] : mockTransactionsA[i - 1]
+          expect(line).toMatch(new RegExp(`^"${mockRow.transaction_id}"`))
+          const expectedJSON = JSON.stringify(mockRow.receipt.receipt_details).replace(/"/g, '""')
+          const { receipt_details } = mockRow.receipt
+          const expectedPolicy = hasOwnProperty(receipt_details, 'policy_id') ? `"${receipt_details.policy_id}"` : ''
+          const expectedTrip =
+            hasOwnProperty(receipt_details, 'trip_id') && receipt_details.trip_id !== null
+              ? `"${receipt_details.trip_id}"`
+              : ''
+          expect(line).toMatch(new RegExp(`"${expectedJSON}",${expectedPolicy},${expectedTrip}$`))
         } else {
           throw 'csv too long'
         }
@@ -469,7 +464,7 @@ describe('Test Transactions API: Transactions', () => {
       expect(lines.length).toEqual(16)
       lines.forEach((line: string, i: number) => {
         if (i === 0) {
-          expect(line).toMatch(/^"Provider","Amount","Fee Type"$/m)
+          expect(line).toMatch(/^"Provider ID","Amount","Fee Type"$/m)
         } else if (i > 0 && i <= 15) {
           expect(line).toMatch(new RegExp(`^"${mockTransactions[i - 1].provider_id}"`))
           expect(line).toMatch(new RegExp(`"${mockTransactions[i - 1].fee_type}"$`))

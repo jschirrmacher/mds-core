@@ -16,7 +16,7 @@
 
 import type { ApiResponse } from '@mds-core/mds-api-server'
 import { Nullable } from '@mds-core/mds-types'
-import { csvStreamFromRepository, RowsWithCursor } from '../csv-stream'
+import { RowsWithCursor, streamCsvToHttp } from '../csv-stream'
 
 describe('csvStreamFromRepository', () => {
   type Row = { a: string; b: number; c: Nullable<string> }
@@ -47,7 +47,7 @@ describe('csvStreamFromRepository', () => {
     const cursorGetter = jest.fn()
 
     const res = mockResponse()
-    await csvStreamFromRepository(getter, cursorGetter, 'rows', res, fields)
+    await streamCsvToHttp(getter, cursorGetter, 'rows', res, fields)
 
     expect(getter).toBeCalledTimes(1)
     expect(cursorGetter).toHaveBeenCalledTimes(0)
@@ -73,7 +73,7 @@ describe('csvStreamFromRepository', () => {
     })
 
     const res = mockResponse()
-    await csvStreamFromRepository(getter, cursorGetter, 'rows', res, fields)
+    await streamCsvToHttp(getter, cursorGetter, 'rows', res, fields)
 
     expect(getter).toHaveBeenCalledTimes(1)
     expect(cursorGetter).toHaveBeenCalledTimes(1)
@@ -98,7 +98,7 @@ describe('csvStreamFromRepository', () => {
     const pick_columns = [<const>'c', <const>'a']
 
     const res = mockResponse()
-    await csvStreamFromRepository(getter, jest.fn(), 'rows', res, fields, pick_columns)
+    await streamCsvToHttp(getter, jest.fn(), 'rows', res, fields, pick_columns)
 
     expect(getter).toBeCalledTimes(1)
     expect(res.status).toHaveBeenCalledWith(200)

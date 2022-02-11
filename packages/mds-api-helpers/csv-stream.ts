@@ -27,8 +27,19 @@ export type RowsWithCursor<Row, RowsKey extends string> = {
 } & {
   cursor: { prev: Nullable<string>; next: Nullable<string> }
 }
-
-export const csvStreamFromRepository: <
+/**
+ * Function to stream data (such as from a filtered service call against a repository) to http csv output
+ *
+ * Will call res.end() when done with csv output
+ * @param getter function that takes no arguments and returns the first chunk of data, with a cursor
+ * @param cursorGetter function that takes a cursor, and returns additional chunks, also with a cursor
+ * @param rowsKey what key to use to find the actual rows in the returns of the getters,
+ *                as well as what to use in the csv filename in http headers
+ * @param res express response object used to stream the actual headers and csv data
+ * @param fields json2csv style field definition: all fields must have label (string to put in headers) and value (key to lookup)
+ * @param pick_columns optional ordered list of actual field keys to use (must match value keys in fields)
+ */
+export const streamCsvToHttp: <
   Row,
   RowsKey extends string,
   Col extends DeepPickPath<Row>,

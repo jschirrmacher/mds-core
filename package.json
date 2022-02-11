@@ -66,6 +66,7 @@
     "prettier": "2.4.1",
     "prettier-plugin-organize-imports": "2.3.4",
     "prettier-plugin-packagejson": "2.2.13",
+    "regenerator-runtime": "0.13.9",
     "should": "13.2.3",
     "sinon": "11.1.2",
     "sinon-express-mock": "2.2.1",

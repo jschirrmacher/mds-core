@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { csvStreamFromRepository, parseRequest, RowsWithCursor } from '@mds-core/mds-api-helpers'
+import { parseRequest, streamCsvToHttp } from '@mds-core/mds-api-helpers'
 import { ApiRequestParams, ApiResponse } from '@mds-core/mds-api-server'
+import { getProviders } from '@mds-core/mds-providers'
 import {
   PaginationLinks,
   SORTABLE_COLUMN,
@@ -200,15 +201,18 @@ export const GetTransactionsAsCsvHandler = async (
     const PICKABLE_COLUMNS = <const>[
       'transaction_id',
       'provider_id',
+      'provider_name',
       'device_id',
       'timestamp',
       'fee_type',
+      'currency_iso',
       'amount',
       'receipt.receipt_id',
       'receipt.timestamp',
       'receipt.origin_url',
       'receipt.receipt_details',
-      'receipt.receipt_details.policy_id'
+      'receipt.receipt_details.policy_id',
+      'receipt.receipt_details.trip_id'
     ]
 
     type PickableColumn = typeof PICKABLE_COLUMNS[number]
@@ -220,26 +224,23 @@ export const GetTransactionsAsCsvHandler = async (
       .query('pick_columns')
 
     const fields: Array<{ label: string; value: PickableColumn }> = [
-      { label: 'Transaction', value: 'transaction_id' },
-      { label: 'Provider', value: 'provider_id' },
-      { label: 'Device', value: 'device_id' },
+      { label: 'Transaction ID', value: 'transaction_id' },
+      { label: 'Provider ID', value: 'provider_id' },
+      { label: 'Provider Name', value: 'provider_name' },
+      { label: 'Device ID', value: 'device_id' },
       { label: 'Timestamp', value: 'timestamp' },
       { label: 'Fee Type', value: 'fee_type' },
+      { label: 'Currency', value: 'currency_iso' },
       { label: 'Amount', value: 'amount' },
-      { label: 'Receipt', value: 'receipt.receipt_id' },
+      { label: 'Receipt ID', value: 'receipt.receipt_id' },
       { label: 'Receipt Timestamp', value: 'receipt.timestamp' },
       { label: 'Receipt Origin URL', value: 'receipt.origin_url' },
       { label: 'Receipt Details (JSON)', value: 'receipt.receipt_details' },
-      { label: 'Policy', value: 'receipt.receipt_details.policy_id' }
+      { label: 'Policy ID', value: 'receipt.receipt_details.policy_id' },
+      { label: 'Trip ID', value: 'receipt.receipt_details.trip_id' }
     ]
 
-    const mapper: (_: {
-      transactions: TransactionDomainModel[]
-      cursor: Cursor
-    }) => RowsWithCursor<TransactionDomainModel, 'transactions'> = ({ transactions, cursor }) => ({
-      transactions,
-      cursor: { prev: cursor.beforeCursor, next: cursor.afterCursor }
-    })
+    const providers = await getProviders()
     const options = {
       provider_id,
       start_timestamp,
@@ -247,7 +248,17 @@ export const GetTransactionsAsCsvHandler = async (
       order,
       limit
     }
-    return csvStreamFromRepository(
+
+    const mapper = ({ transactions, cursor }: { transactions: TransactionDomainModel[]; cursor: Cursor }) => ({
+      transactions: transactions.map(transaction => ({
+        ...transaction,
+        amount: transaction.amount / 100, // conversion from pennies to dollars or equivalent
+        currency_iso: process.env.TRANSACTION_CURRENCY || 'USD', // TODO add support for multiple currencies in mds-transaction-service
+        provider_name: providers[transaction.provider_id]
+      })),
+      cursor: { prev: cursor.beforeCursor, next: cursor.afterCursor }
+    })
+    return streamCsvToHttp(
       async () => mapper(await TransactionServiceClient.getTransactions(options)),
       async (cursor: string) =>
         mapper(
