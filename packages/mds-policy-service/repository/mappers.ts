@@ -58,17 +58,11 @@ export const derivePolicyStatus = (policy: PolicyEntityModel): POLICY_STATUS => 
 export const PolicyEntityToDomain = ModelMapper<PolicyEntityModel, PolicyDomainModel, PolicyEntityToDomainOptions>(
   (entity, options) => {
     const { policy_json, id, superseded_by, ...rest } = entity
-    if (options?.withStatus) {
-      const status = derivePolicyStatus(entity)
-      return {
-        ...policy_json,
-        ...rest,
-        status
-      }
-    }
+    const status = derivePolicyStatus(entity)
     return {
       ...policy_json,
-      ...rest
+      ...rest,
+      status
     }
   }
 )
@@ -95,6 +89,7 @@ export const PolicyDomainToEntityCreate = ModelMapper<
     start_date,
     policy_json: {
       currency,
+      status: null,
       provider_ids,
       prev_policies,
       ...domain

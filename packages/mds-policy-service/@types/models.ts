@@ -148,7 +148,7 @@ export interface PolicyDomainModel {
   prev_policies: Nullable<UUID[]>
   rules: Rule[]
   publish_date: Nullable<Timestamp>
-  status?: POLICY_STATUS // Computed property which is returned from the service, not written on creation.
+  status: POLICY_STATUS // Computed property which is returned from the service, not written on creation.
 }
 
 export type CountPolicy = PolicyDomainModel & { rules: CountRule[] }

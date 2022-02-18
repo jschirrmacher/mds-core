@@ -57,7 +57,8 @@ export const POLICY_JSON: PolicyDomainModel = {
       maximum: 3000,
       minimum: 500
     }
-  ]
+  ],
+  status: 'active'
 }
 
 export const SUPERSEDING_POLICY_JSON: PolicyDomainModel = {
@@ -82,7 +83,8 @@ export const SUPERSEDING_POLICY_JSON: PolicyDomainModel = {
       maximum: 1000,
       minimum: 500
     }
-  ]
+  ],
+  status: 'draft'
 }
 
 // in the past
@@ -118,7 +120,8 @@ export const POLICY2_JSON: PolicyDomainModel = {
       vehicle_types: ['bicycle', 'scooter'],
       maximum: 720
     }
-  ]
+  ],
+  status: 'draft'
 }
 
 // in the future
@@ -161,7 +164,8 @@ export const POLICY3_JSON: PolicyDomainModel = {
         'es-US': '¡Recuerda permanecer menos de 10 millas por hora en Venice Beach los fines de semana!'
       }
     }
-  ]
+  ],
+  status: 'draft'
 }
 
 export const POLICY4_JSON: PolicyDomainModel = {
@@ -186,7 +190,8 @@ export const POLICY4_JSON: PolicyDomainModel = {
       vehicle_types: ['bicycle', 'scooter'],
       maximum: 25
     }
-  ]
+  ],
+  status: 'draft'
 }
 
 export const POLICY5_JSON: PolicyDomainModel = {
@@ -210,7 +215,8 @@ export const POLICY5_JSON: PolicyDomainModel = {
       vehicle_types: ['bicycle', 'scooter'],
       maximum: 25
     }
-  ]
+  ],
+  status: 'draft'
 }
 
 export const PUBLISH_DATE_VALIDATION_JSON: PolicyDomainModel = {
@@ -234,7 +240,8 @@ export const PUBLISH_DATE_VALIDATION_JSON: PolicyDomainModel = {
       vehicle_types: ['bicycle', 'scooter'],
       maximum: 25
     }
-  ]
+  ],
+  status: 'draft'
 }
 
 export const POLICY_JSON_MISSING_POLICY_ID = {
@@ -279,7 +286,8 @@ export const POLICY_WITH_DUPE_RULE: PolicyDomainModel = {
       vehicle_types: ['bicycle', 'scooter'],
       maximum: 25
     }
-  ]
+  ],
+  status: 'draft'
 }
 
 export const PUBLISHED_POLICY: PolicyDomainModel = {
@@ -303,7 +311,8 @@ export const PUBLISHED_POLICY: PolicyDomainModel = {
       vehicle_types: ['bicycle', 'scooter'],
       maximum: 25
     }
-  ]
+  ],
+  status: 'active'
 }
 
 export const DELETEABLE_POLICY: PolicyDomainModel = {
@@ -327,7 +336,8 @@ export const DELETEABLE_POLICY: PolicyDomainModel = {
       vehicle_types: ['bicycle', 'scooter'],
       maximum: 25
     }
-  ]
+  ],
+  status: 'draft'
 }
 
 export const TAXI_POLICY: PolicyDomainModel = {
@@ -352,5 +362,6 @@ export const TAXI_POLICY: PolicyDomainModel = {
       maximum: 3000,
       minimum: 500
     }
-  ]
+  ],
+  status: 'pending'
 }

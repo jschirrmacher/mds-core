@@ -21,7 +21,7 @@ import { PolicyDomainModel } from '../../@types'
 
 export interface PolicyEntityModel extends IdentityColumn {
   policy_id: PolicyDomainModel['policy_id']
-  policy_json: Omit<PolicyDomainModel, 'start_date' | 'end_date' | 'publish_date'>
+  policy_json: Omit<PolicyDomainModel, 'start_date' | 'end_date' | 'publish_date' | 'status'>
   superseded_by: Nullable<UUID[]>
   start_date: Timestamp
   end_date: Nullable<Timestamp>
