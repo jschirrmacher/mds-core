@@ -261,8 +261,8 @@ export const ARBITRARY_EVENT_TYPES_POLICY: CountPolicy = {
   end_date: null,
   prev_policies: null,
   provider_ids: [],
-  publish_date: null,
-  status: 'draft',
+  publish_date: 1552678594428,
+  status: 'active',
   currency: null,
   rules: [
     {
@@ -288,8 +288,8 @@ export const LOW_COUNT_POLICY: CountPolicy = {
   end_date: null,
   prev_policies: null,
   provider_ids: [],
-  publish_date: null,
-  status: 'draft',
+  publish_date: 1552678594428,
+  status: 'active',
   currency: null,
   rules: [
     {
