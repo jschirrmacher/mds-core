@@ -26,10 +26,6 @@ export type SortPolicyColumn = typeof SortPolicyColumn[number]
 export const SortPolicyDirection = <const>['ASC', 'DESC']
 export type SortPolicyDirection = typeof SortPolicyDirection[number]
 
-export type PresentationOptions = {
-  withStatus?: boolean
-}
-
 export interface ReadPolicyQueryParams {
   policy_ids?: UUID[]
   rule_id?: UUID
@@ -59,13 +55,13 @@ export type ReadPoliciesResponse = {
 export interface PolicyService {
   name: () => string
   writePolicy: (policy: PolicyDomainCreateModel) => PolicyDomainModel
-  readPolicies: (params: ReadPolicyQueryParams, presentationOptions?: PresentationOptions) => ReadPoliciesResponse
+  readPolicies: (params: ReadPolicyQueryParams) => ReadPoliciesResponse
   readActivePolicies: (timestamp: Timestamp) => PolicyDomainModel[]
   deletePolicy: (policy_id: UUID) => UUID
   editPolicy: (policy: PolicyDomainCreateModel) => PolicyDomainModel
   publishPolicy: (policy_id: UUID, publish_date: Timestamp) => PolicyDomainModel
   readBulkPolicyMetadata: <M>(params: ReadPolicyQueryParams) => PolicyMetadataDomainModel<M>[]
-  readPolicy: (policy_id: UUID, presentationOptions?: PresentationOptions) => PolicyDomainModel
+  readPolicy: (policy_id: UUID) => PolicyDomainModel
   readSinglePolicyMetadata: <M>(policy_id: UUID) => PolicyMetadataDomainModel<M>
   updatePolicyMetadata: (policy_metadata: PolicyMetadataDomainModel) => PolicyMetadataDomainModel
   writePolicyMetadata: (policy_metadata: PolicyMetadataDomainModel) => PolicyMetadataDomainModel

@@ -290,23 +290,23 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
         ]
         await Promise.all(testPolicies.map(policy => PolicyRepository.writePolicy(policy)))
 
-        const { policies: p1, cursor: c1 } = await PolicyRepository.readPolicies({ start_date: n, limit: 2 }, {})
+        const { policies: p1, cursor: c1 } = await PolicyRepository.readPolicies({ start_date: n, limit: 2 })
         expect(p1.length).toEqual(2)
         expect(c1?.next).toBeDefined()
         expect(c1?.prev).toBeNull()
 
-        const { policies: p2, cursor: c2 } = await PolicyRepository.readPolicies(
-          { limit: 2, afterCursor: c1?.next ?? undefined },
-          {}
-        )
+        const { policies: p2, cursor: c2 } = await PolicyRepository.readPolicies({
+          limit: 2,
+          afterCursor: c1?.next ?? undefined
+        })
         expect(p2.length).toEqual(1)
         expect(c2?.prev).toBeDefined()
         expect(c2?.next).toBeNull()
 
-        const { policies: p3, cursor: c3 } = await PolicyRepository.readPolicies(
-          { limit: 2, beforeCursor: c1?.prev ?? undefined },
-          {}
-        )
+        const { policies: p3, cursor: c3 } = await PolicyRepository.readPolicies({
+          limit: 2,
+          beforeCursor: c1?.prev ?? undefined
+        })
         expect(p3.length).toEqual(2)
         expect(c3?.next).toBeDefined()
         expect(c3?.prev).toBeNull()
@@ -319,12 +319,12 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
       await Promise.all(
         r.map(i => PolicyRepository.writePolicy(PolicyFactory({ name: `p${i}`, start_date: n + days(i) })))
       )
-      const { policies } = await PolicyRepository.readPolicies({ sort: 'start_date' }, {})
+      const { policies } = await PolicyRepository.readPolicies({ sort: 'start_date' })
       policies.map(p => p.name).forEach((n, i) => expect(n).toEqual(`p${i}`))
-      const { policies: reversedPolicies } = await PolicyRepository.readPolicies(
-        { sort: 'start_date', direction: 'DESC' },
-        {}
-      )
+      const { policies: reversedPolicies } = await PolicyRepository.readPolicies({
+        sort: 'start_date',
+        direction: 'DESC'
+      })
       reversedPolicies.map(p => p.name).forEach((n, i) => expect(n).toEqual(`p${r.length - 1 - i}`))
     })
 
@@ -348,11 +348,11 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
       await PolicyRepository.publishPolicy(p5.policy_id, n)
       await PolicyRepository.updatePolicySupersededByColumn(p5.policy_id, p6.policy_id)
       await PolicyRepository.publishPolicy(p6.policy_id, n)
-      const { policies } = await PolicyRepository.readPolicies({ sort: 'status' }, {})
+      const { policies } = await PolicyRepository.readPolicies({ sort: 'status' })
       const expected = ['active', 'active', 'pending', 'expired', 'deactivated', 'draft']
       policies.map(p => p.name).forEach((n, i) => expect(n).toEqual(expected[i]))
 
-      const { policies: reversed } = await PolicyRepository.readPolicies({ sort: 'status', direction: 'DESC' }, {})
+      const { policies: reversed } = await PolicyRepository.readPolicies({ sort: 'status', direction: 'DESC' })
       const expectedReverse = expected.reverse()
       reversed.map(p => p.name).forEach((n, i) => expect(n).toEqual(expectedReverse[i]))
     })

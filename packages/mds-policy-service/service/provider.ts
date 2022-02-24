@@ -21,7 +21,7 @@ import { PolicyService, PolicyServiceRequestContext } from '../@types'
 import { PolicyServiceLogger } from '../logger'
 import { PolicyRepository } from '../repository'
 import { PolicyStreamKafka } from './stream'
-import { validatePolicyDomainModel, validatePolicyMetadataDomainModel, validatePresentationOptions } from './validators'
+import { validatePolicyDomainModel, validatePolicyMetadataDomainModel } from './validators'
 
 const serviceErrorWrapper = async <T>(method: string, exec: () => Promise<T>) => {
   try {
@@ -46,20 +46,14 @@ export const PolicyServiceProvider: ServiceProvider<PolicyService, PolicyService
   name: async context => ServiceResult('mds-policy-service'),
   writePolicy: (context, policy) =>
     serviceErrorWrapper('writePolicy', () => PolicyRepository.writePolicy(validatePolicyDomainModel(policy))),
-  readPolicies: (context, params, presentationOptions) =>
-    serviceErrorWrapper('readPolicies', () =>
-      PolicyRepository.readPolicies(params, validatePresentationOptions(presentationOptions ?? {}))
-    ),
+  readPolicies: (context, params) => serviceErrorWrapper('readPolicies', () => PolicyRepository.readPolicies(params)),
   readActivePolicies: (context, timestamp) =>
     serviceErrorWrapper('readActivePolicies', () => PolicyRepository.readActivePolicies(timestamp)),
   deletePolicy: (context, policy_id) =>
     serviceErrorWrapper('deletePolicy', () => PolicyRepository.deletePolicy(policy_id)),
   editPolicy: (context, policy) =>
     serviceErrorWrapper('editPolicy', () => PolicyRepository.editPolicy(validatePolicyDomainModel(policy))),
-  readPolicy: (context, policy_id, presentationOptions) =>
-    serviceErrorWrapper('readPolicy', () =>
-      PolicyRepository.readPolicy(policy_id, validatePresentationOptions(presentationOptions ?? {}))
-    ),
+  readPolicy: (context, policy_id) => serviceErrorWrapper('readPolicy', () => PolicyRepository.readPolicy(policy_id)),
   readSinglePolicyMetadata: (context, policy_id) =>
     serviceErrorWrapper('readSinglePolicyMetadata', () => PolicyRepository.readSinglePolicyMetadata(policy_id)),
   readBulkPolicyMetadata: (context, params) =>

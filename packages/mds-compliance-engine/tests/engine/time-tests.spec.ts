@@ -54,6 +54,7 @@ const TIME_POLICY: TimePolicy = {
   prev_policies: null,
   currency: null,
   publish_date: null,
+  status: 'draft',
   provider_ids: [],
   rules: [
     {

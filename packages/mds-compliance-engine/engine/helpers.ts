@@ -99,10 +99,7 @@ export async function getProviderInputs(provider_id: string, timestamp: number =
 }
 
 export function isPolicyActive(policy: PolicyDomainModel, end_time: number = now()): boolean {
-  if (policy.end_date === null) {
-    return end_time >= policy.start_date
-  }
-  return end_time >= policy.start_date && end_time <= policy.end_date
+  return policy.status === 'active'
 }
 
 /**

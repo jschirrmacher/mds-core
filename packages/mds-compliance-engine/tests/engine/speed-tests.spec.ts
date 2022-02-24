@@ -42,6 +42,7 @@ const SPEED_POLICY: SpeedPolicy = {
   provider_ids: [],
   currency: null,
   publish_date: null,
+  status: 'draft',
   rules: [
     {
       name: 'Greater LA',

@@ -36,7 +36,6 @@ import {
 import {
   PolicyDomainCreateModel,
   PolicyMetadataDomainModel,
-  PresentationOptions,
   RATE_RECURRENCE_VALUES,
   Rule,
   RULE_TYPE_LIST
@@ -220,15 +219,6 @@ export const { validate: validatePolicyMetadataDomainModel, isValid: isValidPoli
       policy_metadata: { type: 'object' }
     },
     required: ['policy_id']
-  })
-
-export const { validate: validatePresentationOptions, isValid: isValidPresentationOptions } =
-  SchemaValidator<PresentationOptions>({
-    $id: 'PresentationOptions',
-    type: 'object',
-    properties: {
-      withStatus: { type: 'boolean', nullable: true, default: null }
-    }
   })
 
 export const schemas = [PolicyDomainModelSchema]

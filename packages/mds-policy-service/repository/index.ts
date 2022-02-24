@@ -23,7 +23,6 @@ import {
   PolicyDomainCreateModel,
   PolicyDomainModel,
   PolicyMetadataDomainModel,
-  PresentationOptions,
   ReadPoliciesResponse,
   ReadPolicyQueryParams
 } from '../@types'
@@ -43,11 +42,7 @@ class PolicyReadWriteRepository extends ReadWriteRepository {
     super('policies', { entities, migrations })
   }
 
-  public readPolicies = async (
-    params: ReadPolicyQueryParams = {},
-    presentationOptions: PresentationOptions = {},
-    timestamp: Timestamp = now()
-  ) => {
+  public readPolicies = async (params: ReadPolicyQueryParams = {}, timestamp: Timestamp = now()) => {
     const {
       policy_ids,
       rule_id,
@@ -190,7 +185,7 @@ class PolicyReadWriteRepository extends ReadWriteRepository {
       if (pager) {
         const { data, cursor } = await pager.paginate(query)
         const result: ReadPoliciesResponse = {
-          policies: data.map(entity => PolicyEntityToDomain.map(entity, presentationOptions))
+          policies: data.map(entity => PolicyEntityToDomain.map(entity))
         }
         if (cursor.afterCursor || cursor.beforeCursor) {
           result.cursor = {
@@ -199,14 +194,14 @@ class PolicyReadWriteRepository extends ReadWriteRepository {
           }
         }
         return {
-          policies: data.map(entity => PolicyEntityToDomain.map(entity, presentationOptions)),
+          policies: data.map(entity => PolicyEntityToDomain.map(entity)),
           cursor: {
             next: cursor.afterCursor,
             prev: cursor.beforeCursor
           }
         }
       }
-      return { policies: (await query.getMany()).map(entity => PolicyEntityToDomain.map(entity, presentationOptions)) }
+      return { policies: (await query.getMany()).map(entity => PolicyEntityToDomain.map(entity)) }
     } catch (error) {
       throw RepositoryError(error)
     }
@@ -214,7 +209,7 @@ class PolicyReadWriteRepository extends ReadWriteRepository {
 
   public readActivePolicies = async (timestamp: Timestamp = now()) => {
     try {
-      const { policies } = await this.readPolicies({ statuses: ['active'] }, { withStatus: true }, timestamp)
+      const { policies } = await this.readPolicies({ statuses: ['active'] }, timestamp)
       return policies
     } catch (error) {
       throw RepositoryError(error)
@@ -251,11 +246,11 @@ class PolicyReadWriteRepository extends ReadWriteRepository {
     }
   }
 
-  public readPolicy = async (policy_id: UUID, presentationOptions: PresentationOptions = {}) => {
+  public readPolicy = async (policy_id: UUID) => {
     try {
       const connection = await this.connect('ro')
       const entity = await connection.getRepository(PolicyEntity).findOneOrFail({ policy_id })
-      return PolicyEntityToDomain.map(entity, presentationOptions)
+      return PolicyEntityToDomain.map(entity)
     } catch (error) {
       if (error instanceof Error && error.name === 'EntityNotFoundError') {
         throw new NotFoundError(error)

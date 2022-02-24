@@ -347,6 +347,7 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         policy_id: VENICE_POLICY_UUID,
         start_date: 1558389669540,
         publish_date: 1558389669540,
+        status: 'active',
         end_date: null,
         prev_policies: null,
         currency: null,

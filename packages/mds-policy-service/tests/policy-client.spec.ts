@@ -184,14 +184,11 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
       const policy = await PolicyServiceClient.readPolicy(deletablePolicy.policy_id)
       expect(policy.publish_date).toBeFalsy()
       await PolicyServiceClient.deletePolicy(policy.policy_id)
-      const { policies: policy_result } = await PolicyServiceClient.readPolicies(
-        {
-          policy_ids: [policy.policy_id],
-          get_published: null,
-          get_unpublished: null
-        },
-        {}
-      )
+      const { policies: policy_result } = await PolicyServiceClient.readPolicies({
+        policy_ids: [policy.policy_id],
+        get_published: null,
+        get_unpublished: null
+      })
       expect(policy_result).toStrictEqual([])
     })
 
