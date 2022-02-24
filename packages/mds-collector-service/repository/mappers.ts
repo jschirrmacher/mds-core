@@ -22,12 +22,8 @@ import {
   CollectorSchemaDomainCreateModel,
   CollectorSchemaDomainModel
 } from '../@types'
-import {
-  CollectorMessageEntityCreateModel,
-  CollectorMessageEntityModel,
-  CollectorSchemaEntityCreateModel,
-  CollectorSchemaEntityModel
-} from './entities'
+import { CollectorMessageEntityCreateModel, CollectorMessageEntityModel } from './entities/collector-message-entity'
+import { CollectorSchemaEntityCreateModel, CollectorSchemaEntityModel } from './entities/collector-schema-entity'
 
 type CollectorSchemaEntityCreateOptions = Partial<{ recorded: Timestamp }>
 

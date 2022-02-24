@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IdentityColumn } from '@mds-core/mds-repository'
+import { EntityCreateModel, IdentityColumn } from '@mds-core/mds-repository'
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
 import { PolicyMetadataDomainModel } from '../../@types'
 import { PolicyEntity } from './policy-entity'
@@ -35,3 +35,5 @@ export class PolicyMetadataEntity extends IdentityColumn(class {}) implements Po
   @Column('json', { nullable: true })
   policy_metadata: PolicyMetadataEntityModel['policy_metadata']
 }
+
+export type PolicyMetadataEntityCreateModel = EntityCreateModel<PolicyMetadataEntityModel>

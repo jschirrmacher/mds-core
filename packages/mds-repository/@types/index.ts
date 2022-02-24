@@ -30,4 +30,7 @@ export interface DeleteReturning<T> extends DeleteResult {
 }
 
 // Mark all nullable properties as optional (useful for create methods)
-export type DomainModelCreate<T> = Optional<T, NullableKeys<T>>
+// Make DomainModelCreate/DomainCreateModel aliases so both will work
+// because otherwise it is difficult to remember the actual type name.
+export type DomainCreateModel<T> = Optional<T, NullableKeys<T>>
+export type DomainModelCreate<T> = DomainCreateModel<T>

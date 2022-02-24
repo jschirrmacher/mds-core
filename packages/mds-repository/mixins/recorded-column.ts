@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { AnyConstructor, Timestamp } from '@mds-core/mds-types'
+import { AnyConstructor, Optional, Timestamp } from '@mds-core/mds-types'
 import { Index } from 'typeorm'
 import { TimestampColumn, TimestampColumnOptions } from '../decorators'
 
-export interface RecordedColumn {
-  recorded: Timestamp
-}
+export type RecordedColumn = { recorded: Timestamp }
+
+export type RecordedColumnCreateModel<T> = T extends RecordedColumn ? Optional<T, keyof RecordedColumn> : T
 
 export type RecordedColumnOptions = Omit<TimestampColumnOptions, 'default'>
 

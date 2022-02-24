@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, ModelMapper, RecordedColumn } from '@mds-core/mds-repository'
-import { Optional, Timestamp } from '@mds-core/mds-types'
+import { ModelMapper } from '@mds-core/mds-repository'
+import { Timestamp } from '@mds-core/mds-types'
 import {
   TransactionDomainCreateModel,
   TransactionDomainModel,
@@ -24,9 +24,9 @@ import {
   TransactionStatusDomainCreateModel,
   TransactionStatusDomainModel
 } from '../@types'
-import { TransactionOperationEntity } from './entities/operation-entity'
-import { TransactionStatusEntity } from './entities/status-entity'
-import { TransactionEntity } from './entities/transaction-entity'
+import { TransactionOperationEntity, TransactionOperationEntityCreateModel } from './entities/operation-entity'
+import { TransactionStatusEntity, TransactionStatusEntityCreateModel } from './entities/status-entity'
+import { TransactionEntity, TransactionEntityCreateModel } from './entities/transaction-entity'
 
 type TransactionEntityToDomainOptions = Partial<{}>
 
@@ -65,8 +65,6 @@ type TransactionEntityCreateOptions = Partial<{
   recorded: Timestamp
 }>
 
-export type TransactionEntityCreateModel = Omit<Optional<TransactionEntity, keyof RecordedColumn>, keyof IdentityColumn>
-
 export const TransactionDomainToEntityCreate = ModelMapper<
   TransactionDomainCreateModel,
   TransactionEntityCreateModel,
@@ -75,11 +73,6 @@ export const TransactionDomainToEntityCreate = ModelMapper<
   const { recorded } = options ?? {}
   return { ...domain, device_id, recorded }
 })
-
-export type TransactionOperationEntityCreateModel = Omit<
-  Optional<TransactionOperationEntity, keyof RecordedColumn>,
-  keyof IdentityColumn
->
 
 type TransactionOperationEntityCreateOptions = Partial<{
   recorded: Timestamp
@@ -93,11 +86,6 @@ export const TransactionOperationDomainToEntityCreate = ModelMapper<
   const { recorded } = options ?? {}
   return { ...domain, recorded }
 })
-
-export type TransactionStatusEntityCreateModel = Omit<
-  Optional<TransactionStatusEntity, keyof RecordedColumn>,
-  keyof IdentityColumn
->
 
 type TransactionStatusEntityCreateOptions = Partial<{
   recorded: Timestamp

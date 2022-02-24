@@ -1,5 +1,22 @@
 # @mds-core/mds-jurisdiction-service
 
+## 0.5.14
+
+### Patch Changes
+
+- Updated dependencies [c8dc2d20]
+- Updated dependencies [28d8a7c3]
+- Updated dependencies [86bb2f6f]
+  - @mds-core/mds-repository@0.1.41
+
+## 0.5.13
+
+### Patch Changes
+
+- d98d5693: Cleanup and refactor repository types
+- Updated dependencies [d98d5693]
+  - @mds-core/mds-repository@0.1.40
+
 ## 0.5.12
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-compliance-batch-processor",
-  "version": "0.2.9",
+  "version": "0.2.11",
   "description": "MDS Compliance Batch Processor",
   "keywords": [
     "mds",
@@ -20,12 +20,12 @@
   },
   "dependencies": {
     "@mds-core/mds-api-server": "workspace:0.4.6",
-    "@mds-core/mds-compliance-engine": "workspace:0.8.9",
-    "@mds-core/mds-compliance-service": "workspace:0.10.16",
-    "@mds-core/mds-db": "workspace:0.6.2",
-    "@mds-core/mds-geography-service": "0.10.8",
+    "@mds-core/mds-compliance-engine": "workspace:0.8.11",
+    "@mds-core/mds-compliance-service": "workspace:0.10.18",
+    "@mds-core/mds-db": "workspace:0.6.4",
+    "@mds-core/mds-geography-service": "0.10.10",
     "@mds-core/mds-logger": "workspace:0.5.6",
-    "@mds-core/mds-policy-service": "workspace:0.11.14",
+    "@mds-core/mds-policy-service": "workspace:0.11.16",
     "@mds-core/mds-providers": "0.2.7",
     "@mds-core/mds-service-helpers": "workspace:0.6.4",
     "@mds-core/mds-types": "workspace:0.9.0",

@@ -22,12 +22,8 @@ import {
   CollectorSchemaDomainCreateModel,
   CollectorSchemaDomainModel
 } from '../@types'
-import {
-  CollectorMessageEntity,
-  CollectorMessageEntityModel,
-  CollectorSchemaEntity,
-  CollectorSchemaEntityModel
-} from './entities'
+import { CollectorMessageEntity, CollectorMessageEntityModel } from './entities/collector-message-entity'
+import { CollectorSchemaEntity, CollectorSchemaEntityModel } from './entities/collector-schema-entity'
 import {
   CollectorMessageDomainToEntityCreate,
   CollectorMessageEntityToDomain,

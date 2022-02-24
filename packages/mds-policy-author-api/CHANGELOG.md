@@ -1,5 +1,20 @@
 # @mds-core/mds-policy-author-api
 
+## 0.7.21
+
+### Patch Changes
+
+- @mds-core/mds-policy-service@0.11.16
+- @mds-core/mds-api-helpers@0.2.12
+
+## 0.7.20
+
+### Patch Changes
+
+- Updated dependencies [d98d5693]
+  - @mds-core/mds-policy-service@0.11.15
+  - @mds-core/mds-api-helpers@0.2.11
+
 ## 0.7.19
 
 ### Patch Changes

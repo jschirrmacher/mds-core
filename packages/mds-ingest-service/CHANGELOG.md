@@ -1,5 +1,23 @@
 # @mds-core/mds-ingest-service
 
+## 0.9.15
+
+### Patch Changes
+
+- 28d8a7c3: Use dedicated migration metadata table for each repository
+- Updated dependencies [c8dc2d20]
+- Updated dependencies [28d8a7c3]
+- Updated dependencies [86bb2f6f]
+  - @mds-core/mds-repository@0.1.41
+
+## 0.9.14
+
+### Patch Changes
+
+- d98d5693: Cleanup and refactor repository types
+- Updated dependencies [d98d5693]
+  - @mds-core/mds-repository@0.1.40
+
 ## 0.9.13
 
 ### Patch Changes

@@ -1,5 +1,26 @@
 # @mds-core/mds-compliance-service
 
+## 0.10.18
+
+### Patch Changes
+
+- Updated dependencies [c8dc2d20]
+- Updated dependencies [28d8a7c3]
+- Updated dependencies [86bb2f6f]
+  - @mds-core/mds-repository@0.1.41
+  - @mds-core/mds-policy-service@0.11.16
+  - @mds-core/mds-db@0.6.4
+
+## 0.10.17
+
+### Patch Changes
+
+- d98d5693: Cleanup and refactor repository types
+- Updated dependencies [d98d5693]
+  - @mds-core/mds-policy-service@0.11.15
+  - @mds-core/mds-repository@0.1.40
+  - @mds-core/mds-db@0.6.3
+
 ## 0.10.16
 
 ### Patch Changes

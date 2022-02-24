@@ -24,27 +24,24 @@ import { MigrationInterface, QueryRunner } from 'typeorm'
  * metadata table. This is a really bad design to require a shared table for tracking CREATE VIEW DDL statements.
  *
  * See: https://github.com/typeorm/typeorm/issues/4923
+ *
+ * Update: 2/19/2022 - The above referenced issue has been resolved.
+ *
+ * See: https://github.com/typeorm/typeorm/pull/4956
+ *
+ * TypeORM still requires the "typeorm_metadata" table, but as of 0.2.41 it generates the table when migrations are
+ * run rather than when they are generated. This migration is no longer necessary and is being disabled for any future
+ * repository deployments. This operation probably should have lived in mds-repository to begin with along with other
+ * database level migrations rather than here in mds-ingest-service.
  */
 export class CreateTypeormMetadataTable1633181195937 implements MigrationInterface {
   name = 'CreateTypeormMetadataTable1633181195937'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    /**
-     * Use "IF NOT EXISTS" so this will still run on the machine that generates the migration or if
-     * the metadata table was previously created by a migration in another repository.
-     */
-    await queryRunner.query(
-      `CREATE TABLE IF NOT EXISTS "typeorm_metadata" ("type" character varying NOT NULL, "database" character varying, "schema" character varying, "table" character varying, "name" character varying, "value" Text)`
-    )
+    /* Disabled 2/19/2022 */
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    const [{ count }]: [{ count: number }] = await queryRunner.query(`SELECT COUNT(*) FROM "typeorm_metadata"`)
-    /**
-     * Don't DROP the metadata table unless it's empty in case it's used by a migration in another repository.
-     */
-    if (count === 0) {
-      await queryRunner.query(`DROP TABLE "typeorm_metadata"`)
-    }
+    /* Disabled 2/19/2022 */
   }
 }

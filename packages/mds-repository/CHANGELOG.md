@@ -1,5 +1,19 @@
 # @mds-core/mds-repository
 
+## 0.1.41
+
+### Patch Changes
+
+- c8dc2d20: Fix access modifiers in mds-repository
+- 28d8a7c3: Use dedicated migration metadata table for each repository
+- 86bb2f6f: Add new mds-repository methods to support functional repository composition
+
+## 0.1.40
+
+### Patch Changes
+
+- d98d5693: Cleanup and refactor repository types
+
 ## 0.1.39
 
 ### Patch Changes

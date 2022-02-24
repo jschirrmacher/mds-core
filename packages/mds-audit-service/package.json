@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-audit-service",
-  "version": "0.5.12",
+  "version": "0.5.14",
   "description": "Mobility Data Specification Audit Service",
   "keywords": [
     "mds"
@@ -21,7 +21,7 @@
     "watch": "pnpm build && nodemon --watch '../../packages' --ext 'ts' --ignore '*.d.ts' --exec pnpm ts-node --"
   },
   "dependencies": {
-    "@mds-core/mds-repository": "workspace:0.1.39",
+    "@mds-core/mds-repository": "workspace:0.1.41",
     "@mds-core/mds-rpc-common": "workspace:0.3.11",
     "@mds-core/mds-schema-validators": "workspace:0.5.4",
     "@mds-core/mds-service-helpers": "workspace:0.6.4",

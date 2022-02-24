@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, IdentityColumn } from '@mds-core/mds-repository'
+import { BigintTransformer, EntityCreateModel, IdentityColumn } from '@mds-core/mds-repository'
 import { Nullable, Timestamp, UUID } from '@mds-core/mds-types'
 import { Column, Entity, Index } from 'typeorm'
 import { PolicyDomainModel } from '../../@types'
@@ -51,3 +51,5 @@ export class PolicyEntity extends IdentityColumn(class {}) implements PolicyEnti
   @Index()
   publish_date: Nullable<Timestamp>
 }
+
+export type PolicyEntityCreateModel = EntityCreateModel<PolicyEntityModel>

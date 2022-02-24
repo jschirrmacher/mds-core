@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { BigintTransformer, EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Nullable, Timestamp, UUID } from '@mds-core/mds-types'
 import { Column, Entity } from 'typeorm'
 
@@ -58,3 +58,5 @@ export class ComplianceViolationEntity
   @Column('uuid', { nullable: true })
   trip_id: ComplianceViolationEntityModel['trip_id']
 }
+
+export type ComplianceViolationEntityCreateModel = EntityCreateModel<ComplianceViolationEntityModel>

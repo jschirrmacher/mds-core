@@ -1,5 +1,24 @@
 # @mds-core/mds-transaction-service
 
+## 0.6.12
+
+### Patch Changes
+
+- Updated dependencies [c8dc2d20]
+- Updated dependencies [28d8a7c3]
+- Updated dependencies [86bb2f6f]
+  - @mds-core/mds-repository@0.1.41
+  - @mds-core/mds-ingest-service@0.9.15
+
+## 0.6.11
+
+### Patch Changes
+
+- d98d5693: Cleanup and refactor repository types
+- Updated dependencies [d98d5693]
+  - @mds-core/mds-ingest-service@0.9.14
+  - @mds-core/mds-repository@0.1.40
+
 ## 0.6.10
 
 ### Patch Changes
