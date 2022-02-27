@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
 import {
-  Device,
   MODALITY,
   PROPULSION_TYPE,
   Telemetry,
@@ -58,7 +58,7 @@ const COMPLIANCE_AUTH =
 
 const BAD_PROVIDER_UUID = '5f7114d1-4091-46ee-b492-e55875f7de99'
 
-const JUMP_TEST_DEVICE_1: Device = {
+const JUMP_TEST_DEVICE_1: DeviceDomainModel = {
   accessibility_options: [],
   provider_id: JUMP_PROVIDER_ID,
   device_id: 'e9edbe74-f7be-48e0-a63a-92f4bc1af5ed',
@@ -72,7 +72,7 @@ const JUMP_TEST_DEVICE_1: Device = {
   recorded: now()
 }
 
-function makeTelemetry(devices: Device[], timestamp: Timestamp): Telemetry[] {
+function makeTelemetry(devices: DeviceDomainModel[], timestamp: Timestamp): Telemetry[] {
   let i = 0
   const serviceAreaKeys = Object.keys(serviceAreaMap)
 
@@ -146,7 +146,7 @@ function makeTelemetry(devices: Device[], timestamp: Timestamp): Telemetry[] {
   return telemetries
 }
 
-function makeTelemetryInShape(device: Device, timestamp: number, shape: Geometry, speed: number) {
+function makeTelemetryInShape(device: DeviceDomainModel, timestamp: number, shape: Geometry, speed: number) {
   const point = makePointInShape(shape)
   return {
     device_id: device.device_id,
@@ -164,7 +164,7 @@ function makeTelemetryInShape(device: Device, timestamp: number, shape: Geometry
   }
 }
 
-function makeTelemetryInArea(device: Device, timestamp: Timestamp, area: UUID | Geometry, speed: number) {
+function makeTelemetryInArea(device: DeviceDomainModel, timestamp: Timestamp, area: UUID | Geometry, speed: number) {
   if (typeof area === 'string') {
     const serviceArea = serviceAreaMap[area]
     return makeTelemetryInShape(device, timestamp, serviceArea.area, speed)
@@ -199,7 +199,7 @@ function makeTelemetryStream(origin: Telemetry, steps: number) {
 }
 
 function makeEventsWithTelemetry(
-  devices: Device[],
+  devices: DeviceDomainModel[],
   timestamp: Timestamp,
   area: UUID | Geometry,
   makeEventsWithTelemetryOptions: {
@@ -232,7 +232,7 @@ function makeEventsWithTelemetry(
   })
 }
 
-function makeDevices(count: number, timestamp: Timestamp, provider_id = TEST1_PROVIDER_ID): Device[] {
+function makeDevices(count: number, timestamp: Timestamp, provider_id = TEST1_PROVIDER_ID): DeviceDomainModel[] {
   // make N devices, distributed across the regions
   const devices = []
   for (let i = 0; i < count; i += 1) {
