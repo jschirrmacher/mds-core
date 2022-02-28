@@ -140,7 +140,7 @@ export const RpcServiceManager = (options: Partial<RpcServiceManagerOptions> = {
                   ),
                 express()
                   .use(PrometheusMiddleware())
-                  .use(RequestLoggingMiddleware({ includeRemoteAddress: true }))
+                  .use(RequestLoggingMiddleware({ includeRemoteAddress: true, excludePaths: [/\/health$/] }))
                   .use(RawBodyParserMiddleware({ type: RPC_CONTENT_TYPE, limit: options.maxRequestSize }))
                   .get('/health', HealthRequestHandler)
               ),
