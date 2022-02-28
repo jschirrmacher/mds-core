@@ -644,55 +644,6 @@ describe('Ingest Service Tests', () => {
     })
   })
 
-  describe('writes migrated data', () => {
-    it('writes migrated device', async () => {
-      await expect(
-        IngestServiceClient.writeMigratedDevice(
-          { recorded: 0, ...TEST_DEVICE_A },
-          { migrated_from_source: 'mds.device', migrated_from_version: '0.0', migrated_from_id: 1 }
-        )
-      ).resolves.toMatchObject(TEST_DEVICE_A)
-    })
-
-    it('writes migrated event', async () => {
-      await IngestServiceClient.writeMigratedDevice(
-        { recorded: 0, ...TEST_DEVICE_A },
-        { migrated_from_source: 'mds.device', migrated_from_version: '0.0', migrated_from_id: 1 }
-      )
-
-      const eventWriteResult = await IngestServiceClient.writeMigratedVehicleEvent(
-        {
-          trip_state: null,
-          recorded: 0,
-          ...TEST_EVENT_A1,
-          telemetry: TEST_TELEMETRY_A1,
-          telemetry_timestamp: TEST_TELEMETRY_A1.timestamp
-        },
-        { migrated_from_source: 'mds.event', migrated_from_version: '0.0', migrated_from_id: 1 }
-      )
-      expect(eventWriteResult).toMatchObject(TEST_EVENT_A1)
-
-      const res = await IngestRepository.getEventsUsingOptions({
-        device_ids: [TEST_DEVICE_A.device_id],
-        grouping_type: 'all_events'
-      })
-
-      const {
-        events: [event]
-      } = res
-      expect(event).toMatchObject({ ...TEST_EVENT_A1, telemetry: TEST_TELEMETRY_A1 })
-    })
-
-    it('writes migrated telemetry', async () => {
-      expect(
-        await IngestServiceClient.writeMigratedTelemetry(
-          { recorded: 0, ...TEST_TELEMETRY_A1 },
-          { migrated_from_source: 'mds.telemetry', migrated_from_version: '0.0', migrated_from_id: 1 }
-        )
-      ).toMatchObject(TEST_TELEMETRY_A1)
-    })
-  })
-
   describe('getTripEvents', () => {
     beforeEach(async () => {
       await IngestRepository.createEvents([TEST_EVENT_A1, TEST_EVENT_B1])

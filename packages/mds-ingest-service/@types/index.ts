@@ -18,21 +18,17 @@ import { DomainModelCreate, IdentityColumn, RecordedColumn } from '@mds-core/mds
 import { RpcEmptyRequestContext, RpcRoute, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
 import {
   ACCESSIBILITY_OPTION,
-  Device,
   MODALITY,
   Nullable,
   PROPULSION_TYPE,
-  Telemetry,
   TelemetryData,
   Timestamp,
   TRIP_STATE,
   UUID,
-  VehicleEvent,
   VEHICLE_EVENT,
   VEHICLE_STATE,
   VEHICLE_TYPE
 } from '@mds-core/mds-types'
-import { MigratedEntityModel } from '../repository/mixins/migrated-entity'
 
 type ResponseWithCursor<T extends {}> = T & {
   cursor: {
@@ -260,19 +256,7 @@ export interface IngestService {
   getDeviceEvents: (params: ReadDeviceEventsQueryParams) => Record<UUID, EventDomainModel[]>
 }
 
-export interface IngestMigrationService {
-  writeMigratedDevice: (device: Device, migrated_from: MigratedEntityModel) => Nullable<DeviceDomainModel>
-  writeMigratedVehicleEvent: (
-    event: VehicleEvent,
-    migrated_from: MigratedEntityModel
-  ) => Nullable<MigratedEventDomainModel>
-  writeMigratedTelemetry: (
-    telemetry: Telemetry & Required<RecordedColumn>,
-    migrated_from: MigratedEntityModel
-  ) => Nullable<TelemetryDomainModel>
-}
-
-export const IngestServiceDefinition: RpcServiceDefinition<IngestService & IngestMigrationService> = {
+export const IngestServiceDefinition: RpcServiceDefinition<IngestService> = {
   getDevices: RpcRoute<IngestService['getDevices']>(),
   getDevice: RpcRoute<IngestService['getDevice']>(),
   getDevicesUsingOptions: RpcRoute<IngestService['getDevicesUsingOptions']>(),
@@ -282,9 +266,6 @@ export const IngestServiceDefinition: RpcServiceDefinition<IngestService & Inges
   getLatestTelemetryForDevices: RpcRoute<IngestService['getLatestTelemetryForDevices']>(),
   writeEvents: RpcRoute<IngestService['writeEvents']>(),
   writeEventAnnotations: RpcRoute<IngestService['writeEventAnnotations']>(),
-  writeMigratedDevice: RpcRoute<IngestMigrationService['writeMigratedDevice']>(),
-  writeMigratedVehicleEvent: RpcRoute<IngestMigrationService['writeMigratedVehicleEvent']>(),
-  writeMigratedTelemetry: RpcRoute<IngestMigrationService['writeMigratedTelemetry']>(),
   getTripEvents: RpcRoute<IngestService['getTripEvents']>(),
   getEventsWithDeviceAndTelemetryInfoUsingOptions:
     RpcRoute<IngestService['getEventsWithDeviceAndTelemetryInfoUsingOptions']>(),

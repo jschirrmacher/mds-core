@@ -24,7 +24,6 @@ import {
   TelemetryDomainModel
 } from '../../@types'
 import { EventEntityModel } from '../entities/event-entity'
-import { MigratedEntityModel } from '../mixins/migrated-entity'
 import { EventAnnotationEntityToDomain } from './event-annotation-mappers'
 import { TelemetryEntityToDomain } from './telemetry-mappers'
 
@@ -32,15 +31,7 @@ type EventEntityToDomainOptions = Partial<{}>
 
 export const EventEntityToDomain = ModelMapper<EventEntityModel, EventDomainModel, EventEntityToDomainOptions>(
   (entity, options) => {
-    const {
-      id,
-      telemetry: telemetry_entity,
-      annotation: annotation_entity,
-      migrated_from_source,
-      migrated_from_version,
-      migrated_from_id,
-      ...domain
-    } = entity
+    const { id, telemetry: telemetry_entity, annotation: annotation_entity, ...domain } = entity
     const telemetry: TelemetryDomainModel = TelemetryEntityToDomain.map(telemetry_entity)
     const annotation: Nullable<EventAnnotationDomainModel> = annotation_entity
       ? EventAnnotationEntityToDomain.map(annotation_entity)
@@ -58,7 +49,7 @@ export const MigratedEventEntityToDomainWithIdentityColumn = ModelMapper<
   MigratedEventDomainModel,
   EventEntityToDomainOptions
 >((entity, options) => {
-  const { id, telemetry, annotation, migrated_from_source, migrated_from_version, migrated_from_id, ...domain } = entity
+  const { id, telemetry, annotation, ...domain } = entity
   return { id, ...domain }
 })
 
@@ -68,7 +59,7 @@ type EventEntityCreateOptions = Partial<{
 
 export type EventEntityCreateModel = Omit<
   EventEntityModel,
-  keyof IdentityColumn | keyof RecordedColumn | keyof MigratedEntityModel | 'telemetry' | 'annotation'
+  keyof IdentityColumn | keyof RecordedColumn | 'telemetry' | 'annotation'
 >
 
 export const EventDomainToEntityCreate = ModelMapper<
