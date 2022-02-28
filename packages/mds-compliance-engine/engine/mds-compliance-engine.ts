@@ -16,8 +16,9 @@
 
 import { ComplianceSnapshotDomainModel } from '@mds-core/mds-compliance-service/@types'
 import { GeographyDomainModel } from '@mds-core/mds-geography-service'
+import type { DeviceDomainModel as Device } from '@mds-core/mds-ingest-service'
 import { PolicyDomainModel } from '@mds-core/mds-policy-service'
-import { Device, Timestamp, UUID, VehicleEvent } from '@mds-core/mds-types'
+import { Timestamp, UUID, VehicleEvent } from '@mds-core/mds-types'
 import { filterDefined, now, uuid } from '@mds-core/mds-utils'
 import { ProviderInputs, VehicleEventWithTelemetry } from '../@types'
 import { ComplianceEngineLogger } from '../logger'

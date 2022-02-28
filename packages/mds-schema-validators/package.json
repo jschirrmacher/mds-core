@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "9.0.9",
+    "@mds-core/mds-ingest-service": "workspace:0.9.11",
     "@mds-core/mds-providers": "workspace:0.2.7",
     "@mds-core/mds-test-data": "workspace:0.4.17",
     "@mds-core/mds-types": "workspace:0.9.0",

@@ -69,6 +69,10 @@ export interface DeviceDomainModel extends RecordedColumn {
   modality: MODALITY
 }
 
+export type DeviceDomainModelWithState = DeviceDomainModel & {
+  state?: VEHICLE_STATE | null
+}
+
 export type DeviceDomainCreateModel = DomainModelCreate<Omit<DeviceDomainModel, keyof RecordedColumn>>
 
 export type GpsData = Omit<TelemetryData, 'charge'>

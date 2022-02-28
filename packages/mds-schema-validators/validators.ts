@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
+import type { DeviceDomainCreateModel as Device } from '@mds-core/mds-ingest-service'
 import {
   ACCESSIBILITY_OPTIONS,
   AUDIT_EVENT_TYPE,
   AUDIT_EVENT_TYPES,
-  Device,
   MODALITIES,
   PROPULSION_TYPES,
   Telemetry,

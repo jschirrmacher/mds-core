@@ -35,4 +35,4 @@ export interface Device_v1_1_0 extends CoreDevice {
  */
 export type Device = Device_v1_1_0
 
-export type DeviceID = Pick<Device, 'provider_id' | 'device_id'>
+export type DeviceID = { provider_id: UUID; device_id: UUID }

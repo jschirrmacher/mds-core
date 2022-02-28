@@ -831,7 +831,7 @@ importers:
       '@mds-core/mds-compliance-service': workspace:0.10.14
       '@mds-core/mds-db': workspace:0.6.0
       '@mds-core/mds-geography-service': workspace:0.10.6
-      '@mds-core/mds-ingest-service': 0.9.11
+      '@mds-core/mds-ingest-service': workspace:0.9.11
       '@mds-core/mds-logger': workspace:0.5.6
       '@mds-core/mds-policy-service': workspace:0.11.12
       '@mds-core/mds-providers': workspace:0.2.7
@@ -1289,6 +1289,7 @@ importers:
   packages/mds-schema-validators:
     specifiers:
       '@apidevtools/json-schema-ref-parser': 9.0.9
+      '@mds-core/mds-ingest-service': workspace:0.9.11
       '@mds-core/mds-providers': workspace:0.2.7
       '@mds-core/mds-test-data': workspace:0.4.17
       '@mds-core/mds-types': workspace:0.9.0
@@ -1300,6 +1301,7 @@ importers:
       joi: 17.4.0
     dependencies:
       '@apidevtools/json-schema-ref-parser': 9.0.9
+      '@mds-core/mds-ingest-service': link:../mds-ingest-service
       '@mds-core/mds-providers': link:../mds-providers
       '@mds-core/mds-test-data': link:../mds-test-data
       '@mds-core/mds-types': link:../mds-types
@@ -1443,8 +1445,10 @@ importers:
 
   packages/mds-types:
     specifiers:
+      '@mds-core/mds-ingest-service': 0.9.11
       '@types/geojson': 7946.0.8
     dependencies:
+      '@mds-core/mds-ingest-service': link:../mds-ingest-service
       '@types/geojson': 7946.0.8
 
   packages/mds-utils:
