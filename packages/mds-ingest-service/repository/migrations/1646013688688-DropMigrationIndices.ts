@@ -13,27 +13,9 @@ export class DropMigrationColumns1646013688688 implements MigrationInterface {
     await queryRunner.query(`DROP INDEX "public"."idx_migrated_from_version_telemetry"`)
     await queryRunner.query(`DROP INDEX "public"."idx_migrated_from_id_telemetry"`)
     await queryRunner.query(`DROP INDEX "public"."idx_migrated_from_source_telemetry"`)
-    await queryRunner.query(`ALTER TABLE "devices" DROP COLUMN "migrated_from_source"`)
-    await queryRunner.query(`ALTER TABLE "devices" DROP COLUMN "migrated_from_version"`)
-    await queryRunner.query(`ALTER TABLE "devices" DROP COLUMN "migrated_from_id"`)
-    await queryRunner.query(`ALTER TABLE "events" DROP COLUMN "migrated_from_source"`)
-    await queryRunner.query(`ALTER TABLE "events" DROP COLUMN "migrated_from_version"`)
-    await queryRunner.query(`ALTER TABLE "events" DROP COLUMN "migrated_from_id"`)
-    await queryRunner.query(`ALTER TABLE "telemetry" DROP COLUMN "migrated_from_source"`)
-    await queryRunner.query(`ALTER TABLE "telemetry" DROP COLUMN "migrated_from_version"`)
-    await queryRunner.query(`ALTER TABLE "telemetry" DROP COLUMN "migrated_from_id"`)
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`ALTER TABLE "telemetry" ADD "migrated_from_id" bigint`)
-    await queryRunner.query(`ALTER TABLE "telemetry" ADD "migrated_from_version" character varying(31)`)
-    await queryRunner.query(`ALTER TABLE "telemetry" ADD "migrated_from_source" character varying(127)`)
-    await queryRunner.query(`ALTER TABLE "events" ADD "migrated_from_id" bigint`)
-    await queryRunner.query(`ALTER TABLE "events" ADD "migrated_from_version" character varying(31)`)
-    await queryRunner.query(`ALTER TABLE "events" ADD "migrated_from_source" character varying(127)`)
-    await queryRunner.query(`ALTER TABLE "devices" ADD "migrated_from_id" bigint`)
-    await queryRunner.query(`ALTER TABLE "devices" ADD "migrated_from_version" character varying(31)`)
-    await queryRunner.query(`ALTER TABLE "devices" ADD "migrated_from_source" character varying(127)`)
     await queryRunner.query(
       `CREATE INDEX "idx_migrated_from_source_telemetry" ON "telemetry" ("migrated_from_source") `
     )
