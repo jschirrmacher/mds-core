@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Nullable } from '@mds-core/mds-types'
 import { Column, Entity, Index } from 'typeorm'
 import { JurisdictionDomainModel } from '../../@types'
@@ -43,3 +43,5 @@ export class JurisdictionEntity extends IdentityColumn(RecordedColumn(class {}))
   @Column('json')
   versions: JurisdictionVersionedProperties[]
 }
+
+export type JurisdictionEntityCreateModel = EntityCreateModel<JurisdictionEntityModel>

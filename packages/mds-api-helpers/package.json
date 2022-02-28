@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-api-helpers",
-  "version": "0.2.8",
+  "version": "0.2.12",
   "description": "Mobility Data Specification helper functions",
   "keywords": [
     "mds",
@@ -17,9 +17,9 @@
     "test": "DOTENV_CONFIG_PATH=../../.env jest --runInBand"
   },
   "dependencies": {
-    "@mds-core/mds-agency-cache": "workspace:0.4.16",
-    "@mds-core/mds-api-server": "workspace:0.4.5",
-    "@mds-core/mds-db": "workspace:0.6.0",
+    "@mds-core/mds-agency-cache": "workspace:0.4.17",
+    "@mds-core/mds-api-server": "workspace:0.4.6",
+    "@mds-core/mds-db": "workspace:0.6.4",
     "@mds-core/mds-types": "workspace:0.9.0",
     "@mds-core/mds-utils": "workspace:0.4.0",
     "http-status-codes": "2.1.4",

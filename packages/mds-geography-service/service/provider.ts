@@ -151,6 +151,11 @@ export const GeographyServiceProvider: ServiceProvider<GeographyService, Geograp
       const [geography_metadata] = await GeographyRepository.writeGeographiesMetadata([
         validateGeographyMetadataDomainCreateModel(model)
       ])
+
+      if (!geography_metadata) {
+        throw new NotFoundError('cannot find Geography Metadata')
+      }
+
       return ServiceResult(geography_metadata)
     } catch (error) /* istanbul ignore next */ {
       const exception = ServiceException('Error Editing Geography Metadata', error)

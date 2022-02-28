@@ -19,8 +19,8 @@ import { CountPolicy, CountRule } from '@mds-core/mds-policy-service'
 import { Device, Telemetry, UUID, VehicleEvent } from '@mds-core/mds-types'
 import { clone, isDefined, pointInShape } from '@mds-core/mds-utils'
 import { ComplianceEngineResult, VehicleEventWithTelemetry } from '../@types'
+import { ComplianceEngineLogger as logger } from '../logger'
 import { annotateVehicleMap, isInStatesOrEvents, isInVehicleTypes, isRuleActive } from './helpers'
-
 /**
  * @param event  We throw out events that have no telemetry, so events are guaranteed
  * to have telemetry.
@@ -72,6 +72,10 @@ export function processCountPolicy(
     events.forEach(event => {
       if (devicesToCheck[event.device_id]) {
         const device = devicesToCheck[event.device_id]
+        if (!device) {
+          logger.warn(`Device ${event.device_id} not found in devices list.`)
+          return
+        }
         if (isCountRuleMatch(rule as CountRule, geographies, device, event)) {
           if (num_matches < maximum) {
             matchedVehicles[device.device_id] = { device, rule_applied: rule_id, rules_matched: [rule_id] }
@@ -80,7 +84,7 @@ export function processCountPolicy(
             delete devicesToCheck[device.device_id]
             delete overflowedVehicles[device.device_id]
           } else if (overflowedVehicles[device.device_id]) {
-            overflowedVehicles[device.device_id].rules_matched.push(rule_id)
+            overflowedVehicles[device.device_id]!.rules_matched.push(rule_id)
           } else {
             overflowedVehicles[device.device_id] = {
               device,

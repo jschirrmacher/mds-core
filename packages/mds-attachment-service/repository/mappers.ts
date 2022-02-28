@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, ModelMapper, RecordedColumn } from '@mds-core/mds-repository'
-import { Optional, Timestamp } from '@mds-core/mds-types'
+import { ModelMapper } from '@mds-core/mds-repository'
+import { Timestamp } from '@mds-core/mds-types'
 import { AttachmentDomainCreateModel, AttachmentDomainModel } from '../@types'
-import { AttachmentEntityModel } from './entities/attachment-entity'
+import { AttachmentEntityCreateModel, AttachmentEntityModel } from './entities/attachment-entity'
 
 type AttachmentEntityToDomainOptions = Partial<{}>
 
@@ -33,11 +33,6 @@ export const AttachmentEntityToDomain = ModelMapper<
 type AttachmentEntityCreateOptions = Partial<{
   recorded: Timestamp
 }>
-
-export type AttachmentEntityCreateModel = Omit<
-  Optional<AttachmentEntityModel, keyof RecordedColumn>,
-  keyof IdentityColumn
->
 
 export const AttachmentDomainToEntityCreate = ModelMapper<
   AttachmentDomainCreateModel,

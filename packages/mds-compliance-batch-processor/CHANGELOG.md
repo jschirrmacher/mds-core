@@ -1,5 +1,50 @@
 # @mds-core/mds-compliance-batch-processor
 
+## 0.2.11
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.18
+- @mds-core/mds-geography-service@0.10.10
+- @mds-core/mds-policy-service@0.11.16
+- @mds-core/mds-compliance-engine@0.8.11
+- @mds-core/mds-db@0.6.4
+
+## 0.2.10
+
+### Patch Changes
+
+- Updated dependencies [d98d5693]
+  - @mds-core/mds-compliance-service@0.10.17
+  - @mds-core/mds-geography-service@0.10.9
+  - @mds-core/mds-policy-service@0.11.15
+  - @mds-core/mds-db@0.6.3
+  - @mds-core/mds-compliance-engine@0.8.10
+
+## 0.2.9
+
+### Patch Changes
+
+- Updated dependencies [2637f1cc]
+  - @mds-core/mds-compliance-service@0.10.16
+  - @mds-core/mds-db@0.6.2
+  - @mds-core/mds-geography-service@0.10.8
+  - @mds-core/mds-policy-service@0.11.14
+  - @mds-core/mds-compliance-engine@0.8.9
+
+## 0.2.8
+
+### Patch Changes
+
+- Updated dependencies [bc8f0a04]
+  - @mds-core/mds-db@0.6.1
+  - @mds-core/mds-service-helpers@0.6.4
+  - @mds-core/mds-compliance-engine@0.8.8
+  - @mds-core/mds-compliance-service@0.10.15
+  - @mds-core/mds-geography-service@0.10.7
+  - @mds-core/mds-policy-service@0.11.13
+  - @mds-core/mds-api-server@0.4.6
+
 ## 0.2.7
 
 ### Patch Changes

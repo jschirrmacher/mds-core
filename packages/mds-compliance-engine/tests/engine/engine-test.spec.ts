@@ -127,11 +127,12 @@ describe('Verifies compliance engine processes by vehicle most recent event', ()
     const { 0: result } = complianceResults.filter(
       complianceResult => complianceResult?.provider_id === TEST1_PROVIDER_ID
     ) as ComplianceSnapshotDomainModel[]
-    test.assert.deepEqual(result.total_violations, 1)
-    const { 0: device } = result.vehicles_found.filter(vehicle => {
-      return !vehicle.rule_applied
-    })
-    test.assert.deepEqual(latest_device.device_id, device.device_id)
+    test.assert.deepEqual(result?.total_violations, 1)
+    const [device] =
+      result?.vehicles_found.filter(vehicle => {
+        return !vehicle.rule_applied
+      }) ?? []
+    test.assert.deepEqual(latest_device.device_id, device?.device_id)
   })
 
   it('Verifies arbitrary event_types can be set for a state in a rule', async () => {
@@ -152,7 +153,7 @@ describe('Verifies compliance engine processes by vehicle most recent event', ()
     const { 0: result } = complianceResults.filter(
       complianceResult => complianceResult?.provider_id === TEST1_PROVIDER_ID
     ) as ComplianceSnapshotDomainModel[]
-    test.assert.deepEqual(result.total_violations, 1)
+    test.assert.deepEqual(result?.total_violations, 1)
   })
 
   it('Verifies no match when event types do not match policy', async () => {
@@ -173,7 +174,7 @@ describe('Verifies compliance engine processes by vehicle most recent event', ()
     const { 0: result } = complianceResults.filter(
       complianceResult => complianceResult?.provider_id === TEST1_PROVIDER_ID
     )
-    test.assert.deepEqual(result.total_violations, 0)
+    test.assert.deepEqual(result?.total_violations, 0)
   })
 
   it('Verifies state wildcard matching works', async () => {
@@ -194,7 +195,7 @@ describe('Verifies compliance engine processes by vehicle most recent event', ()
     const { 0: result } = complianceResults.filter(
       complianceResult => complianceResult?.provider_id === TEST1_PROVIDER_ID
     ) as ComplianceSnapshotDomainModel[]
-    test.assert.deepEqual(result.total_violations, 1)
+    test.assert.deepEqual(result?.total_violations, 1)
   })
 })
 
@@ -214,7 +215,7 @@ describe('Verifies errors are being properly thrown', async () => {
     await assert.rejects(
       async () => {
         const inputs = await getAllInputs()
-        await processPolicy(policies[0], geographies, inputs)
+        await processPolicy(policies[0]!, geographies, inputs)
       },
       { name: 'RuntimeError' }
     )

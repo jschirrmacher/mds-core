@@ -20,9 +20,9 @@ import { ColumnCommonOptions } from 'typeorm/decorator/options/ColumnCommonOptio
 import { ColumnWithWidthOptions } from 'typeorm/decorator/options/ColumnWithWidthOptions'
 import { BigintTransformer } from '../transformers'
 
-export interface IdentityColumn {
-  id: number
-}
+export type IdentityColumn = { id: number }
+
+export type IdentityColumnCreateModel<T> = T extends IdentityColumn ? Omit<T, keyof IdentityColumn> : T
 
 // Property decorator to emit GENERATED ALWAYS AS IDENTITY
 const GeneratedAlwaysAsIdentity = (
@@ -35,7 +35,7 @@ const GeneratedAlwaysAsIdentity = (
     Column({
       type: 'bigint',
       generated: 'identity',
-      // generatedIdentity: 'ALWAYS', // Coming Soon in TypeORM 0.2.42!
+      generatedIdentity: 'ALWAYS',
       insert: false,
       transformer: BigintTransformer,
       ...options

@@ -1,5 +1,32 @@
 # @container-images/mds-compliance-service
 
+## 0.0.58
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.18
+
+## 0.0.57
+
+### Patch Changes
+
+- Updated dependencies [d98d5693]
+  - @mds-core/mds-compliance-service@0.10.17
+
+## 0.0.56
+
+### Patch Changes
+
+- 2637f1cc: Upgrade to latest typeorm/pg to support GENERATED ALWAYS AS IDENTITY in migrations
+- Updated dependencies [2637f1cc]
+  - @mds-core/mds-compliance-service@0.10.16
+
+## 0.0.55
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.15
+
 ## 0.0.54
 
 ### Patch Changes

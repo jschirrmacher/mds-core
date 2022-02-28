@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Column, Entity } from 'typeorm'
 import { AuditAttachmentDomainModel } from '../../@types'
 
@@ -34,3 +34,5 @@ export class AuditAttachmentEntity
   @Column('uuid', { primary: true })
   attachment_id: AuditAttachmentEntityModel['attachment_id']
 }
+
+export type AuditAttachmentEntityCreateModel = EntityCreateModel<AuditAttachmentEntityModel>

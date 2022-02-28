@@ -4,7 +4,7 @@ MDS Compliance Engine
 
 ## Build Instructions
 
-Clone https://github.com/openmobilityfoundation/mds-core. Run `pnpm install` and `pnpm build`.
+Clone <https://github.com/openmobilityfoundation/mds-core>. Run `pnpm install` and `pnpm build`.
 
 ## Notes on business logic
 
@@ -18,8 +18,7 @@ Order matters for rule evaluation. A vehicle that matches the first rule will no
 
 Let's imagine that there's a city with a park. More scooters are allowed in the park than in the rest of the city. Here is a toy policy describing the differing caps:
 
-```
-
+```json
 {
   "policy_id": "2d3f8f2f-77dd-4718-b1f2-167e2c7c858e",
   "provider_ids": [],

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, ModelMapper } from '@mds-core/mds-repository'
+import { ModelMapper } from '@mds-core/mds-repository'
 import { now } from '@mds-core/mds-utils'
 import {
   PolicyDomainCreateModel,
@@ -23,8 +23,8 @@ import {
   PolicyMetadataDomainModel,
   POLICY_STATUS
 } from '../@types'
-import { PolicyEntityModel } from './entities/policy-entity'
-import { PolicyMetadataEntityModel } from './entities/policy-metadata-entity'
+import { PolicyEntityCreateModel, PolicyEntityModel } from './entities/policy-entity'
+import { PolicyMetadataEntityCreateModel, PolicyMetadataEntityModel } from './entities/policy-metadata-entity'
 
 type PolicyEntityToDomainOptions = Partial<{ withStatus: boolean }>
 
@@ -75,8 +75,6 @@ export const PolicyEntityToDomain = ModelMapper<PolicyEntityModel, PolicyDomainM
 
 type PolicyEntityCreateOptions = Partial<{}>
 
-export type PolicyEntityCreateModel = Omit<PolicyEntityModel, keyof IdentityColumn>
-
 /**
  * publish_date is set to null if passed through this mapper
  */
@@ -114,8 +112,6 @@ export const PolicyMetadataEntityToDomain = ModelMapper<
 })
 
 type PolicyMetadataEntityCreateOptions = Partial<{}>
-
-export type PolicyMetadataEntityCreateModel = Omit<PolicyMetadataEntityModel, keyof IdentityColumn>
 
 export const PolicyMetadataDomainToEntityCreate = ModelMapper<
   PolicyMetadataDomainCreateModel,

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, IdentityColumn } from '@mds-core/mds-repository'
+import { BigintTransformer, EntityCreateModel, IdentityColumn } from '@mds-core/mds-repository'
 import { Column, Entity, Index } from 'typeorm'
 import { GeographyDomainModel } from '../../@types'
 
@@ -52,3 +52,5 @@ export class GeographyEntity extends IdentityColumn(class {}) implements Geograp
   @Column('json')
   geography_json: GeographyEntityModel['geography_json']
 }
+
+export type GeographyEntityCreateModel = EntityCreateModel<GeographyEntityModel>

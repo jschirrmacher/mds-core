@@ -103,14 +103,14 @@ const GEOGRAPHIES: GeographyDomainModel[] = [
 describe('Tests Compliance Engine Count Functionality:', () => {
   describe('basic count compliance cases', () => {
     it('isCountRuleMatch is accurate', done => {
-      const LAdevices: Device[] = makeDevices(1, now())
+      const LAdevices = makeDevices(1, now())
       const LAevents = makeEventsWithTelemetry(LAdevices, now(), CITY_OF_LA, {
         event_types: ['trip_end'],
         vehicle_state: 'available',
         speed: rangeRandomInt(10)
       })
 
-      const TZDevices: Device[] = makeDevices(1, now())
+      const TZDevices = makeDevices(1, now())
       const TZEvents = makeEventsWithTelemetry(TZDevices, now(), TANZANIA_POLYGON, {
         event_types: ['trip_end'],
         vehicle_state: 'available',
@@ -378,7 +378,7 @@ describe('Tests Compliance Engine Count Functionality:', () => {
       const events_a: VehicleEvent[] = veniceSpecOps.features.reduce((acc: VehicleEvent[], feature: Feature) => {
         if (feature.geometry.type === 'Point') {
           acc.push(
-            ...makeEventsWithTelemetry([devices_a[iter++]], now() - 10, feature.geometry, {
+            ...makeEventsWithTelemetry([devices_a[iter++] as Device], now() - 10, feature.geometry, {
               event_types: ['provider_drop_off'],
               vehicle_state: 'available',
               speed: 0
@@ -439,8 +439,12 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         deviceMap
       ) as ComplianceEngineResult
 
-      const rule_0_id = VENICE_OVERFLOW_POLICY.rules[0].rule_id
-      const rule_1_id = VENICE_OVERFLOW_POLICY.rules[1].rule_id
+      const rule_0_id = VENICE_OVERFLOW_POLICY.rules[0]?.rule_id
+      const rule_1_id = VENICE_OVERFLOW_POLICY.rules[1]?.rule_id
+
+      if (!rule_0_id || !rule_1_id) {
+        throw new Error('Expected rule_ids')
+      }
       const { vehicles_found } = result
 
       const violatingVehicles = vehicles_found.filter(vehicle => !!vehicle.rule_applied)
@@ -463,7 +467,7 @@ describe('Tests Compliance Engine Count Functionality:', () => {
       test.assert(vehiclesMatchingBothRules.length === 3)
 
       violatingVehicles.forEach(vehicle => {
-        test.assert(vehicle.rules_matched.includes(VENICE_OVERFLOW_POLICY.rules[1].rule_id))
+        test.assert(vehicle.rules_matched.includes(VENICE_OVERFLOW_POLICY.rules[1]!.rule_id))
       })
 
       test.assert.equal(result.total_violations, 2)
@@ -530,8 +534,12 @@ describe('Tests Compliance Engine Count Functionality:', () => {
      * second rule, and there would be no violations at all.
      */
     test.assert.equal(result.total_violations, 1)
-    const rule_0_id = MANY_OVERFLOWS_POLICY.rules[0].rule_id
-    const rule_1_id = MANY_OVERFLOWS_POLICY.rules[1].rule_id
+    const rule_0_id = MANY_OVERFLOWS_POLICY.rules[0]?.rule_id
+    const rule_1_id = MANY_OVERFLOWS_POLICY.rules[1]?.rule_id
+
+    if (!rule_0_id || !rule_1_id) {
+      throw new Error('Expected rule_ids')
+    }
 
     const rule_0_applied = result.vehicles_found.filter(vehicle => {
       return vehicle.rule_applied === rule_0_id && vehicle.rules_matched.includes(rule_0_id)

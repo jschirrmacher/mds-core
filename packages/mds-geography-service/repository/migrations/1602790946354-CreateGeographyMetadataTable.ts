@@ -22,7 +22,7 @@ export class CreateGeographyMetadataTable1602790946354 implements MigrationInter
   public async up(queryRunner: QueryRunner): Promise<void> {
     if (!(await queryRunner.hasTable('geography_metadata'))) {
       await queryRunner.query(
-        `CREATE TABLE "geography_metadata" ("id" bigint GENERATED ALWAYS AS IDENTITY, "geography_id" uuid NOT NULL, "geography_metadata" json, CONSTRAINT "geography_metadata_pkey" PRIMARY KEY ("geography_id"))`
+        `CREATE TABLE "geography_metadata" ("id" bigint GENERATED ALWAYS AS IDENTITY NOT NULL, "geography_id" uuid NOT NULL, "geography_metadata" json, CONSTRAINT "geography_metadata_pkey" PRIMARY KEY ("geography_id"))`
       )
       await queryRunner.query(`CREATE UNIQUE INDEX "idx_id_geography_metadata" ON "geography_metadata" ("id") `)
       await queryRunner.query(

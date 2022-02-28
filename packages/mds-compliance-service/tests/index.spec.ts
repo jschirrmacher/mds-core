@@ -106,7 +106,7 @@ describe('ComplianceSnapshots Service Tests', () => {
 
     expect(complianceSnapshots.length).toEqual(1)
     const [complianceSnapshot] = complianceSnapshots
-    expect(complianceSnapshot.compliance_snapshot_id).toEqual(COMPLIANCE_SNAPSHOT_ID)
+    expect(complianceSnapshot?.compliance_snapshot_id).toEqual(COMPLIANCE_SNAPSHOT_ID)
   })
 
   it('Gets ComplianceSnapshots By TimeInterval (start_time, end_time options)', async () => {

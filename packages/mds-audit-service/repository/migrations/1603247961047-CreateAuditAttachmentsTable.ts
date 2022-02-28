@@ -22,7 +22,7 @@ export class CreateAuditAttachmentsTable1603247961047 implements MigrationInterf
   public async up(queryRunner: QueryRunner): Promise<void> {
     if (!(await queryRunner.hasTable('audit_attachments'))) {
       await queryRunner.query(
-        `CREATE TABLE "audit_attachments" ("recorded" bigint NOT NULL DEFAULT (extract(epoch from now()) * 1000)::bigint, "id" bigint GENERATED ALWAYS AS IDENTITY, "audit_trip_id" uuid NOT NULL, "attachment_id" uuid NOT NULL, CONSTRAINT "audit_attachments_pkey" PRIMARY KEY ("audit_trip_id", "attachment_id"))`
+        `CREATE TABLE "audit_attachments" ("recorded" bigint NOT NULL DEFAULT (extract(epoch from now()) * 1000)::bigint, "id" bigint GENERATED ALWAYS AS IDENTITY NOT NULL, "audit_trip_id" uuid NOT NULL, "attachment_id" uuid NOT NULL, CONSTRAINT "audit_attachments_pkey" PRIMARY KEY ("audit_trip_id", "attachment_id"))`
       )
       await queryRunner.query(`CREATE INDEX "idx_recorded_audit_attachments" ON "audit_attachments" ("recorded") `)
       await queryRunner.query(`CREATE UNIQUE INDEX "idx_id_audit_attachments" ON "audit_attachments" ("id") `)

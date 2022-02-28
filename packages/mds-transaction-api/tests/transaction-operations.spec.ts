@@ -35,6 +35,9 @@ describe('Test Transactions API: Transaction Operations', () => {
   describe('Success', () => {
     it('Can POST a transaction operation', async () => {
       const [operation] = transactionOperationsGenerator()
+      if (!operation) {
+        throw new Error('No operation to test')
+      }
       const { transaction_id } = operation
 
       jest.spyOn(TransactionServiceClient, 'addTransactionOperation').mockImplementationOnce(async o => o as any)

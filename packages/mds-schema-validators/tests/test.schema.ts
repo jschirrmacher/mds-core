@@ -25,6 +25,7 @@ export type TestSchema = {
   email?: string
   country: Country
   zip: string
+  duration?: string
 }
 
 export const TestSchema: JSONSchemaType<TestSchema> = {
@@ -34,7 +35,8 @@ export const TestSchema: JSONSchemaType<TestSchema> = {
     name: { type: 'string' },
     email: { type: 'string', format: 'email', nullable: true },
     country: { type: 'string', enum: [...Countries] },
-    zip: { type: 'string' }
+    zip: { type: 'string' },
+    duration: { type: 'string', format: 'duration', nullable: true, default: null }
   },
   allOf: [
     {

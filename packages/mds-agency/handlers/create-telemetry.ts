@@ -219,7 +219,7 @@ export const createTelemetryHandler = async (
       return res.status(400).send({
         error: 'invalid_data',
         error_description: 'None of the provided data was valid.',
-        error_details: [`device: ${data[0].device_id} not found`]
+        error_details: [`device: ${data[0]?.device_id} not found`]
       })
     }
 

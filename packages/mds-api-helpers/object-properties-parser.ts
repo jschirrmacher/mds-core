@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { isStringArray } from '@mds-core/mds-utils'
+import { hasAtLeastOneEntry, isStringArray } from '@mds-core/mds-utils'
 
 /** A single-value (string) parser. Useful for standard transformations, e.g.:
  * - Number
@@ -64,7 +64,7 @@ export const parseObjectPropertiesSingle = <T = string>(
             }
             return { ...params, [key]: value }
           }
-          if (isStringArray(value)) {
+          if (isStringArray(value) && hasAtLeastOneEntry(value)) {
             const [firstVal] = value
             if (parser) {
               return { ...params, [key]: parser(firstVal) }

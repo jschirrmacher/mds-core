@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-db",
-  "version": "0.6.0",
+  "version": "0.6.4",
   "description": "Mobility Data Specification database interface",
   "keywords": [
     "mds",
@@ -13,20 +13,20 @@
   ],
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "test": "DOTENV_CONFIG_PATH=../../.env jest --runInBand"
+    "test": "DOTENV_CONFIG_PATH=../../.env jest --passWithNoTests"
   },
   "dependencies": {
-    "@mds-core/mds-attachment-service": "workspace:0.5.10",
-    "@mds-core/mds-audit-service": "workspace:0.5.10",
-    "@mds-core/mds-geography-service": "workspace:0.10.6",
-    "@mds-core/mds-ingest-service": "workspace:0.9.11",
+    "@mds-core/mds-attachment-service": "workspace:0.5.14",
+    "@mds-core/mds-audit-service": "workspace:0.5.14",
+    "@mds-core/mds-geography-service": "workspace:0.10.10",
+    "@mds-core/mds-ingest-service": "workspace:0.9.15",
     "@mds-core/mds-logger": "workspace:0.5.6",
-    "@mds-core/mds-policy-service": "workspace:0.11.12",
+    "@mds-core/mds-policy-service": "workspace:0.11.16",
     "@mds-core/mds-types": "workspace:0.9.0",
     "@mds-core/mds-utils": "workspace:0.4.0",
-    "@types/pg": "8.6.1",
+    "@types/pg": "8.6.4",
     "await-lock": "2.1.0",
-    "pg": "8.7.1"
+    "pg": "8.7.3"
   },
   "devDependencies": {
     "@mds-core/mds-test-data": "workspace:0.4.17"

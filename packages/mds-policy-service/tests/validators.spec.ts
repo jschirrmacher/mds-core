@@ -122,7 +122,7 @@ describe('Tests Policy Validator', () => {
     }
 
     const result: PolicyDomainCreateModel = validatePolicyDomainModel(policy)
-    expect(result.rules[0].modality).toStrictEqual('micromobility')
+    expect(result.rules[0]?.modality).toStrictEqual('micromobility')
     expect(result).toMatchObject(policy)
   })
 

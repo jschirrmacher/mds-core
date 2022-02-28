@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, ModelMapper } from '@mds-core/mds-repository'
+import { ModelMapper } from '@mds-core/mds-repository'
 import {
   GeographyDomainCreateModel,
   GeographyDomainModel,
   GeographyMetadataDomainCreateModel,
   GeographyMetadataDomainModel
 } from '../@types'
-import { GeographyEntityModel } from './entities/geography-entity'
-import { GeographyMetadataEntityModel } from './entities/geography-metadata-entity'
+import { GeographyEntityCreateModel, GeographyEntityModel } from './entities/geography-entity'
+import { GeographyMetadataEntityCreateModel, GeographyMetadataEntityModel } from './entities/geography-metadata-entity'
 
 type GeographyEntityToDomainOptions = Partial<{}>
 
@@ -36,8 +36,6 @@ export const GeographyEntityToDomain = ModelMapper<
 })
 
 type GeographyEntityCreateOptions = Partial<{}>
-
-export type GeographyEntityCreateModel = Omit<GeographyEntityModel, keyof IdentityColumn>
 
 export const GeographyDomainToEntityCreate = ModelMapper<
   GeographyDomainCreateModel,
@@ -59,8 +57,6 @@ export const GeographyMetadataEntityToDomain = ModelMapper<
 })
 
 type GeographyMetadataEntityCreateOptions = Partial<{}>
-
-export type GeographyMetadataEntityCreateModel = Omit<GeographyMetadataEntityModel, keyof IdentityColumn>
 
 export const GeographyMetadataDomainToEntityCreate = ModelMapper<
   GeographyMetadataDomainCreateModel,

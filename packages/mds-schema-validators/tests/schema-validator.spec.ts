@@ -22,7 +22,8 @@ const TestData: TestSchema = {
   id: '26eea094-3fc2-4610-839d-6ef018b46f81',
   name: 'Test',
   zip: '90210',
-  email: 'test@test.com'
+  email: 'test@test.com',
+  duration: 'P1D'
 }
 
 const validator = SchemaValidator(TestSchema)
@@ -65,6 +66,12 @@ describe('Schema Validation', () => {
 
   it('Fails Validation (invalid pattern)', async () => {
     const data = { ...TestData, country: 'CA' }
+    expect(validator.isValid(data)).toBe(false)
+    await expect(async () => validator.validate(data)).rejects.toThrowError(ValidationError)
+  })
+
+  it('Fails Validation (invalid format, non-duration)', async () => {
+    const data = { ...TestData, duration: 'invalid' }
     expect(validator.isValid(data)).toBe(false)
     await expect(async () => validator.validate(data)).rejects.toThrowError(ValidationError)
   })

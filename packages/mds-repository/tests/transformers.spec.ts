@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, UppercaseTransformer } from '../transformers'
+import { BigintTransformer, LowercaseTransformer, UppercaseTransformer } from '../transformers'
 
 describe('Test Transformers', () => {
   it('BigIntTransformer', async () => {
@@ -26,14 +26,31 @@ describe('Test Transformers', () => {
     expect(BigintTransformer.from(['1', null])).toEqual([1, null])
   })
 
+  it('LowercaseTransformer', async () => {
+    const original = ['a', 'A', null]
+    const transformed = ['a', 'a', null]
+    expect(LowercaseTransformer().to(original)).toEqual(transformed)
+    expect(LowercaseTransformer({ direction: 'both' }).to(original)).toEqual(transformed)
+    expect(LowercaseTransformer({ direction: 'read' }).to(original)).toEqual(original)
+    expect(LowercaseTransformer({ direction: 'write' }).to(original)).toEqual(transformed)
+
+    expect(LowercaseTransformer().from(original)).toEqual(transformed)
+    expect(LowercaseTransformer({ direction: 'both' }).from(original)).toEqual(transformed)
+    expect(LowercaseTransformer({ direction: 'read' }).from(original)).toEqual(transformed)
+    expect(LowercaseTransformer({ direction: 'write' }).from(original)).toEqual(original)
+  })
+
   it('UppercaseTransformer', async () => {
-    expect(UppercaseTransformer.to('a')).toEqual('A')
-    expect(UppercaseTransformer.to('A')).toEqual('A')
-    expect(UppercaseTransformer.to(null)).toEqual(null)
-    expect(UppercaseTransformer.to(['a', 'A', null])).toEqual(['A', 'A', null])
-    expect(UppercaseTransformer.from('a')).toEqual('A')
-    expect(UppercaseTransformer.from('A')).toEqual('A')
-    expect(UppercaseTransformer.from(null)).toEqual(null)
-    expect(UppercaseTransformer.from(['a', 'A', null])).toEqual(['A', 'A', null])
+    const original = ['a', 'A', null]
+    const transformed = ['A', 'A', null]
+    expect(UppercaseTransformer().to(original)).toEqual(transformed)
+    expect(UppercaseTransformer({ direction: 'both' }).to(original)).toEqual(transformed)
+    expect(UppercaseTransformer({ direction: 'read' }).to(original)).toEqual(original)
+    expect(UppercaseTransformer({ direction: 'write' }).to(original)).toEqual(transformed)
+
+    expect(UppercaseTransformer().from(original)).toEqual(transformed)
+    expect(UppercaseTransformer({ direction: 'both' }).from(original)).toEqual(transformed)
+    expect(UppercaseTransformer({ direction: 'read' }).from(original)).toEqual(transformed)
+    expect(UppercaseTransformer({ direction: 'write' }).from(original)).toEqual(original)
   })
 })

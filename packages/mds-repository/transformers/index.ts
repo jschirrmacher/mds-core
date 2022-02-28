@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 export { BigintTransformer } from './bigint-transformer'
+export { LowercaseTransformer } from './lowercase-transformer'
+export * from './types'
 export { UppercaseTransformer } from './uppercase-transformer'

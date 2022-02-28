@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-const Bigint = (value: string | null): number | null => (value === null ? value : Number(value))
+import { Nullable } from '@mds-core/mds-types'
+import { OneWayTransformer, ValueTransformer } from './types'
 
-// Use Number for bigint columns so the values get returned as numbers instead of strings
-export const BigintTransformer = {
-  to: (to: number | null | (number | null)[]) => to,
-  from: (from: string | null | (string | null)[]) => (Array.isArray(from) ? from.map(Bigint) : Bigint(from))
+const toNumber: ValueTransformer<Nullable<string>, Nullable<number>> = value => {
+  const transform = (item: Nullable<string>) => (item === null ? item : Number(item))
+  return Array.isArray(value) ? value.map(transform) : transform(value)
 }
+
+// Use Number for bigint columns so the values get transformed from strings to
+// numbers when read from the database
+export const BigintTransformer = { ...OneWayTransformer, from: toNumber }

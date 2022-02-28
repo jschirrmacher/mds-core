@@ -100,6 +100,9 @@ describe('Test Transactions API: Transactions', () => {
 
     it('Can GET one transaction', async () => {
       const [mockTransaction] = transactionsGenerator()
+      if (!mockTransaction) {
+        throw new Error('No mock transaction to test')
+      }
       const { transaction_id } = mockTransaction
 
       jest.spyOn(TransactionServiceClient, 'getTransaction').mockImplementationOnce(async _ => mockTransaction)
@@ -396,6 +399,11 @@ describe('Test Transactions API: Transactions', () => {
           )
         } else if (i > 0 && i <= 30) {
           const mockRow = i > 15 ? mockTransactionsB[i - 16] : mockTransactionsA[i - 1]
+
+          if (!mockRow) {
+            throw new Error('Mock row not found')
+          }
+
           expect(line).toMatch(new RegExp(`^"${mockRow.transaction_id}"`))
           const expectedJSON = JSON.stringify(mockRow.receipt.receipt_details).replace(/"/g, '""')
           const { receipt_details } = mockRow.receipt
@@ -464,8 +472,8 @@ describe('Test Transactions API: Transactions', () => {
         if (i === 0) {
           expect(line).toMatch(/^"Provider ID","Amount","Fee Type"$/m)
         } else if (i > 0 && i <= 15) {
-          expect(line).toMatch(new RegExp(`^"${mockTransactions[i - 1].provider_id}"`))
-          expect(line).toMatch(new RegExp(`"${mockTransactions[i - 1].fee_type}"$`))
+          expect(line).toMatch(new RegExp(`^"${mockTransactions[i - 1]?.provider_id}"`))
+          expect(line).toMatch(new RegExp(`"${mockTransactions[i - 1]?.fee_type}"$`))
         } else {
           throw 'csv too long'
         }

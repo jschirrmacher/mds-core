@@ -14,29 +14,20 @@
  * limitations under the License.
  */
 
-import { AnyConstructor, Timestamp } from '@mds-core/mds-types'
-import { Column, Index } from 'typeorm'
-import { ColumnCommonOptions } from 'typeorm/decorator/options/ColumnCommonOptions'
-import { ColumnWithWidthOptions } from 'typeorm/decorator/options/ColumnWithWidthOptions'
-import { DesignType } from '../decorators'
-import { BigintTransformer } from '../transformers'
+import { AnyConstructor, Optional, Timestamp } from '@mds-core/mds-types'
+import { Index } from 'typeorm'
+import { TimestampColumn, TimestampColumnOptions } from '../decorators'
 
-export interface RecordedColumn {
-  recorded: Timestamp
-}
+export type RecordedColumn = { recorded: Timestamp }
 
-export const RecordedColumn = <T extends AnyConstructor>(
-  EntityClass: T,
-  options: ColumnWithWidthOptions & ColumnCommonOptions = {}
-) => {
+export type RecordedColumnCreateModel<T> = T extends RecordedColumn ? Optional<T, keyof RecordedColumn> : T
+
+export type RecordedColumnOptions = Omit<TimestampColumnOptions, 'default'>
+
+export const RecordedColumn = <T extends AnyConstructor>(EntityClass: T, options: RecordedColumnOptions = {}) => {
   abstract class RecordedColumnMixin extends EntityClass implements RecordedColumn {
-    @Column('bigint', {
-      transformer: BigintTransformer,
-      default: () => 'mds_epoch_ms()',
-      ...options
-    })
+    @TimestampColumn({ ...options, default: () => 'mds_epoch_ms()' })
     @Index()
-    @DesignType(Number)
     recorded: Timestamp
   }
   return RecordedColumnMixin

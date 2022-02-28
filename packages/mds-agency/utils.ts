@@ -40,7 +40,13 @@ import {
   VehicleEvent,
   VEHICLE_STATE
 } from '@mds-core/mds-types'
-import { areThereCommonElements, isInsideBoundingBox, isUUID, ValidationError } from '@mds-core/mds-utils'
+import {
+  areThereCommonElements,
+  hasAtLeastOneEntry,
+  isInsideBoundingBox,
+  isUUID,
+  ValidationError
+} from '@mds-core/mds-utils'
 import { DefinedError } from 'ajv'
 import express from 'express'
 import { Query } from 'express-serve-static-core'
@@ -56,8 +62,8 @@ import { AgencyApiError, CompositeVehicle, PaginatedVehiclesList, TelemetryResul
  */
 export const agencyValidationErrorParser = (error: ValidationError): AgencyApiError => {
   // Not the best typeguard in the world, but ¯\_(ツ)_/¯
-  const isAjvErrors = (x: unknown): x is DefinedError[] => {
-    return Array.isArray(x)
+  const isAjvErrors = (x: unknown): x is [DefinedError, ...DefinedError[]] => {
+    return Array.isArray(x) && hasAtLeastOneEntry(x)
   }
 
   const { info } = error

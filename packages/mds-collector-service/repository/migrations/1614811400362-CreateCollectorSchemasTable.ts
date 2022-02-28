@@ -21,7 +21,7 @@ export class CreateCollectorSchemasTable1614811400362 implements MigrationInterf
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "collector-schemas" ("recorded" bigint NOT NULL DEFAULT (extract(epoch from now()) * 1000)::bigint, "id" bigint GENERATED ALWAYS AS IDENTITY, "schema_id" character varying(255) NOT NULL, "schema" json NOT NULL, CONSTRAINT "collector_schemas_pkey" PRIMARY KEY ("schema_id"))`
+      `CREATE TABLE "collector-schemas" ("recorded" bigint NOT NULL DEFAULT (extract(epoch from now()) * 1000)::bigint, "id" bigint GENERATED ALWAYS AS IDENTITY NOT NULL, "schema_id" character varying(255) NOT NULL, "schema" json NOT NULL, CONSTRAINT "collector_schemas_pkey" PRIMARY KEY ("schema_id"))`
     )
     await queryRunner.query(`CREATE INDEX "idx_recorded_collector_schemas" ON "collector-schemas" ("recorded") `)
     await queryRunner.query(`CREATE UNIQUE INDEX "idx_id_collector_schemas" ON "collector-schemas" ("id") `)

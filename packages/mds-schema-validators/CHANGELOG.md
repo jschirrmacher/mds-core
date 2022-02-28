@@ -1,5 +1,11 @@
 # @mds-core/mds-schema-validators
 
+## 0.5.4
+
+### Patch Changes
+
+- fc42c45a: Add 'duration' format to Schema Validators in accordance with JSONSchema draft 2019-09
+
 ## 0.5.3
 
 ### Patch Changes

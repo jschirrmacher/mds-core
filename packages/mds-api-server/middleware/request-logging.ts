@@ -36,15 +36,16 @@ export const RequestLoggingMiddleware = ({
 }: RequestLoggingMiddlewareOptions = {}): express.RequestHandler[] => [
   morgan<ApiRequest, ApiResponse & ApiResponseLocalsClaims>(
     (tokens, req, res) => {
+      const { method, url, status, res: tokenRes, 'response-time': responseTime, 'remote-addr': remoteAddr } = tokens
       return [
-        ...(includeRemoteAddress ? [formatRemoteAddress(tokens['remote-addr'](req, res))] : []),
+        ...(includeRemoteAddress && remoteAddr ? [formatRemoteAddress(remoteAddr(req, res))] : []),
         ...(res.locals.claims?.provider_id ? [res.locals.claims.provider_id] : []),
-        tokens.method(req, res),
-        tokens.url(req, res),
-        tokens.status(req, res),
-        tokens.res(req, res, 'content-length'),
+        ...(method ? [method(req, res)] : []),
+        ...(url ? [url(req, res)] : []),
+        ...(status ? [status(req, res)] : []),
+        ...(tokenRes ? [tokenRes(req, res, 'content-length')] : []),
         '-',
-        tokens['response-time'](req, res),
+        ...(responseTime ? [responseTime(req, res)] : []),
         'ms'
       ]
         .filter((token): token is string => token !== undefined)

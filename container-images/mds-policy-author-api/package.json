@@ -1,6 +1,6 @@
 {
   "name": "@container-images/mds-policy-author-api",
-  "version": "0.1.80",
+  "version": "0.1.84",
   "private": true,
   "description": "Docker Image for MDS policy-author API",
   "keywords": [
@@ -20,11 +20,11 @@
     "image:production": "pnpm bundle:production && ../../bin/build-helper buildImage mds-policy-author-api:${npm_package_version}"
   },
   "dependencies": {
-    "@mds-core/mds-policy-author-api": "workspace:0.7.17",
+    "@mds-core/mds-policy-author-api": "workspace:0.7.21",
     "@mds-core/mds-webpack-config": "workspace:0.1.10",
     "dd-trace": "1.5.1",
     "express": "4.17.1",
-    "pg": "8.7.1",
+    "pg": "8.7.3",
     "pino": "6.13.3"
   }
 }

@@ -112,7 +112,7 @@ describe('Tests Compliance Engine Speed Violations', () => {
     ) as ComplianceEngineResult
     test.assert.deepEqual(result.vehicles_found.length, 5)
     test.assert.deepEqual(result.total_violations, 5)
-    const { rule_id } = SPEED_POLICY.rules[0]
+    const { rule_id } = SPEED_POLICY.rules[0]!
     // Note that for speed rule matches, `rule_applied` is never null.
     const speedingCount = result.vehicles_found.reduce((count: number, vehicle: MatchedVehicleInformation) => {
       if (vehicle.rule_applied === rule_id && vehicle.rules_matched.includes(rule_id)) {
@@ -150,8 +150,8 @@ describe('Tests Compliance Engine Speed Violations', () => {
     ) as ComplianceEngineResult
     test.assert.deepEqual(result.vehicles_found.length, 8)
     test.assert.deepEqual(result.total_violations, 8)
-    const { rule_id } = OVERLAPPING_GEOS_SPEED_POLICY.rules[0]
-    const rule_id_2 = OVERLAPPING_GEOS_SPEED_POLICY.rules[1].rule_id
+    const { rule_id } = OVERLAPPING_GEOS_SPEED_POLICY.rules[0]!
+    const rule_id_2 = OVERLAPPING_GEOS_SPEED_POLICY.rules[1]!.rule_id
 
     // Note that for speed rule matches, `rule_applied` is never null.
     const speedingCount_1 = result.vehicles_found.reduce((count: number, vehicle: MatchedVehicleInformation) => {

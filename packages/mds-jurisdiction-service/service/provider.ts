@@ -30,6 +30,11 @@ export const JurisdictionServiceProvider: ServiceProvider<JurisdictionService, J
       const [jurisdiction] = await JurisdictionRepository.createJurisdictions(
         [model].map(ValidateJurisdictionForCreate)
       )
+
+      if (!jurisdiction) {
+        throw new Error('Failed to create jurisdiction')
+      }
+
       return ServiceResult(jurisdiction)
     } catch (error) /* istanbul ignore next */ {
       const exception = ServiceException('Error Creating Jurisdiction', error)

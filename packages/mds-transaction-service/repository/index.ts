@@ -56,324 +56,327 @@ interface InsertTransactionsOptions {
   beforeCommit: (pendingTransactions: TransactionDomainModel[]) => Promise<void>
 }
 
-class TransactionReadWriteRepository extends ReadWriteRepository {
-  public getTransaction = async (transaction_id: UUID): Promise<TransactionDomainModel> => {
-    const { connect } = this
-    try {
-      const connection = await connect('ro')
-      const entity = await connection.getRepository(TransactionEntity).findOne({
-        where: {
-          transaction_id
+export const TransactionRepository = ReadWriteRepository.Create(
+  'transactions',
+  {
+    entities: [TransactionEntity, TransactionOperationEntity, TransactionStatusEntity],
+    migrations
+  },
+  repository => {
+    return {
+      getTransaction: async (transaction_id: UUID): Promise<TransactionDomainModel> => {
+        try {
+          const connection = await repository.connect('ro')
+          const entity = await connection.getRepository(TransactionEntity).findOne({
+            where: {
+              transaction_id
+            }
+          })
+          if (!entity) {
+            throw new NotFoundError(`Transaction ${transaction_id} not found`)
+          }
+          return TransactionEntityToDomain.map(entity)
+        } catch (error) {
+          throw RepositoryError(error)
         }
-      })
-      if (!entity) {
-        throw new NotFoundError(`Transaction ${transaction_id} not found`)
-      }
-      return TransactionEntityToDomain.map(entity)
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
+      },
 
-  public getTransactions = async (
-    search: TransactionSearchParams
-  ): Promise<{ transactions: TransactionDomainModel[]; cursor: Cursor }> => {
-    const { connect } = this
-    const {
-      provider_id,
-      start_timestamp,
-      end_timestamp,
-      search_text,
-      start_amount,
-      end_amount,
-      fee_type,
-      before,
-      after,
-      limit,
-      order
-    } = validateTransactionSearchParams(search)
-
-    const resolveTimeBounds = (): { timestamp?: FindOperator<number> } => {
-      if (start_timestamp && end_timestamp) {
-        return { timestamp: Between(start_timestamp, end_timestamp) }
-      }
-      if (start_timestamp) {
-        return { timestamp: MoreThan(start_timestamp) }
-      }
-      if (end_timestamp) {
-        return { timestamp: LessThan(end_timestamp) }
-      }
-      return {}
-    }
-
-    const jsonSearch = (alias: string) => {
-      /**
-       * 'simple' means no word-stemming, all words are indexed and searchable.
-       * ['string','numeric','boolean'] means all values of the JSONB column are being searched as text
-       */
-      return search_text
-        ? new Brackets(qb =>
-            qb.where(
-              `jsonb_to_tsvector('simple',${alias}.receipt,'["string","numeric","boolean"]') @@ to_tsquery(:search_text)`,
-              {
-                search_text: search_text + ':*'
-              }
-            )
-          )
-        : []
-    }
-
-    const resolveProviderId = (): { provider_id?: UUID } => (provider_id ? { provider_id } : {})
-
-    const resolveConditions = (alias: string) => {
-      const clauses = [
-        start_amount ? new Brackets(qb => qb.where(`amount > :start_amount`, { start_amount })) : [],
-        end_amount ? new Brackets(qb => qb.where(`amount < :end_amount`, { end_amount })) : [],
-        fee_type ? new Brackets(qb => qb.where({ fee_type })) : [],
-        jsonSearch(alias)
-      ]
-
-      return clauses.flat().reduce((acc, clause) => {
-        return new Brackets(qb => qb.andWhere(acc).andWhere(clause))
-      }, new Brackets(qb => qb.where('1=1')))
-    }
-
-    try {
-      const connection = await connect('ro')
-
-      /**
-       * Need to generate a shared alias due to the different aliasing methods in TypeORM & TypeORM Cursor Paginator
-       * depending on debug vs production environments.
-       */
-      const alias = 'transactionentity'
-
-      const queryBuilder = connection
-        .getRepository(TransactionEntity)
-        .createQueryBuilder(alias)
-        .where({ ...resolveProviderId(), ...resolveTimeBounds() })
-        .andWhere(resolveConditions(alias))
-
-      const { data, cursor } = await buildPaginator({
-        alias,
-        entity: TransactionEntity,
-        query: {
-          limit,
-          order: order?.direction ?? 'ASC',
-          afterCursor: after,
-          beforeCursor: after ? undefined : before
-        },
-        paginationKeys: [order?.column ?? 'id']
-      }).paginate(queryBuilder)
-      return { transactions: data.map(TransactionEntityToDomain.mapper()), cursor }
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  public createTransaction = async (
-    transaction: TransactionDomainModel,
-    options: Partial<InsertTransactionOptions>
-  ): Promise<TransactionDomainModel> => {
-    const { connect } = this
-    const { beforeCommit = async () => undefined } = options
-    try {
-      const connection = await connect('rw')
-      const result = await connection.transaction(async manager => {
+      getTransactions: async (
+        search: TransactionSearchParams
+      ): Promise<{ transactions: TransactionDomainModel[]; cursor: Cursor }> => {
         const {
-          raw: [entity]
-        }: InsertReturning<TransactionEntity> = await manager
-          .getRepository(TransactionEntity)
-          .createQueryBuilder()
-          .insert()
-          .values([TransactionDomainToEntityCreate.map(transaction)])
-          .returning('*')
-          .execute()
-        const pendingTransaction = TransactionEntityToDomain.map(entity)
-        await beforeCommit(pendingTransaction)
-        return pendingTransaction
-      })
-      return result
-    } catch (error) {
-      throw RepositoryError(error)
+          provider_id,
+          start_timestamp,
+          end_timestamp,
+          search_text,
+          start_amount,
+          end_amount,
+          fee_type,
+          before,
+          after,
+          limit,
+          order
+        } = validateTransactionSearchParams(search)
+
+        const resolveTimeBounds = (): { timestamp?: FindOperator<number> } => {
+          if (start_timestamp && end_timestamp) {
+            return { timestamp: Between(start_timestamp, end_timestamp) }
+          }
+          if (start_timestamp) {
+            return { timestamp: MoreThan(start_timestamp) }
+          }
+          if (end_timestamp) {
+            return { timestamp: LessThan(end_timestamp) }
+          }
+          return {}
+        }
+
+        const jsonSearch = (alias: string) => {
+          /**
+           * 'simple' means no word-stemming, all words are indexed and searchable.
+           * ['string','numeric','boolean'] means all values of the JSONB column are being searched as text
+           */
+          return search_text
+            ? new Brackets(qb =>
+                qb.where(
+                  `jsonb_to_tsvector('simple',${alias}.receipt,'["string","numeric","boolean"]') @@ to_tsquery(:search_text)`,
+                  {
+                    search_text: search_text + ':*'
+                  }
+                )
+              )
+            : []
+        }
+
+        const resolveProviderId = (): { provider_id?: UUID } => (provider_id ? { provider_id } : {})
+
+        const resolveConditions = (alias: string) => {
+          const clauses = [
+            start_amount ? new Brackets(qb => qb.where(`amount > :start_amount`, { start_amount })) : [],
+            end_amount ? new Brackets(qb => qb.where(`amount < :end_amount`, { end_amount })) : [],
+            fee_type ? new Brackets(qb => qb.where({ fee_type })) : [],
+            jsonSearch(alias)
+          ]
+
+          return clauses.flat().reduce((acc, clause) => {
+            return new Brackets(qb => qb.andWhere(acc).andWhere(clause))
+          }, new Brackets(qb => qb.where('1=1')))
+        }
+
+        try {
+          const connection = await repository.connect('ro')
+
+          /**
+           * Need to generate a shared alias due to the different aliasing methods in TypeORM & TypeORM Cursor Paginator
+           * depending on debug vs production environments.
+           */
+          const alias = 'transactionentity'
+
+          const queryBuilder = connection
+            .getRepository(TransactionEntity)
+            .createQueryBuilder(alias)
+            .where({ ...resolveProviderId(), ...resolveTimeBounds() })
+            .andWhere(resolveConditions(alias))
+
+          const { data, cursor } = await buildPaginator({
+            alias,
+            entity: TransactionEntity,
+            query: {
+              limit,
+              order: order?.direction ?? 'ASC',
+              afterCursor: after,
+              beforeCursor: after ? undefined : before
+            },
+            paginationKeys: [order?.column ?? 'id']
+          }).paginate(queryBuilder)
+          return { transactions: data.map(TransactionEntityToDomain.mapper()), cursor }
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      },
+
+      createTransaction: async (
+        transaction: TransactionDomainModel,
+        options: Partial<InsertTransactionOptions>
+      ): Promise<TransactionDomainModel> => {
+        const { beforeCommit = async () => undefined } = options
+        try {
+          const connection = await repository.connect('rw')
+          const result = await connection.transaction(async manager => {
+            const {
+              raw: [entity]
+            }: InsertReturning<TransactionEntity> = await manager
+              .getRepository(TransactionEntity)
+              .createQueryBuilder()
+              .insert()
+              .values([TransactionDomainToEntityCreate.map(transaction)])
+              .returning('*')
+              .execute()
+
+            if (!entity) {
+              throw new Error('Failed to create transaction')
+            }
+
+            const pendingTransaction = TransactionEntityToDomain.map(entity)
+            await beforeCommit(pendingTransaction)
+            return pendingTransaction
+          })
+          return result
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      },
+
+      createTransactions: async (
+        transactions: TransactionDomainModel[],
+        options: Partial<InsertTransactionsOptions>
+      ): Promise<TransactionDomainModel[]> => {
+        const { beforeCommit = async () => undefined } = options
+        try {
+          const connection = await repository.connect('rw')
+          const result = await connection.transaction(async manager => {
+            const { raw: entities }: InsertReturning<TransactionEntity> = await manager
+              .getRepository(TransactionEntity)
+              .createQueryBuilder()
+              .insert()
+              .values(transactions.map(TransactionDomainToEntityCreate.mapper()))
+              .returning('*')
+              .execute()
+            const pendingTransactions = entities.map(TransactionEntityToDomain.map)
+            await beforeCommit(pendingTransactions)
+            return pendingTransactions
+          })
+          return result
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      },
+
+      addTransactionOperation: async (
+        transactionOperation: TransactionOperationDomainModel
+      ): Promise<TransactionOperationDomainModel> => {
+        try {
+          const connection = await repository.connect('rw')
+          const {
+            raw: [entity]
+          }: InsertReturning<TransactionOperationEntity> = await connection
+            .getRepository(TransactionOperationEntity)
+            .createQueryBuilder()
+            .insert()
+            .values([TransactionOperationDomainToEntityCreate.map(transactionOperation)])
+            .returning('*')
+            .execute()
+
+          if (!entity) {
+            throw new Error('Failed to create transaction operation')
+          }
+          return TransactionOperationEntityToDomain.map(entity)
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      },
+
+      // TODO search criteria, paging
+      getTransactionOperations: async (transaction_id: UUID): Promise<TransactionOperationDomainModel[]> => {
+        try {
+          const connection = await repository.connect('ro')
+          const entities = await connection
+            .getRepository(TransactionOperationEntity)
+            .find({ where: { transaction_id } })
+          return entities.map(TransactionOperationEntityToDomain.mapper())
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      },
+
+      setTransactionStatus: async (
+        transactionStatus: TransactionStatusDomainModel
+      ): Promise<TransactionStatusDomainModel> => {
+        try {
+          const connection = await repository.connect('rw')
+          const {
+            raw: [entity]
+          }: InsertReturning<TransactionStatusEntity> = await connection
+            .getRepository(TransactionStatusEntity)
+            .createQueryBuilder()
+            .insert()
+            .values([TransactionStatusDomainToEntityCreate.map(transactionStatus)])
+            .returning('*')
+            .execute()
+
+          if (!entity) {
+            throw new Error('Failed to create transaction status')
+          }
+
+          return TransactionStatusEntityToDomain.map(entity)
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      },
+
+      // TODO search criteria, paging
+      getTransactionStatuses: async (transaction_id: UUID): Promise<TransactionStatusDomainModel[]> => {
+        try {
+          const connection = await repository.connect('ro')
+          const entities = await connection.getRepository(TransactionStatusEntity).find({ where: { transaction_id } })
+          return entities.map(TransactionStatusEntityToDomain.mapper())
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      },
+
+      getTransactionsStatuses: async (
+        transaction_ids: UUID[]
+      ): Promise<Record<UUID, TransactionStatusDomainModel[]>> => {
+        try {
+          const connection = await repository.connect('ro')
+          const entities: { transaction_id: UUID; statuses: TransactionStatusEntity[] }[] = await connection
+            .getRepository(TransactionStatusEntity)
+            .createQueryBuilder()
+            .select('transaction_id, ARRAY_AGG(row_to_json("TransactionStatusEntity".*)) as statuses')
+            .where({ transaction_id: In(transaction_ids) })
+            .groupBy(`transaction_id`)
+            .execute()
+
+          // Map the statuses within the object to their domain models
+          return entities.reduce<Record<UUID, TransactionStatusDomainModel[]>>((acc, { transaction_id, statuses }) => {
+            const mappedStatuses = statuses.map(TransactionStatusEntityToDomain.mapper())
+            return { ...acc, [transaction_id]: mappedStatuses }
+          }, {})
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      },
+
+      /**
+       * @deprecated
+       * **WARNING: This should ONLY be used during tests! Hence adding the deprecated flag.**
+       * Deletes all transactions from the DB.
+       */
+      deleteAllTransactions: async () => {
+        testEnvSafeguard()
+        try {
+          const connection = await repository.connect('rw')
+
+          await connection.getRepository(TransactionEntity).query('TRUNCATE "transactions" RESTART IDENTITY')
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      },
+
+      /**
+       * @deprecated
+       * **WARNING: This should ONLY be used during tests! Hence adding the deprecated flag.**
+       * Deletes all transaction operations from the DB.
+       */
+      deleteAllTransactionOperations: async () => {
+        testEnvSafeguard()
+        try {
+          const connection = await repository.connect('rw')
+          await connection
+            .getRepository(TransactionOperationEntity)
+            .query('TRUNCATE "transaction_operations" RESTART IDENTITY')
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      },
+
+      /**
+       * @deprecated
+       * **WARNING: This should ONLY be used during tests! Hence adding the deprecated flag.**
+       * Deletes all transaction statuses from the DB.
+       */
+      deleteAllTransactionStatuses: async () => {
+        testEnvSafeguard()
+        try {
+          const connection = await repository.connect('rw')
+          await connection
+            .getRepository(TransactionStatusEntity)
+            .query('TRUNCATE "transaction_statuses" RESTART IDENTITY')
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      }
     }
   }
-
-  public createTransactions = async (
-    transactions: TransactionDomainModel[],
-    options: Partial<InsertTransactionsOptions>
-  ): Promise<TransactionDomainModel[]> => {
-    const { connect } = this
-    const { beforeCommit = async () => undefined } = options
-    try {
-      const connection = await connect('rw')
-      const result = await connection.transaction(async manager => {
-        const { raw: entities }: InsertReturning<TransactionEntity> = await manager
-          .getRepository(TransactionEntity)
-          .createQueryBuilder()
-          .insert()
-          .values(transactions.map(TransactionDomainToEntityCreate.mapper()))
-          .returning('*')
-          .execute()
-        const pendingTransactions = entities.map(TransactionEntityToDomain.map)
-        await beforeCommit(pendingTransactions)
-        return pendingTransactions
-      })
-      return result
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  public addTransactionOperation = async (
-    transactionOperation: TransactionOperationDomainModel
-  ): Promise<TransactionOperationDomainModel> => {
-    const { connect } = this
-    try {
-      const connection = await connect('rw')
-      const {
-        raw: [entity]
-      }: InsertReturning<TransactionOperationEntity> = await connection
-        .getRepository(TransactionOperationEntity)
-        .createQueryBuilder()
-        .insert()
-        .values([TransactionOperationDomainToEntityCreate.map(transactionOperation)])
-        .returning('*')
-        .execute()
-      return TransactionOperationEntityToDomain.map(entity)
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  // TODO search criteria, paging
-  public getTransactionOperations = async (transaction_id: UUID): Promise<TransactionOperationDomainModel[]> => {
-    const { connect } = this
-    try {
-      const connection = await connect('ro')
-      const entities = await connection.getRepository(TransactionOperationEntity).find({ where: { transaction_id } })
-      return entities.map(TransactionOperationEntityToDomain.mapper())
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  public setTransactionStatus = async (
-    transactionStatus: TransactionStatusDomainModel
-  ): Promise<TransactionStatusDomainModel> => {
-    const { connect } = this
-    try {
-      const connection = await connect('rw')
-      const {
-        raw: [entity]
-      }: InsertReturning<TransactionStatusEntity> = await connection
-        .getRepository(TransactionStatusEntity)
-        .createQueryBuilder()
-        .insert()
-        .values([TransactionStatusDomainToEntityCreate.map(transactionStatus)])
-        .returning('*')
-        .execute()
-      return TransactionStatusEntityToDomain.map(entity)
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  // TODO search criteria, paging
-  public getTransactionStatuses = async (transaction_id: UUID): Promise<TransactionStatusDomainModel[]> => {
-    const { connect } = this
-    try {
-      const connection = await connect('ro')
-      const entities = await connection.getRepository(TransactionStatusEntity).find({ where: { transaction_id } })
-      return entities.map(TransactionStatusEntityToDomain.mapper())
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  public getTransactionsStatuses = async (
-    transaction_ids: UUID[]
-  ): Promise<Record<UUID, TransactionStatusDomainModel[]>> => {
-    const { connect } = this
-    try {
-      const connection = await connect('ro')
-      const entities: { transaction_id: UUID; statuses: TransactionStatusEntity[] }[] = await connection
-        .getRepository(TransactionStatusEntity)
-        .createQueryBuilder()
-        .select('transaction_id, ARRAY_AGG(row_to_json("TransactionStatusEntity".*)) as statuses')
-        .where({ transaction_id: In(transaction_ids) })
-        .groupBy(`transaction_id`)
-        .execute()
-
-      // Map the statuses within the object to their domain models
-      return entities.reduce<Record<UUID, TransactionStatusDomainModel[]>>((acc, { transaction_id, statuses }) => {
-        const mappedStatuses = statuses.map(TransactionStatusEntityToDomain.mapper())
-        return { ...acc, [transaction_id]: mappedStatuses }
-      }, {})
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  /**
-   * @deprecated
-   * **WARNING: This should ONLY be used during tests! Hence adding the deprecated flag.**
-   * Deletes all transactions from the DB.
-   */
-  public deleteAllTransactions = async () => {
-    testEnvSafeguard()
-    const { connect } = this
-    try {
-      const connection = await connect('rw')
-      const repository = await connection.getRepository(TransactionEntity)
-
-      await repository.query(`DELETE FROM ${repository.metadata.tableName};`)
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  /**
-   * @deprecated
-   * **WARNING: This should ONLY be used during tests! Hence adding the deprecated flag.**
-   * Deletes all transaction operations from the DB.
-   */
-  public deleteAllTransactionOperations = async () => {
-    testEnvSafeguard()
-    const { connect } = this
-    try {
-      const connection = await connect('rw')
-      const repository = await connection.getRepository(TransactionOperationEntity)
-
-      await repository.query(`DELETE FROM ${repository.metadata.tableName};`)
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  /**
-   * @deprecated
-   * **WARNING: This should ONLY be used during tests! Hence adding the deprecated flag.**
-   * Deletes all transaction statuses from the DB.
-   */
-  public deleteAllTransactionStatuses = async () => {
-    testEnvSafeguard()
-    const { connect } = this
-    try {
-      const connection = await connect('rw')
-      const repository = await connection.getRepository(TransactionStatusEntity)
-
-      await repository.query(`DELETE FROM ${repository.metadata.tableName};`)
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  constructor() {
-    super('transactions', {
-      entities: [TransactionEntity, TransactionOperationEntity, TransactionStatusEntity],
-      migrations
-    })
-  }
-}
-
-export const TransactionRepository = new TransactionReadWriteRepository()
+)

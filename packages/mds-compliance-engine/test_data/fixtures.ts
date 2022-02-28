@@ -159,7 +159,7 @@ export const OUTER_GEO = {
   name: 'outer venice geo',
   geography_json: {
     type: 'FeatureCollection',
-    features: [{ properties: {}, type: 'Feature', geometry: veniceSpecOps.features[0].geometry }]
+    features: [{ properties: {}, type: 'Feature', geometry: veniceSpecOps.features[0]?.geometry }]
   }
 } as GeographyDomainModel
 

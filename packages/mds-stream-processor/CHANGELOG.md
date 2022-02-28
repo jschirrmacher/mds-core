@@ -1,5 +1,12 @@
 # @mds-core/mds-stream-processor
 
+## 0.4.12
+
+### Patch Changes
+
+- Updated dependencies [bc8f0a04]
+  - @mds-core/mds-service-helpers@0.6.4
+
 ## 0.4.11
 
 ### Patch Changes

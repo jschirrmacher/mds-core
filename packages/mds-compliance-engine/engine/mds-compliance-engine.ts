@@ -18,7 +18,7 @@ import { ComplianceSnapshotDomainModel } from '@mds-core/mds-compliance-service/
 import { GeographyDomainModel } from '@mds-core/mds-geography-service'
 import { PolicyDomainModel } from '@mds-core/mds-policy-service'
 import { Device, Timestamp, UUID, VehicleEvent } from '@mds-core/mds-types'
-import { filterDefined, now, uuid } from '@mds-core/mds-utils'
+import { filterDefined, hasOwnProperty, now, uuid } from '@mds-core/mds-utils'
 import { ProviderInputs, VehicleEventWithTelemetry } from '../@types'
 import { ComplianceEngineLogger } from '../logger'
 import { processCountPolicy } from './count_processors'
@@ -91,9 +91,15 @@ export async function processPolicy(
        * If there's no data for this provider, skip it.
        * This allows querying for a given set of providers at a time, instead of _all_ providers.
        */
-      if (!providerInputs.hasOwnProperty(provider_id)) return undefined
+      if (!hasOwnProperty(providerInputs, provider_id)) return null
 
-      const { filteredEvents, deviceMap } = providerInputs[provider_id]
+      const providerEntry = providerInputs[provider_id]
+
+      if (!providerEntry) {
+        return null
+      }
+
+      const { filteredEvents, deviceMap } = providerEntry
       return createComplianceSnapshot(provider_id, policy, geographies, filteredEvents, deviceMap, compliance_as_of)
     })
     // filter out undefined results

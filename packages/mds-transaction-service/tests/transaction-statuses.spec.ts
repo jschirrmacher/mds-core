@@ -25,6 +25,9 @@ describe('Transaction Status Tests', () => {
   describe('Success', () => {
     it('Post Good Transaction Status', async () => {
       const [transactionStatusToPersist] = transactionStatusesGenerator(1)
+      if (!transactionStatusToPersist) {
+        throw new Error('No sample transaction status found') // unexpected to ever happen
+      }
       const recordedTransactionStatus = await TransactionServiceClient.setTransactionStatus(transactionStatusToPersist)
 
       expect(recordedTransactionStatus.status_id).toEqual(transactionStatusToPersist.status_id)
@@ -34,12 +37,16 @@ describe('Transaction Status Tests', () => {
     it('Get Statuses for one Transaction', async () => {
       const [transactionStatusToPersist] = transactionStatusesGenerator(1)
 
+      if (!transactionStatusToPersist) {
+        throw new Error('No sample transaction status found') // unexpected to ever happen
+      }
+
       await TransactionServiceClient.setTransactionStatus(transactionStatusToPersist)
 
       const statuses = await TransactionServiceClient.getTransactionStatuses(transactionStatusToPersist.transaction_id)
       expect(statuses.length).toEqual(1)
       const [status] = statuses
-      expect(status.status_id).toEqual(transactionStatusToPersist.status_id)
+      expect(status?.status_id).toEqual(transactionStatusToPersist.status_id)
     })
 
     it('Get Statuses for many Transactions', async () => {

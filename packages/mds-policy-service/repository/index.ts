@@ -16,7 +16,7 @@
 
 import { InsertReturning, ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
 import { Timestamp, UUID } from '@mds-core/mds-types'
-import { ConflictError, NotFoundError, now, testEnvSafeguard } from '@mds-core/mds-utils'
+import { ConflictError, hasAtLeastOneEntry, NotFoundError, now, testEnvSafeguard } from '@mds-core/mds-utils'
 import { buildPaginator } from 'typeorm-cursor-pagination'
 import {
   FILTER_POLICY_STATUS,
@@ -38,12 +38,8 @@ import {
 } from './mappers'
 import migrations from './migrations'
 
-class PolicyReadWriteRepository extends ReadWriteRepository {
-  constructor() {
-    super('policies', { entities, migrations })
-  }
-
-  public readPolicies = async (
+export const PolicyRepository = ReadWriteRepository.Create('policies', { entities, migrations }, repository => {
+  const readPolicies = async (
     params: ReadPolicyQueryParams = {},
     presentationOptions: PresentationOptions = {},
     timestamp: Timestamp = now()
@@ -94,7 +90,7 @@ class PolicyReadWriteRepository extends ReadWriteRepository {
     const ALIAS = 'pe'
 
     try {
-      const connection = await this.connect('ro')
+      const connection = await repository.connect('ro')
       const query = connection.getRepository(PolicyEntity).createQueryBuilder(ALIAS)
 
       const pager = (() => {
@@ -174,7 +170,8 @@ class PolicyReadWriteRepository extends ReadWriteRepository {
 
         const expressionsWithParams = statusFilters.map(status => statusToExpressionWithParams[status])
 
-        if (expressionsWithParams.length === 1) {
+        if (expressionsWithParams.length === 1 && hasAtLeastOneEntry(expressionsWithParams)) {
+          // the hasAtLeastOneEntry check is a bit redundant, but serves as a type guard so we can safely access the first element
           const [{ expression, params }] = expressionsWithParams
           query.andWhere(expression, params)
         } else {
@@ -212,62 +209,10 @@ class PolicyReadWriteRepository extends ReadWriteRepository {
     }
   }
 
-  public readActivePolicies = async (timestamp: Timestamp = now()) => {
-    try {
-      const { policies } = await this.readPolicies({ statuses: ['active'] }, { withStatus: true }, timestamp)
-      return policies
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  public readBulkPolicyMetadata = async <M>(params: ReadPolicyQueryParams = {}) => {
-    const { policies } = await this.readPolicies(params)
-
-    if (policies.length === 0) {
-      return []
-    }
-
-    const connection = await this.connect('ro')
-    const entities = await connection
-      .getRepository(PolicyMetadataEntity)
-      .createQueryBuilder()
-      .andWhere('policy_id = ANY(:policy_ids)', { policy_ids: policies.map(p => p.policy_id) })
-      .getMany()
-
-    return entities.map(PolicyMetadataEntityToDomain.map) as PolicyMetadataDomainModel<M>[]
-  }
-
-  public readSinglePolicyMetadata = async (policy_id: UUID) => {
-    try {
-      const connection = await this.connect('ro')
-      const entity = await connection.getRepository(PolicyMetadataEntity).findOneOrFail({ policy_id })
-      return PolicyMetadataEntityToDomain.map(entity)
-    } catch (error) {
-      if (error instanceof Error && error.name === 'EntityNotFoundError') {
-        throw new NotFoundError(error)
-      }
-      throw RepositoryError(error)
-    }
-  }
-
-  public readPolicy = async (policy_id: UUID, presentationOptions: PresentationOptions = {}) => {
-    try {
-      const connection = await this.connect('ro')
-      const entity = await connection.getRepository(PolicyEntity).findOneOrFail({ policy_id })
-      return PolicyEntityToDomain.map(entity, presentationOptions)
-    } catch (error) {
-      if (error instanceof Error && error.name === 'EntityNotFoundError') {
-        throw new NotFoundError(error)
-      }
-      throw RepositoryError(error)
-    }
-  }
-
-  private throwIfRulesAlreadyExist = async (policy: PolicyDomainCreateModel) => {
+  const throwIfRulesAlreadyExist = async (policy: PolicyDomainCreateModel) => {
     const policies = await Promise.all(
       policy.rules.map(async ({ rule_id }) => {
-        const { policies } = await this.readPolicies({ rule_id })
+        const { policies } = await readPolicies({ rule_id })
         return policies
       })
     )
@@ -278,28 +223,9 @@ class PolicyReadWriteRepository extends ReadWriteRepository {
     }
   }
 
-  public writePolicy = async (policy: PolicyDomainCreateModel): Promise<PolicyDomainModel> => {
-    await this.throwIfRulesAlreadyExist(policy)
+  const isPolicyPublished = async (policy_id: UUID) => {
     try {
-      const connection = await this.connect('rw')
-      const {
-        raw: [entity]
-      }: InsertReturning<PolicyEntity> = await connection
-        .getRepository(PolicyEntity)
-        .createQueryBuilder()
-        .insert()
-        .values(PolicyDomainToEntityCreate.map(policy))
-        .returning('*')
-        .execute()
-      return PolicyEntityToDomain.map(entity)
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  public isPolicyPublished = async (policy_id: UUID) => {
-    try {
-      const connection = await this.connect('ro')
+      const connection = await repository.connect('ro')
       const entity = await connection.getRepository(PolicyEntity).findOneOrFail({ policy_id })
       if (!entity) {
         return false
@@ -313,215 +239,302 @@ class PolicyReadWriteRepository extends ReadWriteRepository {
     }
   }
 
-  public editPolicy = async (policy: PolicyDomainCreateModel) => {
-    const { policy_id } = policy
-
-    if (await this.isPolicyPublished(policy_id)) {
-      throw new ConflictError('Cannot edit published policy')
-    }
-
-    const { policies } = await this.readPolicies({
-      policy_ids: [policy_id],
-      get_unpublished: true,
-      get_published: false
-    })
-    if (policies.length === 0) {
-      throw new NotFoundError(`no policy of id ${policy_id} was found`)
-    }
-    await this.throwIfRulesAlreadyExist(policy)
-    const { start_date, end_date, publish_date } = policy
+  const readSinglePolicyMetadata = async (policy_id: UUID) => {
     try {
-      const connection = await this.connect('rw')
-      const {
-        raw: [updated]
-      } = await connection
-        .getRepository(PolicyEntity)
-        .createQueryBuilder()
-        .update()
-        .set({ start_date, end_date, publish_date, policy_json: { ...policy } })
-        .where('policy_id = :policy_id', { policy_id })
-        .andWhere('publish_date IS NULL')
-        .returning('*')
-        .execute()
-      return PolicyEntityToDomain.map(updated)
+      const connection = await repository.connect('ro')
+      const entity = await connection.getRepository(PolicyMetadataEntity).findOneOrFail({ policy_id })
+      return PolicyMetadataEntityToDomain.map(entity)
     } catch (error) {
+      if (error instanceof Error && error.name === 'EntityNotFoundError') {
+        throw new NotFoundError(error)
+      }
       throw RepositoryError(error)
     }
   }
 
-  public deletePolicy = async (policy_id: UUID) => {
-    if (await this.isPolicyPublished(policy_id)) {
-      throw new ConflictError('Cannot edit published Policy')
-    }
+  return {
+    readPolicies,
 
-    try {
-      const connection = await this.connect('rw')
-      const {
-        raw: [deleted]
-      } = await connection
-        .getRepository(PolicyEntity)
-        .createQueryBuilder()
-        .delete()
-        .where('policy_id = :policy_id', { policy_id })
-        .andWhere('publish_date IS NULL')
-        .returning('*')
-        .execute()
-      return PolicyEntityToDomain.map(deleted).policy_id
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  /* Only publish the policy if the geographies are successfully published first */
-  public publishPolicy = async (
-    policy_id: UUID,
-    publish_date = now(),
-    options: { beforeCommit?: (pendingPolicy: PolicyDomainModel) => Promise<void> } = {}
-  ) => {
-    try {
-      const { beforeCommit = async () => undefined } = options
-
-      if (await this.isPolicyPublished(policy_id)) {
-        throw new ConflictError('Cannot re-publish existing policy')
-      }
-
-      const {
-        policies: [policy]
-      } = await this.readPolicies({ policy_ids: [policy_id], get_unpublished: true, get_published: null })
-
-      if (!policy) {
-        throw new NotFoundError('cannot publish nonexistent policy')
-      }
-
-      if (policy.start_date < publish_date) {
-        throw new ConflictError('Policies cannot be published after their start_date')
-      }
-
+    readActivePolicies: async (timestamp: Timestamp = now()) => {
       try {
-        const connection = await this.connect('rw')
-        const publishedPolicy = await connection.transaction(async manager => {
-          const {
-            raw: [updated]
-          } = await manager
-            .getRepository(PolicyEntity)
-            .createQueryBuilder()
-            .update()
-            .set({ publish_date })
-            .where('policy_id = :policy_id', { policy_id })
-            .andWhere('publish_date IS NULL')
-            .returning('*')
-            .execute()
-          const mappedPolicy = PolicyEntityToDomain.map(updated)
-          await beforeCommit(mappedPolicy)
-
-          return mappedPolicy
-        })
-
-        return publishedPolicy
+        const { policies } = await readPolicies({ statuses: ['active'] }, { withStatus: true }, timestamp)
+        return policies
       } catch (error) {
         throw RepositoryError(error)
       }
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
+    },
 
-  public writePolicyMetadata = async (policy_metadata: PolicyMetadataDomainModel) => {
-    try {
-      const connection = await this.connect('rw')
-      const {
-        raw: [entity]
-      }: InsertReturning<PolicyMetadataEntity> = await connection
+    readBulkPolicyMetadata: async <M>(params: ReadPolicyQueryParams = {}) => {
+      const { policies } = await readPolicies(params)
+
+      if (policies.length === 0) {
+        return []
+      }
+
+      const connection = await repository.connect('ro')
+      const entities = await connection
         .getRepository(PolicyMetadataEntity)
         .createQueryBuilder()
-        .insert()
-        .values(PolicyMetadataDomainToEntityCreate.map(policy_metadata))
-        .returning('*')
-        .execute()
-      return PolicyMetadataEntityToDomain.map(entity)
-    } catch (error) {
-      throw RepositoryError(error)
+        .andWhere('policy_id = ANY(:policy_ids)', { policy_ids: policies.map(p => p.policy_id) })
+        .getMany()
+
+      return entities.map(PolicyMetadataEntityToDomain.map) as PolicyMetadataDomainModel<M>[]
+    },
+
+    readSinglePolicyMetadata,
+
+    readPolicy: async (policy_id: UUID, presentationOptions: PresentationOptions = {}) => {
+      try {
+        const connection = await repository.connect('ro')
+        const entity = await connection.getRepository(PolicyEntity).findOneOrFail({ policy_id })
+        return PolicyEntityToDomain.map(entity, presentationOptions)
+      } catch (error) {
+        if (error instanceof Error && error.name === 'EntityNotFoundError') {
+          throw new NotFoundError(error)
+        }
+        throw RepositoryError(error)
+      }
+    },
+
+    writePolicy: async (policy: PolicyDomainCreateModel): Promise<PolicyDomainModel> => {
+      await throwIfRulesAlreadyExist(policy)
+      try {
+        const connection = await repository.connect('rw')
+        const {
+          raw: [entity]
+        }: InsertReturning<PolicyEntity> = await connection
+          .getRepository(PolicyEntity)
+          .createQueryBuilder()
+          .insert()
+          .values(PolicyDomainToEntityCreate.map(policy))
+          .returning('*')
+          .execute()
+
+        if (!entity) {
+          throw new Error('Failed to write policy')
+        }
+
+        return PolicyEntityToDomain.map(entity)
+      } catch (error) {
+        throw RepositoryError(error)
+      }
+    },
+
+    isPolicyPublished,
+
+    editPolicy: async (policy: PolicyDomainCreateModel) => {
+      const { policy_id } = policy
+
+      if (await isPolicyPublished(policy_id)) {
+        throw new ConflictError('Cannot edit published policy')
+      }
+
+      const { policies } = await readPolicies({
+        policy_ids: [policy_id],
+        get_unpublished: true,
+        get_published: false
+      })
+      if (policies.length === 0) {
+        throw new NotFoundError(`no policy of id ${policy_id} was found`)
+      }
+      await throwIfRulesAlreadyExist(policy)
+      const { start_date, end_date, publish_date } = policy
+      try {
+        const connection = await repository.connect('rw')
+        const {
+          raw: [updated]
+        } = await connection
+          .getRepository(PolicyEntity)
+          .createQueryBuilder()
+          .update()
+          .set({ start_date, end_date, publish_date, policy_json: { ...policy } })
+          .where('policy_id = :policy_id', { policy_id })
+          .andWhere('publish_date IS NULL')
+          .returning('*')
+          .execute()
+        return PolicyEntityToDomain.map(updated)
+      } catch (error) {
+        throw RepositoryError(error)
+      }
+    },
+
+    deletePolicy: async (policy_id: UUID) => {
+      if (await isPolicyPublished(policy_id)) {
+        throw new ConflictError('Cannot edit published Policy')
+      }
+
+      try {
+        const connection = await repository.connect('rw')
+        const {
+          raw: [deleted]
+        } = await connection
+          .getRepository(PolicyEntity)
+          .createQueryBuilder()
+          .delete()
+          .where('policy_id = :policy_id', { policy_id })
+          .andWhere('publish_date IS NULL')
+          .returning('*')
+          .execute()
+        return PolicyEntityToDomain.map(deleted).policy_id
+      } catch (error) {
+        throw RepositoryError(error)
+      }
+    },
+
+    /* Only publish the policy if the geographies are successfully published first */
+    publishPolicy: async (
+      policy_id: UUID,
+      publish_date = now(),
+      options: { beforeCommit?: (pendingPolicy: PolicyDomainModel) => Promise<void> } = {}
+    ) => {
+      try {
+        const { beforeCommit = async () => undefined } = options
+
+        if (await isPolicyPublished(policy_id)) {
+          throw new ConflictError('Cannot re-publish existing policy')
+        }
+
+        const {
+          policies: [policy]
+        } = await readPolicies({ policy_ids: [policy_id], get_unpublished: true, get_published: null })
+
+        if (!policy) {
+          throw new NotFoundError('cannot publish nonexistent policy')
+        }
+
+        if (policy.start_date < publish_date) {
+          throw new ConflictError('Policies cannot be published after their start_date')
+        }
+
+        try {
+          const connection = await repository.connect('rw')
+          const publishedPolicy = await connection.transaction(async manager => {
+            const {
+              raw: [updated]
+            } = await manager
+              .getRepository(PolicyEntity)
+              .createQueryBuilder()
+              .update()
+              .set({ publish_date })
+              .where('policy_id = :policy_id', { policy_id })
+              .andWhere('publish_date IS NULL')
+              .returning('*')
+              .execute()
+            const mappedPolicy = PolicyEntityToDomain.map(updated)
+            await beforeCommit(mappedPolicy)
+
+            return mappedPolicy
+          })
+
+          return publishedPolicy
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      } catch (error) {
+        throw RepositoryError(error)
+      }
+    },
+
+    writePolicyMetadata: async (policy_metadata: PolicyMetadataDomainModel) => {
+      try {
+        const connection = await repository.connect('rw')
+        const {
+          raw: [entity]
+        }: InsertReturning<PolicyMetadataEntity> = await connection
+          .getRepository(PolicyMetadataEntity)
+          .createQueryBuilder()
+          .insert()
+          .values(PolicyMetadataDomainToEntityCreate.map(policy_metadata))
+          .returning('*')
+          .execute()
+
+        if (!entity) {
+          throw new Error('Failed to write policy metadata')
+        }
+
+        return PolicyMetadataEntityToDomain.map(entity)
+      } catch (error) {
+        throw RepositoryError(error)
+      }
+    },
+
+    updatePolicyMetadata: async <M>(metadata: PolicyMetadataDomainModel<M>) => {
+      try {
+        const { policy_id, policy_metadata } = metadata
+        await readSinglePolicyMetadata(policy_id)
+
+        const connection = await repository.connect('rw')
+        const {
+          raw: [updated]
+        } = await connection
+          .getRepository(PolicyMetadataEntity)
+          .createQueryBuilder()
+          .update()
+          .set({ policy_metadata })
+          .where('policy_id = :policy_id', { policy_id })
+          .returning('*')
+          .execute()
+        return PolicyMetadataEntityToDomain.map(updated) as PolicyMetadataDomainModel<M>
+      } catch (error) {
+        throw RepositoryError(error)
+      }
+    },
+
+    readRule: async (rule_id: UUID) => {
+      try {
+        const connection = await repository.connect('rw')
+        const policy = await connection
+          .getRepository(PolicyEntity)
+          .createQueryBuilder()
+          .select()
+          .where(
+            "EXISTS (SELECT FROM json_array_elements(policy_json->'rules') elem WHERE (elem->'rule_id')::jsonb ? :rule_id) ",
+            { rule_id }
+          )
+          .getOneOrFail()
+        return PolicyEntityToDomain.map(policy).rules.filter(r => r.rule_id === rule_id)
+      } catch (error) {
+        throw RepositoryError(error)
+      }
+    },
+
+    /**
+     * @param {UUID} policy_id policy_id which is being superseded
+     * @param {UUID} superseding_policy_id policy_id which is superseding the original policy_id
+     */
+    updatePolicySupersededByColumn: async (policy_id: UUID, superseding_policy_id: UUID) => {
+      try {
+        const connection = await repository.connect('rw')
+
+        const { superseded_by } = await connection.getRepository(PolicyEntity).findOneOrFail({ policy_id })
+
+        const updatedSupersededBy = superseded_by ? [...superseded_by, superseding_policy_id] : [superseding_policy_id]
+
+        const {
+          raw: [updated]
+        } = await connection
+          .getRepository(PolicyEntity)
+          .createQueryBuilder()
+          .update()
+          .set({ superseded_by: updatedSupersededBy })
+          .where('policy_id = :policy_id', { policy_id })
+          .returning('*')
+          .execute()
+
+        return PolicyEntityToDomain.map(updated)
+      } catch (error) {
+        throw RepositoryError(error)
+      }
+    },
+
+    deleteAll: async () => {
+      testEnvSafeguard()
+      try {
+        const connection = await repository.connect('rw')
+        await connection.getRepository(PolicyEntity).query('TRUNCATE "policies", "policy_metadata" RESTART IDENTITY')
+      } catch (error) {
+        throw RepositoryError(error)
+      }
     }
   }
-
-  public updatePolicyMetadata = async <M>(metadata: PolicyMetadataDomainModel<M>) => {
-    try {
-      const { policy_id, policy_metadata } = metadata
-      await this.readSinglePolicyMetadata(policy_id)
-
-      const connection = await this.connect('rw')
-      const {
-        raw: [updated]
-      } = await connection
-        .getRepository(PolicyMetadataEntity)
-        .createQueryBuilder()
-        .update()
-        .set({ policy_metadata })
-        .where('policy_id = :policy_id', { policy_id })
-        .returning('*')
-        .execute()
-      return PolicyMetadataEntityToDomain.map(updated) as PolicyMetadataDomainModel<M>
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  public readRule = async (rule_id: UUID) => {
-    try {
-      const connection = await this.connect('rw')
-      const policy = await connection
-        .getRepository(PolicyEntity)
-        .createQueryBuilder()
-        .select()
-        .where(
-          "EXISTS (SELECT FROM json_array_elements(policy_json->'rules') elem WHERE (elem->'rule_id')::jsonb ? :rule_id) ",
-          { rule_id }
-        )
-        .getOneOrFail()
-      return PolicyEntityToDomain.map(policy).rules.filter(r => r.rule_id === rule_id)
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  /**
-   * @param {UUID} policy_id policy_id which is being superseded
-   * @param {UUID} superseding_policy_id policy_id which is superseding the original policy_id
-   */
-  public updatePolicySupersededByColumn = async (policy_id: UUID, superseding_policy_id: UUID) => {
-    try {
-      const connection = await this.connect('rw')
-
-      const { superseded_by } = await connection.getRepository(PolicyEntity).findOneOrFail({ policy_id })
-
-      const updatedSupersededBy = superseded_by ? [...superseded_by, superseding_policy_id] : [superseding_policy_id]
-
-      const {
-        raw: [updated]
-      } = await connection
-        .getRepository(PolicyEntity)
-        .createQueryBuilder()
-        .update()
-        .set({ superseded_by: updatedSupersededBy })
-        .where('policy_id = :policy_id', { policy_id })
-        .returning('*')
-        .execute()
-
-      return PolicyEntityToDomain.map(updated)
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  public deleteAll = async () => {
-    testEnvSafeguard()
-    try {
-      const connection = await this.connect('rw')
-      await connection.getRepository(PolicyEntity).query('TRUNCATE policies, policy_metadata RESTART IDENTITY')
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-}
-
-export const PolicyRepository = new PolicyReadWriteRepository()
+})

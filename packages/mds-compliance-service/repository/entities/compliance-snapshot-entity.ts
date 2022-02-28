@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { BigintTransformer, EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Timestamp, UUID } from '@mds-core/mds-types'
 import { Column, Entity, Index } from 'typeorm'
 import { MatchedVehicleInformation } from '../../@types'
@@ -66,3 +66,5 @@ export class ComplianceSnapshotEntity
   @Column('jsonb', { default: '[]' })
   violating_vehicles: MatchedVehicleInformation[]
 }
+
+export type ComplianceSnapshotEntityCreateModel = EntityCreateModel<ComplianceSnapshotEntityModel>

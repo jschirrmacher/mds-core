@@ -115,7 +115,7 @@ describe('Tests Compliance Engine Time Functionality', () => {
     test.assert.deepEqual(result.vehicles_found.length, 400)
     test.assert.deepEqual(result.total_violations, 400)
 
-    const { rule_id } = TIME_POLICY.rules[0]
+    const { rule_id } = TIME_POLICY.rules[0]!
 
     // Note that for time rule matches, `rule_applied` is never null.
     const finalCount = result.vehicles_found.reduce((count: number, vehicle: MatchedVehicleInformation) => {
@@ -155,8 +155,8 @@ describe('Tests Compliance Engine Time Functionality', () => {
     test.assert.deepEqual(result.vehicles_found.length, 9)
     test.assert.deepEqual(result.total_violations, 9)
 
-    const { rule_id } = OVERLAPPING_GEOS_TIME_POLICY.rules[0]
-    const rule_id_2 = OVERLAPPING_GEOS_TIME_POLICY.rules[1].rule_id
+    const { rule_id } = OVERLAPPING_GEOS_TIME_POLICY.rules[0]!
+    const rule_id_2 = OVERLAPPING_GEOS_TIME_POLICY.rules[1]!.rule_id
 
     // Note that for time rule matches, `rule_applied` is never null.
     const rule_count_1 = result.vehicles_found.reduce((count: number, vehicle: MatchedVehicleInformation) => {

@@ -17,7 +17,6 @@
 import { AccessTokenScopeValidator, checkAccess } from '@mds-core/mds-api-server'
 import { isUUID, pathPrefix } from '@mds-core/mds-utils'
 import express from 'express'
-import { readAllVehicleIds } from './agency-candidate-request-handlers'
 import { createEventHandler } from './handlers/create-event'
 import { createTelemetryHandler } from './handlers/create-telemetry'
 import { AgencyLogger } from './logger'
@@ -103,19 +102,6 @@ function api(app: express.Express): express.Express {
    * See {@link https://github.com/openmobilityfoundation/mobility-data-specification/tree/dev/agency#vehicles---update-telemetry Telemetry}
    */
   app.post(pathPrefix('/vehicles/telemetry'), createTelemetryHandler)
-
-  // ///////////////////// begin Agency candidate endpoints ///////////////////////
-
-  /**
-   * Not currently in Agency spec.  Ability to read back all vehicle IDs.
-   */
-  app.get(
-    pathPrefix('/admin/vehicle_ids'),
-    checkAgencyApiAccess(scopes => scopes.includes('admin:all')),
-    readAllVehicleIds
-  )
-
-  // /////////////////// end Agency candidate endpoints ////////////////////
 
   app.get(
     pathPrefix('/admin/cache/info'),

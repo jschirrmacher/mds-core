@@ -27,7 +27,7 @@ export const TIME = 1605821758034
 
 export const COMPLIANCE_SNAPSHOT_ID = '243e1209-61ad-4d7c-8464-db551f1f8c21'
 
-export const COMPLIANCE_SNAPSHOTS_PROVIDER_1_POLICY_1: ComplianceSnapshotDomainModel[] = (() => {
+export const COMPLIANCE_SNAPSHOTS_PROVIDER_1_POLICY_1: [ComplianceSnapshotDomainModel] = (() => {
   const violating_vehicles: ComplianceSnapshotDomainModel['violating_vehicles'] = [
     {
       device_id: 'f7cf9bbf-0f9e-4497-ab3f-d7358458f939',
@@ -58,7 +58,7 @@ export const COMPLIANCE_SNAPSHOTS_PROVIDER_1_POLICY_1: ComplianceSnapshotDomainM
   ]
 })()
 
-export const COMPLIANCE_SNAPSHOTS_PROVIDER_2_POLICY_1: ComplianceSnapshotDomainModel[] = (() => {
+export const COMPLIANCE_SNAPSHOTS_PROVIDER_2_POLICY_1: [ComplianceSnapshotDomainModel] = (() => {
   const violating_vehicles: ComplianceSnapshotDomainModel['violating_vehicles'] = [
     {
       device_id: 'f7cf9bbf-0f9e-4497-ab3f-d7358458f939',
@@ -139,7 +139,7 @@ export const COMPLIANCE_SNAPSHOTS_PROVIDER_2_POLICY_1: ComplianceSnapshotDomainM
   ]
 })()
 
-export const COMPLIANCE_SNAPSHOTS_PROVIDER_1_POLICY_2: ComplianceSnapshotDomainModel[] = [
+export const COMPLIANCE_SNAPSHOTS_PROVIDER_1_POLICY_2: [ComplianceSnapshotDomainModel] = [
   {
     compliance_as_of: TIME + 1,
     compliance_snapshot_id: '9d4151e2-0d41-48a1-b399-fb5275033d15',
@@ -155,7 +155,12 @@ export const COMPLIANCE_SNAPSHOTS_PROVIDER_1_POLICY_2: ComplianceSnapshotDomainM
   }
 ]
 
-export const COMPLIANCE_SNAPSHOTS_PROVIDER_2_POLICY_2: ComplianceSnapshotDomainModel[] = (() => {
+export const COMPLIANCE_SNAPSHOTS_PROVIDER_2_POLICY_2: [
+  ComplianceSnapshotDomainModel,
+  ComplianceSnapshotDomainModel,
+  ComplianceSnapshotDomainModel,
+  ComplianceSnapshotDomainModel
+] = (() => {
   const FIRST_MEASURE: ComplianceSnapshotDomainModel = (() => {
     const violating_vehicles: ComplianceSnapshotDomainModel['violating_vehicles'] = [
       {
@@ -260,7 +265,7 @@ export const COMPLIANCE_SNAPSHOTS_PROVIDER_2_POLICY_2: ComplianceSnapshotDomainM
   return [FIRST_MEASURE, SECOND_MEASURE, THIRD_MEASURE, FOURTH_MEASURE]
 })()
 
-export const COMPLIANCE_AGGREGATE_PROVIDER_1_POLICY_1: ComplianceAggregateDomainModel[] = [
+export const COMPLIANCE_AGGREGATE_PROVIDER_1_POLICY_1: [ComplianceAggregateDomainModel] = [
   {
     policy_id: POLICY_ID_1,
     provider_id: PROVIDER_ID_1,
@@ -275,7 +280,7 @@ export const COMPLIANCE_AGGREGATE_PROVIDER_1_POLICY_1: ComplianceAggregateDomain
   }
 ]
 
-export const COMPLIANCE_AGGREGATE_PROVIDER_2_POLICY_2: ComplianceAggregateDomainModel[] = [
+export const COMPLIANCE_AGGREGATE_PROVIDER_2_POLICY_2: [ComplianceAggregateDomainModel] = [
   {
     provider_id: '63f13c48-34ff-49d2-aca7-cf6a5b6171c3',
     provider_name: 'Lime',
@@ -295,7 +300,12 @@ export const COMPLIANCE_AGGREGATE_PROVIDER_2_POLICY_2: ComplianceAggregateDomain
   }
 ]
 
-export const ALL_COMPLIANCE_AGGREGATES: ComplianceAggregateDomainModel[] = [
+export const ALL_COMPLIANCE_AGGREGATES: [
+  ComplianceAggregateDomainModel,
+  ComplianceAggregateDomainModel,
+  ComplianceAggregateDomainModel,
+  ComplianceAggregateDomainModel
+] = [
   {
     provider_id: 'c20e08cf-8488-46a6-a66c-5d8fb827f7e0',
     policy_id: '6d7a9c7e-853c-4ff7-a86f-e17c06d3bd80',

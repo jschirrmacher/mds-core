@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-const Uppercase = (value: string | null): string | null => (value === null ? value : value.toUpperCase())
+import { Nullable } from '@mds-core/mds-types'
+import { TransformerOptions } from '.'
+import { OneWayTransformer, ValueTransformer } from './types'
 
-// Transform strings to uppercase
-export const UppercaseTransformer = {
-  to: (to: string | null | (string | null)[]) => (Array.isArray(to) ? to.map(Uppercase) : Uppercase(to)),
-  from: (from: string | null | (string | null)[]) => (Array.isArray(from) ? from.map(Uppercase) : Uppercase(from))
+const toUppercase: ValueTransformer<Nullable<string>> = value => {
+  const transform = (item: Nullable<string>) => item && item.toUpperCase()
+  return Array.isArray(value) ? value.map(transform) : transform(value)
 }
+
+// Transform strings to Uppercase
+export const UppercaseTransformer = ({ direction = 'both' }: TransformerOptions = {}) => ({
+  to: direction === 'read' ? OneWayTransformer.to : toUppercase,
+  from: direction === 'write' ? OneWayTransformer.from : toUppercase
+})

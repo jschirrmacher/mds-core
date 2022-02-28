@@ -1,5 +1,50 @@
 # @mds-core/mds-db
 
+## 0.6.4
+
+### Patch Changes
+
+- Updated dependencies [28d8a7c3]
+  - @mds-core/mds-ingest-service@0.9.15
+  - @mds-core/mds-attachment-service@0.5.14
+  - @mds-core/mds-audit-service@0.5.14
+  - @mds-core/mds-geography-service@0.10.10
+  - @mds-core/mds-policy-service@0.11.16
+
+## 0.6.3
+
+### Patch Changes
+
+- Updated dependencies [d98d5693]
+  - @mds-core/mds-attachment-service@0.5.13
+  - @mds-core/mds-audit-service@0.5.13
+  - @mds-core/mds-geography-service@0.10.9
+  - @mds-core/mds-ingest-service@0.9.14
+  - @mds-core/mds-policy-service@0.11.15
+
+## 0.6.2
+
+### Patch Changes
+
+- 2637f1cc: Upgrade to latest typeorm/pg to support GENERATED ALWAYS AS IDENTITY in migrations
+- Updated dependencies [2637f1cc]
+  - @mds-core/mds-attachment-service@0.5.12
+  - @mds-core/mds-audit-service@0.5.12
+  - @mds-core/mds-geography-service@0.10.8
+  - @mds-core/mds-ingest-service@0.9.13
+  - @mds-core/mds-policy-service@0.11.14
+
+## 0.6.1
+
+### Patch Changes
+
+- bc8f0a04: Switch tests from Mocha to Jest
+  - @mds-core/mds-attachment-service@0.5.11
+  - @mds-core/mds-audit-service@0.5.11
+  - @mds-core/mds-geography-service@0.10.7
+  - @mds-core/mds-ingest-service@0.9.12
+  - @mds-core/mds-policy-service@0.11.13
+
 ## 0.6.0
 
 ### Minor Changes
