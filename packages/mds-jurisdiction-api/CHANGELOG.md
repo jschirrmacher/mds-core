@@ -1,5 +1,18 @@
 # @mds-core/mds-jurisdiction-api
 
+## 0.1.59
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- Updated dependencies [95382a3f]
+- Updated dependencies [a6575499]
+  - @mds-core/mds-api-helpers@0.2.13
+  - @mds-core/mds-api-server@0.4.7
+  - @mds-core/mds-jurisdiction-service@0.5.15
+  - @mds-core/mds-utils@0.4.1
+  - @mds-core/mds-service-helpers@0.6.5
+
 ## 0.1.58
 
 ### Patch Changes

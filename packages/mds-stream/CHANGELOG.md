@@ -1,5 +1,13 @@
 # @mds-core/mds-stream
 
+## 0.2.10
+
+### Patch Changes
+
+- Updated dependencies [95382a3f]
+  - @mds-core/mds-types@0.9.1
+  - @mds-core/mds-utils@0.4.1
+
 ## 0.2.9
 
 ### Patch Changes

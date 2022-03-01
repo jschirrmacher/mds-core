@@ -1,5 +1,17 @@
 # @mds-core/mds-rpc-common
 
+## 0.3.12
+
+### Patch Changes
+
+- 1340ce66: Exclude request logging for RPC server /health
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- Updated dependencies [95382a3f]
+  - @mds-core/mds-api-server@0.4.7
+  - @mds-core/mds-types@0.9.1
+  - @mds-core/mds-utils@0.4.1
+  - @mds-core/mds-service-helpers@0.6.5
+
 ## 0.3.11
 
 ### Patch Changes

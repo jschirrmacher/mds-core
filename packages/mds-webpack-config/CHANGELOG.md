@@ -1,5 +1,11 @@
 # @mds-core/mds-webpack-config
 
+## 0.1.11
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+
 ## 0.1.10
 
 ### Patch Changes

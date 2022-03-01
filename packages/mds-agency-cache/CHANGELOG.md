@@ -1,5 +1,16 @@
 # @mds-core/mds-agency-cache
 
+## 0.4.18
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- Updated dependencies [95382a3f]
+  - @mds-core/mds-cache@0.0.33
+  - @mds-core/mds-schema-validators@0.5.5
+  - @mds-core/mds-types@0.9.1
+  - @mds-core/mds-utils@0.4.1
+
 ## 0.4.17
 
 ### Patch Changes
