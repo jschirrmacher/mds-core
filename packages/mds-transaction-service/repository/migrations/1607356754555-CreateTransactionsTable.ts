@@ -21,19 +21,19 @@ export class CreateTransactionsTable1607356754555 implements MigrationInterface 
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "transactions" ("recorded" bigint NOT NULL DEFAULT (extract(epoch from now()) * 1000)::bigint, "id" bigint GENERATED ALWAYS AS IDENTITY, "transaction_id" uuid NOT NULL, "provider_id" uuid NOT NULL, "device_id" uuid, "timestamp" bigint NOT NULL, "fee_type" character varying(127) NOT NULL, "amount" integer NOT NULL, "receipt" jsonb NOT NULL, CONSTRAINT "transactions_pkey" PRIMARY KEY ("transaction_id"))`
+      `CREATE TABLE "transactions" ("recorded" bigint NOT NULL DEFAULT (extract(epoch from now()) * 1000)::bigint, "id" bigint GENERATED ALWAYS AS IDENTITY NOT NULL, "transaction_id" uuid NOT NULL, "provider_id" uuid NOT NULL, "device_id" uuid, "timestamp" bigint NOT NULL, "fee_type" character varying(127) NOT NULL, "amount" integer NOT NULL, "receipt" jsonb NOT NULL, CONSTRAINT "transactions_pkey" PRIMARY KEY ("transaction_id"))`
     )
     await queryRunner.query(`CREATE INDEX "idx_recorded_transactions" ON "transactions" ("recorded") `)
     await queryRunner.query(`CREATE UNIQUE INDEX "idx_id_transactions" ON "transactions" ("id") `)
     await queryRunner.query(
-      `CREATE TABLE "transaction_operations" ("recorded" bigint NOT NULL DEFAULT (extract(epoch from now()) * 1000)::bigint, "id" bigint GENERATED ALWAYS AS IDENTITY, "transaction_id" uuid NOT NULL, "operation_id" uuid NOT NULL, "timestamp" bigint NOT NULL, "operation_type" character varying(127) NOT NULL, "author" character varying(127) NOT NULL, CONSTRAINT "transaction_operations_pkey" PRIMARY KEY ("transaction_id", "operation_id"))`
+      `CREATE TABLE "transaction_operations" ("recorded" bigint NOT NULL DEFAULT (extract(epoch from now()) * 1000)::bigint, "id" bigint GENERATED ALWAYS AS IDENTITY NOT NULL, "transaction_id" uuid NOT NULL, "operation_id" uuid NOT NULL, "timestamp" bigint NOT NULL, "operation_type" character varying(127) NOT NULL, "author" character varying(127) NOT NULL, CONSTRAINT "transaction_operations_pkey" PRIMARY KEY ("transaction_id", "operation_id"))`
     )
     await queryRunner.query(
       `CREATE INDEX "idx_recorded_transaction_operations" ON "transaction_operations" ("recorded") `
     )
     await queryRunner.query(`CREATE UNIQUE INDEX "idx_id_transaction_operations" ON "transaction_operations" ("id") `)
     await queryRunner.query(
-      `CREATE TABLE "transaction_statuses" ("recorded" bigint NOT NULL DEFAULT (extract(epoch from now()) * 1000)::bigint, "id" bigint GENERATED ALWAYS AS IDENTITY, "transaction_id" uuid NOT NULL, "status_id" uuid NOT NULL, "timestamp" bigint NOT NULL, "status_type" character varying(127) NOT NULL, "author" character varying(127) NOT NULL, CONSTRAINT "transaction_statuses_pkey" PRIMARY KEY ("transaction_id", "status_id"))`
+      `CREATE TABLE "transaction_statuses" ("recorded" bigint NOT NULL DEFAULT (extract(epoch from now()) * 1000)::bigint, "id" bigint GENERATED ALWAYS AS IDENTITY NOT NULL, "transaction_id" uuid NOT NULL, "status_id" uuid NOT NULL, "timestamp" bigint NOT NULL, "status_type" character varying(127) NOT NULL, "author" character varying(127) NOT NULL, CONSTRAINT "transaction_statuses_pkey" PRIMARY KEY ("transaction_id", "status_id"))`
     )
     await queryRunner.query(`CREATE INDEX "idx_recorded_transaction_statuses" ON "transaction_statuses" ("recorded") `)
     await queryRunner.query(`CREATE UNIQUE INDEX "idx_id_transaction_statuses" ON "transaction_statuses" ("id") `)

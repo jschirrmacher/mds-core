@@ -1,53 +1,40 @@
 import findPort from 'find-port-free-sync'
 
-const randPort = () => `${findPort({ start: 4000, end: 6000 })}`
-
 /**
- * Configures random ports for each API/Service
+ * Configure random ports for each API/Service
  */
-const setPorts = () => {
-  process.env.RPC_PORT = randPort()
 
-  process.env.AGENCY_API_HTTP_PORT = randPort()
-
-  process.env.ATTACHMENT_SERVICE_REPL_PORT = randPort()
-  process.env.ATTACHMENT_SERVICE_RPC_PORT = randPort()
-
-  process.env.AUDIT_API_HTTP_PORT = randPort()
-
-  process.env.AUDIT_SERVICE_REPL_PORT = randPort()
-  process.env.AUDIT_SERVICE_RPC_PORT = randPort()
-
-  process.env.COLLECTOR_API_HTTP_PORT = randPort()
-  process.env.COLLECTOR_SERVICE_REPL_PORT = randPort()
-  process.env.COLLECTOR_SERVICE_RPC_PORT = randPort()
-
-  process.env.COMPLIANCE_API_HTTP_PORT = randPort()
-  process.env.COMPLIANCE_SERVICE_REPL_PORT = randPort()
-  process.env.COMPLIANCE_SERVICE_RPC_PORT = randPort()
-
-  process.env.GEOGRAPHY_API_HTTP_PORT = randPort()
-  process.env.GEOGRAPHY_AUTHOR_API_HTTP_PORT = randPort()
-  process.env.GEOGRAPHY_SERVICE_RPC_PORT = randPort()
-  process.env.GEOGRAPHY_SERVICE_REPL_PORT = randPort()
-
-  process.env.JURISDICTION_API_HTTP_PORT = randPort()
-  process.env.JURISDICTION_SERVICE_REPL_PORT = randPort()
-  process.env.JURISDICTION_SERVICE_RPC_PORT = randPort()
-
-  process.env.POLICY_API_HTTP_PORT = randPort()
-  process.env.POLICY_AUTHOR_API_HTTP_PORT = randPort()
-  process.env.POLICY_SERVICE_REPL_PORT = randPort()
-  process.env.POLICY_SERVICE_RPC_PORT = randPort()
-
-  process.env.INGEST_SERVICE_RPC_PORT = randPort()
-  process.env.INGEST_SERVICE_REPL_PORT = randPort()
-
-  process.env.TRANSACTION_API_HTTP_PORT = randPort()
-  process.env.TRANSACTION_SERVICE_REPL_PORT = randPort()
-  process.env.TRANSACTION_SERVICE_RPC_PORT = randPort()
-
-  console.log('Configured random ports!')
-}
-
-setPorts()
+Object.assign(
+  process.env,
+  ...[
+    'AGENCY_API_HTTP_PORT',
+    'ATTACHMENT_SERVICE_REPL_PORT',
+    'ATTACHMENT_SERVICE_RPC_PORT',
+    'AUDIT_API_HTTP_PORT',
+    'AUDIT_SERVICE_REPL_PORT',
+    'AUDIT_SERVICE_RPC_PORT',
+    'COLLECTOR_API_HTTP_PORT',
+    'COLLECTOR_SERVICE_REPL_PORT',
+    'COLLECTOR_SERVICE_RPC_PORT',
+    'COMPLIANCE_API_HTTP_PORT',
+    'COMPLIANCE_SERVICE_REPL_PORT',
+    'COMPLIANCE_SERVICE_RPC_PORT',
+    'GEOGRAPHY_API_HTTP_PORT',
+    'GEOGRAPHY_AUTHOR_API_HTTP_PORT',
+    'GEOGRAPHY_SERVICE_REPL_PORT',
+    'GEOGRAPHY_SERVICE_RPC_PORT',
+    'INGEST_SERVICE_REPL_PORT',
+    'INGEST_SERVICE_RPC_PORT',
+    'JURISDICTION_API_HTTP_PORT',
+    'JURISDICTION_SERVICE_REPL_PORT',
+    'JURISDICTION_SERVICE_RPC_PORT',
+    'POLICY_API_HTTP_PORT',
+    'POLICY_AUTHOR_API_HTTP_PORT',
+    'POLICY_SERVICE_REPL_PORT',
+    'POLICY_SERVICE_RPC_PORT',
+    'RPC_PORT',
+    'TRANSACTION_API_HTTP_PORT',
+    'TRANSACTION_SERVICE_REPL_PORT',
+    'TRANSACTION_SERVICE_RPC_PORT'
+  ].map(envvar => ({ [envvar]: `${findPort({ start: 4000, end: 6000 })}` }))
+)

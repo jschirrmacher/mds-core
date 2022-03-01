@@ -7,6 +7,7 @@ import {
 } from '@mds-core/mds-geography-service'
 import stream from '@mds-core/mds-stream'
 import { clone, days, now, START_ONE_MONTH_AGO, START_ONE_MONTH_FROM_NOW, uuid, yesterday } from '@mds-core/mds-utils'
+import { UUID } from 'packages/mds-types'
 import { PolicyMetadataDomainModel } from '../@types'
 import { PolicyServiceClient } from '../client'
 import { PolicyRepository } from '../repository'
@@ -44,7 +45,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
         type: 'DependencyMissingError'
       })
 
-      await writePublishedGeography(GeographyFactory({ geography_id: badPolicy.rules[0].geographies[0] }))
+      await writePublishedGeography(GeographyFactory({ geography_id: badPolicy.rules[0]?.geographies[0] }))
       const publishedPolicy = await PolicyServiceClient.publishPolicy(badPolicy.policy_id, now())
       expect(publishedPolicy.publish_date).not.toBeNull()
     })
@@ -52,7 +53,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
     it('cannot publish a policy w/ unpublished geography', async () => {
       const badPolicy = await PolicyServiceClient.writePolicy(PolicyFactory())
       expect(badPolicy.publish_date).toBeNull()
-      const geography = GeographyFactory({ geography_id: badPolicy.rules[0].geographies[0], publish_date: null })
+      const geography = GeographyFactory({ geography_id: badPolicy.rules[0]?.geographies[0], publish_date: null })
       await writePublishedGeography(geography)
       await expect(PolicyServiceClient.publishPolicy(badPolicy.policy_id, now())).rejects.toMatchObject({
         type: 'DependencyMissingError'
@@ -62,7 +63,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
     it('can CRUD a SimplePolicy', async () => {
       const simplePolicy = PolicyFactory()
       await PolicyServiceClient.writePolicy(simplePolicy)
-      await writePublishedGeography(GeographyFactory({ geography_id: simplePolicy.rules[0].geographies[0] }))
+      await writePublishedGeography(GeographyFactory({ geography_id: simplePolicy.rules[0]?.geographies[0] }))
       const policy = await PolicyServiceClient.readPolicy(simplePolicy.policy_id)
 
       expect(policy.policy_id).toEqual(simplePolicy.policy_id)
@@ -202,7 +203,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
     it('can write, read, and publish a Policy', async () => {
       const simplePolicy = PolicyFactory()
       await PolicyServiceClient.writePolicy(simplePolicy)
-      await writePublishedGeography(GeographyFactory({ geography_id: simplePolicy.rules[0].geographies[0] }))
+      await writePublishedGeography(GeographyFactory({ geography_id: simplePolicy.rules[0]?.geographies[0] }))
       /* must publish policy, b/c writePolicy filters out `publish_date` */
       await PolicyServiceClient.publishPolicy(simplePolicy.policy_id, simplePolicy.start_date)
 
@@ -231,14 +232,14 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
 
     it('can retrieve Policies that were active at a particular date', async () => {
       const activePolicy = await PolicyServiceClient.writePolicy(PolicyFactory({ start_date: yesterday() }))
-      await writePublishedGeography(GeographyFactory({ geography_id: activePolicy.rules[0].geographies[0] }))
+      await writePublishedGeography(GeographyFactory({ geography_id: activePolicy.rules[0]?.geographies[0] }))
       await PolicyServiceClient.publishPolicy(activePolicy.policy_id, activePolicy.start_date)
 
       const publishedPolicy = await PolicyServiceClient.writePolicy(
         PolicyFactory({
           start_date: START_ONE_MONTH_AGO,
           publish_date: START_ONE_MONTH_AGO,
-          rules: RulesFactory({ geographies: activePolicy.rules[0].geographies })
+          rules: RulesFactory({ geographies: activePolicy.rules[0]?.geographies })
         })
       )
       await PolicyServiceClient.publishPolicy(publishedPolicy.policy_id, publishedPolicy.start_date)
@@ -251,7 +252,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
 
     it('can read a single Policy', async () => {
       const activePolicy = await PolicyServiceClient.writePolicy(PolicyFactory({ start_date: yesterday() }))
-      await writePublishedGeography(GeographyFactory({ geography_id: activePolicy.rules[0].geographies[0] }))
+      await writePublishedGeography(GeographyFactory({ geography_id: activePolicy.rules[0]?.geographies[0] }))
       await PolicyServiceClient.publishPolicy(activePolicy.policy_id, activePolicy.start_date)
 
       const policy = await PolicyServiceClient.readPolicy(activePolicy.policy_id)
@@ -262,10 +263,10 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
     it('can find Policies by rule id', async () => {
       const simplePolicy = PolicyFactory()
       await PolicyServiceClient.writePolicy(simplePolicy)
-      await writePublishedGeography(GeographyFactory({ geography_id: simplePolicy.rules[0].geographies[0] }))
-      const rule_id = simplePolicy.rules[0].rule_id
+      await writePublishedGeography(GeographyFactory({ geography_id: simplePolicy.rules[0]?.geographies[0] }))
+      const rule_id = simplePolicy.rules[0]?.rule_id as UUID
       const { policies } = await PolicyServiceClient.readPolicies({ rule_id })
-      expect(policies[0].rules.map(rule => rule.rule_id).includes(rule_id)).toBeTruthy()
+      expect(policies[0]?.rules.map(rule => rule.rule_id).includes(rule_id)).toBeTruthy()
     })
 
     it('ensures rules are unique when writing new policy', async () => {
@@ -287,22 +288,28 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
         get_unpublished: true,
         get_published: null
       })
-      expect(result[0].name).toStrictEqual('a shiny new name')
+      expect(result[0]?.name).toStrictEqual('a shiny new name')
     })
 
     it('cannot add a rule that already exists in some other policy', async () => {
       const activePolicy = await PolicyServiceClient.writePolicy(PolicyFactory())
       const otherPolicy = await PolicyServiceClient.writePolicy(PolicyFactory())
 
-      const policy = clone(otherPolicy)
-      policy.rules[0].rule_id = activePolicy.rules[0].rule_id
+      const policy = {
+        ...clone(otherPolicy),
+        rules: [
+          ...otherPolicy.rules.map((val, iter) => {
+            return iter === 0 ? { ...val, rule_id: activePolicy.rules[0]?.rule_id as UUID } : val
+          })
+        ]
+      }
       await expect(PolicyServiceClient.editPolicy(policy)).rejects.toMatchObject({ type: 'ConflictError' })
     })
 
     it('ensures the publish_date >= start_date', async () => {
       const simplePolicy = PolicyFactory({ start_date: START_ONE_MONTH_AGO })
       await PolicyServiceClient.writePolicy(simplePolicy)
-      await writePublishedGeography(GeographyFactory({ geography_id: simplePolicy.rules[0].geographies[0] }))
+      await writePublishedGeography(GeographyFactory({ geography_id: simplePolicy.rules[0]?.geographies[0] }))
       await expect(PolicyServiceClient.publishPolicy(simplePolicy.policy_id, now())).rejects.toMatchObject({
         type: 'ConflictError'
       })
@@ -316,7 +323,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
 
     it('will not edit or delete a published Policy', async () => {
       const activePolicy = await PolicyServiceClient.writePolicy(PolicyFactory({ start_date: yesterday() }))
-      await writePublishedGeography(GeographyFactory({ geography_id: activePolicy.rules[0].geographies[0] }))
+      await writePublishedGeography(GeographyFactory({ geography_id: activePolicy.rules[0]?.geographies[0] }))
       await PolicyServiceClient.publishPolicy(activePolicy.policy_id, activePolicy.start_date)
       const publishedPolicy = clone(activePolicy)
       publishedPolicy.name = 'a shiny new name'
@@ -364,7 +371,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
           })
         expect(withStartDateResult.length).toStrictEqual(1)
 
-        expect(withStartDateResult[0].policy_metadata?.name).toStrictEqual('policy1_json')
+        expect(withStartDateResult[0]?.policy_metadata?.name).toStrictEqual('policy1_json')
 
         const meta: PolicyMetadataDomainModel<{ name: string }> = await PolicyServiceClient.readSinglePolicyMetadata(
           p1.policy_id
@@ -441,7 +448,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
     describe('Test "Policy Status" behavior', () => {
       describe('Single filter tests', () => {
         it('Can filter for draft policies', async () => {
-          const policies = [PolicyFactory(), PolicyFactory()]
+          const policies = <const>[PolicyFactory(), PolicyFactory()]
 
           await Promise.all(
             policies.map(policy =>
@@ -462,7 +469,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
         })
 
         it('Can filter for active policies', async () => {
-          const policies = [PolicyFactory({ start_date: yesterday() }), PolicyFactory()]
+          const policies = <const>[PolicyFactory({ start_date: yesterday() }), PolicyFactory()]
 
           await Promise.all(
             policies.map(policy =>
@@ -486,7 +493,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
         })
 
         it('Can filter for pending policies', async () => {
-          const policies = [PolicyFactory({ start_date: now() + days(1) }), PolicyFactory()]
+          const policies = <const>[PolicyFactory({ start_date: now() + days(1) }), PolicyFactory()]
 
           await Promise.all(
             policies.map(policy =>
@@ -556,7 +563,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
 
       describe('Multi-filter tests', () => {
         it('Can filter on draft & pending policies simultaneously', async () => {
-          const policies = [PolicyFactory({ start_date: now() + days(1) }), PolicyFactory()]
+          const policies = <const>[PolicyFactory({ start_date: now() + days(1) }), PolicyFactory()]
 
           await Promise.all(
             policies.map(policy =>
@@ -576,7 +583,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
         })
 
         it('Can filter on draft and active policies simultaneously', async () => {
-          const policies = [PolicyFactory({ start_date: now() - days(1) }), PolicyFactory()]
+          const policies = <const>[PolicyFactory({ start_date: now() - days(1) }), PolicyFactory()]
 
           await Promise.all(
             policies.map(policy =>

@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, DesignType, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import {
+  BigintTransformer,
+  DesignType,
+  EntityCreateModel,
+  IdentityColumn,
+  RecordedColumn
+} from '@mds-core/mds-repository'
 import { Timestamp, UUID } from '@mds-core/mds-types'
 import { Column, Entity } from 'typeorm'
 import { TransactionOperationDomainModel, TRANSACTION_OPERATION_TYPE } from '../../@types'
@@ -39,3 +45,5 @@ export class TransactionOperationEntity
   @Column('varchar', { length: 127 })
   author: string
 }
+
+export type TransactionOperationEntityCreateModel = EntityCreateModel<TransactionOperationEntity>

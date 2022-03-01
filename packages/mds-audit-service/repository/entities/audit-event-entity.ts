@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { BigintTransformer, EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Column, Entity } from 'typeorm'
 import { AuditEventDomainModel } from '../../@types'
 
@@ -79,3 +79,5 @@ export class AuditEventEntity extends IdentityColumn(RecordedColumn(class {})) i
   @Column('real', { nullable: true })
   charge: AuditEventEntityModel['charge']
 }
+
+export type AuditEventEntityCreateModel = EntityCreateModel<AuditEventEntityModel>

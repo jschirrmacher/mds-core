@@ -22,7 +22,7 @@ export class CreatePoliciesTable1603045382246 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     if (!(await queryRunner.hasTable('policies'))) {
       await queryRunner.query(
-        `CREATE TABLE "policies" ("id" bigint GENERATED ALWAYS AS IDENTITY, "policy_id" uuid NOT NULL, "policy_json" json NOT NULL, CONSTRAINT "policies_pkey" PRIMARY KEY ("policy_id"))`
+        `CREATE TABLE "policies" ("id" bigint GENERATED ALWAYS AS IDENTITY NOT NULL, "policy_id" uuid NOT NULL, "policy_json" json NOT NULL, CONSTRAINT "policies_pkey" PRIMARY KEY ("policy_id"))`
       )
       await queryRunner.query(`CREATE UNIQUE INDEX "idx_id_policies" ON "policies" ("id") `)
     }

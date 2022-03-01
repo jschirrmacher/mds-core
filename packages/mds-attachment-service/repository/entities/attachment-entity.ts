@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Column, Entity, Index } from 'typeorm'
 import { AttachmentDomainModel } from '../../@types'
 
@@ -52,3 +52,5 @@ export class AttachmentEntity extends IdentityColumn(RecordedColumn(class {})) i
   @Column('uuid', { nullable: true })
   attachment_list_id: AttachmentEntityModel['attachment_list_id']
 }
+
+export type AttachmentEntityCreateModel = EntityCreateModel<AttachmentEntityModel>

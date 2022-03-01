@@ -71,6 +71,10 @@ describe('Transaction Service Tests', () => {
         it('Create one good transaction succeeds', async () => {
           const [transactionToPersist] = transactionsGenerator()
 
+          if (!transactionToPersist) {
+            throw new Error('No sample transaction found') // unexpected to ever happen
+          }
+
           const recordedTransaction = await TransactionServiceClient.createTransaction(transactionToPersist)
           expect(recordedTransaction.device_id).toEqual(transactionToPersist.device_id)
           expect(recordedTransaction.transaction_id).toEqual(transactionToPersist.transaction_id)
@@ -82,6 +86,10 @@ describe('Transaction Service Tests', () => {
           const [transactionToPersist] = transactionsGenerator(1, {
             receipt_details: { violation_id: uuid(), trip_id: null, policy_id: uuid() }
           })
+
+          if (!transactionToPersist) {
+            throw new Error('No sample transaction found') // unexpected to ever happen
+          }
 
           const recordedTransaction = await TransactionServiceClient.createTransaction(transactionToPersist)
           expect(recordedTransaction.device_id).toEqual(transactionToPersist.device_id)
@@ -100,7 +108,7 @@ describe('Transaction Service Tests', () => {
           const recordedTransactions = await TransactionServiceClient.createTransactions(transactionsToPersist)
 
           recordedTransactions.forEach((transaction, i) => {
-            expect(transaction.device_id).toEqual(transactionsToPersist[i].device_id)
+            expect(transaction.device_id).toEqual(transactionsToPersist[i]?.device_id)
           })
 
           expect(recordedTransactions.length).toStrictEqual(transactionsToPersist.length)
@@ -113,6 +121,9 @@ describe('Transaction Service Tests', () => {
       describe('Failure Tests', () => {
         it('Create one transaction with malformed transaction_id rejects', async () => {
           const [transaction] = transactionsGenerator(1)
+          if (!transaction) {
+            throw new Error('No sample transaction found') // unexpected to ever happen
+          }
           const malformedTransaction = { ...transaction, transaction_id: 'definitely-not-a-uuid' }
 
           await expect(TransactionServiceClient.createTransaction(malformedTransaction)).rejects.toMatchObject({
@@ -123,6 +134,9 @@ describe('Transaction Service Tests', () => {
 
         it('Create one transaction with missing fee_type rejects', async () => {
           const [transaction] = transactionsGenerator(1)
+          if (!transaction) {
+            throw new Error('No sample transaction found') // unexpected to ever happen
+          }
           const { fee_type, ...malformedTransaction } = transaction
 
           await expect(
@@ -135,7 +149,9 @@ describe('Transaction Service Tests', () => {
 
         it('Post Transaction duplicate transaction_id', async () => {
           const [transaction] = transactionsGenerator(1)
-
+          if (!transaction) {
+            throw new Error('No sample transaction found') // unexpected to ever happen
+          }
           await TransactionServiceClient.createTransaction(transaction)
 
           await expect(TransactionServiceClient.createTransaction(transaction)).rejects.toMatchObject({
@@ -146,7 +162,9 @@ describe('Transaction Service Tests', () => {
 
         it('Kafka failure reverts postgres create', async () => {
           const [transaction] = transactionsGenerator(1)
-
+          if (!transaction) {
+            throw new Error('No sample transaction found') // unexpected to ever happen
+          }
           mockStream.write.mockImplementationOnce(async () => {
             throw new Error('Test failure')
           })
@@ -166,7 +184,13 @@ describe('Transaction Service Tests', () => {
           await expect(TransactionServiceClient.createTransactions(transactions)).rejects.toMatchObject({
             type: 'ServiceException'
           })
-          await expect(TransactionServiceClient.getTransaction(transactions[0].transaction_id)).rejects.toMatchObject({
+          const [transaction] = transactions
+          if (!transaction) {
+            throw new Error('No sample transaction found') // unexpected to ever happen
+          }
+          await expect(
+            TransactionServiceClient.getTransaction(transaction.transaction_id as string)
+          ).rejects.toMatchObject({
             type: 'NotFoundError'
           })
         })
@@ -177,6 +201,9 @@ describe('Transaction Service Tests', () => {
       describe('Success', () => {
         it('Get One Transaction', async () => {
           const [transactionToPersist] = transactionsGenerator(1)
+          if (!transactionToPersist) {
+            throw new Error('No sample transaction found') // unexpected to ever happen
+          }
           const recordedTransaction = await TransactionServiceClient.createTransaction(transactionToPersist)
 
           const fetchedTransaction = await TransactionServiceClient.getTransaction(recordedTransaction.transaction_id)
@@ -383,7 +410,7 @@ describe('Transaction Service Tests', () => {
       })
 
       describe('Failure', () => {
-        it('Verify that asking for too many items will fail (i.e. is Joi doing its job)', async () => {
+        it('Verify that asking for too many items will fail (i.e. is AJV doing its job)', async () => {
           await expect(TransactionServiceClient.getTransactions({ limit: 10000 })).rejects.toMatchObject({
             type: 'ValidationError'
           })
@@ -391,6 +418,9 @@ describe('Transaction Service Tests', () => {
 
         it('Verify that asking for missing transaction will fail', async () => {
           const [transaction] = transactionsGenerator(1)
+          if (!transaction) {
+            throw new Error('No sample transaction found') // unexpected to ever happen
+          }
           await expect(TransactionServiceClient.getTransaction(transaction.transaction_id)).rejects.toMatchObject({
             type: 'NotFoundError'
           })

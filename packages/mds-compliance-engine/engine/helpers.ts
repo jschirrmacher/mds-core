@@ -16,7 +16,7 @@ import { areThereCommonElements, days, isDefined, now, RuntimeError } from '@mds
 import { DateTime } from 'luxon'
 import moment from 'moment-timezone'
 import { ProviderInputs, VehicleEventWithTelemetry } from '../@types'
-
+import { ComplianceEngineLogger as logger } from '../logger'
 const { env } = process
 
 const TWO_DAYS_IN_MS = 172800000
@@ -115,7 +115,7 @@ const numericalWeekdayToLocale = (weekdayNum: number) => {
 
   const weekdayList = <const>['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
-  return weekdayList[weekdayNum - 1] // subtract 1 cause arrays are 0 indexed, but luxon provides weekdays in 1 | 2 | 3 | 4 | 5 | 6 | 7 form. (1 = monday) (7 = sunday)
+  return weekdayList[weekdayNum - 1]! // subtract 1 cause arrays are 0 indexed, but luxon provides weekdays in 1 | 2 | 3 | 4 | 5 | 6 | 7 form. (1 = monday) (7 = sunday)
 }
 
 /**
@@ -254,7 +254,12 @@ export function annotateVehicleMap<T extends Rule<Exclude<RULE_TYPE, 'rate'>>>(
   }) as VehicleEventWithTelemetry[]
   policy.rules.forEach(rule => {
     filteredEvents.forEach(event => {
-      const { device, speed, rule_applied, rules_matched = [] } = vehicleMap[event.device_id]
+      const vehicle = vehicleMap[event.device_id]
+      if (!vehicle) {
+        logger.warn(`No vehicle entry found for event ${event.device_id}`)
+        return // this should never happen, but better safe than sorry
+      }
+      const { device, speed, rule_applied, rules_matched = [] } = vehicle
       const { device_id } = device
       const { rule_id } = rule
       if (matcherFunction(rule as T, geographies, device, event)) {
@@ -269,8 +274,8 @@ export function annotateVehicleMap<T extends Rule<Exclude<RULE_TYPE, 'rate'>>>(
             rule_applied,
             rules_matched
           )
-        } else if (!vehiclesFoundMap[device_id].rules_matched.includes(rule_id)) {
-          vehiclesFoundMap[device_id].rules_matched.push(rule_id)
+        } else if (!vehiclesFoundMap[device_id]?.rules_matched.includes(rule_id)) {
+          vehiclesFoundMap[device_id]?.rules_matched.push(rule_id)
         }
       }
     })

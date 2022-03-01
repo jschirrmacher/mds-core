@@ -17,7 +17,6 @@
 export * from './@types'
 export * from './decorators'
 export * from './exceptions'
-export * from './filters'
 export * from './mapper'
 export * from './mixins'
 export * from './repository'

@@ -23,91 +23,96 @@ import { AttachmentEntity } from './entities/attachment-entity'
 import { AttachmentDomainToEntityCreate, AttachmentEntityToDomain } from './mappers'
 import migrations from './migrations'
 
-class AttachmentReadWriteRepository extends ReadWriteRepository {
-  constructor() {
-    super('attachments', { entities, migrations })
-  }
+export const AttachmentRepository = ReadWriteRepository.Create('attachments', { entities, migrations }, repository => {
+  return {
+    writeAttachment: async (attachment: AttachmentDomainModel): Promise<AttachmentDomainModel> => {
+      try {
+        const connection = await repository.connect('rw')
 
-  public writeAttachment = async (attachment: AttachmentDomainModel): Promise<AttachmentDomainModel> => {
-    try {
-      const connection = await this.connect('rw')
+        const {
+          raw: [entity]
+        }: InsertReturning<AttachmentEntity> = await connection
+          .getRepository(AttachmentEntity)
+          .createQueryBuilder()
+          .insert()
+          .values([AttachmentDomainToEntityCreate.map(attachment)])
+          .returning('*')
+          .execute()
 
-      const {
-        raw: [entity]
-      }: InsertReturning<AttachmentEntity> = await connection
-        .getRepository(AttachmentEntity)
-        .createQueryBuilder()
-        .insert()
-        .values([AttachmentDomainToEntityCreate.map(attachment)])
-        .returning('*')
-        .execute()
-      return AttachmentEntityToDomain.map(entity)
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  public deleteAttachment = async (attachment_id: string): Promise<AttachmentDomainModel> => {
-    try {
-      const connection = await this.connect('rw')
-
-      const {
-        raw: [entity]
-      }: DeleteReturning<AttachmentEntity> = await connection
-        .getRepository(AttachmentEntity)
-        .createQueryBuilder()
-        .delete()
-        .where('attachment_id = :attachment_id', { attachment_id })
-        .returning('*')
-        .execute()
-
-      return AttachmentEntityToDomain.map(entity)
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  public readAttachment = async (attachment_id: string): Promise<AttachmentDomainModel | undefined> => {
-    try {
-      const connection = await this.connect('rw')
-
-      const entity = await connection.getRepository(AttachmentEntity).findOne({ attachment_id })
-
-      return entity ? AttachmentEntityToDomain.map(entity) : undefined
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
-
-  public readAttachments = async (options: ReadAttachmentsOptions): Promise<AttachmentDomainModel[]> => {
-    const isAttachmentListIdOption = (opts: ReadAttachmentsOptions): opts is { attachment_list_id: UUID } =>
-      'attachment_list_id' in opts
-
-    const isAttachmentIdsOption = (opts: ReadAttachmentsOptions): opts is { attachment_ids: UUID[] } =>
-      'attachment_ids' in opts
-
-    try {
-      const connection = await this.connect('rw')
-
-      const attachments = await (async () => {
-        if (isAttachmentIdsOption(options)) {
-          const { attachment_ids } = options
-          return connection.getRepository(AttachmentEntity).find({ attachment_id: In(attachment_ids) })
+        if (!entity) {
+          throw new Error('Failed to write attachment')
         }
 
-        if (isAttachmentListIdOption(options)) {
-          const { attachment_list_id } = options
-          return connection.getRepository(AttachmentEntity).find({ attachment_list_id })
+        return AttachmentEntityToDomain.map(entity)
+      } catch (error) {
+        throw RepositoryError(error)
+      }
+    },
+
+    deleteAttachment: async (attachment_id: string): Promise<AttachmentDomainModel> => {
+      try {
+        const connection = await repository.connect('rw')
+
+        const {
+          raw: [entity]
+        }: DeleteReturning<AttachmentEntity> = await connection
+          .getRepository(AttachmentEntity)
+          .createQueryBuilder()
+          .delete()
+          .where('attachment_id = :attachment_id', { attachment_id })
+          .returning('*')
+          .execute()
+
+        if (!entity) {
+          throw new Error('Failed to delete attachment')
         }
 
-        return []
-      })()
+        return AttachmentEntityToDomain.map(entity)
+      } catch (error) {
+        throw RepositoryError(error)
+      }
+    },
 
-      return attachments.map(AttachmentEntityToDomain.mapper())
-    } catch (error) {
-      throw RepositoryError(error)
+    readAttachment: async (attachment_id: string): Promise<AttachmentDomainModel | undefined> => {
+      try {
+        const connection = await repository.connect('rw')
+
+        const entity = await connection.getRepository(AttachmentEntity).findOne({ attachment_id })
+
+        return entity ? AttachmentEntityToDomain.map(entity) : undefined
+      } catch (error) {
+        throw RepositoryError(error)
+      }
+    },
+
+    readAttachments: async (options: ReadAttachmentsOptions): Promise<AttachmentDomainModel[]> => {
+      const isAttachmentListIdOption = (opts: ReadAttachmentsOptions): opts is { attachment_list_id: UUID } =>
+        'attachment_list_id' in opts
+
+      const isAttachmentIdsOption = (opts: ReadAttachmentsOptions): opts is { attachment_ids: UUID[] } =>
+        'attachment_ids' in opts
+
+      try {
+        const connection = await repository.connect('rw')
+
+        const attachments = await (async () => {
+          if (isAttachmentIdsOption(options)) {
+            const { attachment_ids } = options
+            return connection.getRepository(AttachmentEntity).find({ attachment_id: In(attachment_ids) })
+          }
+
+          if (isAttachmentListIdOption(options)) {
+            const { attachment_list_id } = options
+            return connection.getRepository(AttachmentEntity).find({ attachment_list_id })
+          }
+
+          return []
+        })()
+
+        return attachments.map(AttachmentEntityToDomain.mapper())
+      } catch (error) {
+        throw RepositoryError(error)
+      }
     }
   }
-}
-
-export const AttachmentRepository = new AttachmentReadWriteRepository()
+})

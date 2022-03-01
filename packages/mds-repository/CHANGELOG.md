@@ -1,5 +1,32 @@
 # @mds-core/mds-repository
 
+## 0.1.41
+
+### Patch Changes
+
+- c8dc2d20: Fix access modifiers in mds-repository
+- 28d8a7c3: Use dedicated migration metadata table for each repository
+- 86bb2f6f: Add new mds-repository methods to support functional repository composition
+
+## 0.1.40
+
+### Patch Changes
+
+- d98d5693: Cleanup and refactor repository types
+
+## 0.1.39
+
+### Patch Changes
+
+- 2637f1cc: Upgrade to latest typeorm/pg to support GENERATED ALWAYS AS IDENTITY in migrations
+
+## 0.1.38
+
+### Patch Changes
+
+- bc8f0a04: Switch tests from Mocha to Jest
+- a942d36c: Add some new transformers/decorators and remove some unused filters from mds-repository
+
 ## 0.1.37
 
 ### Patch Changes

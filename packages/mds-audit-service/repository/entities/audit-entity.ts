@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { BigintTransformer, EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Nullable, Timestamp } from '@mds-core/mds-types'
 import { Column, Entity } from 'typeorm'
 import { AuditDomainModel } from '../../@types'
@@ -60,3 +60,5 @@ export class AuditEntity extends IdentityColumn(RecordedColumn(class {})) implem
   @Column('bigint', { transformer: BigintTransformer, nullable: true })
   deleted: AuditEntityModel['deleted']
 }
+
+export type AuditEntityCreateModel = EntityCreateModel<AuditEntityModel>

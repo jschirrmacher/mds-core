@@ -122,7 +122,7 @@ describe('Geography Service Tests', () => {
     it('Get Unpublished Geographies With Metadata', async () => {
       const [geography, ...others] = await GeographyServiceClient.getUnpublishedGeographies({ includeMetadata: true })
       expect(others).toHaveLength(0)
-      expect(geography.geography_metadata).toBeNull()
+      expect(geography?.geography_metadata).toBeNull()
     })
 
     it('Get Published Geographies', async () => {
@@ -134,7 +134,7 @@ describe('Geography Service Tests', () => {
     it('Get Published Geographies With Metadata', async () => {
       const [geography, ...others] = await GeographyServiceClient.getPublishedGeographies({ includeMetadata: true })
       expect(others).toHaveLength(0)
-      expect(geography.geography_metadata).toEqual({ status: 'modified' })
+      expect(geography?.geography_metadata).toEqual({ status: 'modified' })
     })
 
     it('Get Geographies Published After Date', async () => {
@@ -201,6 +201,10 @@ describe('Geography Service Tests', () => {
           { geography_id: uuid(), geography_json: { type: 'FeatureCollection', features: [] } }
         ])
 
+        if (!geography) {
+          throw new Error('Geography not created')
+        }
+
         await GeographyServiceClient.writeGeographiesMetadata([
           {
             geography_id: geography.geography_id,
@@ -233,6 +237,11 @@ describe('Geography Service Tests', () => {
       const [geography] = await GeographyServiceClient.writeGeographies([
         { geography_id: uuid(), geography_json: { type: 'FeatureCollection', features: [] } }
       ])
+
+      if (!geography) {
+        throw new Error('Geography not created')
+      }
+
       const updated = await GeographyServiceClient.editGeography({
         geography_json: geography.geography_json,
         geography_id: geography.geography_id,

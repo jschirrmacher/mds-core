@@ -15,7 +15,7 @@
  */
 
 import db from '@mds-core/mds-db'
-import { GeographyDomainModel, GeographyServiceClient } from '@mds-core/mds-geography-service'
+import { GeographyDomainCreateModel, GeographyServiceClient } from '@mds-core/mds-geography-service'
 import { PolicyDomainModel, PolicyServiceClient } from '@mds-core/mds-policy-service'
 import { getProviders } from '@mds-core/mds-providers'
 import { makeDevices, makeEventsWithTelemetry } from '@mds-core/mds-test-data'
@@ -29,9 +29,9 @@ let policies: PolicyDomainModel[] = []
 
 const CITY_OF_LA = '1f943d59-ccc9-4d91-b6e2-0c5e771cbc49'
 
-const geographies = [
+const geographies: [GeographyDomainCreateModel] = [
   { name: 'la', geography_id: CITY_OF_LA, geography_json: LA_CITY_BOUNDARY as FeatureCollection }
-] as GeographyDomainModel[]
+]
 
 process.env.TIMEZONE = 'America/Los_Angeles'
 

@@ -15,11 +15,11 @@
  */
 
 import { RpcServer } from '@mds-core/mds-rpc-common'
-import { IngestMigrationService, IngestService, IngestServiceDefinition, IngestServiceRequestContext } from '../@types'
+import { IngestService, IngestServiceDefinition, IngestServiceRequestContext } from '../@types'
 import { IngestServiceClient } from '../client'
 import { IngestServiceProvider } from './provider'
 
-export const IngestServiceManager = RpcServer<IngestService & IngestMigrationService, IngestServiceRequestContext>(
+export const IngestServiceManager = RpcServer<IngestService, IngestServiceRequestContext>(
   IngestServiceDefinition,
   {
     onStart: IngestServiceProvider.start,
@@ -36,9 +36,6 @@ export const IngestServiceManager = RpcServer<IngestService & IngestMigrationSer
       IngestServiceProvider.getLatestTelemetryForDevices(context, ...args),
     writeEvents: (args, context) => IngestServiceProvider.writeEvents(context, ...args),
     writeEventAnnotations: (args, context) => IngestServiceProvider.writeEventAnnotations(context, ...args),
-    writeMigratedDevice: (args, context) => IngestServiceProvider.writeMigratedDevice(context, ...args),
-    writeMigratedVehicleEvent: (args, context) => IngestServiceProvider.writeMigratedVehicleEvent(context, ...args),
-    writeMigratedTelemetry: (args, context) => IngestServiceProvider.writeMigratedTelemetry(context, ...args),
     getTripEvents: (args, context) => IngestServiceProvider.getTripEvents(context, ...args),
     getEventsWithDeviceAndTelemetryInfoUsingOptions: (args, context) =>
       IngestServiceProvider.getEventsWithDeviceAndTelemetryInfoUsingOptions(context, ...args),

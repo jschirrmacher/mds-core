@@ -57,7 +57,13 @@ export const SchemaValidator = <T>(
     ajvInstance.addKeyword(transform())
   }
 
-  const validator: ValidateFunction<T> = withFormats(ajvInstance, ['uuid', 'uri', 'email', 'float']).compile($schema)
+  const validator: ValidateFunction<T> = withFormats(ajvInstance, [
+    'duration',
+    'uuid',
+    'uri',
+    'email',
+    'float'
+  ]).compile($schema)
   return {
     validate: (input: unknown) => {
       if (!validator(input)) {

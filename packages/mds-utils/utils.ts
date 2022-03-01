@@ -20,6 +20,8 @@ import circleToPolygon from 'circle-to-polygon'
 import { Feature, FeatureCollection, Geometry, MultiPolygon, Polygon } from 'geojson'
 import pointInPoly from 'point-in-polygon'
 import { getCurrentDate, parseRelative } from './date-time-utils'
+import { IndexError, RuntimeError } from './exceptions/exceptions'
+import { hasOwnProperty } from './hasOwnProperty'
 import { UtilsLogger } from './logger'
 import { getNextStates, isEventSequenceValid } from './state-machine'
 
@@ -124,7 +126,7 @@ function randomElement<T>(list: T[] | readonly T[]) {
   return list[rangeRandomInt(list.length)]
 }
 
-function head<T>(list: T[] | readonly T[]) {
+function head<T>(list: T[] | readonly T[] | [T, ...T[]]) {
   if (!Array.isArray(list)) {
     throw new Error('not a list')
   }
@@ -135,7 +137,14 @@ function tail<T>(list: T[] | readonly T[]) {
   if (!Array.isArray(list)) {
     throw new Error('not a list')
   }
-  return list[list.length - 1]
+
+  const result = list[list.length - 1]
+
+  if (!result) {
+    throw new IndexError(`Cannot access entry ${list.length - 1} of ${list}`)
+  }
+
+  return result
 }
 
 /**
@@ -149,16 +158,16 @@ function calcBBox(geometry: Geometry): BBox {
   let lngMin = 10000
   let lngMax = -10000
 
-  function expand(poly: number[][]) {
+  const expand = (poly: number[][]) => {
     if (!Array.isArray(poly)) {
       throw new Error('poly is not a list')
-    }
-    if (typeof poly[0][0] !== 'number' || typeof poly[0][1] !== 'number') {
-      throw new Error('poly is not a list of [num,num]')
     }
 
     for (const pair of poly) {
       const [lng, lat] = pair
+      if (typeof lat !== 'number' || typeof lng !== 'number') {
+        throw new Error('poly is not a list of [num,num]')
+      }
       if (latMin > lat) {
         latMin = lat
       }
@@ -174,11 +183,13 @@ function calcBBox(geometry: Geometry): BBox {
     }
   }
 
-  let poly
-
   switch (geometry.type) {
     case 'Polygon':
-      ;[poly] = geometry.coordinates
+      const [poly] = geometry.coordinates
+      if (!poly) {
+        throw new Error(`calcBBox cannot extract missing polygon from ${geometry}`)
+      }
+
       expand(poly)
       break
 
@@ -186,7 +197,10 @@ function calcBBox(geometry: Geometry): BBox {
       {
         const coords = geometry.coordinates
         for (const polyWithHoles of coords) {
-          ;[poly] = polyWithHoles
+          const [poly] = polyWithHoles
+          if (!poly) {
+            throw new Error(`calcBBox cannot extract missing polygon from ${geometry}`)
+          }
           expand(poly)
         }
       }
@@ -205,7 +219,7 @@ function calcBBox(geometry: Geometry): BBox {
 function pointInPolyWithHoles(pt: [number, number], polyWithHoles: number[][][]): boolean {
   const poly = polyWithHoles[0]
   // log('testing', pt, 'in', poly, 'in', polyWithHoles)
-  if (pointInPoly(pt, poly)) {
+  if (poly && pointInPoly(pt, poly)) {
     // log('pt in poly')
     const holes = polyWithHoles.slice(1)
     for (const hole of holes) {
@@ -358,24 +372,6 @@ function addDistanceBearing<T extends { lat: number; lng: number }>(pt: T, dista
 }
 
 /**
- * [getRandomSubarray description]
- * @param  {[type]} array [description]
- * @param  {[type]} size  [description]
- * @return {[type]}       [description]
- */
-function getRandomSubarray<T>(array: T[], size: number): T[] {
-  const shuffled = array.slice()
-  const min = array.length - size
-  for (let i = array.length; i > min; i -= 1) {
-    const index = Math.floor((i + 1) * Math.random())
-    const temp = shuffled[index]
-    shuffled[index] = shuffled[i]
-    shuffled[i] = temp
-  }
-  return shuffled.slice(min)
-}
-
-/**
  * @param  {string describing a bounding box}
  * @return {bounding box}
  */
@@ -389,9 +385,15 @@ function parseBBox(bbox_str: string): { lngMin: number; lngMax: number; latMin: 
     .replace(/[[\] ]+/g, '')
     .split(',')
     .map(parseFloat)
-  if (parts.length !== 4) {
+
+  const isTuple4Number = (input: unknown): input is [number, number, number, number] => {
+    return Array.isArray(input) && input.length === 4 && input.every((x: unknown) => typeof x === 'number')
+  }
+
+  if (!isTuple4Number(parts)) {
     return null
   }
+
   const [lng1, lat1, lng2, lat2] = parts
   return {
     lngMin: Math.min(lng1, lng2),
@@ -462,7 +464,9 @@ function csv<T>(list: T[] | Readonly<T[]>): string {
 
 // utility for adding counts to maps
 function inc(map: { [key: string]: number }, key: string) {
-  return Object.assign(map, { [key]: map[key] ? map[key] + 1 : 1 })
+  const value = map[key]
+
+  return Object.assign(map, { [key]: value ? value + 1 : 1 })
 }
 
 function pathPrefix(path: string): string {
@@ -494,10 +498,16 @@ function areThereCommonElements<T, U>(arr1: T[], arr2: U[]) {
 function routeDistance(coordinates: { lat: number; lng: number }[]): number {
   const R = 6371000 // Earth's mean radius in meters
   return (coordinates || [])
-    .map(coordinate => [rad(coordinate.lat), rad(coordinate.lng)])
+    .map(coordinate => <const>[rad(coordinate.lat), rad(coordinate.lng)])
     .reduce((distance, point, index, points) => {
       if (index > 0) {
-        const [lat1, lng1] = points[index - 1]
+        const prev = points[index - 1]
+
+        if (!prev) {
+          throw new RuntimeError('routeDistance: previous point not found') // this should never happen, but Safety™
+        }
+
+        const [lat1, lng1] = prev
         const [lat2, lng2] = point
         const [dlat, dlng] = [lat2 - lat1, lng2 - lng1]
         const a = Math.sin(dlat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dlng / 2) ** 2
@@ -561,6 +571,18 @@ const isStringArray = (arr: unknown): arr is string[] => isTArray<string>(arr, i
 
 const asArray = <T>(value: SingleOrArray<T>): T[] => (Array.isArray(value) ? value : [value])
 
+const asArrayOfAtLeastOne = <T>(value: SingleOrArray<T>): [T, ...T[]] => {
+  if (Array.isArray(value)) {
+    if (!hasAtLeastOneEntry(value)) {
+      throw new Error('asArrayOfAtLeastOne: array must have at least one entry')
+    }
+
+    return value
+  }
+
+  return [value]
+}
+
 const pluralize = (count: number, singular: string, plural: string) => (count === 1 ? singular : plural)
 
 /**
@@ -592,12 +614,10 @@ const zip = <T, U, R>(arr1: T[], arr2: U[], mapper: (x: T, y: U) => R) => {
   if (arr1.length !== arr2.length) {
     throw new Error('Arrays must be of equal length in order to zip')
   }
-  return arr1.map((elem, index) => mapper(elem, arr2[index]))
+  return arr1.map((elem, index) => mapper(elem, arr2[index] as U)) // we can do this type assertion because we know the arrays are of the same length
 }
 
-const hasOwnProperty = <X extends {}, Y extends PropertyKey>(obj: X, prop: Y): obj is X & Record<Y, unknown> => {
-  return obj.hasOwnProperty(prop)
-}
+const hasAtLeastOneEntry = <T>(input: T[]): input is [T, ...T[]] => input.length >= 1
 
 export {
   RULE_UNIT_MAP,
@@ -619,7 +639,6 @@ export {
   getCurrentDate,
   getEnvVar,
   getNextStates,
-  getRandomSubarray,
   head,
   hours,
   inc,
@@ -659,5 +678,7 @@ export {
   timeframe,
   yesterday,
   zip,
-  hasOwnProperty
+  hasOwnProperty,
+  hasAtLeastOneEntry,
+  asArrayOfAtLeastOne
 }

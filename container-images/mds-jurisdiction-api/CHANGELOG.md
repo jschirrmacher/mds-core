@@ -1,5 +1,31 @@
 # @container-images/mds-jurisdiction-api
 
+## 0.0.59
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-api@0.1.58
+
+## 0.0.58
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-api@0.1.57
+
+## 0.0.57
+
+### Patch Changes
+
+- 2637f1cc: Upgrade to latest typeorm/pg to support GENERATED ALWAYS AS IDENTITY in migrations
+  - @mds-core/mds-jurisdiction-api@0.1.56
+
+## 0.0.56
+
+### Patch Changes
+
+- Updated dependencies [bc8f0a04]
+  - @mds-core/mds-jurisdiction-api@0.1.55
+
 ## 0.0.55
 
 ### Patch Changes

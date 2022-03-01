@@ -14,7 +14,19 @@
  * limitations under the License.
  */
 
-import { ProcessorController } from '@mds-core/mds-stream-processor'
-import { IngestMigrationProcessor } from './processor'
+import { EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { SchemaObject } from 'ajv'
+import { Column, Entity } from 'typeorm'
 
-ProcessorController.start(IngestMigrationProcessor())
+@Entity('collector-schemas')
+export class CollectorSchemaEntity extends IdentityColumn(RecordedColumn(class {})) {
+  @Column('varchar', { length: 255, primary: true })
+  schema_id: string
+
+  @Column('json')
+  schema: SchemaObject
+}
+
+export type CollectorSchemaEntityModel = CollectorSchemaEntity
+
+export type CollectorSchemaEntityCreateModel = EntityCreateModel<CollectorSchemaEntityModel>

@@ -46,7 +46,7 @@ const MergeConfigurations =
     const { npm_package_name = '', npm_package_version = '' } = parseEnv('npm_package_name', 'npm_package_version')
 
     // eslint-disable-next-line no-console
-    console.log(`BUNDLE: ${npm_package_name}@${npm_package_version} from ${resolve(entry[name])}`)
+    console.log(`BUNDLE: ${npm_package_name}@${npm_package_version} from ${resolve(entry[name] ?? '')}`)
 
     return WebpackMerge<Configuration>(
       {

@@ -158,7 +158,11 @@ const deviceSchema = Joi.object().keys({
 })
 
 const Format = (property: string, error: Joi.ValidationError): string => {
-  const [{ message, path }] = error.details
+  const [firstErr] = error.details
+  if (!firstErr) {
+    throw new Error('No error details found')
+  }
+  const { message, path } = firstErr
   const [, ...details] = message.split(' ')
   return `${[property, ...path].join('.')} ${details.join(' ')}`
 }

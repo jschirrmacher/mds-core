@@ -1,5 +1,38 @@
 # @mds-core/mds-collector-api
 
+## 0.1.59
+
+### Patch Changes
+
+- @mds-core/mds-collector-service@0.4.14
+- @mds-core/mds-api-helpers@0.2.12
+
+## 0.1.58
+
+### Patch Changes
+
+- Updated dependencies [d98d5693]
+  - @mds-core/mds-collector-service@0.4.13
+  - @mds-core/mds-api-helpers@0.2.11
+
+## 0.1.57
+
+### Patch Changes
+
+- Updated dependencies [2637f1cc]
+  - @mds-core/mds-collector-service@0.4.12
+  - @mds-core/mds-api-helpers@0.2.10
+
+## 0.1.56
+
+### Patch Changes
+
+- Updated dependencies [bc8f0a04]
+  - @mds-core/mds-service-helpers@0.6.4
+  - @mds-core/mds-api-helpers@0.2.9
+  - @mds-core/mds-collector-service@0.4.11
+  - @mds-core/mds-api-server@0.4.6
+
 ## 0.1.55
 
 ### Patch Changes

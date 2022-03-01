@@ -56,7 +56,7 @@ export const SUPPORT1_PROVIDER_ID = '09828cf3-9b85-449b-bc8f-d3aaef5c3448'
 export const SUPPORT2_PROVIDER_ID = 'fa5f6ce0-c038-4027-9c2c-a693f1ed7533'
 export const SUPPORT3_PROVIDER_ID = '9944b4cd-58a3-4969-a6d4-c131ff0b2111'
 
-const PROVIDER_IDS = [
+const PROVIDER_IDS = <const>[
   JUMP_PROVIDER_ID,
   LIME_PROVIDER_ID,
   BIRD_PROVIDER_ID,
@@ -85,8 +85,10 @@ const PROVIDER_IDS = [
   JEST_PROVIDER_ID,
   SUPPORT1_PROVIDER_ID,
   SUPPORT2_PROVIDER_ID,
-  SUPPORT3_PROVIDER_ID
-] as const
+  SUPPORT3_PROVIDER_ID,
+  TEST1_PROVIDER_ID,
+  TEST2_PROVIDER_ID
+]
 
 export type PROVIDER_ID = typeof PROVIDER_IDS[number]
 
@@ -98,7 +100,7 @@ export interface ProviderInfo {
   gbfs_api_url?: string
 }
 
-const providers: { [k: string]: ProviderInfo } = {
+const providers: { [k in PROVIDER_ID]: ProviderInfo } = {
   [JUMP_PROVIDER_ID]: {
     provider_id: JUMP_PROVIDER_ID,
     provider_name: 'JUMP',

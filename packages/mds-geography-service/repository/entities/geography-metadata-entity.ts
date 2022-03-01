@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IdentityColumn } from '@mds-core/mds-repository'
+import { EntityCreateModel, IdentityColumn } from '@mds-core/mds-repository'
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
 import { GeographyMetadataDomainModel } from '../../@types'
 import { GeographyEntity } from './geography-entity'
@@ -35,3 +35,5 @@ export class GeographyMetadataEntity extends IdentityColumn(class {}) implements
   @Column('json', { nullable: true })
   geography_metadata: GeographyMetadataEntityModel['geography_metadata']
 }
+
+export type GeographyMetadataEntityCreateModel = EntityCreateModel<GeographyMetadataEntityModel>

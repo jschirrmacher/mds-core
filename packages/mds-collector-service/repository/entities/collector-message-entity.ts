@@ -14,27 +14,9 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { UUID } from '@mds-core/mds-types'
-import { SchemaObject } from 'ajv'
 import { Column, Entity, Index } from 'typeorm'
-
-@Entity('collector-schemas')
-export class CollectorSchemaEntity extends IdentityColumn(RecordedColumn(class {})) {
-  @Column('varchar', { length: 255, primary: true })
-  schema_id: string
-
-  @Column('json')
-  schema: SchemaObject
-}
-
-export type CollectorSchemaEntityModel = CollectorSchemaEntity
-
-export type CollectorSchemaEntityCreateModel = Omit<
-  CollectorSchemaEntityModel,
-  keyof RecordedColumn | keyof IdentityColumn
-> &
-  Partial<Pick<CollectorSchemaEntityModel, keyof RecordedColumn>>
 
 @Entity('collector-messages')
 export class CollectorMessageEntity extends IdentityColumn(RecordedColumn(class {}), { primary: true }) {
@@ -51,8 +33,4 @@ export class CollectorMessageEntity extends IdentityColumn(RecordedColumn(class 
 
 export type CollectorMessageEntityModel = CollectorMessageEntity
 
-export type CollectorMessageEntityCreateModel = Omit<
-  CollectorMessageEntityModel,
-  keyof RecordedColumn | keyof IdentityColumn
-> &
-  Partial<Pick<CollectorMessageEntityModel, keyof RecordedColumn>>
+export type CollectorMessageEntityCreateModel = EntityCreateModel<CollectorMessageEntityModel>

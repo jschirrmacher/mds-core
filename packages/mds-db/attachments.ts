@@ -30,6 +30,11 @@ export async function writeAttachment(attachment: Attachment): Promise<Recorded<
   const {
     rows: [recordedAttachment]
   }: { rows: Recorded<Attachment>[] } = await client.query(sql, values)
+
+  if (!recordedAttachment) {
+    throw new Error('Failed to write attachment')
+  }
+
   return { ...attachment, ...recordedAttachment }
 }
 
@@ -58,6 +63,11 @@ export async function writeAuditAttachment(auditAttachment: AuditAttachment): Pr
   const {
     rows: [recordedAuditAttachment]
   }: { rows: Recorded<AuditAttachment>[] } = await client.query(sql, values)
+
+  if (!recordedAuditAttachment) {
+    throw new Error('Failed to write audit attachment')
+  }
+
   return { ...auditAttachment, ...recordedAuditAttachment }
 }
 

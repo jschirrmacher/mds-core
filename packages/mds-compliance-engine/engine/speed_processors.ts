@@ -3,6 +3,7 @@ import { SpeedPolicy, SpeedRule } from '@mds-core/mds-policy-service'
 import { Device, Telemetry, UUID, VehicleEvent } from '@mds-core/mds-types'
 import { clone, pointInShape } from '@mds-core/mds-utils'
 import { ComplianceEngineResult, VehicleEventWithTelemetry } from '../@types'
+import { ComplianceEngineLogger as logger } from '../logger'
 import { annotateVehicleMap, isInStatesOrEvents, isInVehicleTypes, isRuleActive } from './helpers'
 
 export function isSpeedRuleMatch(
@@ -42,6 +43,10 @@ export function processSpeedPolicy(
     events.forEach(event => {
       if (devicesToCheck[event.device_id]) {
         const device = devicesToCheck[event.device_id]
+        if (!device) {
+          logger.warn(`Device ${event.device_id} not found in devices list.`)
+          return
+        }
         if (isSpeedRuleMatch(rule as SpeedRule, geographies, device, event)) {
           matchedVehicles[device.device_id] = {
             device,

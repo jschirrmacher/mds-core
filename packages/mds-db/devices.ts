@@ -98,6 +98,11 @@ export async function writeDevice(device: DeviceDomainCreateModel): Promise<Devi
   const {
     rows: [recorded_device]
   }: { rows: DeviceDomainModel[] } = await client.query(sql, values)
+
+  if (!recorded_device) {
+    throw new Error('Failed to write device')
+  }
+
   return { ...device, ...recorded_device }
 }
 

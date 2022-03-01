@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-import cache from '@mds-core/mds-agency-cache'
-import { RecordedColumn } from '@mds-core/mds-repository'
 import { ProcessController, ServiceException, ServiceProvider, ServiceResult } from '@mds-core/mds-service-helpers'
-import stream from '@mds-core/mds-stream'
-import { Telemetry } from '@mds-core/mds-types'
 import { NotFoundError } from '@mds-core/mds-utils'
-import { IngestMigrationService, IngestService, IngestServiceRequestContext, TelemetryDomainModel } from '../@types'
+import { IngestService, IngestServiceRequestContext } from '../@types'
 import { IngestServiceLogger } from '../logger'
 import { IngestRepository } from '../repository'
-import { MigratedEntityModel } from '../repository/mixins/migrated-entity'
 import {
   validateEventAnnotationDomainCreateModel,
   validateEventDomainCreateModel,
@@ -34,41 +29,13 @@ import {
   validateUUIDs
 } from './validators'
 
-/**
- *
- * @param telemetry Telemetry to migrate
- * @param migrated_from Source information
- * @returns Migrated telemetry (or null if write fails)
- * @throws Any errors writing to the database
- */
-const writeMigratedTelemetry = async (
-  telemetry: Telemetry & Required<RecordedColumn>,
-  migrated_from: MigratedEntityModel
-) => {
-  const [model = null] = await IngestRepository.writeMigratedTelemetry([telemetry], migrated_from)
-  if (model) {
-    const [cached, streamed] = await Promise.allSettled([cache.writeTelemetry([model]), stream.writeTelemetry([model])])
-    if (cached.status === 'rejected') {
-      IngestServiceLogger.warn('Error writing telemetry to cache', { telemetry: model, error: cached.reason })
-    }
-    if (streamed.status === 'rejected') {
-      IngestServiceLogger.warn('Error writing telemetry to stream', { telemetry: model, error: streamed.reason })
-    }
-  }
-  return model
-}
-
-export const IngestServiceProvider: ServiceProvider<
-  IngestService & IngestMigrationService,
-  IngestServiceRequestContext
-> &
-  ProcessController = {
+export const IngestServiceProvider: ServiceProvider<IngestService, IngestServiceRequestContext> & ProcessController = {
   start: async () => {
-    await Promise.all([IngestRepository.initialize(), cache.startup(), stream.initialize()])
+    await Promise.all([IngestRepository.initialize()])
   },
 
   stop: async () => {
-    await Promise.all([IngestRepository.shutdown(), cache.shutdown(), stream.shutdown()])
+    await Promise.all([IngestRepository.shutdown()])
   },
 
   getDevicesUsingOptions: async (context, options) => {
@@ -168,92 +135,6 @@ export const IngestServiceProvider: ServiceProvider<
     } catch (error) {
       const exception = ServiceException('Error in writeEventAnnotations', error)
       IngestServiceLogger.error('writeEventAnnotations exception', { exception, error })
-      return exception
-    }
-  },
-
-  writeMigratedDevice: async (context, device, migrated_from) => {
-    try {
-      const [model = null] = await IngestRepository.writeMigratedDevice([device], migrated_from)
-      if (model) {
-        const [cached, streamed] = await Promise.allSettled([cache.writeDevices([model]), stream.writeDevice(model)])
-        if (cached.status === 'rejected') {
-          IngestServiceLogger.warn('Error writing device to cache', { device: model, error: cached.reason })
-        }
-        if (streamed.status === 'rejected') {
-          IngestServiceLogger.warn('Error writing device to stream', { device: model, error: streamed.reason })
-        }
-      }
-      return ServiceResult(model)
-    } catch (error) {
-      const exception = ServiceException('Error in writeMigratedDevice', error)
-      IngestServiceLogger.error('writeMigratedDevice exception', { exception, error })
-      return exception
-    }
-  },
-
-  writeMigratedVehicleEvent: async (context, { telemetry, ...event }, migrated_from) => {
-    // TODO: All this splitting apart and recombining of telemetry should be handled by the repository.
-    // The fact that event/telemetry data is split between tables should not be something the service
-    // need be aware of. The repository should split them apart for writes and join them togehter for reads.
-    // Will create a ticket for this refactoring to be done separately.
-    const eventTelemetryModel = (telemetry: Telemetry, options: { recorded: number }): TelemetryDomainModel => {
-      const {
-        charge = null,
-        gps: {
-          lat,
-          lng,
-          speed = null,
-          heading = null,
-          accuracy = null,
-          hdop = null,
-          altitude = null,
-          satellites = null
-        },
-        stop_id = null,
-        recorded = options.recorded,
-        ...common
-      } = telemetry
-      return {
-        ...common,
-        stop_id,
-        charge,
-        recorded,
-        gps: { lat, lng, speed, heading, accuracy, hdop, altitude, satellites }
-      }
-    }
-
-    try {
-      await writeMigratedTelemetry(eventTelemetryModel(telemetry, { recorded: event.recorded }), migrated_from)
-
-      const [migratedEvent = null] = await IngestRepository.writeMigratedVehicleEvent([event], migrated_from)
-      if (migratedEvent) {
-        const model = { ...migratedEvent, telemetry: eventTelemetryModel(telemetry, { recorded: event.recorded }) }
-        const [cached, streamed] = await Promise.allSettled([cache.writeEvents([model]), stream.writeEvent(model)])
-        if (cached.status === 'rejected') {
-          IngestServiceLogger.warn('Error writing event to cache', { event: model, error: cached.reason })
-        }
-        if (streamed.status === 'rejected') {
-          IngestServiceLogger.warn('Error writing event to stream', { event: model, error: streamed.reason })
-        }
-        return ServiceResult(model)
-      }
-      return ServiceResult(null)
-    } catch (error) {
-      const exception = ServiceException('Error in writeMigratedVehicleEvent', error)
-      IngestServiceLogger.error('writeMigratedVehicleEvent exception', { exception, error })
-      return exception
-    }
-  },
-
-  writeMigratedTelemetry: async (context, telemetry, migrated_from) => {
-    try {
-      const model = await writeMigratedTelemetry(telemetry, migrated_from)
-
-      return ServiceResult(model)
-    } catch (error) {
-      const exception = ServiceException('Error in writeMigratedTelemetry', error)
-      IngestServiceLogger.error('writeMigratedTelemetry exception', { exception, error })
       return exception
     }
   },

@@ -583,7 +583,7 @@ describe('Testing API', () => {
 
       const seedData = {
         // Include a duplicate device (same vin + provider but different device_id)
-        devices: [...devices_a, ...devices_b, ...devices_c, { ...devices_c[0], ...{ device_id: uuid() } }],
+        devices: [...devices_a, ...devices_b, ...devices_c, { ...(devices_c[0] as Device), ...{ device_id: uuid() } }],
         events: [...events_a, ...events_b],
         telemetry: [...telemetry_a, ...telemetry_b]
       }
@@ -618,7 +618,7 @@ describe('Testing API', () => {
 
     it('Verify get vehicle by vehicle_id and provider_id', done => {
       request
-        .get(pathPrefix(`/vehicles/${devices_a[0].provider_id}/vin/${devices_a[0].vehicle_id}`))
+        .get(pathPrefix(`/vehicles/${devices_a[0]?.provider_id}/vin/${devices_a[0]?.vehicle_id}`))
         .set('Authorization', SCOPED_AUTH(['audits:vehicles:read'], audit_subject_id))
         .expect(200)
         .end((err, result) => {
@@ -626,8 +626,8 @@ describe('Testing API', () => {
           test.value(result.body.version, AUDIT_API_DEFAULT_VERSION)
           test.object(result).hasProperty('body')
           test.object(result.body).hasProperty('vehicles')
-          test.value(result.body.vehicles[0].provider_id).is(devices_a[0].provider_id)
-          test.value(result.body.vehicles[0].vehicle_id).is(devices_a[0].vehicle_id)
+          test.value(result.body.vehicles[0].provider_id).is(devices_a[0]?.provider_id)
+          test.value(result.body.vehicles[0].vehicle_id).is(devices_a[0]?.vehicle_id)
           test.value(result.body.vehicles[0].updated).is(result.body.vehicles[0].timestamp)
           test.value(result.body.vehicles[0].vehicle_state).is('on_trip')
           test.value(result.body.vehicles[0].telemetry.charge > 0).is(true)
@@ -637,7 +637,7 @@ describe('Testing API', () => {
 
     it('Verify get vehicle by vehicle_id and provider_id (not found)', done => {
       request
-        .get(pathPrefix(`/vehicles/${uuid()}/vin/${devices_a[0].vehicle_id}`))
+        .get(pathPrefix(`/vehicles/${uuid()}/vin/${devices_a[0]?.vehicle_id}`))
         .set('Authorization', SCOPED_AUTH(['audits:vehicles:read'], audit_subject_id))
         .expect(404)
         .end((err, result) => {
@@ -649,12 +649,12 @@ describe('Testing API', () => {
 
     it('Verify get vehicle by vehicle_id and provider_id (no event or telemetry)', done => {
       request
-        .get(pathPrefix(`/vehicles/${devices_c[0].provider_id}/vin/${devices_c[0].vehicle_id}`))
+        .get(pathPrefix(`/vehicles/${devices_c[0]?.provider_id}/vin/${devices_c[0]?.vehicle_id}`))
         .set('Authorization', SCOPED_AUTH(['audits:vehicles:read'], audit_subject_id))
         .expect(200)
         .end((err, result) => {
-          test.value(result.body.vehicles[0].provider_id).is(devices_c[0].provider_id)
-          test.value(result.body.vehicles[0].vehicle_id).is(devices_c[0].vehicle_id)
+          test.value(result.body.vehicles[0].provider_id).is(devices_c[0]?.provider_id)
+          test.value(result.body.vehicles[0].vehicle_id).is(devices_c[0]?.vehicle_id)
           test.object(result.body.vehicles[0]).hasNotProperty('vehicle_state')
           done(err)
         })
@@ -662,7 +662,7 @@ describe('Testing API', () => {
 
     it('Verify get vehicle by vehicle_id and provider_id (duplicate device)', done => {
       request
-        .get(pathPrefix(`/vehicles/${devices_c[0].provider_id}/vin/${devices_c[0].vehicle_id}`))
+        .get(pathPrefix(`/vehicles/${devices_c[0]?.provider_id}/vin/${devices_c[0]?.vehicle_id}`))
         .set('Authorization', SCOPED_AUTH(['audits:vehicles:read'], audit_subject_id))
         .expect(200)
         .end((err, result) => {
@@ -670,9 +670,9 @@ describe('Testing API', () => {
           test.value(result.body.version, AUDIT_API_DEFAULT_VERSION)
           test.object(result).hasProperty('body')
           test.object(result.body).hasProperty('vehicles')
-          test.value(result.body.vehicles[0].provider_id).is(devices_c[0].provider_id)
-          test.value(result.body.vehicles[0].vehicle_id).is(devices_c[0].vehicle_id)
-          test.value(result.body.vehicles[0].device_id).isNot(devices_c[0].device_id)
+          test.value(result.body.vehicles[0].provider_id).is(devices_c[0]?.provider_id)
+          test.value(result.body.vehicles[0].vehicle_id).is(devices_c[0]?.vehicle_id)
+          test.value(result.body.vehicles[0].device_id).isNot(devices_c[0]?.device_id)
           done(err)
         })
     })

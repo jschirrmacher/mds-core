@@ -7,7 +7,38 @@
  * DesignType(String)
  */
 
+import { Column } from 'typeorm'
+import { ColumnCommonOptions } from 'typeorm/decorator/options/ColumnCommonOptions'
+import { ColumnWithLengthOptions } from 'typeorm/decorator/options/ColumnWithLengthOptions'
+import { BigintTransformer, LowercaseTransformer, TransformerOptions, UppercaseTransformer } from '../transformers'
+
 type DesignTypeValue = Parameters<typeof Reflect.metadata>[1]
-export const DesignType = (value: DesignTypeValue): PropertyDecorator => {
-  return Reflect.metadata('design:type', value)
-}
+export const DesignType = (value: DesignTypeValue): PropertyDecorator => Reflect.metadata('design:type', value)
+
+export type LowercaseColumnOptions = Omit<
+  ColumnCommonOptions & ColumnWithLengthOptions & TransformerOptions,
+  'transformer'
+>
+
+export const LowercaseColumn = ({ direction, ...options }: LowercaseColumnOptions = {}): PropertyDecorator =>
+  Column('varchar', { ...options, transformer: LowercaseTransformer({ direction }) })
+
+export type UppercaseColumnOptions = Omit<
+  ColumnCommonOptions & ColumnWithLengthOptions & TransformerOptions,
+  'transformer'
+>
+
+export const UppercaseColumn = ({ direction, ...options }: UppercaseColumnOptions = {}): PropertyDecorator =>
+  Column('varchar', { ...options, transformer: UppercaseTransformer({ direction }) })
+
+export type BigintColumnOptions = Omit<ColumnCommonOptions & ColumnWithLengthOptions, 'transformer'>
+
+export const BigintColumn = (options: BigintColumnOptions = {}): PropertyDecorator =>
+  Column('bigint', { ...options, transformer: BigintTransformer })
+
+export type TimestampColumnOptions = BigintColumnOptions
+
+export const TimestampColumn =
+  (options: TimestampColumnOptions = {}): PropertyDecorator =>
+  (target, propertyKey) =>
+    [BigintColumn(options), DesignType(Number)].forEach(decorator => decorator(target, propertyKey))

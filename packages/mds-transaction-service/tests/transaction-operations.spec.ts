@@ -3,7 +3,6 @@ import { TransactionServiceClient } from '../client'
 import { TransactionRepository } from '../repository'
 import { TransactionServiceManager } from '../service/manager'
 import { transactionOperationsGenerator } from '../test-fixtures'
-
 const TransactionServer = TransactionServiceManager.controller()
 
 describe('Transaction Operation Tests', () => {
@@ -23,6 +22,9 @@ describe('Transaction Operation Tests', () => {
   })
 
   const [sampleOperation] = transactionOperationsGenerator(1)
+  if (!sampleOperation) {
+    throw new Error('No sample operation found') // unexpected to ever happen
+  }
   const { operation_id, transaction_id } = sampleOperation
 
   describe('Transaction Operation Create Tests', () => {
@@ -52,7 +54,7 @@ describe('Transaction Operation Tests', () => {
       const operations = await TransactionServiceClient.getTransactionOperations(sampleOperation.transaction_id)
       expect(operations.length).toEqual(1)
       const [operation] = operations
-      expect(operation.operation_id).toEqual(operation_id)
+      expect(operation?.operation_id).toEqual(operation_id)
     })
 
     it('Get All Transaction Operations for One Nonexistent Transaction', async () => {

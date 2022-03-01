@@ -95,6 +95,11 @@ export async function writeAudit(audit: Audit): Promise<Recorded<Audit>> {
   }: { rows: Recorded<Audit>[] } = await client.query(sql, values)
   const finish = now()
   DbLogger.debug(`MDS-DB writeAudit time elapsed: ${finish - start}ms`)
+
+  if (!recorded_audit) {
+    throw new Error('Failed to write audit')
+  }
+
   return { ...audit, ...recorded_audit }
 }
 
@@ -137,5 +142,10 @@ export async function writeAuditEvent(audit_event: AuditEvent): Promise<Recorded
   }: { rows: Recorded<AuditEvent>[] } = await client.query(sql, values)
   const finish = now()
   DbLogger.debug(`MDS-DB writeAuditEvent time elapsed: ${finish - start}ms`)
+
+  if (!recorded_audit_event) {
+    throw new Error('Failed to write audit event')
+  }
+
   return { ...audit_event, ...recorded_audit_event }
 }

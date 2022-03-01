@@ -187,7 +187,7 @@ describe('Redis Tests', () => {
       const res = await redis.multihgetall('foo')
 
       if (!res) throw new Error('Res should be defined')
-      const [[, realRes]] = res
+      const [[, realRes]] = res as any
       expect(realRes).toEqual({ bar: 'baz', qux: 'quux' })
     })
 

@@ -21,7 +21,7 @@ export class CreateComplianceSnapshotsTable1590524762011 implements MigrationInt
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "compliance_snapshots" ("recorded" bigint NOT NULL DEFAULT (extract(epoch from now()) * 1000)::bigint, "id" bigint GENERATED ALWAYS AS IDENTITY, "compliance_as_of" bigint NOT NULL, "compliance_snapshot_id" uuid NOT NULL, "policy_name" character varying (255) NOT NULL, "policy_id" uuid NOT NULL,"provider_id" uuid NOT NULL, "vehicles_found" jsonb NOT NULL, "excess_vehicles_count" integer NOT NULL, "total_violations" integer NOT NULL, CONSTRAINT "compliance_snapshots_pkey" PRIMARY KEY ("compliance_snapshot_id"))`
+      `CREATE TABLE "compliance_snapshots" ("recorded" bigint NOT NULL DEFAULT (extract(epoch from now()) * 1000)::bigint, "id" bigint GENERATED ALWAYS AS IDENTITY NOT NULL, "compliance_as_of" bigint NOT NULL, "compliance_snapshot_id" uuid NOT NULL, "policy_name" character varying (255) NOT NULL, "policy_id" uuid NOT NULL,"provider_id" uuid NOT NULL, "vehicles_found" jsonb NOT NULL, "excess_vehicles_count" integer NOT NULL, "total_violations" integer NOT NULL, CONSTRAINT "compliance_snapshots_pkey" PRIMARY KEY ("compliance_snapshot_id"))`
     )
     await queryRunner.query(`CREATE INDEX "idx_recorded_compliance_snapshots" ON "compliance_snapshots" ("recorded") `)
     await queryRunner.query(

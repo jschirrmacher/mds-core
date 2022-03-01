@@ -173,14 +173,17 @@ export const ComplianceServiceProvider: ServiceProvider<ComplianceService, Compl
       }, {})
 
       const results: ComplianceAggregateDomainModel[] = await Promise.all(
-        Object.keys(complianceAggregateMap).map(async key => {
+        Object.entries(complianceAggregateMap).map(async ([key, violation_periods]) => {
           const [provider_id, policy_id] = key.split(':')
+          if (!provider_id || !policy_id) {
+            throw new Error('Invalid key')
+          }
           const provider_name = await providerName(provider_id)
           return {
             provider_id,
             policy_id,
             provider_name,
-            violation_periods: complianceAggregateMap[key]
+            violation_periods
           }
         })
       )

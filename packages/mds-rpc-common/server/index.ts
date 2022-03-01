@@ -40,7 +40,7 @@ export interface RpcServiceHandlers {
   onStop: () => Promise<void>
 }
 
-export interface RpcServerOptions {
+export interface RpcServiceManagerOptions {
   // Override the default RPC port
   port: string | number
   // Read Eval Print Loop options
@@ -70,7 +70,7 @@ const stopServer = async (server: http.Server | net.Server): Promise<void> =>
   })
 
 /* istanbul ignore next */
-const startRepl = (options: RpcServerOptions['repl']): Promise<net.Server> =>
+const startRepl = (options: RpcServiceManagerOptions['repl']): Promise<net.Server> =>
   new Promise(resolve => {
     const port = Number(options.port || process.env.REPL_PORT || REPL_PORT)
     RpcCommonLogger.info(`Starting REPL server on port ${port}`)
@@ -96,63 +96,92 @@ const startRepl = (options: RpcServerOptions['repl']): Promise<net.Server> =>
     })
   })
 
+export type RpcServiceSpecification<Service, RequestContext extends {}> = {
+  definition: RpcServiceDefinition<Service>
+  handlers: RpcServiceHandlers
+  routes: ServiceHandlerFor<RpcServiceDefinition<Service>, RequestContext>
+}
+
+export const RpcServiceManager = (options: Partial<RpcServiceManagerOptions> = {}) => {
+  return {
+    for: (...services: Array<RpcServiceSpecification<{}, {}>>): ProcessManager => {
+      let server: Nullable<http.Server> = null
+      let repl: Nullable<net.Server> = null
+
+      const httpServer = (application: Express, port: number): http.Server => {
+        const { customize = s => s } = options
+        return HttpServer(customize(application), { port })
+      }
+
+      return ProcessManager({
+        start: async () => {
+          if (!server) {
+            const port = Number(options.port || process.env.RPC_PORT || RPC_PORT)
+            RpcCommonLogger.info(`Starting RPC server listening for ${RPC_CONTENT_TYPE} requests on port ${port}`)
+            await Promise.all(services.map(({ handlers: { onStart } }) => onStart()))
+            server = httpServer(
+              services.reduce(
+                (manager, { definition, routes }) =>
+                  manager.use(
+                    ModuleRpcProtocolServer.registerRpcRoutes(definition, routes, {
+                      codec: new ModuleRpcProtocolGrpcWebCommon.GrpcWebJsonWithGzipCodec(),
+                      serverContextConnector: {
+                        // Not using response contexts
+                        provideResponseContext: async () => ({}),
+                        decodeRequestContext: async (encoded: ModuleRpcCommon.EncodedContext) => {
+                          const encodedRpcContext = encoded[RPC_CONTEXT_KEY]
+                          if (encodedRpcContext === undefined) {
+                            throw new Error(`Missing RPC context in request`)
+                          }
+                          return JSON.parse(Buffer.from(encodedRpcContext, 'base64').toString('utf-8'))
+                        }
+                      }
+                    })
+                  ),
+                express()
+                  .use(PrometheusMiddleware())
+                  .use(RequestLoggingMiddleware({ includeRemoteAddress: true, excludePaths: [/\/health$/] }))
+                  .use(RawBodyParserMiddleware({ type: RPC_CONTENT_TYPE, limit: options.maxRequestSize }))
+                  .get('/health', HealthRequestHandler)
+              ),
+              port
+            )
+            /* istanbul ignore next */
+            if (options.repl && process.env.NODE_ENV !== 'test') {
+              repl = await startRepl(options.repl)
+            }
+          }
+        },
+        stop: async () => {
+          if (server) {
+            await stopServer(server)
+            server = null
+            /* istanbul ignore next */
+            if (repl) {
+              await stopServer(repl)
+              repl = null
+            }
+            RpcCommonLogger.info(`Stopping RPC server listening for ${RPC_CONTENT_TYPE} requests`)
+            await Promise.all(services.map(({ handlers: { onStop } }) => onStop()))
+          }
+        }
+      })
+    }
+  }
+}
+
+/**
+ * @deprecated Please use RpcServiceManager instead.
+ */
 export const RpcServer = <Service, RequestContext extends {}>(
   definition: RpcServiceDefinition<Service>,
-  { onStart, onStop }: RpcServiceHandlers,
+  handlers: RpcServiceHandlers,
   routes: ServiceHandlerFor<RpcServiceDefinition<Service>, RequestContext>,
-  options: Partial<RpcServerOptions> = {}
-): ProcessManager => {
-  let server: Nullable<http.Server> = null
-  let repl: Nullable<net.Server> = null
+  options: Partial<RpcServiceManagerOptions> = {}
+): ProcessManager => RpcServiceManager(options).for(RpcService(definition, handlers, routes))
 
-  const httpServer = (application: Express, port: number): http.Server => {
-    const { customize = s => s } = options
-    return HttpServer(customize(application), { port })
-  }
-
-  return ProcessManager({
-    start: async () => {
-      if (!server) {
-        const port = Number(options.port || process.env.RPC_PORT || RPC_PORT)
-        RpcCommonLogger.info(`Starting RPC server listening for ${RPC_CONTENT_TYPE} requests on port ${port}`)
-        await onStart()
-        server = httpServer(
-          express()
-            .use(PrometheusMiddleware())
-            .use(RequestLoggingMiddleware({ includeRemoteAddress: true }))
-            .use(RawBodyParserMiddleware({ type: RPC_CONTENT_TYPE, limit: options.maxRequestSize }))
-            .get('/health', HealthRequestHandler)
-            .use(
-              ModuleRpcProtocolServer.registerRpcRoutes(definition, routes, {
-                codec: new ModuleRpcProtocolGrpcWebCommon.GrpcWebJsonWithGzipCodec(),
-                serverContextConnector: {
-                  // Not using response contexts
-                  provideResponseContext: async () => ({}),
-                  decodeRequestContext: async (encoded: ModuleRpcCommon.EncodedContext) =>
-                    JSON.parse(Buffer.from(encoded[RPC_CONTEXT_KEY], 'base64').toString('utf-8'))
-                }
-              })
-            ),
-          port
-        )
-        /* istanbul ignore next */
-        if (options.repl && process.env.NODE_ENV !== 'test') {
-          repl = await startRepl(options.repl)
-        }
-      }
-    },
-    stop: async () => {
-      if (server) {
-        await stopServer(server)
-        server = null
-        /* istanbul ignore next */
-        if (repl) {
-          await stopServer(repl)
-          repl = null
-        }
-        RpcCommonLogger.info(`Stopping RPC server listening for ${RPC_CONTENT_TYPE} requests`)
-        await onStop()
-      }
-    }
-  })
-}
+export const RpcService = <Service, RequestContext extends {}>(
+  definition: RpcServiceDefinition<Service>,
+  handlers: RpcServiceHandlers,
+  routes: ServiceHandlerFor<RpcServiceDefinition<Service>, RequestContext>
+): RpcServiceSpecification<Service, RequestContext> => ({ definition, handlers, routes })

@@ -14,5 +14,10 @@
  * limitations under the License.
  */
 
+import { IdentityColumnCreateModel } from './identity-column'
+import { RecordedColumnCreateModel } from './recorded-column'
+
 export * from './identity-column'
 export * from './recorded-column'
+
+export type EntityCreateModel<T> = RecordedColumnCreateModel<IdentityColumnCreateModel<T>>

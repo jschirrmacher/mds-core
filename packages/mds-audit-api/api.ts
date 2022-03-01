@@ -526,6 +526,11 @@ function api(app: express.Express): express.Express {
                 order_by: 'timestamp DESC',
                 limit: 1
               })
+
+              if (!providerEvent) {
+                throw new Error('No provider event found for audit')
+              }
+
               return res.status(200).send({
                 version: res.locals.version,
                 ...audit,
@@ -757,7 +762,15 @@ function api(app: express.Express): express.Express {
    * delete media from an audit
    */
   app.delete(pathPrefix('/trips/:audit_trip_id/attachment/:attachment_id'), async (req, res) => {
-    const { audit_trip_id, attachment_id } = req.params
+    const { audit_trip_id, attachment_id } = parseRequest(req).single().params('audit_trip_id', 'attachment_id')
+
+    if (!audit_trip_id) {
+      return res.status(400).send({ error: new ValidationError('missing required parameter audit_trip_id') })
+    }
+    if (!attachment_id) {
+      return res.status(400).send({ error: new ValidationError('missing required parameter attachment_id') })
+    }
+
     try {
       await deleteAuditAttachment(audit_trip_id, attachment_id)
       res.status(200).send({ version: res.locals.version })

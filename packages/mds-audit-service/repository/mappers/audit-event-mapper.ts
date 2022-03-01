@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, ModelMapper, RecordedColumn } from '@mds-core/mds-repository'
-import { Optional, Timestamp } from '@mds-core/mds-types'
+import { ModelMapper } from '@mds-core/mds-repository'
+import { Timestamp } from '@mds-core/mds-types'
 import { AuditEventDomainCreateModel, AuditEventDomainModel } from '../../@types'
-import { AuditEventEntityModel } from '../entities/audit-event-entity'
+import { AuditEventEntityCreateModel, AuditEventEntityModel } from '../entities/audit-event-entity'
 
 type AuditEventEntityToDomainOptions = Partial<{}>
 
@@ -33,11 +33,6 @@ export const AuditEventEntityToDomain = ModelMapper<
 type AuditEventEntityCreateOptions = Partial<{
   recorded: Timestamp
 }>
-
-export type AuditEventEntityCreateModel = Omit<
-  Optional<AuditEventEntityModel, keyof RecordedColumn>,
-  keyof IdentityColumn
->
 
 export const AuditEventDomainToEntityCreate = ModelMapper<
   AuditEventDomainCreateModel,

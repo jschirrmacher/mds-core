@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, ModelMapper, RecordedColumn } from '@mds-core/mds-repository'
-import { Optional, Timestamp } from '@mds-core/mds-types'
+import { ModelMapper } from '@mds-core/mds-repository'
+import { Timestamp } from '@mds-core/mds-types'
 import {
   ComplianceSnapshotDomainModel,
   ComplianceViolationDomainModel,
   ComplianceViolationPeriodDomainModel,
   ComplianceViolationPeriodEntityModel
 } from '../@types'
-import { ComplianceSnapshotEntityModel } from './entities/compliance-snapshot-entity'
-import { ComplianceViolationEntityModel } from './entities/compliance-violation-entity'
+import {
+  ComplianceSnapshotEntityCreateModel,
+  ComplianceSnapshotEntityModel
+} from './entities/compliance-snapshot-entity'
+import {
+  ComplianceViolationEntityCreateModel,
+  ComplianceViolationEntityModel
+} from './entities/compliance-violation-entity'
 
 type ComplianceSnapshotEntityToDomainOptions = Partial<{}>
 
@@ -45,11 +51,6 @@ export const ComplianceSnapshotEntityToDomain = ModelMapper<
 type ComplianceSnapshotEntityCreateOptions = Partial<{
   recorded: Timestamp
 }>
-
-export type ComplianceSnapshotEntityCreateModel = Omit<
-  Optional<ComplianceSnapshotEntityModel, keyof RecordedColumn>,
-  keyof IdentityColumn
->
 
 export const ComplianceSnapshotDomainToEntityCreate = ModelMapper<
   ComplianceSnapshotDomainModel,
@@ -91,11 +92,6 @@ export const ComplianceViolationEntityToDomain = ModelMapper<
 type ComplianceViolationEntityCreateOptions = Partial<{
   recorded: Timestamp
 }>
-
-export type ComplianceViolationEntityCreateModel = Omit<
-  Optional<ComplianceViolationEntityModel, keyof RecordedColumn>,
-  keyof IdentityColumn
->
 
 export const ComplianceViolationDomainToEntityCreate = ModelMapper<
   ComplianceViolationDomainModel,
