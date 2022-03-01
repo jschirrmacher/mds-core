@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class DropMigrationColumns1646013688688 implements MigrationInterface {
-  name = 'DropMigrationColumns1646013688688'
+export class DropMigrationIndices1646177244396 implements MigrationInterface {
+  name = 'DropMigrationIndices1646177244396'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`DROP INDEX "public"."idx_migrated_from_version_devices"`)
