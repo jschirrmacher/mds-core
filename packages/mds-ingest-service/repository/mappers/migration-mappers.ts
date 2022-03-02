@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+import { DeviceDomainModel } from '@mds-core/mds-ingest-service'
 import { IdentityColumn, ModelMapper, RecordedColumn } from '@mds-core/mds-repository'
-import { Device, Telemetry, VehicleEvent } from '@mds-core/mds-types'
+import { Telemetry, VehicleEvent } from '@mds-core/mds-types'
 import { DeviceEntityModel } from '../entities/device-entity'
 import { EventEntityModel } from '../entities/event-entity'
 import { TelemetryEntityModel } from '../entities/telemetry-entity'
@@ -28,7 +29,7 @@ type MigratedEntityCreateOptions = {
 export type MigratedDeviceEntityCreateModel = Omit<DeviceEntityModel, keyof IdentityColumn>
 
 export const MigratedDeviceToEntityCreate = ModelMapper<
-  Device,
+  DeviceDomainModel,
   MigratedDeviceEntityCreateModel,
   MigratedEntityCreateOptions
 >(({ year = null, mfgr = null, model = null, accessibility_options = null, ...migrated }, options) => {

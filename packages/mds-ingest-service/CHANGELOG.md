@@ -1,5 +1,15 @@
 # @mds-core/mds-ingest-service
 
+## 0.9.17
+
+### Patch Changes
+
+- 3b4b5779: Completely remove Joi
+- Updated dependencies [3b4b5779]
+- Updated dependencies [fea59e19]
+  - @mds-core/mds-schema-validators@0.5.6
+  - @mds-core/mds-agency-cache@0.4.19
+
 ## 0.9.16
 
 ### Patch Changes

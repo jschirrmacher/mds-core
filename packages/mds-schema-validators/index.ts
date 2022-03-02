@@ -20,13 +20,11 @@ import withErrors from 'ajv-errors'
 import withFormats from 'ajv-formats'
 import dynamicDefaults from 'ajv-keywords/dist/definitions/dynamicDefaults'
 import transform from 'ajv-keywords/dist/definitions/transform'
-import Joi from 'joi'
 
 export type { JSONSchemaType, SchemaObject } from 'ajv'
 export * from './generators'
 // Export an example schema for testing purposes
 export * from './tests/test.schema'
-export * from './v0_4_1'
 export * from './validators'
 
 export type Schema<T> = JSONSchemaType<T>
@@ -77,20 +75,3 @@ export const SchemaValidator = <T>(
     $schema
   }
 }
-
-/**
- * @deprecated JSON Schema based validation is preferable to Joi. Please use the SchemaValidator instead.
- */
-export const schemaValidator = <T>(
-  schema: Joi.Schema,
-  options?: Joi.ValidationOptions
-): Omit<SchemaValidator<T>, '$schema'> => ({
-  validate: (input: unknown): T => {
-    const { error, value } = schema.validate(input, options)
-    if (error) {
-      throw new ValidationError(error.message, input)
-    }
-    return value as T
-  },
-  isValid: (input: unknown): input is T => !schema.validate(input, options).error
-})

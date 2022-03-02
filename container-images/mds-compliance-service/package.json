@@ -1,6 +1,6 @@
 {
   "name": "@container-images/mds-compliance-service",
-  "version": "0.0.59",
+  "version": "0.0.60",
   "private": true,
   "description": "MDS compliance backend service",
   "keywords": [
@@ -20,7 +20,7 @@
     "image:production": "pnpm bundle:production && ../../bin/build-helper buildImage mds-compliance-service:${npm_package_version}"
   },
   "dependencies": {
-    "@mds-core/mds-compliance-service": "workspace:0.10.19",
+    "@mds-core/mds-compliance-service": "workspace:0.10.20",
     "@mds-core/mds-webpack-config": "workspace:0.1.11",
     "dd-trace": "1.5.1",
     "express": "4.17.1",

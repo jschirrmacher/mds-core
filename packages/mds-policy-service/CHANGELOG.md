@@ -1,5 +1,15 @@
 # @mds-core/mds-policy-service
 
+## 0.11.18
+
+### Patch Changes
+
+- 3b4b5779: Completely remove Joi
+- Updated dependencies [3b4b5779]
+- Updated dependencies [fea59e19]
+  - @mds-core/mds-geography-service@0.10.12
+  - @mds-core/mds-schema-validators@0.5.6
+
 ## 0.11.17
 
 ### Patch Changes

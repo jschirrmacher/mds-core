@@ -1,5 +1,20 @@
 # @mds-core/mds-compliance-engine
 
+## 0.8.13
+
+### Patch Changes
+
+- 3b4b5779: Completely remove Joi
+- Updated dependencies [3b4b5779]
+- Updated dependencies [fea59e19]
+  - @mds-core/mds-geography-service@0.10.12
+  - @mds-core/mds-ingest-service@0.9.17
+  - @mds-core/mds-policy-service@0.11.18
+  - @mds-core/mds-schema-validators@0.5.6
+  - @mds-core/mds-db@0.6.6
+  - @mds-core/mds-compliance-service@0.10.20
+  - @mds-core/mds-api-helpers@0.2.14
+
 ## 0.8.12
 
 ### Patch Changes

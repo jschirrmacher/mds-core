@@ -1,5 +1,12 @@
 # @mds-core/mds-schema-validators
 
+## 0.5.6
+
+### Patch Changes
+
+- 3b4b5779: Completely remove Joi
+- fea59e19: Add JSON Schema Draft-7 'date' format support to SchemaValidator.
+
 ## 0.5.5
 
 ### Patch Changes

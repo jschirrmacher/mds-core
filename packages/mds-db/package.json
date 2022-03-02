@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-db",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "Mobility Data Specification database interface",
   "keywords": [
     "mds",
@@ -16,12 +16,12 @@
     "test": "DOTENV_CONFIG_PATH=../../.env jest --passWithNoTests"
   },
   "dependencies": {
-    "@mds-core/mds-attachment-service": "workspace:0.5.15",
-    "@mds-core/mds-audit-service": "workspace:0.5.15",
-    "@mds-core/mds-geography-service": "workspace:0.10.11",
-    "@mds-core/mds-ingest-service": "workspace:0.9.16",
+    "@mds-core/mds-attachment-service": "workspace:0.5.16",
+    "@mds-core/mds-audit-service": "workspace:0.5.16",
+    "@mds-core/mds-geography-service": "workspace:0.10.12",
+    "@mds-core/mds-ingest-service": "workspace:0.9.17",
     "@mds-core/mds-logger": "workspace:0.5.6",
-    "@mds-core/mds-policy-service": "workspace:0.11.17",
+    "@mds-core/mds-policy-service": "workspace:0.11.18",
     "@mds-core/mds-types": "workspace:0.9.1",
     "@mds-core/mds-utils": "workspace:0.4.1",
     "@types/pg": "8.6.4",

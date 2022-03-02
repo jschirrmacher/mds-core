@@ -1,6 +1,6 @@
 {
   "name": "@container-images/mds-transaction-service",
-  "version": "0.0.50",
+  "version": "0.0.51",
   "private": true,
   "description": "Docker Image for MDS Transaction Service",
   "keywords": [
@@ -20,7 +20,7 @@
     "image:production": "pnpm bundle:production && ../../bin/build-helper buildImage mds-transaction-service:${npm_package_version}"
   },
   "dependencies": {
-    "@mds-core/mds-transaction-service": "workspace:0.6.13",
+    "@mds-core/mds-transaction-service": "workspace:0.6.14",
     "@mds-core/mds-webpack-config": "workspace:0.1.11",
     "dd-trace": "1.5.1",
     "express": "4.17.1",

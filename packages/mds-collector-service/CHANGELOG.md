@@ -1,5 +1,13 @@
 # @mds-core/mds-collector-service
 
+## 0.4.16
+
+### Patch Changes
+
+- Updated dependencies [3b4b5779]
+- Updated dependencies [fea59e19]
+  - @mds-core/mds-schema-validators@0.5.6
+
 ## 0.4.15
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @mds-core/mds-transaction-service
 
+## 0.6.14
+
+### Patch Changes
+
+- 3b4b5779: Completely remove Joi
+- 430d2fe5: Allow floating point numbers for trip distance
+- Updated dependencies [3b4b5779]
+- Updated dependencies [fea59e19]
+  - @mds-core/mds-ingest-service@0.9.17
+  - @mds-core/mds-schema-validators@0.5.6
+
 ## 0.6.13
 
 ### Patch Changes

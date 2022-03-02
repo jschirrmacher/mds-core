@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-collector-service",
-  "version": "0.4.15",
+  "version": "0.4.16",
   "description": "Mobility Data Specification Collector Backend Service",
   "keywords": [
     "mds"
@@ -24,7 +24,7 @@
     "@mds-core/mds-logger": "workspace:0.5.6",
     "@mds-core/mds-repository": "workspace:0.1.42",
     "@mds-core/mds-rpc-common": "workspace:0.3.12",
-    "@mds-core/mds-schema-validators": "workspace:0.5.5",
+    "@mds-core/mds-schema-validators": "workspace:0.5.6",
     "@mds-core/mds-service-helpers": "workspace:0.6.5",
     "@mds-core/mds-stream": "workspace:0.2.10",
     "@mds-core/mds-types": "workspace:0.9.1",
