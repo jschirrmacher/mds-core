@@ -62,7 +62,8 @@ export const SchemaValidator = <T>(
     'uuid',
     'uri',
     'email',
-    'float'
+    'float',
+    'date'
   ]).compile($schema)
   return {
     validate: (input: unknown) => {

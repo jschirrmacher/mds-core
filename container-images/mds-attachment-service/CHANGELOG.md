@@ -1,5 +1,14 @@
 # @container-images/mds-attachment-service
 
+## 0.0.49
+
+### Patch Changes
+
+- Updated dependencies [95382a3f]
+- Updated dependencies [a6575499]
+  - @mds-core/mds-attachment-service@0.5.15
+  - @mds-core/mds-webpack-config@0.1.11
+
 ## 0.0.48
 
 ### Patch Changes

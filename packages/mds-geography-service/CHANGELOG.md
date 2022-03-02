@@ -1,5 +1,22 @@
 # @mds-core/mds-geography-service
 
+## 0.10.11
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- a6575499: Switch to new repository composition functions and deprecate classes
+- Updated dependencies [1340ce66]
+- Updated dependencies [95382a3f]
+- Updated dependencies [a6575499]
+  - @mds-core/mds-rpc-common@0.3.12
+  - @mds-core/mds-repository@0.1.42
+  - @mds-core/mds-schema-validators@0.5.5
+  - @mds-core/mds-test-data@0.4.18
+  - @mds-core/mds-types@0.9.1
+  - @mds-core/mds-utils@0.4.1
+  - @mds-core/mds-service-helpers@0.6.5
+
 ## 0.10.10
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @mds-core/mds-providers
 
+## 0.2.8
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- Updated dependencies [95382a3f]
+  - @mds-core/mds-types@0.9.1
+
 ## 0.2.7
 
 ### Patch Changes

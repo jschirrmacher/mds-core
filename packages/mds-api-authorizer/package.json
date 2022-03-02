@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-api-authorizer",
-  "version": "0.1.61",
+  "version": "0.1.62",
   "description": "MDS API Authorizer",
   "keywords": [
     "mds"
@@ -16,9 +16,9 @@
     "test": "DOTENV_CONFIG_PATH=../../.env jest --runInBand "
   },
   "dependencies": {
-    "@mds-core/mds-test-data": "workspace:0.4.17",
-    "@mds-core/mds-types": "workspace:0.9.0",
-    "@mds-core/mds-utils": "workspace:0.4.0",
+    "@mds-core/mds-test-data": "workspace:0.4.18",
+    "@mds-core/mds-types": "workspace:0.9.1",
+    "@mds-core/mds-utils": "workspace:0.4.1",
     "@types/express": "4.17.13",
     "@types/jsonwebtoken": "8.5.5",
     "express": "4.17.1",

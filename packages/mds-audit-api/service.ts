@@ -15,13 +15,12 @@
  */
 
 import cache from '@mds-core/mds-agency-cache'
+import { AuditDomainCreateModel, AuditDomainModel, AuditEventDomainModel } from '@mds-core/mds-audit-service'
 import db from '@mds-core/mds-db'
-import { DeviceDomainModel, IngestServiceClient } from '@mds-core/mds-ingest-service'
+import type { DeviceDomainModelWithState as Device } from '@mds-core/mds-ingest-service'
+import { IngestServiceClient } from '@mds-core/mds-ingest-service'
 import {
-  Audit,
-  AuditEvent,
   BoundingBox,
-  Device,
   Recorded,
   Telemetry,
   TelemetryData,
@@ -49,9 +48,9 @@ export async function deleteAudit(audit_trip_id: UUID): Promise<number> {
 // (expect 0 or 1, throws if more than 1), readAudit.First (expect 1 or more, throws if 0), readAudit.FirstOrDefault
 // (expect 0 or more, never throws).
 
-export async function readAudit(audit_trip_id: UUID): Promise<Recorded<Audit> | null> {
+export async function readAudit(audit_trip_id: UUID): Promise<AuditDomainModel | null> {
   try {
-    const result: Recorded<Audit> = await db.readAudit(audit_trip_id)
+    const result: AuditDomainModel = await db.readAudit(audit_trip_id)
     return result
   } catch (err) {
     return null
@@ -68,34 +67,34 @@ export async function readAudits(
     start_time: Timestamp
     end_time: Timestamp
   }>
-): Promise<{ count: number; audits: Recorded<Audit>[] }> {
-  const result: { count: number; audits: Recorded<Audit>[] } = await db.readAudits(query)
+): Promise<{ count: number; audits: AuditDomainModel[] }> {
+  const result: { count: number; audits: AuditDomainModel[] } = await db.readAudits(query)
   return result
 }
 
-export async function writeAudit(audit: Audit): Promise<Recorded<Audit>> {
-  const result: Recorded<Audit> = await db.writeAudit(audit)
+export async function writeAudit(audit: AuditDomainCreateModel): Promise<AuditDomainModel> {
+  const result: AuditDomainModel = await db.writeAudit(audit)
   return result
 }
 
-export async function readAuditEvents(audit_trip_id: UUID): Promise<Recorded<AuditEvent>[]> {
-  const result: Recorded<AuditEvent>[] = await db.readAuditEvents(audit_trip_id)
+export async function readAuditEvents(audit_trip_id: UUID): Promise<AuditEventDomainModel[]> {
+  const result: AuditEventDomainModel[] = await db.readAuditEvents(audit_trip_id)
   return result
 }
 
-export async function writeAuditEvent(event: AuditEvent): Promise<Recorded<AuditEvent>> {
-  const result: Recorded<AuditEvent> = await db.writeAuditEvent(event)
+export async function writeAuditEvent(event: AuditEventDomainModel): Promise<AuditEventDomainModel> {
+  const result: AuditEventDomainModel = await db.writeAuditEvent(event)
   return result
 }
 
-export async function readDevice(device_id: UUID, provider_id: UUID): Promise<DeviceDomainModel | undefined> {
+export async function readDevice(device_id: UUID, provider_id: UUID): Promise<Device | undefined> {
   return await IngestServiceClient.getDevice({ device_id, provider_id })
 }
 
-export async function readDevicesByVehicleId(provider_id: UUID, vehicle_id: string): Promise<Recorded<Device>[]> {
+export async function readDevicesByVehicleId(provider_id: UUID, vehicle_id: string): Promise<Device[]> {
   try {
     const start = now()
-    const results: Recorded<Device>[] = await db.readDevicesByVehicleId(
+    const results: Device[] = await db.readDevicesByVehicleId(
       provider_id,
       vehicle_id,
       vehicle_id.replace(/[\W_-]/g, '')

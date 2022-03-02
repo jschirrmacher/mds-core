@@ -17,6 +17,7 @@
 import { BigintTransformer, DesignType, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Nullable, Timestamp, TRIP_STATE, UUID, VEHICLE_EVENT, VEHICLE_STATE } from '@mds-core/mds-types'
 import { Column, Entity, Index, OneToOne } from 'typeorm'
+import { MigratedEntity } from '../mixins/migrated-entity'
 import { EventAnnotationEntity, EventAnnotationEntityModel } from './event-annotation-entity'
 import { TelemetryEntityModel } from './telemetry-entity'
 
@@ -25,7 +26,7 @@ import { TelemetryEntityModel } from './telemetry-entity'
 @Index(['timestamp', 'id'])
 @Index(['provider_id', 'id'])
 @Index(['vehicle_state', 'id'])
-export class EventEntity extends IdentityColumn(RecordedColumn(class {})) {
+export class EventEntity extends MigratedEntity(IdentityColumn(RecordedColumn(class {}))) {
   @Column('uuid', { primary: true })
   device_id: UUID
 

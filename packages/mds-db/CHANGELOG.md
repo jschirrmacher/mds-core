@@ -1,5 +1,20 @@
 # @mds-core/mds-db
 
+## 0.6.5
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- Updated dependencies [95382a3f]
+- Updated dependencies [a6575499]
+  - @mds-core/mds-attachment-service@0.5.15
+  - @mds-core/mds-geography-service@0.10.11
+  - @mds-core/mds-ingest-service@0.9.16
+  - @mds-core/mds-policy-service@0.11.17
+  - @mds-core/mds-types@0.9.1
+  - @mds-core/mds-utils@0.4.1
+  - @mds-core/mds-audit-service@0.5.15
+
 ## 0.6.4
 
 ### Patch Changes

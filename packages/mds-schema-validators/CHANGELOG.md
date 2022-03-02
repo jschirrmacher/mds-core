@@ -1,5 +1,16 @@
 # @mds-core/mds-schema-validators
 
+## 0.5.5
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- Updated dependencies [95382a3f]
+  - @mds-core/mds-providers@0.2.8
+  - @mds-core/mds-test-data@0.4.18
+  - @mds-core/mds-types@0.9.1
+  - @mds-core/mds-utils@0.4.1
+
 ## 0.5.4
 
 ### Patch Changes

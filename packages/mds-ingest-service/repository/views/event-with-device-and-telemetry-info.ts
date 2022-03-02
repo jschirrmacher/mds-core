@@ -30,10 +30,11 @@ import { ViewColumn, ViewEntity } from 'typeorm'
 import { DeviceEntity } from '../entities/device-entity'
 import { EventEntity } from '../entities/event-entity'
 import { TelemetryEntity } from '../entities/telemetry-entity'
+import { MigratedEntityModel } from '../mixins/migrated-entity'
 
 export type EventWithDeviceAndTelemetryInfoEntityModel = Omit<
   EventEntity & DeviceEntity & TelemetryEntity,
-  'annotation' | 'telemetry'
+  keyof MigratedEntityModel | 'annotation' | 'telemetry'
 > & {
   device_recorded: DeviceEntity['recorded']
   telemetry_recorded: TelemetryEntity['recorded']

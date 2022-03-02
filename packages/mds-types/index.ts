@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Device } from './device'
-import { AUDIT_EVENT_TYPE, VehicleEvent, VEHICLE_EVENT } from './event'
-import { Telemetry, TelemetryData, WithGpsProperty } from './telemetry'
 import { Timestamp, UUID } from './utils'
 
 // Represents a row in the "attachments" table
@@ -34,52 +31,6 @@ export interface AttachmentSummary {
   attachment_id: UUID
   attachment_url: string
   thumbnail_url?: string | null
-}
-
-// Represents a row in the "audits" table
-export interface Audit {
-  audit_trip_id: UUID
-  audit_device_id: UUID
-  audit_subject_id: string
-  provider_id: UUID
-  provider_name: string
-  provider_vehicle_id: string
-  provider_device_id: UUID | null
-  timestamp: Timestamp
-  recorded: Timestamp
-}
-
-// Represents a row in the "audit_attachments" table
-export interface AuditAttachment {
-  attachment_id: UUID
-  audit_trip_id: UUID
-  recorded: Timestamp
-}
-
-// Represents a row in the "audit_events" table
-export interface AuditEvent extends TelemetryData {
-  audit_trip_id: UUID
-  audit_event_id: UUID
-  audit_event_type: AUDIT_EVENT_TYPE | VEHICLE_EVENT
-  audit_issue_code?: string | null
-  audit_subject_id: string
-  note?: string | null
-  timestamp: Timestamp
-  recorded: Timestamp
-}
-
-export interface AuditDetails extends Audit {
-  events: WithGpsProperty<AuditEvent>[]
-  provider_event_types?: string[] | null
-  provider_vehicle_state?: string | null
-  provider_telemetry?: Telemetry | null
-  provider_event_time?: Timestamp | null
-  attachments: AttachmentSummary[]
-  provider: null | {
-    device: Device
-    events: VehicleEvent[]
-    telemetry: Telemetry[]
-  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

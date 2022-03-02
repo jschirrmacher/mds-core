@@ -1,5 +1,24 @@
 # @mds-core/mds-audit-api
 
+## 0.3.22
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- Updated dependencies [95382a3f]
+- Updated dependencies [a6575499]
+  - @mds-core/mds-agency-cache@0.4.18
+  - @mds-core/mds-api-helpers@0.2.13
+  - @mds-core/mds-api-server@0.4.7
+  - @mds-core/mds-attachment-service@0.5.15
+  - @mds-core/mds-db@0.6.5
+  - @mds-core/mds-ingest-service@0.9.16
+  - @mds-core/mds-providers@0.2.8
+  - @mds-core/mds-schema-validators@0.5.5
+  - @mds-core/mds-types@0.9.1
+  - @mds-core/mds-utils@0.4.1
+  - @mds-core/mds-service-helpers@0.6.5
+
 ## 0.3.21
 
 ### Patch Changes

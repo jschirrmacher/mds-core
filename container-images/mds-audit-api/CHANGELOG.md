@@ -1,5 +1,13 @@
 # @container-images/mds-audit-api
 
+## 0.1.86
+
+### Patch Changes
+
+- Updated dependencies [95382a3f]
+  - @mds-core/mds-audit-api@0.3.22
+  - @mds-core/mds-webpack-config@0.1.11
+
 ## 0.1.85
 
 ### Patch Changes

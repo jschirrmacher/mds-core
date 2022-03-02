@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { Audit, AuditEvent, Recorded, UUID } from '@mds-core/mds-types'
+import { AuditDomainCreateModel, AuditDomainModel, AuditEventDomainModel } from '@mds-core/mds-audit-service'
+import { Recorded, UUID } from '@mds-core/mds-types'
 import { now } from '@mds-core/mds-utils'
 import { getReadOnlyClient, getWriteableClient } from './client'
 import { DbLogger } from './logger'
@@ -81,7 +82,7 @@ export async function readAudits(query: ReadAuditsQueryParams) {
   }
 }
 
-export async function writeAudit(audit: Audit): Promise<Recorded<Audit>> {
+export async function writeAudit(audit: AuditDomainCreateModel): Promise<AuditDomainModel> {
   // write pg
   const start = now()
   const client = await getWriteableClient()
@@ -92,7 +93,7 @@ export async function writeAudit(audit: Audit): Promise<Recorded<Audit>> {
   await logSql(sql, values)
   const {
     rows: [recorded_audit]
-  }: { rows: Recorded<Audit>[] } = await client.query(sql, values)
+  }: { rows: AuditDomainModel[] } = await client.query(sql, values)
   const finish = now()
   DbLogger.debug(`MDS-DB writeAudit time elapsed: ${finish - start}ms`)
 
@@ -112,7 +113,7 @@ export async function deleteAudit(audit_trip_id: UUID) {
   return result.rowCount
 }
 
-export async function readAuditEvents(audit_trip_id: UUID): Promise<Recorded<AuditEvent>[]> {
+export async function readAuditEvents(audit_trip_id: UUID): Promise<AuditEventDomainModel[]> {
   try {
     const client = await getReadOnlyClient()
     const vals = new SqlVals()
@@ -129,7 +130,7 @@ export async function readAuditEvents(audit_trip_id: UUID): Promise<Recorded<Aud
   }
 }
 
-export async function writeAuditEvent(audit_event: AuditEvent): Promise<Recorded<AuditEvent>> {
+export async function writeAuditEvent(audit_event: AuditEventDomainModel): Promise<AuditEventDomainModel> {
   const start = now()
   const client = await getWriteableClient()
   const sql = `INSERT INTO ${schema.TABLE.audit_events} (${cols_sql(
@@ -139,7 +140,7 @@ export async function writeAuditEvent(audit_event: AuditEvent): Promise<Recorded
   await logSql(sql, values)
   const {
     rows: [recorded_audit_event]
-  }: { rows: Recorded<AuditEvent>[] } = await client.query(sql, values)
+  }: { rows: Recorded<AuditEventDomainModel>[] } = await client.query(sql, values)
   const finish = now()
   DbLogger.debug(`MDS-DB writeAuditEvent time elapsed: ${finish - start}ms`)
 

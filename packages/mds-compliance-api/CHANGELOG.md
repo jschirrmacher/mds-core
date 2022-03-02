@@ -1,5 +1,23 @@
 # @mds-core/mds-compliance-api
 
+## 0.4.24
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- Updated dependencies [95382a3f]
+- Updated dependencies [a6575499]
+  - @mds-core/mds-api-helpers@0.2.13
+  - @mds-core/mds-api-server@0.4.7
+  - @mds-core/mds-compliance-service@0.10.19
+  - @mds-core/mds-db@0.6.5
+  - @mds-core/mds-policy-service@0.11.17
+  - @mds-core/mds-schema-validators@0.5.5
+  - @mds-core/mds-test-data@0.4.18
+  - @mds-core/mds-types@0.9.1
+  - @mds-core/mds-utils@0.4.1
+  - @mds-core/mds-service-helpers@0.6.5
+
 ## 0.4.23
 
 ### Patch Changes

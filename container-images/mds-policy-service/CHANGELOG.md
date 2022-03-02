@@ -1,5 +1,14 @@
 # @container-images/mds-policy-service
 
+## 0.0.53
+
+### Patch Changes
+
+- Updated dependencies [95382a3f]
+- Updated dependencies [a6575499]
+  - @mds-core/mds-policy-service@0.11.17
+  - @mds-core/mds-webpack-config@0.1.11
+
 ## 0.0.52
 
 ### Patch Changes

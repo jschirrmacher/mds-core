@@ -33,6 +33,6 @@ export interface Device_v1_1_0 extends CoreDevice {
 /**
  * This is an alias that must be updated in the event of future changes to the type.
  */
-export type Device = Device_v1_1_0
+// export type Device = Device_v1_1_0
 
 export type DeviceID = { provider_id: UUID; device_id: UUID }
