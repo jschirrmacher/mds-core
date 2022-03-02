@@ -6,8 +6,8 @@ import {
   writePublishedGeography
 } from '@mds-core/mds-geography-service'
 import stream from '@mds-core/mds-stream'
+import { UUID } from '@mds-core/mds-types'
 import { clone, days, now, START_ONE_MONTH_AGO, START_ONE_MONTH_FROM_NOW, uuid, yesterday } from '@mds-core/mds-utils'
-import { UUID } from 'packages/mds-types'
 import { PolicyMetadataDomainModel } from '../@types'
 import { PolicyServiceClient } from '../client'
 import { PolicyRepository } from '../repository'
