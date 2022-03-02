@@ -1,5 +1,19 @@
 # @container-images/mds-jurisdiction-api
 
+## 0.0.61
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-api@0.1.60
+
+## 0.0.60
+
+### Patch Changes
+
+- Updated dependencies [95382a3f]
+  - @mds-core/mds-jurisdiction-api@0.1.59
+  - @mds-core/mds-webpack-config@0.1.11
+
 ## 0.0.59
 
 ### Patch Changes

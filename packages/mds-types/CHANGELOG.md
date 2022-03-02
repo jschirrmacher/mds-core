@@ -1,5 +1,11 @@
 # @mds-core/mds-types
 
+## 0.9.1
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+
 ## 0.9.0
 
 ### Minor Changes

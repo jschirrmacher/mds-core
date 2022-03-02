@@ -15,7 +15,7 @@
  */
 
 import { Nullable, UUID } from '@mds-core/mds-types'
-import { Geometry } from 'geojson'
+import { Feature, GeoJsonProperties, Geometry } from 'geojson'
 import councilDistrict11 from './council-district-11'
 import laCityBoundary from './la-city-boundary'
 import laDacs from './la-dacs'
@@ -42,7 +42,7 @@ const serviceAreaMap: {
     replacement_area: null,
     type: 'unrestricted',
     description: 'Los Angeles',
-    area: laCityBoundary.features[0].geometry
+    area: (laCityBoundary.features[0] as Feature<Geometry, GeoJsonProperties>).geometry
   },
 
   // Council District 11
@@ -53,7 +53,7 @@ const serviceAreaMap: {
     replacement_area: null,
     type: 'restricted',
     description: 'Council District 11',
-    area: councilDistrict11.features[0].geometry
+    area: (councilDistrict11.features[0] as Feature<Geometry, GeoJsonProperties>).geometry
   },
 
   // Venice
@@ -64,7 +64,7 @@ const serviceAreaMap: {
     replacement_area: null,
     type: 'restricted',
     description: 'Venice',
-    area: venice.features[0].geometry
+    area: (venice.features[0] as Feature<Geometry, GeoJsonProperties>).geometry
   },
 
   // Venice Beach "Special Ops Zone"
@@ -75,7 +75,7 @@ const serviceAreaMap: {
     replacement_area: null,
     type: 'restricted',
     description: 'Venice Beach Special Operations Zone',
-    area: veniceSpecOps.features[0].geometry
+    area: (veniceSpecOps.features[0] as Feature<Geometry, GeoJsonProperties>).geometry
   },
 
   // Venice Beach
@@ -86,7 +86,7 @@ const serviceAreaMap: {
     replacement_area: null,
     type: 'restricted',
     description: 'Venice Beach',
-    area: restrictedAreas.features[0].geometry
+    area: (restrictedAreas.features[0] as Feature<Geometry, GeoJsonProperties>).geometry
   },
 
   // Venice canals
@@ -97,7 +97,7 @@ const serviceAreaMap: {
     replacement_area: null,
     type: 'restricted',
     description: 'Venice Canals',
-    area: restrictedAreas.features[1].geometry
+    area: (restrictedAreas.features[1] as Feature<Geometry, GeoJsonProperties>).geometry
   },
 
   // San Fernando Valley DAC
@@ -108,7 +108,7 @@ const serviceAreaMap: {
     replacement_area: null,
     type: 'unrestricted',
     description: 'San Fernando Valley DAC',
-    area: laDacs.features[1].geometry
+    area: (laDacs.features[1] as Feature<Geometry, GeoJsonProperties>).geometry
   },
 
   // Non San Fernando Valley DAC
@@ -119,7 +119,7 @@ const serviceAreaMap: {
     replacement_area: null,
     type: 'unrestricted',
     description: 'Non San Fernando Valley DAC',
-    area: laDacs.features[0].geometry
+    area: (laDacs.features[0] as Feature<Geometry, GeoJsonProperties>).geometry
   }
 }
 

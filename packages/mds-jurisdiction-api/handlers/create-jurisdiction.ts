@@ -48,6 +48,11 @@ export const CreateJurisdictionHandler = async (
     const { version } = res.locals
     if (!Array.isArray(req.body)) {
       const [jurisdiction] = jurisdictions
+
+      if (!jurisdiction) {
+        throw new Error('Failed to create jurisdiction')
+      }
+
       return res.status(201).send({ version, jurisdiction })
     }
     return res.status(201).send({ version, jurisdictions })

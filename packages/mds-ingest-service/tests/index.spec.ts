@@ -381,7 +381,7 @@ describe('Ingest Service Tests', () => {
           grouping_type: 'all_events',
           limit: 1
         })
-        expect(events[0].vehicle_state).toEqual('removed')
+        expect(events[0]?.vehicle_state).toEqual('removed')
 
         // reverse order
         const { events: eventsDesc } = await IngestServiceClient.getEventsUsingOptions({
@@ -390,7 +390,7 @@ describe('Ingest Service Tests', () => {
           grouping_type: 'all_events'
         })
 
-        expect(eventsDesc[0].vehicle_state).toEqual('unknown')
+        expect(eventsDesc[0]?.vehicle_state).toEqual('unknown')
       })
 
       it('gets events in order provided (vehicle_state)', async () => {
@@ -399,7 +399,7 @@ describe('Ingest Service Tests', () => {
           order: { column: 'vehicle_state', direction: 'ASC' },
           grouping_type: 'all_events'
         })
-        expect(events[0].vehicle_state).toEqual('removed')
+        expect(events[0]?.vehicle_state).toEqual('removed')
 
         // reverse order
         const { events: eventsDesc } = await IngestServiceClient.getEventsUsingOptions({
@@ -408,7 +408,7 @@ describe('Ingest Service Tests', () => {
           grouping_type: 'all_events'
         })
 
-        expect(eventsDesc[0].vehicle_state).toEqual('unknown')
+        expect(eventsDesc[0]?.vehicle_state).toEqual('unknown')
       })
 
       it('respects order when cursor is used', async () => {
@@ -422,7 +422,7 @@ describe('Ingest Service Tests', () => {
           limit: 2
         })
         expect(events.length).toEqual(2)
-        expect(events[0].vehicle_state).toEqual('removed')
+        expect(events[0]?.vehicle_state).toEqual('removed')
         expect(next).not.toBeNull()
 
         if (next) {
@@ -434,7 +434,7 @@ describe('Ingest Service Tests', () => {
 
           expect(nextEvents.length).toEqual(2)
           expect(prev).not.toBeNull()
-          expect(nextEvents[0].vehicle_state).toEqual('unknown')
+          expect(nextEvents[0]?.vehicle_state).toEqual('unknown')
         }
       })
 
@@ -449,7 +449,7 @@ describe('Ingest Service Tests', () => {
           limit: 4
         })
 
-        expect(events[0].timestamp).toBeLessThan(events[events.length - 1].timestamp)
+        expect(events[0]?.timestamp).toBeLessThan(events[events.length - 1]?.timestamp ?? 0)
 
         const {
           events: descEvents,
@@ -461,7 +461,7 @@ describe('Ingest Service Tests', () => {
           limit: 4
         })
 
-        expect(descEvents[0].timestamp).toBeGreaterThan(descEvents[descEvents.length - 1].timestamp)
+        expect(descEvents[0]?.timestamp).toBeGreaterThan(descEvents[descEvents.length - 1]?.timestamp ?? 0)
       })
     })
 
@@ -703,11 +703,16 @@ describe('Ingest Service Tests', () => {
       const trips = await IngestServiceClient.getTripEvents({})
       const events1 = trips[TRIP_UUID_A]
       const events2 = trips[TRIP_UUID_B]
+
+      if (!events1 || !events2) {
+        throw new Error('No events found')
+      }
+
       expect(events1?.length).toStrictEqual(2)
       expect(events2?.length).toStrictEqual(2)
 
-      expect(events1[0].telemetry?.gps.lat).toStrictEqual(TEST_TELEMETRY_A1.gps.lat)
-      expect(events1[1].telemetry?.gps.lat).toStrictEqual(TEST_TELEMETRY_A2.gps.lat)
+      expect(events1[0]?.telemetry?.gps.lat).toStrictEqual(TEST_TELEMETRY_A1.gps.lat)
+      expect(events1[1]?.telemetry?.gps.lat).toStrictEqual(TEST_TELEMETRY_A2.gps.lat)
     })
     it('loads trip events filtered by time', async () => {
       const trips1 = await IngestServiceClient.getTripEvents({
@@ -753,11 +758,15 @@ describe('Ingest Service Tests', () => {
       const events1 = devices[DEVICE_UUID_A]
       const events2 = devices[DEVICE_UUID_B]
 
+      if (!events1 || !events2) {
+        throw new Error('No events found')
+      }
+
       expect(events1?.length).toStrictEqual(2)
       expect(events2?.length).toStrictEqual(2)
 
-      expect(events1[0].telemetry?.gps.lat).toStrictEqual(TEST_TELEMETRY_A1.gps.lat)
-      expect(events1[1].telemetry?.gps.lat).toStrictEqual(TEST_TELEMETRY_A2.gps.lat)
+      expect(events1[0]?.telemetry?.gps.lat).toStrictEqual(TEST_TELEMETRY_A1.gps.lat)
+      expect(events1[1]?.telemetry?.gps.lat).toStrictEqual(TEST_TELEMETRY_A2.gps.lat)
     })
     it('loads device events filtered by time', async () => {
       const noEventsInBounds = await IngestServiceClient.getDeviceEvents({

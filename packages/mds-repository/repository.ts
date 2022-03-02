@@ -17,7 +17,7 @@
 import { pluralize, tail } from '@mds-core/mds-utils'
 import { bool, cleanEnv } from 'envalid'
 import { Connection, ConnectionOptions } from 'typeorm'
-import { ConnectionManager, ConnectionManagerCliOptions, ConnectionManagerOptions, ConnectionMode } from './connection'
+import { ConnectionManager, ConnectionManagerCliOptions, ConnectionManagerOptions } from './connection'
 import { RepositoryLogger } from './logger'
 import { RepositoryMigrations } from './migrations'
 
@@ -75,7 +75,7 @@ const asChunksForInsert = <TEntity>(entities: TEntity[], size = 4_000) => {
           if (!reduced[chunk]) {
             reduced.push([])
           }
-          reduced[chunk].push(t)
+          ;(reduced[chunk] as Array<TEntity>).push(t) // this cast is safe because we initialize the index if it doesn't exist yet
           return reduced
         }, [])
       : [entities]
@@ -128,117 +128,51 @@ export type ReadWriteRepositoryPublicMethods<T extends {}> = T &
     revertAllMigrations: () => Promise<void>
   }
 
-const CreateReadWriteRepository = <T>(
-  name: string,
-  { entities, migrations }: Required<RepositoryOptions>,
-  methods: (repository: ReadWriteRepositoryProtectedMethods) => T
-): ReadWriteRepositoryPublicMethods<T> => {
-  const migrationsTableName = `${name}-migrations`
-
-  const { connect, disconnect, ormconfig } = new ConnectionManager<'ro' | 'rw'>(name, {
-    migrationsTableName,
-    entities,
-    migrations: migrations.length === 0 ? [] : RepositoryMigrations(migrationsTableName).concat(migrations)
-  })
-
-  const cli = (options?: ConnectionManagerCliOptions) => ormconfig('rw')
-
-  const runAllMigrations = async (): Promise<void> => runAllMigrationsUsingConnection(await connect('rw'))
-
-  const revertAllMigrations = async (): Promise<void> => revertAllMigrationsUsingConnection(await connect('rw'))
-
-  const initialize = async () => {
-    RepositoryLogger.info(`Initializing R/W repository: ${name}`)
-    await Promise.all([connect('ro'), connect('rw')])
-
-    // Enable migrations by default
-    const { PG_MIGRATIONS } = cleanEnv(process.env, { PG_MIGRATIONS: bool({ default: true }) })
-    if (PG_MIGRATIONS) {
-      await runAllMigrations()
-    }
-  }
-
-  const shutdown = async () => {
-    RepositoryLogger.info(`Terminating R/W repository: ${name}`)
-    await Promise.all([disconnect('ro'), disconnect('rw')])
-  }
-
-  return {
-    initialize,
-    shutdown,
-    cli,
-    runAllMigrations,
-    revertAllMigrations,
-    ...methods({ connect, disconnect, asChunksForInsert })
-  }
-}
-
-/**
- * The following classes are being deprecated in favor of using the composition functions above.
- *
- * When ReadWriteRepository is eventually removed, it should be replaced with a const object that
- * mimics the static method (see the pattern implemented by ReadOnlyRepository):
- *
- * export const ReadWriteRepository = { Create: CreateReadWriteRepository }
- */
-
-export abstract class BaseRepository<TConnectionMode extends ConnectionMode> {
-  private readonly manager: ConnectionManager<TConnectionMode>
-
-  protected ormconfig = (mode: TConnectionMode, options?: ConnectionManagerCliOptions): ConnectionOptions =>
-    this.manager.ormconfig(mode, options)
-
-  protected connect = async (mode: TConnectionMode): Promise<ManagedConnection> => this.manager.connect(mode)
-
-  protected disconnect = async (mode: TConnectionMode): Promise<void> => this.manager.disconnect(mode)
-
-  public abstract initialize: () => Promise<void>
-
-  public abstract shutdown: () => Promise<void>
-
-  constructor(public readonly name: string, { entities, migrations }: Required<RepositoryOptions>) {
+export const ReadWriteRepository = {
+  Create: <T extends {}>(
+    name: string,
+    { entities, migrations }: Required<RepositoryOptions>,
+    methods: (repository: ReadWriteRepositoryProtectedMethods) => T
+  ): ReadWriteRepositoryPublicMethods<T> => {
     const migrationsTableName = `${name}-migrations`
     const metadataTableName = `${name}-migration-metadata`
-    this.manager = new ConnectionManager(name, {
+
+    const { connect, disconnect, ormconfig } = new ConnectionManager<'ro' | 'rw'>(name, {
       migrationsTableName,
       metadataTableName,
       entities,
       migrations: migrations.length === 0 ? [] : RepositoryMigrations(migrationsTableName).concat(migrations)
     })
-  }
-}
 
-export abstract class ReadWriteRepository extends BaseRepository<'ro' | 'rw'> {
-  static Create = CreateReadWriteRepository
+    const cli = (options?: ConnectionManagerCliOptions) => ormconfig('rw')
 
-  public runAllMigrations = async (): Promise<void> => runAllMigrationsUsingConnection(await this.connect('rw'))
+    const runAllMigrations = async (): Promise<void> => runAllMigrationsUsingConnection(await connect('rw'))
 
-  public revertAllMigrations = async (): Promise<void> => revertAllMigrationsUsingConnection(await this.connect('rw'))
+    const revertAllMigrations = async (): Promise<void> => revertAllMigrationsUsingConnection(await connect('rw'))
 
-  public initialize = async (): Promise<void> => {
-    RepositoryLogger.info(`Initializing R/W repository: ${this.name}`)
-    await Promise.all([this.connect('ro'), this.connect('rw')])
+    const initialize = async () => {
+      RepositoryLogger.info(`Initializing R/W repository: ${name}`)
+      await Promise.all([connect('ro'), connect('rw')])
 
-    // Enable migrations by default
-    const { PG_MIGRATIONS } = cleanEnv(process.env, { PG_MIGRATIONS: bool({ default: true }) })
-    if (PG_MIGRATIONS) {
-      await this.runAllMigrations()
+      // Enable migrations by default
+      const { PG_MIGRATIONS } = cleanEnv(process.env, { PG_MIGRATIONS: bool({ default: true }) })
+      if (PG_MIGRATIONS) {
+        await runAllMigrations()
+      }
     }
-  }
 
-  public shutdown = async (): Promise<void> => {
-    RepositoryLogger.info(`Terminating R/W repository: ${this.name}`)
-    await Promise.all([this.disconnect('ro'), this.disconnect('rw')])
-  }
+    const shutdown = async () => {
+      RepositoryLogger.info(`Terminating R/W repository: ${name}`)
+      await Promise.all([disconnect('ro'), disconnect('rw')])
+    }
 
-  public cli = (options?: ConnectionManagerCliOptions) => this.ormconfig('rw', options)
-
-  protected asChunksForInsert = <TEntity>(entities: TEntity[], size?: number) => asChunksForInsert(entities, size)
-
-  /**
-   * @deprecated Use ReadWriteRepository.Create(...) instead of extending ReadWriteRepository and using new(...)
-   */
-  constructor(name: string, { entities = [], migrations = [] }: RepositoryOptions = {}) {
-    super(name, { entities, migrations })
+    return {
+      initialize,
+      shutdown,
+      cli,
+      runAllMigrations,
+      revertAllMigrations,
+      ...methods({ connect, disconnect, asChunksForInsert })
+    }
   }
 }

@@ -19,6 +19,7 @@ import { TimePolicy, TimeRule } from '@mds-core/mds-policy-service'
 import { Device, Telemetry, UUID, VehicleEvent } from '@mds-core/mds-types'
 import { clone, now, pointInShape, RULE_UNIT_MAP } from '@mds-core/mds-utils'
 import { ComplianceEngineResult } from '../@types'
+import { ComplianceEngineLogger as logger } from '../logger'
 import { annotateVehicleMap, isInStatesOrEvents, isInVehicleTypes, isRuleActive } from './helpers'
 
 export function isTimeRuleMatch(
@@ -60,6 +61,12 @@ export function processTimePolicy(
     events.forEach(event => {
       if (devicesToCheck[event.device_id]) {
         const device = devicesToCheck[event.device_id]
+
+        if (!device) {
+          logger.warn(`Device ${event.device_id} not found in devices list.`)
+          return
+        }
+
         if (isTimeRuleMatch(rule as TimeRule, geographies, device, event)) {
           matchedVehicles[device.device_id] = {
             device,

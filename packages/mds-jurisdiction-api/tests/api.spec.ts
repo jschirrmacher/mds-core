@@ -32,6 +32,10 @@ const [JURISDICTION0, JURISDICTION1, JURISDICTION2] = [uuid(), uuid(), uuid()].m
   geography_id: uuid()
 }))
 
+if (!JURISDICTION0 || !JURISDICTION1 || !JURISDICTION2) {
+  throw new Error('Jurisdictions are not defined') // this should never happen
+}
+
 const JurisdictionServer = JurisdictionServiceManager.controller()
 
 describe('Test Jurisdiction API', () => {

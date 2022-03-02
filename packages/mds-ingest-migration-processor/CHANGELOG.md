@@ -1,5 +1,29 @@
 # @mds-core/mds-ingest-migration-processor
 
+## 0.0.53
+
+### Patch Changes
+
+- Updated dependencies [3b4b5779]
+  - @mds-core/mds-ingest-service@0.9.17
+  - @mds-core/mds-agency-cache@0.4.19
+
+## 0.0.52
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- Updated dependencies [95382a3f]
+- Updated dependencies [a6575499]
+  - @mds-core/mds-agency-cache@0.4.18
+  - @mds-core/mds-api-server@0.4.7
+  - @mds-core/mds-ingest-service@0.9.16
+  - @mds-core/mds-repository@0.1.42
+  - @mds-core/mds-types@0.9.1
+  - @mds-core/mds-utils@0.4.1
+  - @mds-core/mds-service-helpers@0.6.5
+  - @mds-core/mds-stream-processor@0.4.13
+
 ## 0.0.51
 
 ### Patch Changes

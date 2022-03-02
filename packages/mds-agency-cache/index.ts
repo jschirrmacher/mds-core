@@ -17,6 +17,7 @@
 import { RedisCache } from '@mds-core/mds-cache'
 import { BoundingBox, Device, Telemetry, Timestamp, UUID, VehicleEvent } from '@mds-core/mds-types'
 import {
+  filterDefined,
   isInsideBoundingBox,
   NotFoundError,
   now,
@@ -53,7 +54,7 @@ async function info() {
   const data: { [propName: string]: string | number } = {}
   lines.map(line => {
     const [key, val] = line.split(':')
-    if (val !== undefined) {
+    if (key !== undefined && val !== undefined) {
       if (Number.isNaN(Number(val))) {
         data[key] = val
       } else {
@@ -437,10 +438,12 @@ async function writeTelemetry(telemetries: Telemetry[], options: { quiet: boolea
 async function readAllTelemetry() {
   // FIXME wildcard searching is slow
   const keys = await readKeys('device:*:telemetry')
-  const device_ids = keys.map(key => {
-    const [, device_id] = key.split(':')
-    return device_id
-  })
+  const device_ids = keys
+    .map(key => {
+      const [, device_id] = key.split(':')
+      return device_id
+    })
+    .filter(filterDefined())
   return ((await hreads(['telemetry'], device_ids)) as StringifiedTelemetry[]).reduce((acc: Telemetry[], telemetry) => {
     try {
       return [...acc, parseTelemetry(telemetry)]

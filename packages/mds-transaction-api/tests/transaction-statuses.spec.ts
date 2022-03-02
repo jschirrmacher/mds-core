@@ -21,7 +21,7 @@ import {
   transactionStatusesGenerator
 } from '@mds-core/mds-transaction-service'
 import { UUID } from '@mds-core/mds-types'
-import { pathPrefix, uuid } from '@mds-core/mds-utils'
+import { hasAtLeastOneEntry, pathPrefix, uuid } from '@mds-core/mds-utils'
 import supertest from 'supertest'
 import { api } from '../api'
 
@@ -39,6 +39,9 @@ describe('Test Transactions API: Transactions', () => {
   describe('Success', () => {
     it('Can POST a transaction status', async () => {
       const [status] = transactionStatusesGenerator()
+      if (!status) {
+        throw new Error('No status to test')
+      }
       const { transaction_id } = status
 
       jest.spyOn(TransactionServiceClient, 'setTransactionStatus').mockImplementationOnce(async t => t as any)
@@ -53,6 +56,9 @@ describe('Test Transactions API: Transactions', () => {
 
     it('Can GET transaction statuses', async () => {
       const mockStatuses = [...transactionStatusesGenerator(5)]
+      if (!hasAtLeastOneEntry(mockStatuses)) {
+        throw new Error('No statuses to test')
+      }
       const [{ transaction_id }] = mockStatuses
 
       jest.spyOn(TransactionServiceClient, 'getTransactionStatuses').mockImplementationOnce(async _ => mockStatuses)

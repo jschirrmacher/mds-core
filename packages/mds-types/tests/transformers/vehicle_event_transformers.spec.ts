@@ -181,9 +181,9 @@ describe('Test transformers', () => {
       }
     }
 
-    const { 0: converted_eventA_1, 1: converted_eventA_2 } = convert_v1_0_0_vehicle_event_to_v0_4_1(eventA)
-    expect(converted_eventA_1.event_type).toEqual('provider_drop_off')
-    expect(converted_eventA_2.event_type).toEqual('trip_start')
+    const [converted_eventA_1, converted_eventA_2] = convert_v1_0_0_vehicle_event_to_v0_4_1(eventA)
+    expect(converted_eventA_1?.event_type).toEqual('provider_drop_off')
+    expect(converted_eventA_2?.event_type).toEqual('trip_start')
 
     const eventB: VehicleEvent_v1_0_0 = {
       device_id: DEVICE_ID,
@@ -208,10 +208,10 @@ describe('Test transformers', () => {
       recorded: TIME
     }
 
-    const { 0: converted_eventB_1, 1: converted_eventB_2 } = convert_v1_0_0_vehicle_event_to_v0_4_1(eventB)
-    expect(converted_eventB_1.event_type).toEqual('no_backconversion_available')
-    expect(converted_eventB_2.event_type).toEqual('no_backconversion_available')
-    expect(converted_eventB_2.telemetry).toEqual({
+    const [converted_eventB_1, converted_eventB_2] = convert_v1_0_0_vehicle_event_to_v0_4_1(eventB)
+    expect(converted_eventB_1?.event_type).toEqual('no_backconversion_available')
+    expect(converted_eventB_2?.event_type).toEqual('no_backconversion_available')
+    expect(converted_eventB_2?.telemetry).toEqual({
       provider_id: PROVIDER_ID,
       device_id: DEVICE_ID,
       timestamp: TIME,

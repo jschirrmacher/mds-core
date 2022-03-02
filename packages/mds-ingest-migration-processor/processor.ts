@@ -42,7 +42,7 @@ import {
   VehicleEvent,
   VehicleEvent_v0_4_1
 } from '@mds-core/mds-types'
-import { asArray, filterDefined, ServerError } from '@mds-core/mds-utils'
+import { asArrayOfAtLeastOne, filterDefined, ServerError } from '@mds-core/mds-utils'
 import { bool, cleanEnv, num, str } from 'envalid'
 import express from 'express'
 import { IngestMigrationProcessorLogger } from './logger'
@@ -96,7 +96,7 @@ const IngestServiceMigratedDeviceSink = (): StreamSink<MigratedDevice> => () => 
     initialize: async () => undefined,
     write: async message => {
       try {
-        const [{ device, migrated_from }] = asArray(message)
+        const [{ device, migrated_from }] = asArrayOfAtLeastOne(message)
         await IngestServiceClient.writeMigratedDevice(device, migrated_from)
       } catch (error) {
         IngestMigrationProcessorLogger.error(`Error migrating device`, { topic, message })
@@ -128,7 +128,7 @@ const IngestServiceMigratedVehicleEventSink = (): StreamSink<MigratedVehicleEven
     initialize: async () => undefined,
     write: async message => {
       try {
-        const [{ event, migrated_from }] = asArray(message)
+        const [{ event, migrated_from }] = asArrayOfAtLeastOne(message)
         await IngestServiceClient.writeMigratedVehicleEvent(event, migrated_from)
       } catch (error) {
         IngestMigrationProcessorLogger.error(`Error migrating event`, { topic, message })
@@ -166,7 +166,7 @@ const IngestServiceMigratedTelemetrySink = (): StreamSink<MigratedTelemetry> => 
     initialize: async () => undefined,
     write: async message => {
       try {
-        const [{ telemetry, migrated_from }] = asArray(message)
+        const [{ telemetry, migrated_from }] = asArrayOfAtLeastOne(message)
         await IngestServiceClient.writeMigratedTelemetry(telemetry, migrated_from)
       } catch (error) {
         IngestMigrationProcessorLogger.error(`Error migrating telemetry`, { topic, message })

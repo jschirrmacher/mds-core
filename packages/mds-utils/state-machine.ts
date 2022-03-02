@@ -26,6 +26,7 @@ import {
   VEHICLE_EVENT,
   VEHICLE_STATE
 } from '@mds-core/mds-types'
+import { IndexError } from './exceptions/exceptions'
 
 /* Start with a state, then there's a list of valid event_types by which one
  * may transition out, then possible states for each event_type
@@ -196,7 +197,12 @@ function getValidPreviousStates(
 
 function isEventValid(event: MicroMobilityVehicleEvent) {
   const { event_types } = event
-  const finalEventType: VEHICLE_EVENT = event_types[event_types.length - 1]
+  const finalEventType: VEHICLE_EVENT | undefined = event_types[event_types.length - 1]
+
+  if (!finalEventType) {
+    throw new IndexError(`Cannot index an event_types list with no entries`, { event })
+  }
+
   return MICRO_MOBILITY_EVENT_STATES_MAP[finalEventType].includes(event.vehicle_state as MICRO_MOBILITY_VEHICLE_STATE)
 }
 

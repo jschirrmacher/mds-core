@@ -36,84 +36,87 @@ interface InsertCollectorMessagesOptions {
   beforeCommit: () => Promise<void>
 }
 
-class CollectorReadWriteRepository extends ReadWriteRepository {
-  public insertCollectorSchema = async (
-    schema: CollectorSchemaDomainCreateModel
-  ): Promise<CollectorSchemaDomainModel> => {
-    try {
-      const connection = await this.connect('rw')
-      const {
-        raw: [entity]
-      }: InsertReturning<CollectorSchemaEntityModel> = await connection
-        .getRepository(CollectorSchemaEntity)
-        .createQueryBuilder()
-        .insert()
-        .values([CollectorSchemaDomainToEntityCreate.map(schema)])
-        .returning('*')
-        .onConflict('("schema_id") DO UPDATE SET "schema" = EXCLUDED."schema", "recorded" = EXCLUDED."recorded"')
-        .execute()
-      return CollectorSchemaEntityToDomain.map(entity)
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
+export const CollectorRepository = ReadWriteRepository.Create(
+  'collector',
+  { entities: [CollectorSchemaEntity, CollectorMessageEntity], migrations },
+  repository => {
+    return {
+      insertCollectorSchema: async (schema: CollectorSchemaDomainCreateModel): Promise<CollectorSchemaDomainModel> => {
+        try {
+          const connection = await repository.connect('rw')
+          const {
+            raw: [entity]
+          }: InsertReturning<CollectorSchemaEntityModel> = await connection
+            .getRepository(CollectorSchemaEntity)
+            .createQueryBuilder()
+            .insert()
+            .values([CollectorSchemaDomainToEntityCreate.map(schema)])
+            .returning('*')
+            .onConflict('("schema_id") DO UPDATE SET "schema" = EXCLUDED."schema", "recorded" = EXCLUDED."recorded"')
+            .execute()
 
-  public getCollectorSchema = async (
-    schema_id: CollectorSchemaDomainModel['schema_id']
-  ): Promise<CollectorSchemaDomainModel> => {
-    try {
-      const connection = await this.connect('ro')
-      const entity = await connection.getRepository(CollectorSchemaEntity).findOne({ where: { schema_id } })
-      if (!entity) {
-        throw new NotFoundError(`Schema ${schema_id} not found`)
-      }
-      return entity
-    } catch (error) {
-      throw RepositoryError(error)
-    }
-  }
+          if (!entity) {
+            throw new Error('Failed to insert schema')
+          }
 
-  public insertCollectorMessages = async (
-    messages: CollectorMessageDomainCreateModel[],
-    options: Partial<InsertCollectorMessagesOptions> = {}
-  ): Promise<CollectorMessageDomainModel[]> => {
-    try {
-      const { beforeCommit = async () => undefined } = options
-      const connection = await this.connect('rw')
-
-      const chunks = this.asChunksForInsert(
-        messages.map(CollectorMessageDomainToEntityCreate.mapper({ recorded: Date.now() }))
-      )
-
-      const results: Array<InsertReturning<CollectorMessageEntityModel>> = await connection.transaction(
-        async manager => {
-          const committed = await Promise.all(
-            chunks.map(chunk =>
-              manager
-                .getRepository(CollectorMessageEntity)
-                .createQueryBuilder()
-                .insert()
-                .values(messages.map(CollectorMessageDomainToEntityCreate.mapper()))
-                .returning('*')
-                .execute()
-            )
-          )
-          await beforeCommit()
-          return committed
+          return CollectorSchemaEntityToDomain.map(entity)
+        } catch (error) {
+          throw RepositoryError(error)
         }
-      )
+      },
 
-      return results
-        .reduce<Array<CollectorMessageEntity>>((entities, { raw: chunk = [] }) => entities.concat(chunk), [])
-        .map(CollectorMessageEntityToDomain.mapper())
-    } catch (error) {
-      throw RepositoryError(error)
+      getCollectorSchema: async (
+        schema_id: CollectorSchemaDomainModel['schema_id']
+      ): Promise<CollectorSchemaDomainModel> => {
+        try {
+          const connection = await repository.connect('ro')
+          const entity = await connection.getRepository(CollectorSchemaEntity).findOne({ where: { schema_id } })
+          if (!entity) {
+            throw new NotFoundError(`Schema ${schema_id} not found`)
+          }
+          return entity
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      },
+
+      insertCollectorMessages: async (
+        messages: CollectorMessageDomainCreateModel[],
+        options: Partial<InsertCollectorMessagesOptions> = {}
+      ): Promise<CollectorMessageDomainModel[]> => {
+        try {
+          const { beforeCommit = async () => undefined } = options
+          const connection = await repository.connect('rw')
+
+          const chunks = repository.asChunksForInsert(
+            messages.map(CollectorMessageDomainToEntityCreate.mapper({ recorded: Date.now() }))
+          )
+
+          const results: Array<InsertReturning<CollectorMessageEntityModel>> = await connection.transaction(
+            async manager => {
+              const committed = await Promise.all(
+                chunks.map(chunk =>
+                  manager
+                    .getRepository(CollectorMessageEntity)
+                    .createQueryBuilder()
+                    .insert()
+                    .values(messages.map(CollectorMessageDomainToEntityCreate.mapper()))
+                    .returning('*')
+                    .execute()
+                )
+              )
+              await beforeCommit()
+              return committed
+            }
+          )
+
+          return results
+            .reduce<Array<CollectorMessageEntity>>((entities, { raw: chunk = [] }) => entities.concat(chunk), [])
+            .map(CollectorMessageEntityToDomain.mapper())
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      }
     }
   }
-
-  constructor() {
-    super('collector', { entities: [CollectorSchemaEntity, CollectorMessageEntity], migrations })
-  }
-}
-
-export const CollectorRepository = new CollectorReadWriteRepository()
+)

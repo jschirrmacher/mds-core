@@ -1,5 +1,15 @@
 # @mds-core/mds-repository
 
+## 0.1.42
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- a6575499: Switch to new repository composition functions and deprecate classes
+- Updated dependencies [95382a3f]
+  - @mds-core/mds-types@0.9.1
+  - @mds-core/mds-utils@0.4.1
+
 ## 0.1.41
 
 ### Patch Changes

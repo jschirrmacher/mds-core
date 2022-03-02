@@ -63,7 +63,7 @@ const tripReceiptSchema: JSONSchemaType<TripReceiptDetailsDomainModel> = {
     end_geography_id: { ...uuidSchema, nullable: true, default: null },
     end_geography_type: { type: 'string' },
     duration: { type: 'integer', nullable: true, default: null },
-    distance: { type: 'integer', nullable: true, default: null },
+    distance: { type: 'number', format: 'float', nullable: true, default: null },
     trip_events: { type: 'array', items: usableEventSchema }
   },
   required: ['start_timestamp', 'end_timestamp', 'trip_events', 'trip_id']

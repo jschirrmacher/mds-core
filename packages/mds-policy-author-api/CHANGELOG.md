@@ -1,5 +1,31 @@
 # @mds-core/mds-policy-author-api
 
+## 0.7.23
+
+### Patch Changes
+
+- Updated dependencies [3b4b5779]
+- Updated dependencies [fea59e19]
+  - @mds-core/mds-policy-service@0.11.18
+  - @mds-core/mds-schema-validators@0.5.6
+  - @mds-core/mds-api-helpers@0.2.14
+
+## 0.7.22
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- Updated dependencies [95382a3f]
+- Updated dependencies [a6575499]
+  - @mds-core/mds-api-helpers@0.2.13
+  - @mds-core/mds-api-server@0.4.7
+  - @mds-core/mds-policy-service@0.11.17
+  - @mds-core/mds-providers@0.2.8
+  - @mds-core/mds-schema-validators@0.5.5
+  - @mds-core/mds-types@0.9.1
+  - @mds-core/mds-utils@0.4.1
+  - @mds-core/mds-service-helpers@0.6.5
+
 ## 0.7.21
 
 ### Patch Changes

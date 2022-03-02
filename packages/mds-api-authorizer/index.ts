@@ -15,7 +15,7 @@
  */
 
 import { UUID } from '@mds-core/mds-types'
-import { getEnvVar } from '@mds-core/mds-utils'
+import { AuthorizationError, getEnvVar } from '@mds-core/mds-utils'
 import express from 'express'
 import jwt from 'jsonwebtoken'
 
@@ -85,12 +85,18 @@ const decoders: { [scheme: string]: (token: string) => AuthorizerClaims } = {
   },
   basic: (token: string) => {
     const [principalId, scope] = Buffer.from(token, 'base64').toString().split('|')
+    if (principalId === undefined || scope === undefined) {
+      throw new AuthorizationError('Invalid basic token')
+    }
     return { principalId, scope, provider_id: principalId, user_email: principalId, jurisdictions: principalId }
   }
 }
 
 const BaseAuthorizer: Authorizer = authorization => {
   const [scheme, token] = authorization.split(' ')
+  if (!scheme || !token) {
+    return null
+  }
   const decoder = decoders[scheme.toLowerCase()]
   return decoder ? decoder(token) : null
 }

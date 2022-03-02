@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { UUID } from '@mds-core/mds-types'
 import {
   clone,
   ConflictError,
@@ -173,7 +174,10 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
       await PolicyRepository.writePolicy(SIMPLE_POLICY_JSON)
       const rule_id = '7ea0d16e-ad15-4337-9722-9924e3af9146'
       const [rule] = await PolicyRepository.readRule(rule_id)
-      expect(rule.name).toStrictEqual(SIMPLE_POLICY_JSON.rules[0].name)
+      if (!rule) {
+        throw new Error('Expected rule to exist!')
+      }
+      expect(rule.name).toStrictEqual(SIMPLE_POLICY_JSON.rules[0]?.name)
     })
 
     it('ensures rules are unique when writing new policy', async () => {
@@ -204,15 +208,19 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
         get_unpublished: true,
         get_published: null
       })
-      expect(result[0].name).toStrictEqual('a shiny new name')
+      expect(result[0]?.name).toStrictEqual('a shiny new name')
     })
 
     it('cannot add a rule that already exists in some other policy', async () => {
       await PolicyRepository.writePolicy(ACTIVE_POLICY_JSON)
       await PolicyRepository.writePolicy(POLICY3_JSON)
 
-      const policy = clone(POLICY3_JSON)
-      policy.rules[0].rule_id = ACTIVE_POLICY_JSON.rules[0].rule_id
+      const policy = {
+        ...clone(POLICY3_JSON),
+        rules: POLICY3_JSON.rules.map((val, iter) =>
+          iter === 0 ? { ...val, rule_id: ACTIVE_POLICY_JSON.rules[0]?.rule_id as UUID } : val
+        )
+      }
       await expect(PolicyRepository.editPolicy(policy)).rejects.toThrowError(ConflictError)
     })
 
@@ -252,7 +260,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
         await PolicyRepository.writePolicy(SIMPLE_POLICY_JSON)
         const rule_id = '7ea0d16e-ad15-4337-9722-9924e3af9146'
         const { policies } = await PolicyRepository.readPolicies({ rule_id })
-        expect(policies[0].rules.map(rule => rule.rule_id).includes(rule_id)).toBeTruthy()
+        expect(policies[0]?.rules.map(rule => rule.rule_id).includes(rule_id)).toBeTruthy()
       })
 
       it('can find Policies by geography_ids', async () => {
@@ -272,11 +280,14 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
             ]
           })
         )
-        const geography_ids = policy.rules[0].geographies
+        const geography_ids = policy.rules[0]?.geographies
+        if (!geography_ids) {
+          throw new Error('Expected there to be geography_ids!')
+        }
         const { policies } = await PolicyRepository.readPolicies({ geography_ids })
         /* expect 1 policy to match */
         expect(policies.length).toStrictEqual(1)
-        const rule_geography_ids = policies[0].rules.map(rule => rule.geographies).flat()
+        const rule_geography_ids = policies[0]?.rules.map(rule => rule.geographies).flat()
         /* expect the geography IDs from rule[0] to both be contained within the rule geographies */
         geography_ids.forEach(geography_id => expect(rule_geography_ids).toContain(geography_id))
       })
@@ -399,7 +410,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
           get_unpublished: null
         })
       expect(withStartDateResult.length).toStrictEqual(1)
-      expect(withStartDateResult[0].policy_metadata?.name).toStrictEqual('policy3_json')
+      expect(withStartDateResult[0]?.policy_metadata?.name).toStrictEqual('policy3_json')
 
       const meta = await PolicyRepository.readSinglePolicyMetadata(ACTIVE_POLICY_JSON.policy_id)
       expect(meta.policy_id).toStrictEqual(ACTIVE_POLICY_JSON.policy_id)

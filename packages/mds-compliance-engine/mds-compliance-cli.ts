@@ -16,8 +16,8 @@
 
 import { GeographyDomainModel } from '@mds-core/mds-geography-service'
 import { validateGeographyDomainModel } from '@mds-core/mds-geography-service/service/validators'
+import { validateEventDomainCreateModel } from '@mds-core/mds-ingest-service'
 import { PolicyDomainModel, validatePolicyDomainModel } from '@mds-core/mds-policy-service'
-import { validateEvents } from '@mds-core/mds-schema-validators'
 import { Device, VehicleEvent } from '@mds-core/mds-types'
 import * as fs from 'fs'
 import * as yargs from 'yargs'
@@ -76,7 +76,7 @@ async function main(): Promise<(ComplianceEngineResult | undefined)[]> {
 
   // read events
   const events = (await readJson(args.events)) as VehicleEvent[]
-  if (!events || !validateEvents(events)) {
+  if (!events || !validateEventDomainCreateModel(events)) {
     ComplianceEngineLogger.error('unable to read events')
     process.exit(1)
   }

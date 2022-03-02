@@ -1,7 +1,7 @@
 import { GeographyFactory, GeographyService } from '@mds-core/mds-geography-service'
 import { ServiceClient } from '@mds-core/mds-service-helpers'
 import { venice } from '@mds-core/mds-test-data'
-import { Timestamp } from '@mds-core/mds-types'
+import { Timestamp, UUID } from '@mds-core/mds-types'
 import { now, START_ONE_MONTH_FROM_NOW, uuid } from '@mds-core/mds-utils'
 import { PolicyDomainCreateModel, PolicyService, Rule } from '../@types'
 
@@ -45,13 +45,13 @@ export const createPolicyAndGeographyFactory = async (
   await geographyServiceClient.writeGeographies([
     {
       name: 'VENICE',
-      geography_id: createdPolicy.rules[0].geographies[0],
+      geography_id: createdPolicy.rules[0]?.geographies[0] as UUID,
       geography_json: venice
     }
   ])
   await geographyServiceClient.publishGeography({
     publish_date: publish_date,
-    geography_id: createdPolicy.rules[0].geographies[0]
+    geography_id: createdPolicy.rules[0]?.geographies[0] as UUID
   })
   return createdPolicy
 }

@@ -15,6 +15,7 @@
  */
 
 import { ProcessController, ServiceException, ServiceProvider, ServiceResult } from '@mds-core/mds-service-helpers'
+import { NotFoundError } from '@mds-core/mds-utils'
 import { AttachmentService, AttachmentServiceRequestContext } from '../@types'
 import { AttachmentServiceLogger } from '../logger'
 import { AttachmentRepository } from '../repository'
@@ -39,9 +40,13 @@ export const AttachmentServiceProvider: ServiceProvider<AttachmentService, Attac
   deleteAttachment: async (context, attachment_id) => {
     try {
       const attachment = await AttachmentRepository.deleteAttachment(attachment_id)
-      if (attachment) {
-        await deleteAttachmentS3(attachment)
+
+      if (!attachment) {
+        throw new NotFoundError(`Attachment ${attachment_id} not found`)
       }
+
+      await deleteAttachmentS3(attachment)
+
       return ServiceResult(attachment)
     } catch (error) {
       const exception = ServiceException('Error Deleting Attachment', error)

@@ -28,6 +28,11 @@ export const CreateGeographyHandler = async (
 
   try {
     const [recorded_geography] = await GeographyServiceClient.writeGeographies([geography])
+
+    if (!recorded_geography) {
+      throw new Error('Failed to create geography')
+    }
+
     return res.status(201).send({ version: res.locals.version, data: { geography: recorded_geography } })
   } catch (error) {
     GeographyAuthorLogger.warn('POST /geographies failed', { error })

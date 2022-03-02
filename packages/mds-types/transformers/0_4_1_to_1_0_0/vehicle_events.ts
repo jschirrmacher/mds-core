@@ -86,9 +86,31 @@ function map_v0_4_1_vehicle_event_fields_to_v1_0_0_fields(
   event_type_reason: VEHICLE_REASON_v0_4_1 | TRANSFORMER_EVENT_TYPE_REASON | null | undefined
 ): { event_type: VEHICLE_EVENT_v1_0_0; vehicle_state: VEHICLE_STATE_v1_0_0 } {
   if (event_type_reason) {
-    return FULL_STATE_MAPPING_v0_4_1_to_v1_0_0[event_type][event_type_reason]
+    const result = FULL_STATE_MAPPING_v0_4_1_to_v1_0_0[event_type][event_type_reason]
+    if (!result) {
+      throw new UnsupportedEventTypeError(
+        'UnsupportedEventTypeError',
+        'Unsupported event_type/event_type_reason combo',
+        {
+          event_type,
+          event_type_reason
+        }
+      )
+    }
+
+    return result
   }
-  return FULL_STATE_MAPPING_v0_4_1_to_v1_0_0[event_type].no_event_type_reason
+
+  const result = FULL_STATE_MAPPING_v0_4_1_to_v1_0_0[event_type].no_event_type_reason
+  if (!result) {
+    throw new UnsupportedEventTypeError(
+      'UnsupportedEventTypeError',
+      'Unsupported event_type with no event_type_reason',
+      { event_type }
+    )
+  }
+
+  return result
 }
 
 export function convert_v0_4_1_vehicle_event_to_v1_0_0(event: VehicleEvent_v0_4_1): VehicleEvent_v1_0_0 {

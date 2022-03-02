@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { hasOwnProperty } from '../utils'
+import { hasOwnProperty } from '../hasOwnProperty'
 
 class BaseError extends Error {
   public constructor(public name: string, public reason?: string, public info?: unknown) {
@@ -71,6 +71,12 @@ export class AuthorizationError extends BaseError {
 export class RuntimeError extends BaseError {
   public constructor(error?: Error | string, public info?: unknown) {
     super('RuntimeError', reason(error), info)
+  }
+}
+
+export class IndexError extends BaseError {
+  public constructor(error?: Error | string, public info?: unknown) {
+    super('IndexError', reason(error), info)
   }
 }
 

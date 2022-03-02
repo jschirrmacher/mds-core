@@ -35,7 +35,7 @@ import { PolicyServiceManager } from '@mds-core/mds-policy-service/service/manag
 import { PolicyFactory } from '@mds-core/mds-policy-service/tests/helpers'
 import stream from '@mds-core/mds-stream'
 import { SCOPED_AUTH, venice } from '@mds-core/mds-test-data'
-import { Timestamp } from '@mds-core/mds-types'
+import { Timestamp, UUID } from '@mds-core/mds-types'
 import { days, isUUID, now, pathPrefix, uuid } from '@mds-core/mds-utils'
 import { StatusCodes } from 'http-status-codes'
 import supertest from 'supertest'
@@ -77,12 +77,12 @@ const createPolicyAndGeographyFactory = async (policy?: PolicyDomainCreateModel,
   const newPolicy = policy || PolicyFactory()
   const { publish_date: _publish_date, ...newGeography } = GeographyFactory({
     name: 'VENICE',
-    geography_id: newPolicy.rules[0].geographies[0],
+    geography_id: newPolicy.rules[0]?.geographies[0],
     geography_json: venice
   })
   await GeographyServiceClient.writeGeographies([newGeography])
   if (publish_date) {
-    GeographyServiceClient.publishGeography({ geography_id: newPolicy.rules[0].geographies[0], publish_date })
+    GeographyServiceClient.publishGeography({ geography_id: newPolicy.rules[0]?.geographies[0] as UUID, publish_date })
   }
   const createdPolicy = await PolicyServiceClient.writePolicy(newPolicy)
 
@@ -228,7 +228,7 @@ describe('Tests app', () => {
         get_unpublished: true,
         get_published: null
       })
-      test.value(result.name).is('a shiny new name')
+      test.value(result?.name).is('a shiny new name')
     })
 
     it('creates one past policy', async () => {

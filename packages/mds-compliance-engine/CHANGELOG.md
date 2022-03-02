@@ -1,5 +1,41 @@
 # @mds-core/mds-compliance-engine
 
+## 0.8.13
+
+### Patch Changes
+
+- 3b4b5779: Completely remove Joi
+- Updated dependencies [3b4b5779]
+- Updated dependencies [fea59e19]
+  - @mds-core/mds-geography-service@0.10.12
+  - @mds-core/mds-ingest-service@0.9.17
+  - @mds-core/mds-policy-service@0.11.18
+  - @mds-core/mds-schema-validators@0.5.6
+  - @mds-core/mds-db@0.6.6
+  - @mds-core/mds-compliance-service@0.10.20
+  - @mds-core/mds-api-helpers@0.2.14
+
+## 0.8.12
+
+### Patch Changes
+
+- 95382a3f: Add noUncheckedIndexedAccess compiler flag, and minor (but extensive) changes made in order to support this. Safety first!
+- Updated dependencies [95382a3f]
+- Updated dependencies [a6575499]
+  - @mds-core/mds-api-helpers@0.2.13
+  - @mds-core/mds-api-server@0.4.7
+  - @mds-core/mds-compliance-service@0.10.19
+  - @mds-core/mds-db@0.6.5
+  - @mds-core/mds-geography-service@0.10.11
+  - @mds-core/mds-ingest-service@0.9.16
+  - @mds-core/mds-policy-service@0.11.17
+  - @mds-core/mds-providers@0.2.8
+  - @mds-core/mds-schema-validators@0.5.5
+  - @mds-core/mds-types@0.9.1
+  - @mds-core/mds-utils@0.4.1
+  - @mds-core/mds-service-helpers@0.6.5
+  - @mds-core/mds-stream@0.2.10
+
 ## 0.8.11
 
 ### Patch Changes

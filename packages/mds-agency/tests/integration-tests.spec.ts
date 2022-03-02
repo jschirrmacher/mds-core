@@ -160,7 +160,6 @@ function deepCopy<T>(obj: T): T {
 // TODO Inherit all of these from mds-test-data
 const AUTH = `basic ${Buffer.from(`${TEST1_PROVIDER_ID}|${PROVIDER_SCOPES}`).toString('base64')}`
 const AUTH2 = `basic ${Buffer.from(`${TEST2_PROVIDER_ID}|${PROVIDER_SCOPES}`).toString('base64')}`
-const AUTH_NO_SCOPE = `basic ${Buffer.from(`${TEST1_PROVIDER_ID}`).toString('base64')}`
 
 const SAN_FERNANDO_VALLEY = 'e3ed0a0e-61d3-4887-8b6a-4af4f3769c14'
 const IngestServer = IngestServiceManager.controller()
@@ -177,13 +176,6 @@ describe('Agency Tests', () => {
   })
 
   describe('Tests API', () => {
-    it('verifies unable to access admin if not scoped', async () => {
-      const result = await request.get(pathPrefix('/admin/cache/info')).set('Authorization', AUTH_NO_SCOPE).expect(403)
-
-      expect(result.headers).toMatchObject({ 'content-type': APP_JSON })
-      expect(result.body.error.reason).toEqual('no access without scope')
-    })
-
     it('verifies post device failure nothing in body', async () => {
       const result = await request.post(pathPrefix('/vehicles')).set('Authorization', AUTH).expect(400)
 
@@ -436,20 +428,6 @@ describe('Agency Tests', () => {
 
       expect(result.headers).toMatchObject({ 'content-type': APP_JSON })
     })
-    it('verifies read back all device_ids from db', async () => {
-      const result = await request.get(pathPrefix('/admin/vehicle_ids')).set('Authorization', AUTH).expect(200)
-
-      expect(result.body.result).toContain('success')
-    })
-    it('verifies read back for non-existent provider fails', async () => {
-      const result = await request
-        .get(pathPrefix('/admin/vehicle_ids?provider_id=123potato'))
-        .set('Authorization', AUTH)
-        .expect(400)
-
-      expect(result.body.error).toContain('bad_param')
-      expect(result.body.error_description).toContain('invalid provider_id')
-    })
 
     it('resets the cache', async () => {
       await cache.reset()
@@ -699,7 +677,7 @@ describe('Agency Tests', () => {
     it('verifies post trip end readback telemetry', async () => {
       const { device_id, timestamp } = TEST_TELEMETRY
       const [telemetry] = await db.readTelemetry(device_id, timestamp, timestamp)
-      expect(telemetry.device_id).toEqual(TEST_TELEMETRY.device_id)
+      expect(telemetry?.device_id).toEqual(TEST_TELEMETRY.device_id)
     })
 
     it('verifies post reserve success', async () => {
@@ -978,7 +956,7 @@ describe('Agency Tests', () => {
     it('verifies read-back posted telemetry', async () => {
       const { device_id, timestamp } = TEST_TELEMETRY
       const [telemetry] = await db.readTelemetry(device_id, timestamp, timestamp)
-      expect(telemetry.device_id).toEqual(TEST_TELEMETRY.device_id)
+      expect(telemetry?.device_id).toEqual(TEST_TELEMETRY.device_id)
     })
     it('verifies fail read-back telemetry with bad timestamp', async () => {
       const { device_id } = TEST_TELEMETRY
@@ -1092,6 +1070,10 @@ describe('Agency Tests', () => {
       const telemetry = makeTelemetry(devices, now())
 
       const [deviceToRegister] = devices
+
+      if (!deviceToRegister) {
+        throw new Error('Expected device to register')
+      }
 
       await Promise.all([
         db.seed({ devices: [deviceToRegister] }),

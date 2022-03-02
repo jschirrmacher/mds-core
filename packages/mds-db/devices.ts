@@ -98,6 +98,11 @@ export async function writeDevice(device: Device): Promise<Recorded<Device>> {
   const {
     rows: [recorded_device]
   }: { rows: Recorded<Device>[] } = await client.query(sql, values)
+
+  if (!recorded_device) {
+    throw new Error('Failed to write device')
+  }
+
   return { ...device, ...recorded_device }
 }
 

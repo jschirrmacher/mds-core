@@ -98,7 +98,8 @@
                   "default": null
                 },
                 "distance": {
-                  "type": "integer",
+                  "type": "number",
+                  "format": "float",
                   "nullable": true,
                   "default": null
                 },

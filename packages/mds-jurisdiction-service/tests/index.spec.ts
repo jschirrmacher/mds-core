@@ -63,7 +63,7 @@ describe('Jurisdiction Service Tests', () => {
           geography_id: uuid()
         }))
       )
-      test.value(jurisdictions[0].jurisdiction_id).is(JURISDICTION_ID)
+      test.value(jurisdictions[0]?.jurisdiction_id).is(JURISDICTION_ID)
     } catch (error) {
       test.value(error).is(null)
     }
@@ -73,7 +73,7 @@ describe('Jurisdiction Service Tests', () => {
     try {
       const jurisdictions = await JurisdictionServiceClient.getJurisdictions()
       test.value(jurisdictions.length).is(records)
-      test.value(jurisdictions[0].jurisdiction_id).is(JURISDICTION_ID)
+      test.value(jurisdictions[0]?.jurisdiction_id).is(JURISDICTION_ID)
     } catch (error) {
       test.value(error).is(null)
     }

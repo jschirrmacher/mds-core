@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { hasAtLeastOneEntry } from '@mds-core/mds-utils'
 import express from 'express'
 import { ApiRequest, ApiVersionedResponse } from '../@types'
 
@@ -39,8 +40,8 @@ export const ApiVersionMiddleware = <V extends string>(mimeType: string, version
                   const [key, val] = property.split('=').map(keyvalue => keyvalue.trim())
                   return {
                     ...info,
-                    version: key === 'version' ? val : info.version,
-                    q: key === 'q' ? Number(val) : info.q
+                    version: key !== undefined && val !== undefined && key === 'version' ? val : info.version,
+                    q: key !== undefined && val !== undefined && key === 'q' ? Number(val) : info.q
                   }
                 },
                 { version: preferred, q: 1.0 }
@@ -75,7 +76,7 @@ export const ApiVersionMiddleware = <V extends string>(mimeType: string, version
          * immediately respond with the negotiated version.
          * If the client did not negotiate a valid version, fall-through to a 406 response.
          */
-        if (supported.length > 0) {
+        if (hasAtLeastOneEntry(supported)) {
           const [{ latest }] = supported.sort((a, b) => b.q - a.q)
           if (latest) {
             res.locals.version = latest
@@ -83,7 +84,7 @@ export const ApiVersionMiddleware = <V extends string>(mimeType: string, version
             return res.status(200).send()
           }
         }
-      } else if (supported.length > 0) {
+      } else if (hasAtLeastOneEntry(supported)) {
         /* If the incoming request is a non-OPTIONS request,
          * set the negotiated version header, and forward the request to the next handler.
          * If the client did not negotiate a valid version, fall-through to provide the "preferred" version,

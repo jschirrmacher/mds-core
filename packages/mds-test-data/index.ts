@@ -27,6 +27,7 @@ import {
 } from '@mds-core/mds-types'
 import {
   addDistanceBearing,
+  hasAtLeastOneEntry,
   makePointInShape,
   now,
   pointInShape,
@@ -72,52 +73,71 @@ const JUMP_TEST_DEVICE_1: Device = {
   recorded: now()
 }
 
-function makeTelemetry(devices: Device[], timestamp: Timestamp): Telemetry[] {
+function makeTelemetry(devices: Device[], timestamp: Timestamp): [Telemetry, ...Telemetry[]] {
   let i = 0
   const serviceAreaKeys = Object.keys(serviceAreaMap)
 
   const num_areas = 1
-  const cluster_info: {
+  type ClusterInfo = {
     [key: string]: { num_clusters: number; cluster_radii: number[]; cluster_centers: { lat: number; lng: number }[] }
-  } = {}
+  }
+  const cluster_info: ClusterInfo = {}
 
   serviceAreaKeys.slice(0, 1).map(key => {
     const serviceArea = serviceAreaMap[key]
-    const serviceAreaMultipoly = serviceArea.area
+    const serviceAreaMultipoly = serviceArea?.area
+
+    if (!serviceAreaMultipoly) {
+      throw new Error('service area not found')
+    }
+
+    const num_clusters = rangeRandomInt(5, 15)
+
     cluster_info[key] = {
-      num_clusters: rangeRandomInt(5, 15), // number of clusters
+      num_clusters, // number of clusters
       cluster_radii: [], // meters
       cluster_centers: [] // to be filled in
     }
-    for (let j = 0; j < cluster_info[key].num_clusters; j++) {
+
+    for (let j = 0; j < num_clusters; j++) {
       // make centers-of-gravity
-      cluster_info[key].cluster_radii.push(rangeRandom(100, 1000))
+      ;(cluster_info[key] as ClusterInfo[string]).cluster_radii.push(rangeRandom(100, 1000)) // type assertion is OKAY because we ensure this exists above
       const center = makePointInShape(serviceAreaMultipoly)
       if (!pointInShape(center, serviceAreaMultipoly)) {
         throw new Error('bad center is not in multipoly (1)')
       }
-      cluster_info[key].cluster_centers.push(center)
+      ;(cluster_info[key] as ClusterInfo[string]).cluster_centers.push(center) // type assertion is OKAY because we ensure this exists above
     }
   })
 
   const telemetries = devices.map(device => {
     // make a rando telemetry for that vehicle, in one of the areas
-    const key = serviceAreaKeys[i++ % num_areas]
+    const key = serviceAreaKeys[i++ % num_areas] as string
     const serviceArea = serviceAreaMap[key]
-    const service_area_multipoly = serviceArea.area
+    const service_area_multipoly = serviceArea?.area
 
+    if (!service_area_multipoly) {
+      throw new Error('service area not found')
+    }
     // pick a cluster
-    const { num_clusters } = cluster_info[key]
+    const cluster = cluster_info[key]
+    if (!cluster) {
+      throw new Error('cluster not found')
+    }
+    const { num_clusters } = cluster
     const cluster_num = rangeRandomInt(num_clusters)
     // get the center and radius of the cluster, then put a vehicle in there
     let point
     let tries = 0
     for (;;) {
-      const center = cluster_info[key].cluster_centers[cluster_num]
-      if (!pointInShape(center, service_area_multipoly)) {
+      const center = cluster.cluster_centers[cluster_num]
+      if (!center || !pointInShape(center, service_area_multipoly)) {
         throw new Error('bad center is not in multipoly (2)')
       }
-      const radius = cluster_info[key].cluster_radii[cluster_num]
+      const radius = cluster.cluster_radii[cluster_num]
+      if (!radius) {
+        throw new Error('bad radius')
+      }
       const angle = rangeRandomInt(360)
       point = addDistanceBearing(center, rangeRandom(0, radius), angle)
       if (pointInShape(point, service_area_multipoly)) {
@@ -143,6 +163,10 @@ function makeTelemetry(devices: Device[], timestamp: Timestamp): Telemetry[] {
     }
   })
 
+  if (!hasAtLeastOneEntry(telemetries)) {
+    throw new Error('No telemetries were generated. Did you forget to pass in a list of devices?')
+  }
+
   return telemetries
 }
 
@@ -167,6 +191,9 @@ function makeTelemetryInShape(device: Device, timestamp: number, shape: Geometry
 function makeTelemetryInArea(device: Device, timestamp: Timestamp, area: UUID | Geometry, speed: number) {
   if (typeof area === 'string') {
     const serviceArea = serviceAreaMap[area]
+    if (!serviceArea) {
+      throw new Error('service area not found')
+    }
     return makeTelemetryInShape(device, timestamp, serviceArea.area, speed)
   }
   return makeTelemetryInShape(device, timestamp, area, speed)
@@ -232,9 +259,12 @@ function makeEventsWithTelemetry(
   })
 }
 
-function makeDevices(count: number, timestamp: Timestamp, provider_id = TEST1_PROVIDER_ID): Device[] {
+function makeDevices(count: number, timestamp: Timestamp, provider_id = TEST1_PROVIDER_ID): [Device, ...Device[]] {
   // make N devices, distributed across the regions
   const devices = []
+  if (count === 0) {
+    throw new Error('makeDevices requires a non-zero count')
+  }
   for (let i = 0; i < count; i += 1) {
     // make a rando vehicle
     const device_id = uuid()
@@ -290,6 +320,10 @@ function makeDevices(count: number, timestamp: Timestamp, provider_id = TEST1_PR
       recorded: now()
     }
     devices.push(device)
+  }
+
+  if (!hasAtLeastOneEntry(devices)) {
+    throw new Error('No devices were generated. Did you forget to pass in a non-zero count?')
   }
   return devices
 }
