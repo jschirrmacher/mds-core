@@ -26,7 +26,7 @@ import {
 import { PolicyEntityCreateModel, PolicyEntityModel } from './entities/policy-entity'
 import { PolicyMetadataEntityCreateModel, PolicyMetadataEntityModel } from './entities/policy-metadata-entity'
 
-type PolicyEntityToDomainOptions = Partial<{ withStatus: boolean }>
+type PolicyEntityToDomainOptions = Partial<{}>
 
 export const derivePolicyStatus = (policy: PolicyEntityModel): POLICY_STATUS => {
   const { superseded_by, start_date, publish_date, end_date } = policy

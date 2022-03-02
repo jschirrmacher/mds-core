@@ -463,6 +463,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
 
           expect(results.length).toStrictEqual(1)
           expect(results[0]).toMatchObject(draftPolicy)
+          expect(results[0]?.status).toStrictEqual('draft')
         })
 
         it('Can filter for active policies', async () => {
@@ -487,6 +488,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
 
           expect(results.length).toStrictEqual(1)
           expect(results[0]).toStrictEqual(activePolicy)
+          expect(results[0]?.status).toStrictEqual('active')
         })
 
         it('Can filter for pending policies', async () => {
@@ -508,6 +510,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
 
           expect(results.length).toStrictEqual(1)
           expect(results[0]).toStrictEqual(pendingPolicy)
+          expect(results[0]?.status).toStrictEqual('pending')
         })
 
         it('Can filter for deactivated policies', async () => {
@@ -533,6 +536,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
           const { policies: results } = await PolicyServiceClient.readPolicies({ statuses: ['deactivated'] })
           expect(results.length).toStrictEqual(1)
           expect(results[0]).toMatchObject(firstPolicy)
+          expect(results[0]?.status).toStrictEqual('deactivated')
         })
 
         it('Can filter for expired policies', async () => {
@@ -555,6 +559,7 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
 
           expect(results.length).toStrictEqual(1)
           expect(results[0]).toStrictEqual(expiredPolicy)
+          expect(results[0]?.status).toStrictEqual('expired')
         })
       })
 
@@ -577,6 +582,8 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
           const { policies: results } = await PolicyServiceClient.readPolicies({ statuses: ['pending', 'draft'] })
 
           expect(results.length).toStrictEqual(2)
+          const statuses = results.map(({ status }) => status).sort()
+          expect(statuses).toStrictEqual(['draft', 'pending'])
         })
 
         it('Can filter on draft and active policies simultaneously', async () => {
@@ -597,6 +604,8 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
           const { policies: results } = await PolicyServiceClient.readPolicies({ statuses: ['active', 'draft'] })
 
           expect(results.length).toStrictEqual(2)
+          const statuses = results.map(({ status }) => status).sort()
+          expect(statuses).toStrictEqual(['active', 'draft'])
         })
 
         it('Can filter on active and deactivated policies simultaneously', async () => {
@@ -622,6 +631,8 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
           const { policies: results } = await PolicyServiceClient.readPolicies({ statuses: ['active', 'deactivated'] })
 
           expect(results.length).toStrictEqual(2)
+          const statuses = results.map(({ status }) => status).sort()
+          expect(statuses).toStrictEqual(['active', 'deactivated'])
         })
 
         it('Can filter on active and expired policies simultaneously', async () => {
@@ -645,6 +656,8 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
           const { policies: results } = await PolicyServiceClient.readPolicies({ statuses: ['expired', 'active'] })
 
           expect(results.length).toStrictEqual(2)
+          const statuses = results.map(({ status }) => status).sort()
+          expect(statuses).toStrictEqual(['active', 'expired'])
         })
       })
     })
