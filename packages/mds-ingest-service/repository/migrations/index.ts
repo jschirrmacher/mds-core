@@ -39,6 +39,7 @@ import { ChangeEventsWithDeviceAndTelemetryInfoToUseInnerJoin1634672590753 } fro
 import { AddIndexToDeviceVehicleId1635174402366 } from './1635174402366-AddIndexToDeviceVehicleId'
 import { ChangeRecordedColumnDefaultExpression1644682444725 } from './1644682444725-ChangeRecordedColumnDefaultExpression'
 import { CopyIngestMigrationMetadata1645465504597 } from './1645465504597-CopyIngestMigrationMetadata'
+import { DropMigrationIndices1646177244396 } from './1646177244396-DropMigrationIndices'
 
 export default [
   CreateDevicesTable1603212409274,
@@ -65,5 +66,6 @@ export default [
   ChangeEventsWithDeviceAndTelemetryInfoToUseInnerJoin1634672590753,
   AddIndexToDeviceVehicleId1635174402366,
   ChangeRecordedColumnDefaultExpression1644682444725,
-  CopyIngestMigrationMetadata1645465504597
+  CopyIngestMigrationMetadata1645465504597,
+  DropMigrationIndices1646177244396
 ]
