@@ -16,19 +16,18 @@
 
 import { DomainModelCreate, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { RpcEmptyRequestContext, RpcRoute, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
+import { Nullable, Timestamp, UUID } from '@mds-core/mds-types'
+import { MICRO_MOBILITY_VEHICLE_EVENT, TAXI_VEHICLE_EVENT, TNC_VEHICLE_EVENT, VEHICLE_EVENT } from './event'
+import { GpsData } from './telemetry'
+import { TRIP_STATE } from './trip'
+import { ACCESSIBILITY_OPTION, MODALITY, PROPULSION_TYPE } from './vehicle/vehicle_attributes'
 import {
-  ACCESSIBILITY_OPTION,
-  MODALITY,
-  Nullable,
-  PROPULSION_TYPE,
-  TelemetryData,
-  Timestamp,
-  TRIP_STATE,
-  UUID,
-  VEHICLE_EVENT,
-  VEHICLE_STATE,
-  VEHICLE_TYPE
-} from '@mds-core/mds-types'
+  MICRO_MOBILITY_VEHICLE_STATE,
+  TAXI_VEHICLE_STATE,
+  TNC_VEHICLE_STATE,
+  VEHICLE_STATE
+} from './vehicle/vehicle_states'
+import { VEHICLE_TYPE } from './vehicle/vehicle_types'
 
 type ResponseWithCursor<T extends {}> = T & {
   cursor: {
@@ -70,8 +69,6 @@ export type DeviceDomainModelWithState = DeviceDomainModel & {
 }
 
 export type DeviceDomainCreateModel = DomainModelCreate<Omit<DeviceDomainModel, keyof RecordedColumn>>
-
-export type GpsData = Omit<TelemetryData, 'charge'>
 
 export interface TelemetryDomainModel extends RecordedColumn {
   device_id: UUID
@@ -160,6 +157,21 @@ export type EventDomainCreateModel = DomainModelCreate<
   Omit<EventDomainModel, keyof RecordedColumn | 'telemetry' | 'telemetry_timestamp'>
 > & {
   telemetry: TelemetryDomainCreateModel
+}
+
+export interface MicroMobilityVehicleEventDomainModel extends EventDomainModel {
+  event_types: MICRO_MOBILITY_VEHICLE_EVENT[]
+  vehicle_state: MICRO_MOBILITY_VEHICLE_STATE
+}
+
+export interface TaxiVehicleEventEventDomainModel extends EventDomainModel {
+  event_types: TAXI_VEHICLE_EVENT[]
+  vehicle_state: TAXI_VEHICLE_STATE
+}
+
+export interface TNCVehicleEventEventDomainModel extends EventDomainModel {
+  event_types: TNC_VEHICLE_EVENT[]
+  vehicle_state: TNC_VEHICLE_STATE
 }
 
 export type MigratedEventDomainModel = Omit<EventDomainModel & IdentityColumn, 'telemetry' | 'annotation'>

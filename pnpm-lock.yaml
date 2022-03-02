@@ -1236,8 +1236,6 @@ importers:
     specifiers:
       '@apidevtools/json-schema-ref-parser': 9.0.9
       '@mds-core/mds-providers': workspace:0.2.8
-      '@mds-core/mds-test-data': workspace:0.4.18
-      '@mds-core/mds-types': workspace:0.9.1
       '@mds-core/mds-utils': workspace:0.4.1
       ajv: 8.6.3
       ajv-errors: 3.0.0
@@ -1246,8 +1244,6 @@ importers:
     dependencies:
       '@apidevtools/json-schema-ref-parser': 9.0.9
       '@mds-core/mds-providers': link:../mds-providers
-      '@mds-core/mds-test-data': link:../mds-test-data
-      '@mds-core/mds-types': link:../mds-types
       '@mds-core/mds-utils': link:../mds-utils
       ajv: 8.6.3
       ajv-errors: 3.0.0_ajv@8.6.3
