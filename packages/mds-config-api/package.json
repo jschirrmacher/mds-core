@@ -1,38 +1,37 @@
 {
-  "name": "@mds-core/mds-ingest-migration-processor",
-  "version": "0.0.53",
-  "description": "MDS Ingest Data Migration Processor",
+  "name": "@mds-core/mds-config-api",
+  "version": "0.4.0",
+  "description": "Mobility Data Specification configuration API",
   "keywords": [
-    "mds"
+    "mds",
+    "config"
   ],
   "license": "Apache-2.0",
   "author": "City of Los Angeles",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/"
   ],
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "start": "pnpm watch index.ts",
-    "test": "DOTENV_CONFIG_PATH=../../.env jest --runInBand --passWithNoTests",
+    "start": "PATH_PREFIX=/config pnpm watch server",
+    "test": "PATH_PREFIX=/config DOTENV_CONFIG_PATH=../../.env jest",
     "ts-node": "DOTENV_CONFIG_PATH=../../.env node --experimental-repl-await -r ts-node/register -r dotenv/config",
     "watch": "pnpm build && nodemon --watch '../../packages' --ext 'ts' --ignore '*.d.ts' --exec pnpm ts-node --"
   },
   "dependencies": {
-    "@mds-core/mds-agency-cache": "workspace:0.4.19",
     "@mds-core/mds-api-server": "workspace:0.4.7",
-    "@mds-core/mds-ingest-service": "workspace:0.9.17",
+    "@mds-core/mds-config-service": "workspace:0.4.0",
     "@mds-core/mds-logger": "workspace:0.5.6",
-    "@mds-core/mds-repository": "workspace:0.1.42",
     "@mds-core/mds-service-helpers": "workspace:0.6.5",
-    "@mds-core/mds-stream-processor": "workspace:0.4.13",
-    "@mds-core/mds-types": "workspace:0.9.1",
     "@mds-core/mds-utils": "workspace:0.4.1",
-    "@types/express": "4.17.12",
-    "envalid": "7.2.1",
-    "express": "4.17.1"
+    "@types/express": "4.17.13",
+    "express": "4.17.1",
+    "query-string": "7.0.1"
   },
-  "publishConfig": {
-    "main": "dist/index.js"
+  "devDependencies": {
+    "@mds-core/mds-test-data": "0.4.18",
+    "http-status-codes": "2.1.4"
   }
 }

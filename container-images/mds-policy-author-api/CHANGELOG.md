@@ -1,5 +1,11 @@
 # @container-images/mds-policy-author-api
 
+## 0.1.87
+
+### Patch Changes
+
+- @mds-core/mds-policy-author-api@0.7.24
+
 ## 0.1.86
 
 ### Patch Changes

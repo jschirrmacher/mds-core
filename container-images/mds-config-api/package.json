@@ -1,13 +1,13 @@
 {
-  "name": "@container-images/mds-ingest-migration-processor",
-  "version": "0.0.55",
+  "name": "@container-images/mds-config-api",
+  "version": "0.4.0",
   "private": true,
-  "description": "Docker Image for MDS Indest Data Migration Processor",
+  "description": "Docker Image for MDS Config API",
   "keywords": [
     "mds"
   ],
-  "license": "Apache-2.0",
-  "author": "City of Los Angeles",
+  "license": "UNLICENSED",
+  "author": "Lacuna Technologies",
   "files": [
     "dist/"
   ],
@@ -16,11 +16,11 @@
     "bundle:development": "webpack --mode=development --env npm_package_name=${npm_package_name} --env npm_package_version=${npm_package_version}",
     "bundle:production": "webpack --mode=production --env npm_package_name=${npm_package_name} --env npm_package_version=${npm_package_version}",
     "image": "pnpm image:production",
-    "image:development": "pnpm bundle:development && ../../bin/build-helper buildImage mds-ingest-migration-processor:latest",
-    "image:production": "pnpm bundle:production && ../../bin/build-helper buildImage mds-ingest-migration-processor:${npm_package_version}"
+    "image:development": "pnpm bundle:development && ../../bin/build-helper buildImage mds-config-api:latest",
+    "image:production": "pnpm bundle:production && ../../bin/build-helper buildImage mds-config-api:${npm_package_version}"
   },
   "dependencies": {
-    "@mds-core/mds-ingest-migration-processor": "workspace:0.0.53",
+    "@mds-core/mds-config-api": "workspace:0.4.0",
     "@mds-core/mds-webpack-config": "workspace:0.1.11",
     "dd-trace": "1.5.1",
     "express": "4.17.1",

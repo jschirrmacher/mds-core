@@ -12,4 +12,4 @@ WORKDIR /mds
 
 RUN npm install
 
-ENTRYPOINT ["/sbin/tini", "node", "--require", "dd-trace/init", "--no-deprecation", "--experimental-repl-await", "processor.js"]
+ENTRYPOINT ["/sbin/tini", "node", "--require", "dd-trace/init", "--no-deprecation", "--experimental-repl-await", "server.js"]

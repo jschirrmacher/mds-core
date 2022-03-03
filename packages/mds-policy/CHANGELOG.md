@@ -1,5 +1,13 @@
 # @mds-core/mds-policy
 
+## 0.7.24
+
+### Patch Changes
+
+- bedd2edf: Fix minor build error which was only surfaced when running `pnpm image`
+  - @mds-core/mds-db@0.6.7
+  - @mds-core/mds-api-helpers@0.2.15
+
 ## 0.7.23
 
 ### Patch Changes

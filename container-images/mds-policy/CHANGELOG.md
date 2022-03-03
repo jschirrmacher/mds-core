@@ -1,5 +1,12 @@
 # @container-images/mds-policy
 
+## 0.1.60
+
+### Patch Changes
+
+- Updated dependencies [bedd2edf]
+  - @mds-core/mds-policy@0.7.24
+
 ## 0.1.59
 
 ### Patch Changes

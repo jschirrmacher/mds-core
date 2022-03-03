@@ -120,7 +120,7 @@ importers:
 
   container-images/mds-agency:
     specifiers:
-      '@mds-core/mds-agency': workspace:0.5.1
+      '@mds-core/mds-agency': workspace:0.5.2
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -152,7 +152,7 @@ importers:
 
   container-images/mds-audit-api:
     specifiers:
-      '@mds-core/mds-audit-api': workspace:0.3.23
+      '@mds-core/mds-audit-api': workspace:0.3.24
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -184,7 +184,7 @@ importers:
 
   container-images/mds-collector-api:
     specifiers:
-      '@mds-core/mds-collector-api': workspace:0.1.61
+      '@mds-core/mds-collector-api': workspace:0.1.62
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -216,7 +216,7 @@ importers:
 
   container-images/mds-compliance-api:
     specifiers:
-      '@mds-core/mds-compliance-api': workspace:0.4.25
+      '@mds-core/mds-compliance-api': workspace:0.4.26
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -232,7 +232,7 @@ importers:
 
   container-images/mds-compliance-service:
     specifiers:
-      '@mds-core/mds-compliance-service': workspace:0.10.20
+      '@mds-core/mds-compliance-service': workspace:0.10.21
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -246,9 +246,41 @@ importers:
       pg: 8.7.3
       pino: 6.13.3
 
+  container-images/mds-config-api:
+    specifiers:
+      '@mds-core/mds-config-api': workspace:0.4.0
+      '@mds-core/mds-webpack-config': workspace:0.1.11
+      dd-trace: 1.5.1
+      express: 4.17.1
+      pg: 8.7.3
+      pino: 6.13.3
+    dependencies:
+      '@mds-core/mds-config-api': link:../../packages/mds-config-api
+      '@mds-core/mds-webpack-config': link:../../packages/mds-webpack-config
+      dd-trace: 1.5.1
+      express: 4.17.1
+      pg: 8.7.3
+      pino: 6.13.3
+
+  container-images/mds-config-service:
+    specifiers:
+      '@mds-core/mds-config-service': workspace:0.4.0
+      '@mds-core/mds-webpack-config': workspace:0.1.11
+      dd-trace: 1.5.1
+      express: 4.17.1
+      pg: 8.7.3
+      pino: 6.13.3
+    dependencies:
+      '@mds-core/mds-config-service': link:../../packages/mds-config-service
+      '@mds-core/mds-webpack-config': link:../../packages/mds-webpack-config
+      dd-trace: 1.5.1
+      express: 4.17.1
+      pg: 8.7.3
+      pino: 6.13.3
+
   container-images/mds-geography-api:
     specifiers:
-      '@mds-core/mds-geography-api': workspace:0.4.14
+      '@mds-core/mds-geography-api': workspace:0.4.15
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -264,7 +296,7 @@ importers:
 
   container-images/mds-geography-author-api:
     specifiers:
-      '@mds-core/mds-geography-author-api': workspace:0.4.14
+      '@mds-core/mds-geography-author-api': workspace:0.4.15
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -294,25 +326,9 @@ importers:
       pg: 8.7.3
       pino: 6.13.3
 
-  container-images/mds-ingest-migration-processor:
-    specifiers:
-      '@mds-core/mds-ingest-migration-processor': workspace:0.0.53
-      '@mds-core/mds-webpack-config': workspace:0.1.11
-      dd-trace: 1.5.1
-      express: 4.17.1
-      pg: 8.7.3
-      pino: 6.13.3
-    dependencies:
-      '@mds-core/mds-ingest-migration-processor': link:../../packages/mds-ingest-migration-processor
-      '@mds-core/mds-webpack-config': link:../../packages/mds-webpack-config
-      dd-trace: 1.5.1
-      express: 4.17.1
-      pg: 8.7.3
-      pino: 6.13.3
-
   container-images/mds-ingest-service:
     specifiers:
-      '@mds-core/mds-ingest-service': workspace:0.9.17
+      '@mds-core/mds-ingest-service': workspace:0.10.0
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -328,7 +344,7 @@ importers:
 
   container-images/mds-jurisdiction-api:
     specifiers:
-      '@mds-core/mds-jurisdiction-api': workspace:0.1.60
+      '@mds-core/mds-jurisdiction-api': workspace:0.1.61
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -360,7 +376,7 @@ importers:
 
   container-images/mds-policy:
     specifiers:
-      '@mds-core/mds-policy': workspace:0.7.23
+      '@mds-core/mds-policy': workspace:0.7.24
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -376,7 +392,7 @@ importers:
 
   container-images/mds-policy-author-api:
     specifiers:
-      '@mds-core/mds-policy-author-api': workspace:0.7.23
+      '@mds-core/mds-policy-author-api': workspace:0.7.24
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -408,7 +424,7 @@ importers:
 
   container-images/mds-transaction-api:
     specifiers:
-      '@mds-core/mds-transaction-api': workspace:0.2.23
+      '@mds-core/mds-transaction-api': workspace:0.2.24
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -424,7 +440,7 @@ importers:
 
   container-images/mds-transaction-service:
     specifiers:
-      '@mds-core/mds-transaction-service': workspace:0.6.14
+      '@mds-core/mds-transaction-service': workspace:0.6.15
       '@mds-core/mds-webpack-config': workspace:0.1.11
       dd-trace: 1.5.1
       express: 4.17.1
@@ -441,10 +457,10 @@ importers:
   packages/mds-agency:
     specifiers:
       '@mds-core/mds-agency-cache': workspace:0.4.19
-      '@mds-core/mds-api-helpers': workspace:0.2.14
+      '@mds-core/mds-api-helpers': workspace:0.2.15
       '@mds-core/mds-api-server': workspace:0.4.7
-      '@mds-core/mds-db': workspace:0.6.6
-      '@mds-core/mds-ingest-service': workspace:0.9.17
+      '@mds-core/mds-db': workspace:0.6.7
+      '@mds-core/mds-ingest-service': workspace:0.10.0
       '@mds-core/mds-logger': workspace:0.5.6
       '@mds-core/mds-providers': workspace:0.2.8
       '@mds-core/mds-schema-validators': workspace:0.5.6
@@ -521,7 +537,7 @@ importers:
     specifiers:
       '@mds-core/mds-agency-cache': workspace:0.4.19
       '@mds-core/mds-api-server': workspace:0.4.7
-      '@mds-core/mds-db': workspace:0.6.6
+      '@mds-core/mds-db': workspace:0.6.7
       '@mds-core/mds-types': workspace:0.9.1
       '@mds-core/mds-utils': workspace:0.4.1
       http-status-codes: 2.1.4
@@ -621,11 +637,11 @@ importers:
   packages/mds-audit-api:
     specifiers:
       '@mds-core/mds-agency-cache': workspace:0.4.19
-      '@mds-core/mds-api-helpers': workspace:0.2.14
+      '@mds-core/mds-api-helpers': workspace:0.2.15
       '@mds-core/mds-api-server': workspace:0.4.7
       '@mds-core/mds-attachment-service': workspace:0.5.16
-      '@mds-core/mds-db': workspace:0.6.6
-      '@mds-core/mds-ingest-service': 0.9.17
+      '@mds-core/mds-db': workspace:0.6.7
+      '@mds-core/mds-ingest-service': 0.10.0
       '@mds-core/mds-logger': workspace:0.5.6
       '@mds-core/mds-providers': workspace:0.2.8
       '@mds-core/mds-schema-validators': workspace:0.5.6
@@ -701,7 +717,7 @@ importers:
 
   packages/mds-collector-api:
     specifiers:
-      '@mds-core/mds-api-helpers': workspace:0.2.14
+      '@mds-core/mds-api-helpers': workspace:0.2.15
       '@mds-core/mds-api-server': workspace:0.4.7
       '@mds-core/mds-collector-service': workspace:0.4.16
       '@mds-core/mds-logger': workspace:0.5.6
@@ -754,10 +770,10 @@ importers:
 
   packages/mds-compliance-api:
     specifiers:
-      '@mds-core/mds-api-helpers': workspace:0.2.14
+      '@mds-core/mds-api-helpers': workspace:0.2.15
       '@mds-core/mds-api-server': workspace:0.4.7
-      '@mds-core/mds-compliance-service': workspace:0.10.20
-      '@mds-core/mds-db': workspace:0.6.6
+      '@mds-core/mds-compliance-service': workspace:0.10.21
+      '@mds-core/mds-db': workspace:0.6.7
       '@mds-core/mds-logger': workspace:0.5.6
       '@mds-core/mds-policy-service': workspace:0.11.18
       '@mds-core/mds-schema-validators': workspace:0.5.6
@@ -787,9 +803,9 @@ importers:
   packages/mds-compliance-batch-processor:
     specifiers:
       '@mds-core/mds-api-server': workspace:0.4.7
-      '@mds-core/mds-compliance-engine': workspace:0.8.13
-      '@mds-core/mds-compliance-service': workspace:0.10.20
-      '@mds-core/mds-db': workspace:0.6.6
+      '@mds-core/mds-compliance-engine': workspace:0.8.14
+      '@mds-core/mds-compliance-service': workspace:0.10.21
+      '@mds-core/mds-db': workspace:0.6.7
       '@mds-core/mds-geography-service': 0.10.12
       '@mds-core/mds-logger': workspace:0.5.6
       '@mds-core/mds-policy-service': workspace:0.11.18
@@ -821,13 +837,13 @@ importers:
 
   packages/mds-compliance-engine:
     specifiers:
-      '@mds-core/mds-agency': workspace:0.5.1
-      '@mds-core/mds-api-helpers': workspace:0.2.14
+      '@mds-core/mds-agency': workspace:0.5.2
+      '@mds-core/mds-api-helpers': workspace:0.2.15
       '@mds-core/mds-api-server': workspace:0.4.7
-      '@mds-core/mds-compliance-service': workspace:0.10.20
-      '@mds-core/mds-db': workspace:0.6.6
+      '@mds-core/mds-compliance-service': workspace:0.10.21
+      '@mds-core/mds-db': workspace:0.6.7
       '@mds-core/mds-geography-service': workspace:0.10.12
-      '@mds-core/mds-ingest-service': 0.9.17
+      '@mds-core/mds-ingest-service': 0.10.0
       '@mds-core/mds-logger': workspace:0.5.6
       '@mds-core/mds-policy-service': workspace:0.11.18
       '@mds-core/mds-providers': workspace:0.2.8
@@ -874,7 +890,7 @@ importers:
 
   packages/mds-compliance-service:
     specifiers:
-      '@mds-core/mds-db': workspace:0.6.6
+      '@mds-core/mds-db': workspace:0.6.7
       '@mds-core/mds-logger': workspace:0.5.6
       '@mds-core/mds-policy-service': workspace:0.11.18
       '@mds-core/mds-providers': workspace:0.2.8
@@ -902,12 +918,51 @@ importers:
       pg: 8.7.3
       typeorm: 0.2.43_pg@8.7.3
 
+  packages/mds-config-api:
+    specifiers:
+      '@mds-core/mds-api-server': workspace:0.4.7
+      '@mds-core/mds-config-service': workspace:0.4.0
+      '@mds-core/mds-logger': workspace:0.5.6
+      '@mds-core/mds-service-helpers': workspace:0.6.5
+      '@mds-core/mds-test-data': 0.4.18
+      '@mds-core/mds-utils': workspace:0.4.1
+      '@types/express': 4.17.13
+      express: 4.17.1
+      http-status-codes: 2.1.4
+      query-string: 7.0.1
+    dependencies:
+      '@mds-core/mds-api-server': link:../mds-api-server
+      '@mds-core/mds-config-service': link:../mds-config-service
+      '@mds-core/mds-logger': link:../mds-logger
+      '@mds-core/mds-service-helpers': link:../mds-service-helpers
+      '@mds-core/mds-utils': link:../mds-utils
+      '@types/express': 4.17.13
+      express: 4.17.1
+      query-string: 7.0.1
+    devDependencies:
+      '@mds-core/mds-test-data': link:../mds-test-data
+      http-status-codes: 2.1.4
+
+  packages/mds-config-service:
+    specifiers:
+      '@mds-core/mds-logger': workspace:0.5.6
+      '@mds-core/mds-rpc-common': workspace:0.3.12
+      '@mds-core/mds-service-helpers': workspace:0.6.5
+      '@mds-core/mds-utils': workspace:0.4.1
+      json5: 2.2.0
+    dependencies:
+      '@mds-core/mds-logger': link:../mds-logger
+      '@mds-core/mds-rpc-common': link:../mds-rpc-common
+      '@mds-core/mds-service-helpers': link:../mds-service-helpers
+      '@mds-core/mds-utils': link:../mds-utils
+      json5: 2.2.0
+
   packages/mds-db:
     specifiers:
       '@mds-core/mds-attachment-service': workspace:0.5.16
       '@mds-core/mds-audit-service': workspace:0.5.16
       '@mds-core/mds-geography-service': workspace:0.10.12
-      '@mds-core/mds-ingest-service': workspace:0.9.17
+      '@mds-core/mds-ingest-service': workspace:0.10.0
       '@mds-core/mds-logger': workspace:0.5.6
       '@mds-core/mds-policy-service': workspace:0.11.18
       '@mds-core/mds-test-data': workspace:0.4.18
@@ -933,7 +988,7 @@ importers:
 
   packages/mds-geography-api:
     specifiers:
-      '@mds-core/mds-api-helpers': workspace:0.2.14
+      '@mds-core/mds-api-helpers': workspace:0.2.15
       '@mds-core/mds-api-server': workspace:0.4.7
       '@mds-core/mds-geography-service': workspace:0.10.12
       '@mds-core/mds-logger': workspace:0.5.6
@@ -960,7 +1015,7 @@ importers:
 
   packages/mds-geography-author-api:
     specifiers:
-      '@mds-core/mds-api-helpers': workspace:0.2.14
+      '@mds-core/mds-api-helpers': workspace:0.2.15
       '@mds-core/mds-api-server': workspace:0.4.7
       '@mds-core/mds-geography-service': workspace:0.10.12
       '@mds-core/mds-logger': workspace:0.5.6
@@ -1013,37 +1068,8 @@ importers:
       pg: 8.7.3
       typeorm: 0.2.43_pg@8.7.3
 
-  packages/mds-ingest-migration-processor:
-    specifiers:
-      '@mds-core/mds-agency-cache': workspace:0.4.19
-      '@mds-core/mds-api-server': workspace:0.4.7
-      '@mds-core/mds-ingest-service': workspace:0.9.17
-      '@mds-core/mds-logger': workspace:0.5.6
-      '@mds-core/mds-repository': workspace:0.1.42
-      '@mds-core/mds-service-helpers': workspace:0.6.5
-      '@mds-core/mds-stream-processor': workspace:0.4.13
-      '@mds-core/mds-types': workspace:0.9.1
-      '@mds-core/mds-utils': workspace:0.4.1
-      '@types/express': 4.17.12
-      envalid: 7.2.1
-      express: 4.17.1
-    dependencies:
-      '@mds-core/mds-agency-cache': link:../mds-agency-cache
-      '@mds-core/mds-api-server': link:../mds-api-server
-      '@mds-core/mds-ingest-service': link:../mds-ingest-service
-      '@mds-core/mds-logger': link:../mds-logger
-      '@mds-core/mds-repository': link:../mds-repository
-      '@mds-core/mds-service-helpers': link:../mds-service-helpers
-      '@mds-core/mds-stream-processor': link:../mds-stream-processor
-      '@mds-core/mds-types': link:../mds-types
-      '@mds-core/mds-utils': link:../mds-utils
-      '@types/express': 4.17.12
-      envalid: 7.2.1
-      express: 4.17.1
-
   packages/mds-ingest-service:
     specifiers:
-      '@mds-core/mds-agency-cache': workspace:0.4.19
       '@mds-core/mds-logger': workspace:0.5.6
       '@mds-core/mds-repository': workspace:0.1.42
       '@mds-core/mds-rpc-common': workspace:0.3.12
@@ -1056,7 +1082,6 @@ importers:
       typeorm: 0.2.43
       typeorm-cursor-pagination: 0.6.1
     dependencies:
-      '@mds-core/mds-agency-cache': link:../mds-agency-cache
       '@mds-core/mds-logger': link:../mds-logger
       '@mds-core/mds-repository': link:../mds-repository
       '@mds-core/mds-rpc-common': link:../mds-rpc-common
@@ -1071,7 +1096,7 @@ importers:
 
   packages/mds-jurisdiction-api:
     specifiers:
-      '@mds-core/mds-api-helpers': workspace:0.2.14
+      '@mds-core/mds-api-helpers': workspace:0.2.15
       '@mds-core/mds-api-server': workspace:0.4.7
       '@mds-core/mds-jurisdiction-service': workspace:0.5.16
       '@mds-core/mds-logger': workspace:0.5.6
@@ -1132,9 +1157,9 @@ importers:
 
   packages/mds-policy:
     specifiers:
-      '@mds-core/mds-api-helpers': workspace:0.2.14
+      '@mds-core/mds-api-helpers': workspace:0.2.15
       '@mds-core/mds-api-server': workspace:0.4.7
-      '@mds-core/mds-db': workspace:0.6.6
+      '@mds-core/mds-db': workspace:0.6.7
       '@mds-core/mds-geography-service': workspace:0.10.12
       '@mds-core/mds-logger': workspace:0.5.6
       '@mds-core/mds-policy-service': workspace:0.11.18
@@ -1165,7 +1190,7 @@ importers:
 
   packages/mds-policy-author-api:
     specifiers:
-      '@mds-core/mds-api-helpers': workspace:0.2.14
+      '@mds-core/mds-api-helpers': workspace:0.2.15
       '@mds-core/mds-api-server': workspace:0.4.7
       '@mds-core/mds-geography-service': workspace:0.10.12
       '@mds-core/mds-logger': workspace:0.5.6
@@ -1362,14 +1387,14 @@ importers:
 
   packages/mds-transaction-api:
     specifiers:
-      '@mds-core/mds-api-helpers': workspace:0.2.14
+      '@mds-core/mds-api-helpers': workspace:0.2.15
       '@mds-core/mds-api-server': workspace:0.4.7
       '@mds-core/mds-logger': workspace:0.5.6
       '@mds-core/mds-providers': workspace:0.2.8
       '@mds-core/mds-schema-validators': workspace:0.5.6
       '@mds-core/mds-service-helpers': workspace:0.6.5
       '@mds-core/mds-test-data': workspace:0.4.18
-      '@mds-core/mds-transaction-service': workspace:0.6.14
+      '@mds-core/mds-transaction-service': workspace:0.6.15
       '@mds-core/mds-types': workspace:0.9.1
       '@mds-core/mds-utils': workspace:0.4.1
       '@types/express': 4.17.13
@@ -1401,7 +1426,7 @@ importers:
 
   packages/mds-transaction-service:
     specifiers:
-      '@mds-core/mds-ingest-service': workspace:0.9.17
+      '@mds-core/mds-ingest-service': workspace:0.10.0
       '@mds-core/mds-logger': workspace:0.5.6
       '@mds-core/mds-repository': workspace:0.1.42
       '@mds-core/mds-rpc-common': workspace:0.3.12
@@ -5829,6 +5854,7 @@ packages:
 
   /fastify-warning/0.2.0:
     resolution: {integrity: sha512-s1EQguBw/9qtc1p/WTY4eq9WMRIACkj+HTcOIK1in4MV5aFaQC9ZCIt0dJ7pr5bIf4lPpHvAtP2ywpTNgs7hqw==}
+    deprecated: This module renamed to process-warning
     dev: false
 
   /fastq/1.13.0:
@@ -6471,7 +6497,7 @@ packages:
     dev: true
 
   /http-status-codes/2.1.4:
-    resolution: {integrity: sha1-RT2ZtL2UJCVMT2qaOgNxWSMFJ5g=}
+    resolution: {integrity: sha512-MZVIsLKGVOVE1KEnldppe6Ij+vmemMuApDfjhVSLzyYP+td0bREEYyAoIw9yFePoBXManCuBqmiNP5FqJS5Xkg==}
 
   /https-proxy-agent/5.0.0:
     resolution: {integrity: sha512-EkYm5BcKUGiduxzSt3Eppko+PiNWNEpa4ySk9vTC6wDsQJW9rHSa+UhGNJoRYp7bz6Ht1eaRIa6QaJqO5rCFbA==}
@@ -7635,7 +7661,6 @@ packages:
     hasBin: true
     dependencies:
       minimist: 1.2.5
-    dev: true
 
   /jsonc-parser/3.0.0:
     resolution: {integrity: sha512-fQzRfAbIBnR0IQvftw9FJveWiHp72Fg20giDrHz6TdfB12UH/uue0D3hm57UB5KgAVuniLMCaS8P1IMj9NR7cA==}
@@ -9340,7 +9365,7 @@ packages:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.1
-      '@types/node': 16.10.3
+      '@types/node': 17.0.18
       long: 4.0.0
     dev: false
 
@@ -9404,6 +9429,16 @@ packages:
 
   /query-string/6.14.1:
     resolution: {integrity: sha512-XDxAeVmpfu1/6IjyT/gXHOl+S0vQ9owggJ30hhWKdHAsNPOcasn5o9BW0eejZqL2e4vMjhAxoW3jVHcD6mbcYw==}
+    engines: {node: '>=6'}
+    dependencies:
+      decode-uri-component: 0.2.0
+      filter-obj: 1.1.0
+      split-on-first: 1.1.0
+      strict-uri-encode: 2.0.0
+    dev: false
+
+  /query-string/7.0.1:
+    resolution: {integrity: sha512-uIw3iRvHnk9to1blJCG3BTc+Ro56CBowJXKmNNAm3RulvPBzWLRqKSiiDk+IplJhsydwtuNMHi8UGQFcCLVfkA==}
     engines: {node: '>=6'}
     dependencies:
       decode-uri-component: 0.2.0

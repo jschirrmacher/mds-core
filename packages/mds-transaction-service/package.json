@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-transaction-service",
-  "version": "0.6.14",
+  "version": "0.6.15",
   "description": "MDS Transaction Service",
   "keywords": [
     "mds",
@@ -22,7 +22,7 @@
     "watch": "pnpm build && nodemon --watch '../../packages' --ext 'ts' --ignore '*.d.ts' --exec pnpm ts-node --"
   },
   "dependencies": {
-    "@mds-core/mds-ingest-service": "workspace:0.9.17",
+    "@mds-core/mds-ingest-service": "workspace:0.10.0",
     "@mds-core/mds-logger": "workspace:0.5.6",
     "@mds-core/mds-repository": "workspace:0.1.42",
     "@mds-core/mds-rpc-common": "workspace:0.3.12",

@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 City of Los Angeles
+ * Copyright 2022 City of Los Angeles
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,18 @@
  * limitations under the License.
  */
 
-import { ProcessorController } from '@mds-core/mds-stream-processor'
-import { IngestMigrationProcessor } from './processor'
+import { RpcEmptyRequestContext, RpcRoute, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
 
-ProcessorController.start(IngestMigrationProcessor())
+export type GetSettingsOptions = Partial<{
+  partial: boolean
+}>
+
+export interface ConfigService<S = {}> {
+  getSettings: (properties: string[], options?: GetSettingsOptions) => S
+}
+
+export const ConfigServiceDefinition: RpcServiceDefinition<ConfigService> = {
+  getSettings: RpcRoute<ConfigService['getSettings']>()
+}
+
+export type ConfigServiceRequestContext = RpcEmptyRequestContext

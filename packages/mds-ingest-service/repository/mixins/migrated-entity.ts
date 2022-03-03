@@ -16,7 +16,7 @@
 
 import { BigintTransformer } from '@mds-core/mds-repository'
 import { AnyConstructor, Nullable } from '@mds-core/mds-types'
-import { Column, Index } from 'typeorm'
+import { Column } from 'typeorm'
 
 export interface MigratedEntityModel {
   migrated_from_source: Nullable<string>
@@ -27,15 +27,12 @@ export interface MigratedEntityModel {
 export const MigratedEntity = <T extends AnyConstructor>(EntityClass: T) => {
   abstract class MigratedEntityMixin extends EntityClass implements MigratedEntityModel {
     @Column('varchar', { length: 127, nullable: true })
-    @Index()
     migrated_from_source: Nullable<string>
 
     @Column('varchar', { length: 31, nullable: true })
-    @Index()
     migrated_from_version: Nullable<string>
 
     @Column('bigint', { transformer: BigintTransformer, nullable: true })
-    @Index()
     migrated_from_id: Nullable<number>
   }
   return MigratedEntityMixin

@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-import {
-  IdentityColumn,
-  InsertReturning,
-  ReadWriteRepository,
-  RecordedColumn,
-  RepositoryError
-} from '@mds-core/mds-repository'
-import { Device, Nullable, Telemetry, UUID, VehicleEvent } from '@mds-core/mds-types'
+import { InsertReturning, ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
+import { Nullable, UUID } from '@mds-core/mds-types'
 import { head, isDefined, isUUID, tail, testEnvSafeguard, ValidationError, zip } from '@mds-core/mds-utils'
 import { Any, SelectQueryBuilder } from 'typeorm'
 import { buildPaginator, Cursor, PagingResult } from 'typeorm-cursor-pagination'
@@ -40,36 +34,28 @@ import {
   GetVehicleEventsFilterParams,
   GetVehicleEventsOrderOption,
   GetVehicleEventsResponse,
-  MigratedEventDomainModel,
   ReadDeviceEventsQueryParams,
   ReadTripEventsQueryParams,
   TelemetryDomainCreateModel,
   TelemetryDomainModel
 } from '../@types'
 import entities from './entities'
-import { DeviceEntity, DeviceEntityModel } from './entities/device-entity'
+import { DeviceEntity } from './entities/device-entity'
 import { EventAnnotationEntity } from './entities/event-annotation-entity'
-import { EventEntity, EventEntityModel } from './entities/event-entity'
-import { TelemetryEntity, TelemetryEntityModel } from './entities/telemetry-entity'
+import { EventEntity } from './entities/event-entity'
+import { TelemetryEntity } from './entities/telemetry-entity'
 import {
   DeviceDomainToEntityCreate,
   DeviceEntityToDomain,
-  DeviceEntityToDomainWithIdentityColumn,
   EventAnnotationDomainToEntityCreate,
   EventAnnotationEntityToDomain,
   EventDomainToEntityCreate,
   EventEntityToDomain,
   EventWithDeviceAndTelemetryInfoEntityToDomain,
-  MigratedDeviceToEntityCreate,
-  MigratedEventEntityToDomainWithIdentityColumn,
-  MigratedEventToEntityCreate,
-  MigratedTelemetryToEntityCreate,
   TelemetryDomainToEntityCreate,
-  TelemetryEntityToDomain,
-  TelemetryEntityToDomainWithIdentityColumn
+  TelemetryEntityToDomain
 } from './mappers'
 import migrations from './migrations'
-import { MigratedEntityModel } from './mixins/migrated-entity'
 import views from './views'
 import {
   EventWithDeviceAndTelemetryInfoEntity,
@@ -461,26 +447,6 @@ export const IngestRepository = ReadWriteRepository.Create(
       return pager['toPagingResult'](entities) as PagingResult<EventEntity>
     }
 
-    const writeMigratedTelemetryEntityReturning = async (
-      telemetry: Array<Telemetry & Required<RecordedColumn>>,
-      migrated_from: MigratedEntityModel
-    ) => {
-      try {
-        const connection = await repository.connect('rw')
-        const { raw: entities }: InsertReturning<TelemetryEntityModel> = await connection
-          .getRepository(TelemetryEntity)
-          .createQueryBuilder()
-          .insert()
-          .values(telemetry.map(MigratedTelemetryToEntityCreate.mapper({ migrated_from })))
-          .onConflict('DO NOTHING')
-          .returning('*')
-          .execute()
-        return entities
-      } catch (error) {
-        throw RepositoryError(error)
-      }
-    }
-
     return {
       createEvents: async (events: EventDomainCreateModel[]): Promise<EventDomainModel[]> => {
         try {
@@ -702,62 +668,6 @@ export const IngestRepository = ReadWriteRepository.Create(
           })
 
           return entities.map(TelemetryEntityToDomain.mapper())
-        } catch (error) {
-          throw RepositoryError(error)
-        }
-      },
-
-      writeMigratedDevice: async (
-        devices: Array<Device & Required<RecordedColumn>>,
-        migrated_from: MigratedEntityModel
-      ): Promise<Array<DeviceDomainModel & IdentityColumn>> => {
-        try {
-          const connection = await repository.connect('rw')
-          const { raw: entities }: InsertReturning<DeviceEntityModel> = await connection
-            .getRepository(DeviceEntity)
-            .createQueryBuilder()
-            .insert()
-            .values(devices.map(MigratedDeviceToEntityCreate.mapper({ migrated_from })))
-            /* DO UPDATE to support PUT vehicle_id */
-            .onConflict(
-              '("device_id") DO UPDATE SET "vehicle_id" = EXCLUDED."vehicle_id" WHERE "devices"."vehicle_id" <> EXCLUDED."vehicle_id"'
-            )
-            .returning('*')
-            .execute()
-          return entities.map(DeviceEntityToDomainWithIdentityColumn.mapper())
-        } catch (error) {
-          throw RepositoryError(error)
-        }
-      },
-
-      writeMigratedVehicleEvent: async (
-        events: Array<Omit<VehicleEvent, 'telemetry'> & Required<RecordedColumn>>,
-        migrated_from: MigratedEntityModel
-      ): Promise<Array<MigratedEventDomainModel>> => {
-        try {
-          const connection = await repository.connect('rw')
-          const { raw: entities }: InsertReturning<EventEntityModel> = await connection
-            .getRepository(EventEntity)
-            .createQueryBuilder()
-            .insert()
-            .values(events.map(MigratedEventToEntityCreate.mapper({ migrated_from })))
-            .onConflict('DO NOTHING')
-            .returning('*')
-            .execute()
-
-          return entities.map(MigratedEventEntityToDomainWithIdentityColumn.mapper())
-        } catch (error) {
-          throw RepositoryError(error)
-        }
-      },
-
-      writeMigratedTelemetry: async (
-        telemetry: Array<Telemetry & Required<RecordedColumn>>,
-        migrated_from: MigratedEntityModel
-      ): Promise<Array<TelemetryDomainModel & IdentityColumn>> => {
-        try {
-          const entities = await writeMigratedTelemetryEntityReturning(telemetry, migrated_from)
-          return entities.map(TelemetryEntityToDomainWithIdentityColumn.mapper())
         } catch (error) {
           throw RepositoryError(error)
         }

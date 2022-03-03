@@ -16,7 +16,7 @@
 
 import { parseRequest } from '@mds-core/mds-api-helpers'
 import { PolicyServiceClient } from '@mds-core/mds-policy-service'
-import { BadParamsError, isUUID, NotFoundError } from '@mds-core/mds-utils'
+import { BadParamsError, hasAtLeastOneEntry, isUUID, NotFoundError } from '@mds-core/mds-utils'
 import express from 'express'
 import { PolicyApiGetPolicyRequest, PolicyApiGetPolicyResponse } from '../types'
 
@@ -48,7 +48,7 @@ export const GetPolicyHandler = async (
       get_unpublished
     })
 
-    if (policies.length === 0) {
+    if (!hasAtLeastOneEntry(policies)) {
       throw new NotFoundError(`policy_id ${policy_id} not found`)
     }
 

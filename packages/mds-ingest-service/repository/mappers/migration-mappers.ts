@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { EntityCreateModel, ModelMapper, RecordedColumn } from '@mds-core/mds-repository'
+import { IdentityColumn, ModelMapper, RecordedColumn } from '@mds-core/mds-repository'
 import { Device, Telemetry, VehicleEvent } from '@mds-core/mds-types'
 import { DeviceEntityModel } from '../entities/device-entity'
 import { EventEntityModel } from '../entities/event-entity'
@@ -25,7 +25,7 @@ type MigratedEntityCreateOptions = {
   migrated_from: MigratedEntityModel
 }
 
-export type MigratedDeviceEntityCreateModel = EntityCreateModel<DeviceEntityModel>
+export type MigratedDeviceEntityCreateModel = Omit<DeviceEntityModel, keyof IdentityColumn>
 
 export const MigratedDeviceToEntityCreate = ModelMapper<
   Device,
@@ -50,7 +50,7 @@ export const MigratedDeviceToEntityCreate = ModelMapper<
   }
 })
 
-export type MigratedEventEntityCreateModel = Omit<EntityCreateModel<EventEntityModel>, 'telemetry'>
+export type MigratedEventEntityCreateModel = Omit<EventEntityModel, keyof IdentityColumn | 'telemetry'>
 
 export const MigratedEventToEntityCreate = ModelMapper<
   Omit<VehicleEvent, 'telemetry'>,
@@ -73,7 +73,7 @@ export const MigratedEventToEntityCreate = ModelMapper<
   }
 })
 
-export type MigratedTelemetryEntityCreateModel = EntityCreateModel<TelemetryEntityModel>
+export type MigratedTelemetryEntityCreateModel = Omit<TelemetryEntityModel, keyof IdentityColumn>
 
 export const MigratedTelemetryToEntityCreate = ModelMapper<
   Telemetry & Required<RecordedColumn>,

@@ -1,5 +1,11 @@
 # @mds-core/mds-ingest-service
 
+## 0.10.0
+
+### Minor Changes
+
+- e0ed188e: Removing migration code.
+
 ## 0.9.17
 
 ### Patch Changes

@@ -1,0 +1,30 @@
+{
+  "name": "@container-images/mds-config-service",
+  "version": "0.4.0",
+  "private": true,
+  "description": "Docker Image for MDS Config Service",
+  "keywords": [
+    "mds"
+  ],
+  "license": "UNLICENSED",
+  "author": "Lacuna Technologies",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "bundle": "pnpm bundle:production",
+    "bundle:development": "webpack --mode=development --env npm_package_name=${npm_package_name} --env npm_package_version=${npm_package_version}",
+    "bundle:production": "webpack --mode=production --env npm_package_name=${npm_package_name} --env npm_package_version=${npm_package_version}",
+    "image": "pnpm image:production",
+    "image:development": "pnpm bundle:development && ../../bin/build-helper buildImage mds-config-service:latest",
+    "image:production": "pnpm bundle:production && ../../bin/build-helper buildImage mds-config-service:${npm_package_version}"
+  },
+  "dependencies": {
+    "@mds-core/mds-config-service": "workspace:0.4.0",
+    "@mds-core/mds-webpack-config": "workspace:0.1.11",
+    "dd-trace": "1.5.1",
+    "express": "4.17.1",
+    "pg": "8.7.3",
+    "pino": "6.13.3"
+  }
+}
