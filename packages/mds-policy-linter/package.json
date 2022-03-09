@@ -15,6 +15,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@mds-core/mds-policy-service": "workspace:0.11.18",
+    "@mds-core/mds-utils": "workspace:0.4.1",
     "ajv": "8.10.0",
     "yargs": "17.3.1"
   }
