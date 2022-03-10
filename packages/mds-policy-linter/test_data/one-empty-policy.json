@@ -1,0 +1,11 @@
+{
+  "policies": [{
+    "policy_id": "bbf89fce-b50f-4aa7-9dc4-7c66a76038e7",
+    "currency": "USD",
+    "name": "Empty Policy",
+    "description": "Empty Policy",
+    "start_date": 1646871890724,
+    "end_date": null,
+    "rules": []
+  }]
+}

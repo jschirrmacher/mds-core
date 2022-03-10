@@ -12,7 +12,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "pnpm watch index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "pnpm build && nodemon --watch '../../packages' --ext 'ts' --ignore '*.d.ts' --exec pnpm ts-node --"
   },
   "dependencies": {
     "@mds-core/mds-policy-service": "workspace:0.11.18",

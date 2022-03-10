@@ -28,7 +28,7 @@ const args = process.argv.slice(2)
 const { log } = console
 
 // TODO use yargs correctly
-log('mds-policy-linter reading', args.length, 'files')
+log(`mds-policy-linter reading ${plural(args.length, 'files')}`)
 
 // the list of policies that make it past the validator
 const validPolicies = []
@@ -39,15 +39,23 @@ args.forEach(fn => {
     const json = readFileSync(fn).toString()
     const policiesRaw: object[] = JSON.parse(json).policies
     policiesRaw.forEach(policyRaw => {
-      const validPolicy = validatePolicyDomainModel(policyRaw)
-      validPolicies.push(validPolicy)
+      try {
+        const validPolicy = validatePolicyDomainModel(policyRaw)
+        validPolicies.push(validPolicy)
+      } catch (e) {
+        log(`error in ${policyRaw}: ${e}`)
+      }
     })
   } catch (e) {
     log(`error in ${fn}: ${e}`)
   }
 })
 
-log(`read ${validPolicies.length} valid policies`)
+log(`read ${plural(validPolicies.length, 'valid policies')}`)
+
+function plural(n: number, s: string): string {
+  return '' + n + ' ' + (n === 1 ? s.replace(/ies$/, 'y').replace(/s$/, '') : s)
+}
 
 // validate with linter
 // run heuristics:
