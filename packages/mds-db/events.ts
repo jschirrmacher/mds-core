@@ -25,7 +25,7 @@ import type { ReadEventsQueryParams, ReadEventsResult } from './types'
 
 export async function writeEvent(event: VehicleEvent) {
   const client = await getWriteableClient()
-  const device = IngestServiceClient.getDevice({ device_id: event.device_id, provider_id: event.provider_id })
+  const device = await IngestServiceClient.getDevice({ device_id: event.device_id, provider_id: event.provider_id })
   if (!isDefined(device)) {
     throw new NotFoundError(`device_id ${event.device_id} not found`)
   }
