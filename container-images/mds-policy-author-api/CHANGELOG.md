@@ -1,5 +1,11 @@
 # @container-images/mds-policy-author-api
 
+## 0.1.89-hotfix-v9.0
+
+### Patch Changes
+
+- @mds-core/mds-policy-author-api@0.7.26-hotfix-v9.0
+
 ## 0.1.88
 
 ### Patch Changes

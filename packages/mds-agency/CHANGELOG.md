@@ -1,5 +1,13 @@
 # @mds-core/mds-agency
 
+## 0.5.4-hotfix-v9.0
+
+### Patch Changes
+
+- Updated dependencies [df841ac2]
+  - @mds-core/mds-db@0.6.9-hotfix-v9.0
+  - @mds-core/mds-api-helpers@0.2.17-hotfix-v9.0
+
 ## 0.5.3
 
 ### Patch Changes

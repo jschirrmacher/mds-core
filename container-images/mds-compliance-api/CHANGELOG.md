@@ -1,5 +1,11 @@
 # @container-images/mds-compliance-api
 
+## 0.1.89-hotfix-v9.0
+
+### Patch Changes
+
+- @mds-core/mds-compliance-api@0.4.28-hotfix-v9.0
+
 ## 0.1.88
 
 ### Patch Changes

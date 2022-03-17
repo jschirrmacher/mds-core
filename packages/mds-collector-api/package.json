@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-collector-api",
-  "version": "0.1.63",
+  "version": "0.1.64-hotfix-v9.0",
   "description": "Mobility Data Specification Collector API",
   "keywords": [
     "mds"
@@ -19,7 +19,7 @@
     "watch": "nodemon --watch '../../packages' --ext 'ts' --ignore '*.d.ts' --exec pnpm ts-node --"
   },
   "dependencies": {
-    "@mds-core/mds-api-helpers": "workspace:0.2.16",
+    "@mds-core/mds-api-helpers": "workspace:0.2.17-hotfix-v9.0",
     "@mds-core/mds-api-server": "workspace:0.4.8",
     "@mds-core/mds-collector-service": "workspace:0.4.17",
     "@mds-core/mds-logger": "workspace:0.5.7",

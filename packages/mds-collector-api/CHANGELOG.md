@@ -1,5 +1,11 @@
 # @mds-core/mds-collector-api
 
+## 0.1.64-hotfix-v9.0
+
+### Patch Changes
+
+- @mds-core/mds-api-helpers@0.2.17-hotfix-v9.0
+
 ## 0.1.63
 
 ### Patch Changes

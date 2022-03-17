@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-db",
-  "version": "0.6.8",
+  "version": "0.6.9-hotfix-v9.0",
   "description": "Mobility Data Specification database interface",
   "keywords": [
     "mds",

@@ -1,5 +1,11 @@
 # @mds-core/mds-db
 
+## 0.6.9-hotfix-v9.0
+
+### Patch Changes
+
+- df841ac2: await IngestServiceClient.getDevice in writeEvent method
+
 ## 0.6.8
 
 ### Patch Changes

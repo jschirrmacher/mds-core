@@ -1,5 +1,14 @@
 # @mds-core/mds-compliance-api
 
+## 0.4.28-hotfix-v9.0
+
+### Patch Changes
+
+- Updated dependencies [df841ac2]
+  - @mds-core/mds-db@0.6.9-hotfix-v9.0
+  - @mds-core/mds-api-helpers@0.2.17-hotfix-v9.0
+  - @mds-core/mds-compliance-service@0.10.23-hotfix-v9.0
+
 ## 0.4.27
 
 ### Patch Changes

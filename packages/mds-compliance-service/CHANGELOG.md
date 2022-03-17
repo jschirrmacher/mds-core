@@ -1,5 +1,12 @@
 # @mds-core/mds-compliance-service
 
+## 0.10.23-hotfix-v9.0
+
+### Patch Changes
+
+- Updated dependencies [df841ac2]
+  - @mds-core/mds-db@0.6.9-hotfix-v9.0
+
 ## 0.10.22
 
 ### Patch Changes

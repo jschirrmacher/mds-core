@@ -1,5 +1,11 @@
 # @container-images/mds-jurisdiction-api
 
+## 0.0.64-hotfix-v9.0
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-api@0.1.63-hotfix-v9.0
+
 ## 0.0.63
 
 ### Patch Changes

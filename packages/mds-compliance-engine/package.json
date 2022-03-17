@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-compliance-engine",
-  "version": "0.8.15",
+  "version": "0.8.16-hotfix-v9.0",
   "description": "MDS Compliance Tool",
   "keywords": [
     "mds",
@@ -19,10 +19,10 @@
     "watch": "nodemon --watch '../../packages' --ext 'ts' --ignore '*.d.ts' --exec pnpm ts-node --"
   },
   "dependencies": {
-    "@mds-core/mds-api-helpers": "workspace:0.2.16",
+    "@mds-core/mds-api-helpers": "workspace:0.2.17-hotfix-v9.0",
     "@mds-core/mds-api-server": "workspace:0.4.8",
-    "@mds-core/mds-compliance-service": "workspace:0.10.22",
-    "@mds-core/mds-db": "workspace:0.6.8",
+    "@mds-core/mds-compliance-service": "workspace:0.10.23-hotfix-v9.0",
+    "@mds-core/mds-db": "workspace:0.6.9-hotfix-v9.0",
     "@mds-core/mds-geography-service": "workspace:0.10.13",
     "@mds-core/mds-ingest-service": "0.10.1",
     "@mds-core/mds-logger": "workspace:0.5.7",
@@ -43,7 +43,7 @@
     "yargs": "17.2.1"
   },
   "devDependencies": {
-    "@mds-core/mds-agency": "workspace:0.5.3",
+    "@mds-core/mds-agency": "workspace:0.5.4-hotfix-v9.0",
     "@mds-core/mds-test-data": "workspace:0.4.19"
   },
   "publishConfig": {

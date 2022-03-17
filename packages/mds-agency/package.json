@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-agency",
-  "version": "0.5.3",
+  "version": "0.5.4-hotfix-v9.0",
   "description": "MDS Agency API",
   "license": "Apache-2.0",
   "author": "City of Los Angeles",
@@ -17,9 +17,9 @@
   },
   "dependencies": {
     "@mds-core/mds-agency-cache": "workspace:0.4.20",
-    "@mds-core/mds-api-helpers": "workspace:0.2.16",
+    "@mds-core/mds-api-helpers": "workspace:0.2.17-hotfix-v9.0",
     "@mds-core/mds-api-server": "workspace:0.4.8",
-    "@mds-core/mds-db": "workspace:0.6.8",
+    "@mds-core/mds-db": "workspace:0.6.9-hotfix-v9.0",
     "@mds-core/mds-ingest-service": "workspace:0.10.1",
     "@mds-core/mds-logger": "workspace:0.5.7",
     "@mds-core/mds-providers": "workspace:0.2.9",

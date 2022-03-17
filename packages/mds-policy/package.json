@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-policy",
-  "version": "0.7.25",
+  "version": "0.7.26-hotfix-v9.0",
   "description": "MDS Policy API",
   "license": "Apache-2.0",
   "author": "City of Los Angeles",
@@ -18,9 +18,9 @@
     "watch": "nodemon --watch '../../packages' --ext 'ts' --ignore '*.d.ts' --exec pnpm ts-node --"
   },
   "dependencies": {
-    "@mds-core/mds-api-helpers": "workspace:0.2.16",
+    "@mds-core/mds-api-helpers": "workspace:0.2.17-hotfix-v9.0",
     "@mds-core/mds-api-server": "workspace:0.4.8",
-    "@mds-core/mds-db": "workspace:0.6.8",
+    "@mds-core/mds-db": "workspace:0.6.9-hotfix-v9.0",
     "@mds-core/mds-logger": "workspace:0.5.7",
     "@mds-core/mds-policy-service": "workspace:0.11.19",
     "@mds-core/mds-schema-validators": "workspace:0.5.7",

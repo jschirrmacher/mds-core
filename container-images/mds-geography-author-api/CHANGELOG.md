@@ -1,5 +1,11 @@
 # @container-images/mds-geography-author-api
 
+## 0.0.64-hotfix-v9.0
+
+### Patch Changes
+
+- @mds-core/mds-geography-author-api@0.4.17-hotfix-v9.0
+
 ## 0.0.63
 
 ### Patch Changes
