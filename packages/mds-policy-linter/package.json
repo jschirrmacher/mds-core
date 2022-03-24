@@ -17,8 +17,8 @@
     "watch": "pnpm build && nodemon --watch '../../packages' --ext 'ts' --ignore '*.d.ts' --exec pnpm ts-node --"
   },
   "dependencies": {
-    "@mds-core/mds-policy-service": "workspace:0.11.18",
-    "@mds-core/mds-utils": "workspace:0.4.1",
+    "@mds-core/mds-policy-service": "workspace:0.11.26",
+    "@mds-core/mds-utils": "workspace:0.5.0",
     "ajv": "8.10.0",
     "yargs": "17.3.1"
   }
