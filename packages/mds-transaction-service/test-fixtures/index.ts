@@ -1,6 +1,6 @@
-import { UUID } from '@mds-core/mds-types'
+import type { UUID } from '@mds-core/mds-types'
 import { uuid } from '@mds-core/mds-utils'
-import {
+import type {
   FEE_TYPE,
   ReceiptDomainModel,
   TransactionDomainModel,

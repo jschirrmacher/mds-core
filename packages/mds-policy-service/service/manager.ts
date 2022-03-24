@@ -15,7 +15,8 @@
  */
 
 import { RpcServer } from '@mds-core/mds-rpc-common'
-import { PolicyService, PolicyServiceDefinition, PolicyServiceRequestContext } from '../@types'
+import type { PolicyService, PolicyServiceRequestContext } from '../@types'
+import { PolicyServiceDefinition } from '../@types'
 import { PolicyServiceClient } from '../client'
 import { PolicyServiceProvider } from './provider'
 

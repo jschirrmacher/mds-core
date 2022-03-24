@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddTelemetryTimestampIndex1632938124126 implements MigrationInterface {
   name = 'AddTelemetryTimestampIndex1632938124126'

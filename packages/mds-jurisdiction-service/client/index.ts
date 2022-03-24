@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { RpcClient, RpcRequest, RpcRequestOptions } from '@mds-core/mds-rpc-common'
-import { ServiceClient } from '@mds-core/mds-service-helpers'
-import { JurisdictionService, JurisdictionServiceDefinition, JurisdictionServiceRequestContext } from '../@types'
+import type { RpcRequestOptions } from '@mds-core/mds-rpc-common'
+import { RpcClient, RpcRequest } from '@mds-core/mds-rpc-common'
+import type { ServiceClient } from '@mds-core/mds-service-helpers'
+import type { JurisdictionService, JurisdictionServiceRequestContext } from '../@types'
+import { JurisdictionServiceDefinition } from '../@types'
 
 export const JurisdictionServiceClientFactory = (
   context: JurisdictionServiceRequestContext,

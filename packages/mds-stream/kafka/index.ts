@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-export { KafkaStreamConsumer, KafkaStreamConsumerOptions } from './stream-consumer'
-export { KafkaStreamProducer, KafkaStreamProducerOptions } from './stream-producer'
+export { KafkaStreamConsumer, type KafkaStreamConsumerOptions } from './stream-consumer'
+export { KafkaStreamProducer, type KafkaStreamProducerOptions } from './stream-producer'

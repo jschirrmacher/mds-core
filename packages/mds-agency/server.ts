@@ -16,11 +16,11 @@
 
 import cache from '@mds-core/mds-agency-cache'
 import { ApiServer, HttpServer } from '@mds-core/mds-api-server'
-import stream from '@mds-core/mds-stream'
+import { IngestStream } from '@mds-core/mds-ingest-service'
 import { api } from './api'
 import { AgencyLogger } from './logger'
 
-Promise.all([cache.startup(), stream.initialize()])
+Promise.all([cache.startup(), IngestStream.initialize()])
   .then(() => {
     return HttpServer(ApiServer(api), { port: process.env.AGENCY_API_HTTP_PORT })
   })

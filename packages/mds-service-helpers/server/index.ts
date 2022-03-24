@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Nullable } from '@mds-core/mds-types'
+import type { Nullable } from '@mds-core/mds-types'
 import {
   AlreadyPublishedError,
   BadParamsError,
@@ -27,8 +27,9 @@ import {
   UnsupportedTypeError,
   ValidationError
 } from '@mds-core/mds-utils'
-import retry, { Options as RetryOptions } from 'async-retry'
-import { ProcessController, ServiceErrorDescriptor, ServiceErrorType, ServiceResultType } from '../@types'
+import type { Options as RetryOptions } from 'async-retry'
+import retry from 'async-retry'
+import type { ProcessController, ServiceErrorDescriptor, ServiceErrorType, ServiceResultType } from '../@types'
 import { ServiceHelpersLogger } from '../logger'
 
 type ProcessMonitorOptions = Partial<

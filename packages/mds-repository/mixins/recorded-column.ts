@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { AnyConstructor, Optional, Timestamp } from '@mds-core/mds-types'
+import type { AnyConstructor, Optional } from '@mds-core/mds-types'
+import { Timestamp } from '@mds-core/mds-types'
 import { Index } from 'typeorm'
-import { TimestampColumn, TimestampColumnOptions } from '../decorators'
+import type { TimestampColumnOptions } from '../decorators'
+import { TimestampColumn } from '../decorators'
 
 export type RecordedColumn = { recorded: Timestamp }
 

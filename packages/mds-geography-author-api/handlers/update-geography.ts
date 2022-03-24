@@ -15,9 +15,9 @@
  */
 
 import { GeographyServiceClient } from '@mds-core/mds-geography-service'
-import express from 'express'
+import type express from 'express'
 import { GeographyAuthorLogger } from '../logger'
-import { GeographyAuthorApiPutGeographyRequest, GeographyAuthorApiPutGeographyResponse } from '../types'
+import type { GeographyAuthorApiPutGeographyRequest, GeographyAuthorApiPutGeographyResponse } from '../types'
 
 export const UpdateGeographyHandler = async (
   req: GeographyAuthorApiPutGeographyRequest,

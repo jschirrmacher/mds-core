@@ -1,6 +1,6 @@
 {
   "name": "@container-images/mds-audit-api",
-  "version": "0.1.88",
+  "version": "0.1.96",
   "private": true,
   "description": "Docker Image for MDS Audit API",
   "keywords": [
@@ -20,8 +20,8 @@
     "image:production": "pnpm bundle:production && ../../bin/build-helper buildImage mds-audit-api:${npm_package_version}"
   },
   "dependencies": {
-    "@mds-core/mds-audit-api": "workspace:0.3.24",
-    "@mds-core/mds-webpack-config": "workspace:0.1.11",
+    "@mds-core/mds-audit-api": "workspace:0.4.1",
+    "@mds-core/mds-webpack-config": "workspace:0.1.12",
     "dd-trace": "1.5.1",
     "express": "4.17.1",
     "pg": "8.7.3",

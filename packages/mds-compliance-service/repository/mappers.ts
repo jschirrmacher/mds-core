@@ -15,18 +15,18 @@
  */
 
 import { ModelMapper } from '@mds-core/mds-repository'
-import { Timestamp } from '@mds-core/mds-types'
-import {
+import type { Timestamp } from '@mds-core/mds-types'
+import type {
   ComplianceSnapshotDomainModel,
   ComplianceViolationDomainModel,
   ComplianceViolationPeriodDomainModel,
   ComplianceViolationPeriodEntityModel
 } from '../@types'
-import {
+import type {
   ComplianceSnapshotEntityCreateModel,
   ComplianceSnapshotEntityModel
 } from './entities/compliance-snapshot-entity'
-import {
+import type {
   ComplianceViolationEntityCreateModel,
   ComplianceViolationEntityModel
 } from './entities/compliance-violation-entity'

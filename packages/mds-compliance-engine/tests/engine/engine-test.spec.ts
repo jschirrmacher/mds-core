@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-import { ComplianceSnapshotDomainModel } from '@mds-core/mds-compliance-service/@types'
+import type { ComplianceSnapshotDomainModel } from '@mds-core/mds-compliance-service/@types'
 import db from '@mds-core/mds-db'
-import { GeographyDomainModel } from '@mds-core/mds-geography-service'
-import { PolicyDomainModel } from '@mds-core/mds-policy-service'
+import type { GeographyDomainModel } from '@mds-core/mds-geography-service'
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
+import { IngestServiceManager } from '@mds-core/mds-ingest-service'
+import type { PolicyDomainModel } from '@mds-core/mds-policy-service'
 import { LA_CITY_BOUNDARY, makeDevices, makeEventsWithTelemetry, TEST1_PROVIDER_ID } from '@mds-core/mds-test-data'
-import { Device, VehicleEvent } from '@mds-core/mds-types'
-import assert from 'assert'
-import { FeatureCollection } from 'geojson'
-import test from 'unit.js'
-import { VehicleEventWithTelemetry } from '../../@types'
+import type { VehicleEvent } from '@mds-core/mds-types'
+import { RuntimeError } from '@mds-core/mds-utils'
+import type { FeatureCollection } from 'geojson'
+import type { VehicleEventWithTelemetry } from '../../@types'
 import { filterEvents, getAllInputs, getSupersedingPolicies } from '../../engine/helpers'
 import { processPolicy } from '../../engine/mds-compliance-engine'
 import {
@@ -34,7 +35,7 @@ import {
 } from '../../test_data/fixtures'
 import { readJson } from './helpers'
 
-let policies: PolicyDomainModel[] = []
+let policies: Required<PolicyDomainModel>[] = []
 
 const CITY_OF_LA = '1f943d59-ccc9-4d91-b6e2-0c5e771cbc49'
 
@@ -48,9 +49,16 @@ function now(): number {
   return Date.now()
 }
 
+const IngestServer = IngestServiceManager.controller()
+
 describe('Tests General Compliance Engine Functionality', () => {
-  before(async () => {
-    policies = await readJson('test_data/policies.json')
+  beforeAll(async () => {
+    policies = (await readJson('test_data/policies.json')) as Required<PolicyDomainModel>[]
+    await IngestServer.start()
+  })
+
+  afterAll(async () => {
+    await IngestServer.stop()
   })
 
   beforeEach(async () => {
@@ -60,18 +68,18 @@ describe('Tests General Compliance Engine Functionality', () => {
   it('Verifies not considering events older than 48 hours', async () => {
     const TWO_DAYS_IN_MS = 172800000
     const curTime = now()
-    const devices = makeDevices(400, curTime)
+    const devices = makeDevices(40, curTime)
     const events = makeEventsWithTelemetry(devices, curTime - TWO_DAYS_IN_MS, CITY_OF_LA, {
       event_types: ['trip_end'],
       vehicle_state: 'available',
       speed: 0
     })
+
     await db.seed({ devices, events, telemetry: events.map(({ telemetry }) => telemetry) })
 
     // make sure this helper works
     const recentEvents = filterEvents(events) as VehicleEventWithTelemetry[]
-    test.assert.deepEqual(recentEvents.length, 0)
-
+    expect(recentEvents.length).toStrictEqual(0)
     // Mimic what we do in the real world to get inputs to feed into the compliance engine.
     const supersedingPolicies = getSupersedingPolicies(policies)
     const inputs = await getAllInputs()
@@ -80,7 +88,7 @@ describe('Tests General Compliance Engine Functionality', () => {
     )
     policyResults.forEach(complianceSnapshots => {
       complianceSnapshots.forEach(complianceSnapshot => {
-        test.assert.deepEqual(complianceSnapshot?.vehicles_found.length, 0)
+        expect(complianceSnapshot?.vehicles_found.length).toStrictEqual(0)
       })
     })
   })
@@ -88,7 +96,7 @@ describe('Tests General Compliance Engine Functionality', () => {
   it('does not run inactive policies', async () => {
     const devices = makeDevices(6, now())
     const start_time = now() - 10000000
-    const events = devices.reduce((events_acc: VehicleEvent[], device: Device, current_index) => {
+    const events = devices.reduce((events_acc: VehicleEvent[], device: DeviceDomainModel, current_index) => {
       const device_events = makeEventsWithTelemetry([device], start_time - current_index * 10, CITY_OF_LA, {
         event_types: ['trip_start'],
         vehicle_state: 'on_trip',
@@ -100,19 +108,34 @@ describe('Tests General Compliance Engine Functionality', () => {
     await db.seed({ devices, events, telemetry: events.map(({ telemetry }) => telemetry) })
     const inputs = await getAllInputs()
     const result = await processPolicy(EXPIRED_POLICY, geographies, inputs)
-    test.assert.deepEqual(result, [])
+    expect(result).toStrictEqual([])
   })
 })
 
 describe('Verifies compliance engine processes by vehicle most recent event', () => {
+  beforeAll(async () => {
+    await IngestServer.start()
+  })
+  afterAll(async () => {
+    await IngestServer.stop()
+  })
   beforeEach(async () => {
     await db.reinitialize()
   })
+
+  beforeAll(async () => {
+    await IngestServer.start()
+  })
+
+  afterAll(async () => {
+    await IngestServer.stop()
+  })
+
   it('should process count violation vehicles with the most recent event last', async () => {
     const devices = makeDevices(6, now())
     const start_time = now() - 10000000
-    const latest_device: Device = devices[0]
-    const events = devices.reduce((events_acc: VehicleEvent[], device: Device, current_index) => {
+    const latest_device: DeviceDomainModel = devices[0]
+    const events = devices.reduce((events_acc: VehicleEvent[], device: DeviceDomainModel, current_index) => {
       const device_events = makeEventsWithTelemetry([device], start_time - current_index * 10, CITY_OF_LA, {
         event_types: ['trip_start'],
         vehicle_state: 'on_trip',
@@ -127,18 +150,18 @@ describe('Verifies compliance engine processes by vehicle most recent event', ()
     const { 0: result } = complianceResults.filter(
       complianceResult => complianceResult?.provider_id === TEST1_PROVIDER_ID
     ) as ComplianceSnapshotDomainModel[]
-    test.assert.deepEqual(result?.total_violations, 1)
+    expect(result?.total_violations).toStrictEqual(1)
     const [device] =
       result?.vehicles_found.filter(vehicle => {
         return !vehicle.rule_applied
       }) ?? []
-    test.assert.deepEqual(latest_device.device_id, device?.device_id)
+    expect(latest_device.device_id).toStrictEqual(device?.device_id)
   })
 
   it('Verifies arbitrary event_types can be set for a state in a rule', async () => {
     const devices = makeDevices(6, now())
     const start_time = now() - 10000000
-    const events = devices.reduce((events_acc: VehicleEvent[], device: Device, current_index) => {
+    const events = devices.reduce((events_acc: VehicleEvent[], device: DeviceDomainModel, current_index) => {
       const device_events = makeEventsWithTelemetry([device], start_time - current_index * 10, CITY_OF_LA, {
         event_types: ['battery_low'],
         vehicle_state: 'available',
@@ -153,13 +176,13 @@ describe('Verifies compliance engine processes by vehicle most recent event', ()
     const { 0: result } = complianceResults.filter(
       complianceResult => complianceResult?.provider_id === TEST1_PROVIDER_ID
     ) as ComplianceSnapshotDomainModel[]
-    test.assert.deepEqual(result?.total_violations, 1)
+    expect(result?.total_violations).toStrictEqual(1)
   })
 
   it('Verifies no match when event types do not match policy', async () => {
     const devices = makeDevices(6, now())
     const start_time = now() - 10000000
-    const events = devices.reduce((events_acc: VehicleEvent[], device: Device, current_index) => {
+    const events = devices.reduce((events_acc: VehicleEvent[], device: DeviceDomainModel, current_index) => {
       const device_events = makeEventsWithTelemetry([device], start_time - current_index * 10, CITY_OF_LA, {
         event_types: ['reservation_cancel'],
         vehicle_state: 'available',
@@ -174,13 +197,13 @@ describe('Verifies compliance engine processes by vehicle most recent event', ()
     const { 0: result } = complianceResults.filter(
       complianceResult => complianceResult?.provider_id === TEST1_PROVIDER_ID
     )
-    test.assert.deepEqual(result?.total_violations, 0)
+    expect(result?.total_violations).toStrictEqual(0)
   })
 
   it('Verifies state wildcard matching works', async () => {
     const devices = makeDevices(11, now())
     const start_time = now() - 10000000
-    const events = devices.reduce((events_acc: VehicleEvent[], device: Device, current_index) => {
+    const events = devices.reduce((events_acc: VehicleEvent[], device: DeviceDomainModel, current_index) => {
       const device_events = makeEventsWithTelemetry([device], start_time - current_index * 10, CITY_OF_LA, {
         event_types: ['battery_low'],
         vehicle_state: 'available',
@@ -195,11 +218,18 @@ describe('Verifies compliance engine processes by vehicle most recent event', ()
     const { 0: result } = complianceResults.filter(
       complianceResult => complianceResult?.provider_id === TEST1_PROVIDER_ID
     ) as ComplianceSnapshotDomainModel[]
-    test.assert.deepEqual(result?.total_violations, 1)
+    expect(result?.total_violations).toStrictEqual(1)
   })
 })
 
-describe('Verifies errors are being properly thrown', async () => {
+describe('Verifies errors are being properly thrown', () => {
+  beforeAll(async () => {
+    await IngestServer.start()
+  })
+  afterAll(async () => {
+    await IngestServer.stop()
+  })
+
   it('Verifies RuntimeErrors are being thrown with an invalid TIMEZONE env_var', async () => {
     const oldTimezone = process.env.TIMEZONE
     process.env.TIMEZONE = 'Pluto/Potato_Land'
@@ -212,13 +242,12 @@ describe('Verifies errors are being properly thrown', async () => {
 
     await db.seed({ devices, events, telemetry: events.map(({ telemetry }) => telemetry) })
 
-    await assert.rejects(
-      async () => {
-        const inputs = await getAllInputs()
-        await processPolicy(policies[0]!, geographies, inputs)
-      },
-      { name: 'RuntimeError' }
-    )
+    await expect(async () => {
+      const inputs = await getAllInputs()
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      await processPolicy(policies[0]!, geographies, inputs)
+    }).rejects.toThrowError(RuntimeError)
+
     process.env.TIMEZONE = oldTimezone
   })
 })

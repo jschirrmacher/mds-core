@@ -1,6 +1,6 @@
 name: mds-attachment-service
 namespace: mds
-image: node:16.11.1
+image: node:16.14.2
 command: ["bash"]
 forward:
   - 9229:9229

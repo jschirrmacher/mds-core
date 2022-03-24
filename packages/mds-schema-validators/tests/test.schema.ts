@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { JSONSchemaType } from 'ajv'
+import type { JSONSchemaType } from 'ajv'
 
 const Countries = <const>['US', 'CA']
 type Country = typeof Countries[number]

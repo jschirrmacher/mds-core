@@ -22,13 +22,12 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable promise/catch-or-return */
 
+import type { AttachmentDomainModel } from '@mds-core/mds-attachment-service'
 import { AttachmentServiceClient } from '@mds-core/mds-attachment-service'
 import db from '@mds-core/mds-db'
-import { Attachment, AuditAttachment, Recorded } from '@mds-core/mds-types'
+import type { Attachment, AuditAttachment, Recorded } from '@mds-core/mds-types'
 import { isUUID, NotFoundError, uuid } from '@mds-core/mds-utils'
-import assert from 'assert'
 import fs from 'fs'
-import Sinon from 'sinon'
 import { getWriteableClient } from '../../mds-db/client'
 import schema from '../../mds-db/schema'
 import { attachmentSummary, deleteAuditAttachment, readAttachments, writeAttachment } from '../attachments'
@@ -70,7 +69,7 @@ describe('Testing Attachments Service', () => {
     buffer: fs.readFileSync('./tests/sample.png')
   } as Express.Multer.File
 
-  before('Initializing database', async () => {
+  beforeAll(async () => {
     await db.reinitialize()
   })
 
@@ -81,68 +80,82 @@ describe('Testing Attachments Service', () => {
 
   it('verify attachment summary', () => {
     const summary = attachmentSummary(attachment)
-    assert.equal(summary.attachment_id, attachment.attachment_id)
-    assert.equal(summary.attachment_url, attachment.base_url + attachment.attachment_filename)
-    assert.equal(summary.thumbnail_url, attachment.base_url + attachment.thumbnail_filename)
+    expect(summary.attachment_id).toStrictEqual(attachment.attachment_id)
+    expect(summary.attachment_url).toStrictEqual(attachment.base_url + attachment.attachment_filename)
+    expect(summary.thumbnail_url).toStrictEqual(attachment.base_url + attachment.thumbnail_filename)
   })
 
   it('verify attachment summary (without thumbnail)', () => {
     const summary = attachmentSummary({ ...attachment, ...{ thumbnail_filename: '' } })
-    assert.equal(summary.attachment_id, attachment.attachment_id)
-    assert.equal(summary.attachment_url, attachment.base_url + attachment.attachment_filename)
-    assert.equal(summary.thumbnail_url, '')
+    expect(summary.attachment_id).toStrictEqual(attachment.attachment_id)
+    expect(summary.attachment_url).toStrictEqual(attachment.base_url + attachment.attachment_filename)
+    expect(summary.thumbnail_url).toStrictEqual('')
   })
 
   it('verify writeAttachment', async () => {
-    const writeAttachmentStub = Sinon.stub(AttachmentServiceClient, 'writeAttachment')
-    const writeAuditAttachmentStub = Sinon.stub(db, 'writeAuditAttachment')
-    writeAttachmentStub.resolves(attachment as any) // casting for the sake of test happiness
+    const writeAttachmentSpy = jest.spyOn(AttachmentServiceClient, 'writeAttachment')
+    writeAttachmentSpy.mockImplementationOnce(async () => attachment as AttachmentDomainModel) // casting for the sake of test happiness
     const res: Attachment | null = await writeAttachment(attachmentFile, auditTripId)
-    assert.equal(res && res.attachment_filename.includes('.png'), true)
-    assert.equal(res && res.thumbnail_filename && res.thumbnail_filename.includes('.png'), true)
-    assert.equal(res && isUUID(res.attachment_id), true)
-    assert.equal(res && res.mimetype, mimetype)
-    Sinon.assert.calledOnce(writeAttachmentStub)
-    Sinon.assert.calledOnce(writeAuditAttachmentStub)
+    expect(res && res.attachment_filename.includes('.png')).toStrictEqual(true)
+    expect(res && res.thumbnail_filename && res.thumbnail_filename.includes('.png')).toStrictEqual(true)
+    expect(res && isUUID(res.attachment_id)).toStrictEqual(true)
+    expect(res && res.mimetype).toStrictEqual(mimetype)
+    expect(writeAttachmentSpy).toHaveBeenCalledTimes(1)
   })
 
   it('verify readAttachment', async () => {
-    const readAttachmentsStub = Sinon.stub(db, 'readAttachmentsForAudit')
-    readAttachmentsStub.resolves([recordedAttachment, recordedAttachment])
+    const readAttachmentsSpy = jest.spyOn(db, 'readAttachmentsForAudit')
+    readAttachmentsSpy.mockResolvedValue([recordedAttachment, recordedAttachment])
     const res: Recorded<Attachment>[] = await readAttachments(auditTripId)
-    Sinon.assert.calledOnce(readAttachmentsStub)
-    assert.equal(res.length, 2)
-    assert.equal(res[0], recordedAttachment)
-    assert.equal(res[1], recordedAttachment)
+    expect(readAttachmentsSpy).toHaveBeenCalledTimes(1)
+    expect(res.length).toStrictEqual(2)
+    expect(res[0]).toStrictEqual(recordedAttachment)
+    expect(res[1]).toStrictEqual(recordedAttachment)
   })
 
   it('verify delete audit attachment (not found)', async () => {
-    const deleteS3ObjectSpy = Sinon.spy(aws.S3.prototype.deleteObject)
-    const deleteAttachmentSpy = Sinon.spy(db, 'deleteAttachment')
-    const deleteAuditAttachmentSpy = Sinon.spy(db, 'deleteAuditAttachment')
-    await assert.rejects(() => deleteAuditAttachment(uuid(), uuid()), NotFoundError)
-    Sinon.assert.notCalled(deleteS3ObjectSpy)
-    Sinon.assert.notCalled(deleteAttachmentSpy)
-    Sinon.assert.calledOnce(deleteAuditAttachmentSpy)
+    const mS3Instance = {
+      deleteObject: jest.fn().mockReturnThis()
+    }
+
+    jest.mock('aws-sdk', () => {
+      return { S3: jest.fn(() => mS3Instance) }
+    })
+
+    const deleteAttachmentSpy = jest.spyOn(db, 'deleteAttachment')
+    const deleteAuditAttachmentSpy = jest.spyOn(db, 'deleteAuditAttachment')
+
+    expect(() => deleteAuditAttachment(uuid(), uuid())).rejects.toThrowError(NotFoundError)
+
+    expect(mS3Instance.deleteObject).not.toHaveBeenCalled()
+    expect(deleteAttachmentSpy).not.toHaveBeenCalled()
+    expect(deleteAuditAttachmentSpy).toHaveBeenCalledTimes(1)
   })
 
   it('verify delete audit attachment (still in use)', async () => {
-    const deleteS3ObjectSpy = Sinon.spy(aws.S3.prototype.deleteObject)
-    const deleteAttachmentSpy = Sinon.spy(db, 'deleteAttachment')
-    const deleteAuditAttachmentSpy = Sinon.spy(db, 'deleteAuditAttachment')
+    const mS3Instance = {
+      deleteObject: jest.fn().mockReturnThis()
+    }
+
+    jest.mock('aws-sdk', () => {
+      return { S3: jest.fn(() => mS3Instance) }
+    })
+
+    const deleteAttachmentSpy = jest.spyOn(db, 'deleteAttachment')
+    const deleteAuditAttachmentSpy = jest.spyOn(db, 'deleteAuditAttachment')
     await db.writeAuditAttachment(auditAttachment)
     await db.writeAuditAttachment({ ...auditAttachment, ...{ audit_trip_id: uuid() } })
     await deleteAuditAttachment(auditAttachment.audit_trip_id, auditAttachment.attachment_id)
-    Sinon.assert.notCalled(deleteS3ObjectSpy)
-    Sinon.assert.notCalled(deleteAttachmentSpy)
-    Sinon.assert.calledOnce(deleteAuditAttachmentSpy)
+    expect(mS3Instance.deleteObject).not.toHaveBeenCalled()
+    expect(deleteAttachmentSpy).not.toHaveBeenCalled()
+    expect(deleteAuditAttachmentSpy).toHaveBeenCalledTimes(1)
   })
 
   afterEach(() => {
-    Sinon.restore()
+    jest.restoreAllMocks()
   })
 
-  after('Clearing and shutting down database', async () => {
+  afterAll(async () => {
     await db.reinitialize()
     await db.shutdown()
   })

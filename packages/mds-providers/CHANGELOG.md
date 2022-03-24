@@ -1,5 +1,20 @@
 # @mds-core/mds-providers
 
+## 0.2.10
+
+### Patch Changes
+
+- f9090232: Add Veo Ride and Divvy Provider entries
+
+## 0.2.9
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- c4e78cc9: Add additional providers to mds-providers
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-types@0.9.2
+
 ## 0.2.8
 
 ### Patch Changes

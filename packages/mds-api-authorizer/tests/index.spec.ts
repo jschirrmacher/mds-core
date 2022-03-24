@@ -15,94 +15,89 @@
  */
 
 import { uuid } from '@mds-core/mds-utils'
-import express from 'express'
+import type express from 'express'
 import jwt from 'jsonwebtoken'
-import { AuthorizationHeaderApiAuthorizer, CustomClaim, WebSocketAuthorizer } from '../index'
+import { AuthorizationHeaderApiAuthorizer, CustomClaim, NoAuthorizerClaims } from '../index'
 
 const PROVIDER_SCOPES = 'admin:all'
 const PROVIDER_SUBJECT = uuid()
 const PROVIDER_EMAIL = 'user@test.ai'
 const PROVIDER_ID = uuid()
 
-const { env } = process
+const BasicAccessToken = Buffer.from(`${PROVIDER_ID}|${PROVIDER_SCOPES}`).toString('base64')
 
-const Basic = () => `Basic ${Buffer.from(`${PROVIDER_ID}|${PROVIDER_SCOPES}`).toString('base64')}`
+const EnhancedBasicAccessToken = Buffer.from(
+  `Bearer|${JSON.stringify({
+    principalId: PROVIDER_SUBJECT,
+    provider_id: PROVIDER_ID,
+    user_email: PROVIDER_EMAIL,
+    scope: PROVIDER_SCOPES
+  })}`
+).toString('base64')
 
-const Bearer = () =>
-  `Bearer ${jwt.sign(
-    {
-      sub: PROVIDER_SUBJECT,
-      [CustomClaim('user_email')]: PROVIDER_EMAIL,
-      [CustomClaim('provider_id')]: PROVIDER_ID,
-      scope: PROVIDER_SCOPES
-    },
-    'secret'
-  )}`
+const BearerAccessToken = jwt.sign(
+  {
+    sub: PROVIDER_SUBJECT,
+    [CustomClaim('user_email')]: PROVIDER_EMAIL,
+    [CustomClaim('provider_id')]: PROVIDER_ID,
+    scope: PROVIDER_SCOPES
+  },
+  'secret'
+)
 
 describe('Test API Authorizer', () => {
-  beforeAll(() => {
-    process.env = { TOKEN_CUSTOM_CLAIM_NAMESPACE: 'https://test.ai/' }
+  it('No Authorizaton', async () => {
+    expect(AuthorizationHeaderApiAuthorizer({} as express.Request)).toEqual(NoAuthorizerClaims)
   })
 
-  describe('Authorizaton Header Authorizer', () => {
-    it('No Authorizaton', async () => {
-      expect(AuthorizationHeaderApiAuthorizer({} as express.Request)).toEqual(null)
-    })
+  it('Invalid Authorizaton Scheme', async () => {
+    expect(
+      AuthorizationHeaderApiAuthorizer({
+        headers: { authorization: 'invalid' }
+      } as express.Request)
+    ).toEqual(NoAuthorizerClaims)
+  })
 
-    it('Invalid Authorizaton Scheme', async () => {
-      expect(
-        AuthorizationHeaderApiAuthorizer({
-          headers: { authorization: 'invalid' }
-        } as express.Request)
-      ).toEqual(null)
+  it('Basic Authorizaton', async () => {
+    expect(
+      AuthorizationHeaderApiAuthorizer({
+        headers: { authorization: `Basic ${BasicAccessToken}` }
+      } as express.Request)
+    ).toMatchObject({
+      authorization: { token_type: 'Basic', access_token: BasicAccessToken },
+      claims: { principalId: PROVIDER_ID, provider_id: PROVIDER_ID, scope: PROVIDER_SCOPES }
     })
+  })
 
-    it('Basic Authorizaton', async () => {
-      expect(
-        AuthorizationHeaderApiAuthorizer({
-          headers: { authorization: Basic() }
-        } as express.Request)
-      ).toMatchObject({
-        principalId: PROVIDER_ID,
-        provider_id: PROVIDER_ID,
-        scope: PROVIDER_SCOPES
-      })
-    })
-
-    it('Bearer Authorizaton', async () => {
-      expect(
-        AuthorizationHeaderApiAuthorizer({
-          headers: { authorization: Bearer() }
-        } as express.Request)
-      ).toMatchObject({
+  it('Enhanced Basic Authorizaton', async () => {
+    expect(
+      AuthorizationHeaderApiAuthorizer({
+        headers: { authorization: `Basic ${EnhancedBasicAccessToken}` }
+      } as express.Request)
+    ).toMatchObject({
+      authorization: { token_type: 'Basic', access_token: EnhancedBasicAccessToken },
+      claims: {
         principalId: PROVIDER_SUBJECT,
         provider_id: PROVIDER_ID,
         user_email: PROVIDER_EMAIL,
         scope: PROVIDER_SCOPES
-      })
+      }
     })
   })
 
-  describe('WebSocket Authorizer', () => {
-    it('Basic Authorization', async () => {
-      expect(WebSocketAuthorizer(Basic())).toMatchObject({
-        principalId: PROVIDER_ID,
-        provider_id: PROVIDER_ID,
-        scope: PROVIDER_SCOPES
-      })
-    })
-
-    it('Bearer Authorization', async () => {
-      expect(WebSocketAuthorizer(Bearer())).toMatchObject({
+  it('Bearer Authorizaton', async () => {
+    expect(
+      AuthorizationHeaderApiAuthorizer({
+        headers: { authorization: `Bearer ${BearerAccessToken}` }
+      } as express.Request)
+    ).toMatchObject({
+      authorization: { token_type: 'Bearer', access_token: BearerAccessToken },
+      claims: {
         principalId: PROVIDER_SUBJECT,
         provider_id: PROVIDER_ID,
         user_email: PROVIDER_EMAIL,
         scope: PROVIDER_SCOPES
-      })
+      }
     })
-  })
-
-  afterAll(() => {
-    process.env = env
   })
 })

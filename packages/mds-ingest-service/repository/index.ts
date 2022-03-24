@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-import { InsertReturning, ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
-import { Nullable, UUID } from '@mds-core/mds-types'
+import type { InsertReturning } from '@mds-core/mds-repository'
+import { ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
+import type { Nullable, UUID } from '@mds-core/mds-types'
 import { head, isDefined, isUUID, tail, testEnvSafeguard, ValidationError, zip } from '@mds-core/mds-utils'
-import { Any, SelectQueryBuilder } from 'typeorm'
-import { buildPaginator, Cursor, PagingResult } from 'typeorm-cursor-pagination'
-import {
+import type { SelectQueryBuilder } from 'typeorm'
+import { Any } from 'typeorm'
+import type { Cursor, PagingResult } from 'typeorm-cursor-pagination'
+import { buildPaginator } from 'typeorm-cursor-pagination'
+import type {
   DeviceDomainCreateModel,
   DeviceDomainModel,
   EventAnnotationDomainCreateModel,
@@ -36,6 +39,7 @@ import {
   GetVehicleEventsResponse,
   ReadDeviceEventsQueryParams,
   ReadTripEventsQueryParams,
+  TelemetryAnnotationDomainCreateModel,
   TelemetryDomainCreateModel,
   TelemetryDomainModel
 } from '../@types'
@@ -43,6 +47,7 @@ import entities from './entities'
 import { DeviceEntity } from './entities/device-entity'
 import { EventAnnotationEntity } from './entities/event-annotation-entity'
 import { EventEntity } from './entities/event-entity'
+import { TelemetryAnnotationEntity } from './entities/telemetry-annotation-entity'
 import { TelemetryEntity } from './entities/telemetry-entity'
 import {
   DeviceDomainToEntityCreate,
@@ -55,12 +60,14 @@ import {
   TelemetryDomainToEntityCreate,
   TelemetryEntityToDomain
 } from './mappers'
+import {
+  TelemetryAnnotationDomainToEntityCreate,
+  TelemetryAnnotationEntityToDomain
+} from './mappers/telemetry-annotation-mappers'
 import migrations from './migrations'
 import views from './views'
-import {
-  EventWithDeviceAndTelemetryInfoEntity,
-  EventWithDeviceAndTelemetryInfoEntityModel
-} from './views/event-with-device-and-telemetry-info'
+import type { EventWithDeviceAndTelemetryInfoEntityModel } from './views/event-with-device-and-telemetry-info'
+import { EventWithDeviceAndTelemetryInfoEntity } from './views/event-with-device-and-telemetry-info'
 
 type WithCursorOptions<P extends object> = P & Cursor
 
@@ -476,6 +483,23 @@ export const IngestRepository = ReadWriteRepository.Create(
         try {
           const entities = await createTelemetriesEntityReturning(telemetries)
           return entities.map(TelemetryEntityToDomain.mapper())
+        } catch (error) {
+          throw RepositoryError(error)
+        }
+      },
+
+      createTelemetryAnnotations: async (telemetryAnnotations: TelemetryAnnotationDomainCreateModel[]) => {
+        try {
+          const connection = await repository.connect('rw')
+          const { raw: entities }: InsertReturning<TelemetryAnnotationEntity> = await connection
+            .getRepository(TelemetryAnnotationEntity)
+            .createQueryBuilder()
+            .insert()
+            .values(telemetryAnnotations.map(TelemetryAnnotationDomainToEntityCreate.mapper()))
+            .returning('*')
+            .execute()
+
+          return entities.map(TelemetryAnnotationEntityToDomain.mapper())
         } catch (error) {
           throw RepositoryError(error)
         }

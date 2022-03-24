@@ -15,14 +15,16 @@
  */
 
 import db from '@mds-core/mds-db'
-import { GeographyDomainCreateModel, GeographyServiceClient } from '@mds-core/mds-geography-service'
-import { PolicyDomainModel, PolicyServiceClient } from '@mds-core/mds-policy-service'
+import type { GeographyDomainCreateModel } from '@mds-core/mds-geography-service'
+import { GeographyServiceClient } from '@mds-core/mds-geography-service'
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
+import type { PolicyDomainModel } from '@mds-core/mds-policy-service'
+import { PolicyServiceClient } from '@mds-core/mds-policy-service'
 import { getProviders } from '@mds-core/mds-providers'
 import { makeDevices, makeEventsWithTelemetry } from '@mds-core/mds-test-data'
 import { LA_CITY_BOUNDARY } from '@mds-core/mds-test-data/test-areas/la-city-boundary'
-import { Device_v1_1_0 } from '@mds-core/mds-types'
 import { minutes, now } from '@mds-core/mds-utils'
-import { FeatureCollection } from 'geojson'
+import type { FeatureCollection } from 'geojson'
 import { readJson } from './helpers'
 
 let policies: PolicyDomainModel[] = []
@@ -48,7 +50,7 @@ async function main() {
   await GeographyServiceClient.publishGeography({ geography_id: geographies[0].geography_id })
 
   const providerIDs = Object.keys(await getProviders()).slice(0, 4)
-  const devices = providerIDs.reduce((acc: Device_v1_1_0[], providerID) => {
+  const devices = providerIDs.reduce((acc: DeviceDomainModel[], providerID) => {
     acc = acc.concat(makeDevices(20000, now(), providerID))
     return acc
   }, [])

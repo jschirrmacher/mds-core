@@ -15,7 +15,8 @@
  */
 
 import { RpcServer } from '@mds-core/mds-rpc-common'
-import { IngestService, IngestServiceDefinition, IngestServiceRequestContext } from '../@types'
+import type { IngestService, IngestServiceRequestContext } from '../@types'
+import { IngestServiceDefinition } from '../@types'
 import { IngestServiceClient } from '../client'
 import { IngestServiceProvider } from './provider'
 
@@ -36,6 +37,7 @@ export const IngestServiceManager = RpcServer<IngestService, IngestServiceReques
       IngestServiceProvider.getLatestTelemetryForDevices(context, ...args),
     writeEvents: (args, context) => IngestServiceProvider.writeEvents(context, ...args),
     writeEventAnnotations: (args, context) => IngestServiceProvider.writeEventAnnotations(context, ...args),
+    writeTelemetryAnnotations: (args, context) => IngestServiceProvider.writeTelemetryAnnotations(context, ...args),
     getTripEvents: (args, context) => IngestServiceProvider.getTripEvents(context, ...args),
     getEventsWithDeviceAndTelemetryInfoUsingOptions: (args, context) =>
       IngestServiceProvider.getEventsWithDeviceAndTelemetryInfoUsingOptions(context, ...args),

@@ -15,11 +15,12 @@
  */
 
 import { BigintTransformer, DesignType, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
-import { Nullable, Timestamp, TRIP_STATE, UUID, VEHICLE_EVENT, VEHICLE_STATE } from '@mds-core/mds-types'
+import type { TRIP_STATE, VEHICLE_EVENT } from '@mds-core/mds-types'
+import { Nullable, Timestamp, UUID, VEHICLE_STATE } from '@mds-core/mds-types'
 import { Column, Entity, Index, OneToOne } from 'typeorm'
 import { MigratedEntity } from '../mixins/migrated-entity'
 import { EventAnnotationEntity, EventAnnotationEntityModel } from './event-annotation-entity'
-import { TelemetryEntityModel } from './telemetry-entity'
+import type { TelemetryEntityModel } from './telemetry-entity'
 
 @Entity('events')
 @Index(['trip_id', 'timestamp'])

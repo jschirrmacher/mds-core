@@ -1,5 +1,106 @@
 # @mds-core/mds-compliance-api
 
+## 0.4.34
+
+### Patch Changes
+
+- Updated dependencies [e66dced4]
+  - @mds-core/mds-db@0.6.15
+  - @mds-core/mds-compliance-service@0.10.29
+  - @mds-core/mds-schema-validators@0.5.9
+  - @mds-core/mds-test-data@0.4.26
+  - @mds-core/mds-api-helpers@0.2.23
+  - @mds-core/mds-policy-service@0.11.26
+
+## 0.4.33
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.28
+- @mds-core/mds-policy-service@0.11.25
+- @mds-core/mds-db@0.6.14
+- @mds-core/mds-test-data@0.4.25
+- @mds-core/mds-api-helpers@0.2.22
+
+## 0.4.32
+
+### Patch Changes
+
+- @mds-core/mds-api-server@0.4.10
+- @mds-core/mds-api-helpers@0.2.21
+- @mds-core/mds-compliance-service@0.10.27
+- @mds-core/mds-policy-service@0.11.24
+- @mds-core/mds-db@0.6.13
+- @mds-core/mds-test-data@0.4.24
+
+## 0.4.31
+
+### Patch Changes
+
+- Updated dependencies [af3631da]
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-api-server@0.4.9
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-api-helpers@0.2.20
+  - @mds-core/mds-compliance-service@0.10.26
+  - @mds-core/mds-policy-service@0.11.23
+  - @mds-core/mds-db@0.6.12
+  - @mds-core/mds-schema-validators@0.5.8
+  - @mds-core/mds-service-helpers@0.6.7
+  - @mds-core/mds-test-data@0.4.23
+
+## 0.4.30
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.25
+- @mds-core/mds-policy-service@0.11.22
+- @mds-core/mds-db@0.6.11
+- @mds-core/mds-test-data@0.4.22
+- @mds-core/mds-api-helpers@0.2.19
+
+## 0.4.29
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.24
+- @mds-core/mds-policy-service@0.11.21
+- @mds-core/mds-db@0.6.10
+- @mds-core/mds-test-data@0.4.21
+- @mds-core/mds-api-helpers@0.2.18
+
+## 0.4.28
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.23
+- @mds-core/mds-policy-service@0.11.20
+- @mds-core/mds-db@0.6.9
+- @mds-core/mds-test-data@0.4.20
+- @mds-core/mds-api-helpers@0.2.17
+
+## 0.4.27
+
+### Patch Changes
+
+- aaf3c1cf: updated tests to match readPolicies type change
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [aaf3c1cf]
+- Updated dependencies [ade56b85]
+- Updated dependencies [a93da2b6]
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-policy-service@0.11.19
+  - @mds-core/mds-db@0.6.8
+  - @mds-core/mds-schema-validators@0.5.7
+  - @mds-core/mds-test-data@0.4.19
+  - @mds-core/mds-api-helpers@0.2.16
+  - @mds-core/mds-api-server@0.4.8
+  - @mds-core/mds-compliance-service@0.10.22
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-service-helpers@0.6.6
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.4.26
 
 ### Patch Changes

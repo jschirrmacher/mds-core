@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { TelemetryCreateSchema } from '@mds-core/mds-ingest-service'
+import { auditTelemetryDomainCreateModelSchema } from '@mds-core/mds-audit-service'
 import { SchemaValidator } from '@mds-core/mds-schema-validators'
 import { AUDIT_EVENT_TYPES, VEHICLE_EVENTS } from '@mds-core/mds-types'
-import {
+import type {
   AuditApiAuditEndRequest,
   AuditApiAuditNoteRequest,
   AuditApiAuditStartRequest,
@@ -37,7 +37,7 @@ export const { validate: validateAuditApiAuditStartRequest } = SchemaValidator<A
       provider_vehicle_id: { type: 'string', maxLength: 255 },
       audit_event_id: uuidSchema,
       audit_device_id: uuidSchema,
-      telemetry: { ...TelemetryCreateSchema, nullable: true, default: null }
+      telemetry: { ...auditTelemetryDomainCreateModelSchema, nullable: true, default: null }
     },
     required: ['audit_event_id', 'audit_device_id', 'provider_id', 'provider_vehicle_id', 'timestamp']
   },
@@ -53,7 +53,7 @@ export const { validate: validateAuditApiVehicleEventRequest } = SchemaValidator
   properties: {
     event_type: { type: 'string', enum: VEHICLE_EVENTS },
     timestamp: timestampSchema,
-    telemetry: { ...TelemetryCreateSchema, nullable: true, default: null },
+    telemetry: { ...auditTelemetryDomainCreateModelSchema, nullable: true, default: null },
     audit_event_id: uuidSchema,
     trip_id: uuidSchema
   },
@@ -70,7 +70,7 @@ export const { validate: validateAuditApiAuditNoteRequest } = SchemaValidator<Au
       enum: [AUDIT_EVENT_TYPES.issue, AUDIT_EVENT_TYPES.note, AUDIT_EVENT_TYPES.summary]
     },
     timestamp: timestampSchema,
-    telemetry: { ...TelemetryCreateSchema, nullable: true, default: null },
+    telemetry: { ...auditTelemetryDomainCreateModelSchema, nullable: true, default: null },
     audit_issue_code: { type: 'string', maxLength: 31, nullable: true, default: null },
     note: { type: 'string', maxLength: 255, nullable: true, default: null }
   },
@@ -95,7 +95,7 @@ export const { validate: validateAuditApiAuditEndRequest, isValid: isValidAuditA
     audit_event_id: uuidSchema,
     audit_event_type: { type: 'string' },
     timestamp: timestampSchema,
-    telemetry: { ...TelemetryCreateSchema, nullable: true, default: null }
+    telemetry: { ...auditTelemetryDomainCreateModelSchema, nullable: true, default: null }
   },
   required: ['audit_event_id', 'timestamp', 'audit_event_type']
 })

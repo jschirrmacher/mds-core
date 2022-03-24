@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-export { CollectorApiGetMessageSchemaResponseBody } from './handlers/get-message-schema'
-export { CollectorApiWriteSchemaMessagesResponseBody } from './handlers/write-schema-messages'
+export type { CollectorApiGetMessageSchemaResponseBody } from './handlers/get-message-schema'
+export type { CollectorApiWriteSchemaMessagesResponseBody } from './handlers/write-schema-messages'

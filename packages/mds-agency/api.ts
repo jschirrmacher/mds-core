@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { AccessTokenScopeValidator, checkAccess } from '@mds-core/mds-api-server'
+import type { AccessTokenScopeValidator } from '@mds-core/mds-api-server'
+import { checkAccess } from '@mds-core/mds-api-server'
 import { isUUID, pathPrefix } from '@mds-core/mds-utils'
-import express from 'express'
+import type express from 'express'
 import { createEventHandler } from './handlers/create-event'
 import { createTelemetryHandler } from './handlers/create-telemetry'
 import { AgencyLogger } from './logger'
@@ -29,7 +30,8 @@ import {
   writeTripMetadata
 } from './request-handlers'
 import { getCacheInfo } from './sandbox-admin-request-handlers'
-import { AgencyApiAccessTokenScopes, AgencyApiRequest, AgencyApiResponse, AgencyServerError } from './types'
+import type { AgencyApiAccessTokenScopes, AgencyApiRequest, AgencyApiResponse } from './types'
+import { AgencyServerError } from './types'
 import { validateDeviceId } from './utils'
 
 const checkAgencyApiAccess = (validator: AccessTokenScopeValidator<AgencyApiAccessTokenScopes>) =>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class CreateJurisdictionsTable1582294819607 implements MigrationInterface {
   name = 'CreateJurisdictionsTable1582294819607'

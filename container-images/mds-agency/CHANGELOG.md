@@ -1,5 +1,57 @@
 # @container-images/mds-agency
 
+## 0.1.95
+
+### Patch Changes
+
+- @mds-core/mds-agency@0.5.10
+
+## 0.1.94
+
+### Patch Changes
+
+- @mds-core/mds-agency@0.5.9
+
+## 0.1.93
+
+### Patch Changes
+
+- @mds-core/mds-agency@0.5.8
+
+## 0.1.92
+
+### Patch Changes
+
+- @mds-core/mds-agency@0.5.7
+
+## 0.1.91
+
+### Patch Changes
+
+- Updated dependencies [775efc9c]
+  - @mds-core/mds-agency@0.5.6
+
+## 0.1.90
+
+### Patch Changes
+
+- @mds-core/mds-agency@0.5.5
+
+## 0.1.89
+
+### Patch Changes
+
+- @mds-core/mds-agency@0.5.4
+
+## 0.1.88
+
+### Patch Changes
+
+- Updated dependencies [ade56b85]
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-agency@0.5.3
+  - @mds-core/mds-webpack-config@0.1.12
+
 ## 0.1.87
 
 ### Patch Changes

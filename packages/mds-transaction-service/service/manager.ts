@@ -15,7 +15,8 @@
  */
 
 import { RpcServer } from '@mds-core/mds-rpc-common'
-import { TransactionService, TransactionServiceDefinition, TransactionServiceRequestContext } from '../@types'
+import type { TransactionService, TransactionServiceRequestContext } from '../@types'
+import { TransactionServiceDefinition } from '../@types'
 import { TransactionServiceClient } from '../client'
 import { TransactionServiceProvider } from './provider'
 

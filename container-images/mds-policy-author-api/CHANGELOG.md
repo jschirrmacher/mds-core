@@ -1,5 +1,55 @@
 # @container-images/mds-policy-author-api
 
+## 0.1.95
+
+### Patch Changes
+
+- @mds-core/mds-policy-author-api@0.7.32
+
+## 0.1.94
+
+### Patch Changes
+
+- @mds-core/mds-policy-author-api@0.7.31
+
+## 0.1.93
+
+### Patch Changes
+
+- @mds-core/mds-policy-author-api@0.7.30
+
+## 0.1.92
+
+### Patch Changes
+
+- @mds-core/mds-policy-author-api@0.7.29
+
+## 0.1.91
+
+### Patch Changes
+
+- @mds-core/mds-policy-author-api@0.7.28
+
+## 0.1.90
+
+### Patch Changes
+
+- @mds-core/mds-policy-author-api@0.7.27
+
+## 0.1.89
+
+### Patch Changes
+
+- @mds-core/mds-policy-author-api@0.7.26
+
+## 0.1.88
+
+### Patch Changes
+
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-policy-author-api@0.7.25
+  - @mds-core/mds-webpack-config@0.1.12
+
 ## 0.1.87
 
 ### Patch Changes

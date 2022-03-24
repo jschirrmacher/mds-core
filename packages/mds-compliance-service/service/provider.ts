@@ -15,9 +15,10 @@
  */
 
 import { providerName } from '@mds-core/mds-providers'
-import { ProcessController, ServiceException, ServiceProvider, ServiceResult } from '@mds-core/mds-service-helpers'
+import type { ProcessController, ServiceProvider } from '@mds-core/mds-service-helpers'
+import { ServiceException, ServiceResult } from '@mds-core/mds-service-helpers'
 import { isDefined } from '@mds-core/mds-utils'
-import {
+import type {
   ComplianceAggregateDomainModel,
   ComplianceService,
   ComplianceServiceRequestContext,

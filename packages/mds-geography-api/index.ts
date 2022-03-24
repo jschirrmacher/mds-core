@@ -15,4 +15,4 @@
  */
 
 export { api } from './api'
-export { GeographyApiGetGeographiesResponseBody, GeographyApiGetGeographyResponseBody } from './types'
+export type { GeographyApiGetGeographiesResponseBody, GeographyApiGetGeographyResponseBody } from './types'

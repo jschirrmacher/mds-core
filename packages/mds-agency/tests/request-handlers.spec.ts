@@ -1,8 +1,7 @@
 import cache from '@mds-core/mds-agency-cache'
 import db from '@mds-core/mds-db'
-import { IngestServiceClient } from '@mds-core/mds-ingest-service'
-import stream from '@mds-core/mds-stream'
-import { Device } from '@mds-core/mds-types'
+import { IngestServiceClient, IngestStream } from '@mds-core/mds-ingest-service'
+import type { Device } from '@mds-core/mds-types'
 import { uuid } from '@mds-core/mds-utils'
 import Sinon from 'sinon'
 import {
@@ -12,7 +11,7 @@ import {
   updateVehicle,
   updateVehicleFail
 } from '../request-handlers'
-import {
+import type {
   AgencyApiGetVehicleByIdRequest,
   AgencyApiGetVehiclesByProviderRequest,
   AgencyApiGetVehiclesByProviderResponse,
@@ -128,7 +127,7 @@ describe('Agency API request handlers', () => {
       res.locals = getLocals(provider_id) as any
       Sinon.replace(db, 'writeDevice', Sinon.fake.resolves('it-worked'))
       Sinon.replace(cache, 'writeDevices', Sinon.fake.resolves('it-worked'))
-      Sinon.replace(stream, 'writeDevice', Sinon.fake.resolves('it-worked'))
+      Sinon.replace(IngestStream, 'writeDevice', Sinon.fake.resolves('it-worked'))
       await registerVehicle({ body } as AgencyApiRegisterVehicleRequest, res)
       expect(statusHandler.calledWith(201)).toBeTruthy()
       expect(sendHandler.called).toBeTruthy()
@@ -147,7 +146,7 @@ describe('Agency API request handlers', () => {
       res.locals = getLocals(provider_id) as any
       Sinon.replace(db, 'writeDevice', Sinon.fake.resolves('it-worked'))
       Sinon.replace(cache, 'writeDevices', Sinon.fake.rejects('it-broke'))
-      Sinon.replace(stream, 'writeDevice', Sinon.fake.resolves('it-worked'))
+      Sinon.replace(IngestStream, 'writeDevice', Sinon.fake.resolves('it-worked'))
       await registerVehicle({ body } as AgencyApiRegisterVehicleRequest, res)
       expect(statusHandler.calledWith(201)).toBeTruthy()
       expect(sendHandler.called).toBeTruthy()
@@ -449,7 +448,7 @@ describe('Agency API request handlers', () => {
       Sinon.replace(IngestServiceClient, 'getDevice', Sinon.fake.resolves({ provider_id }))
       Sinon.replace(db, 'updateDevice', Sinon.fake.resolves({ provider_id }))
       Sinon.replace(cache, 'writeDevices', Sinon.fake.resolves({ provider_id }))
-      Sinon.replace(stream, 'writeDevice', Sinon.fake.resolves({ provider_id }))
+      Sinon.replace(IngestStream, 'writeDevice', Sinon.fake.resolves({ provider_id }))
       await updateVehicle(
         {
           params: { device_id },

@@ -16,7 +16,7 @@
 
 import cache from '@mds-core/mds-agency-cache'
 import { ServerError } from '@mds-core/mds-utils'
-import { AgencyApiRequest, AgencyApiResponse } from './types'
+import type { AgencyApiRequest, AgencyApiResponse } from './types'
 
 export const getCacheInfo = async (req: AgencyApiRequest, res: AgencyApiResponse) => {
   try {

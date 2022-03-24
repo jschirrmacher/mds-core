@@ -1,6 +1,6 @@
 import cache from '@mds-core/mds-agency-cache'
 import { getCacheInfo } from '../sandbox-admin-request-handlers'
-import { AgencyApiRequest, AgencyApiResponse } from '../types'
+import type { AgencyApiRequest, AgencyApiResponse } from '../types'
 
 describe('Sandbox admin request handlers', () => {
   describe('Gets cache info', () => {

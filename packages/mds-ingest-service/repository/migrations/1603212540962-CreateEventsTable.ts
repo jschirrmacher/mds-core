@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class CreateEventsTable1603212540962 implements MigrationInterface {
   name = 'CreateEventsTable1603212540962'

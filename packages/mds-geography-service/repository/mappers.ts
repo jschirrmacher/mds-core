@@ -15,14 +15,17 @@
  */
 
 import { ModelMapper } from '@mds-core/mds-repository'
-import {
+import type {
   GeographyDomainCreateModel,
   GeographyDomainModel,
   GeographyMetadataDomainCreateModel,
   GeographyMetadataDomainModel
 } from '../@types'
-import { GeographyEntityCreateModel, GeographyEntityModel } from './entities/geography-entity'
-import { GeographyMetadataEntityCreateModel, GeographyMetadataEntityModel } from './entities/geography-metadata-entity'
+import type { GeographyEntityCreateModel, GeographyEntityModel } from './entities/geography-entity'
+import type {
+  GeographyMetadataEntityCreateModel,
+  GeographyMetadataEntityModel
+} from './entities/geography-metadata-entity'
 
 type GeographyEntityToDomainOptions = Partial<{}>
 

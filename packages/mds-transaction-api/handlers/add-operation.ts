@@ -15,9 +15,9 @@
  */
 
 import { TransactionServiceClient } from '@mds-core/mds-transaction-service'
-import { TransactionOperationDomainModel } from '@mds-core/mds-transaction-service/@types'
-import express from 'express'
-import { TransactionApiRequest, TransactionApiResponse } from '../@types'
+import type { TransactionOperationDomainModel } from '@mds-core/mds-transaction-service/@types'
+import type express from 'express'
+import type { TransactionApiRequest, TransactionApiResponse } from '../@types'
 
 export type TransactionApiAddTransactionOperationRequest = TransactionApiRequest<TransactionOperationDomainModel>
 

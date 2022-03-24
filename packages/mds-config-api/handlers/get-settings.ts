@@ -16,7 +16,7 @@
 
 import { ConfigServiceClient } from '@mds-core/mds-config-service'
 import { isServiceError } from '@mds-core/mds-service-helpers'
-import { ConfigApiGetMergedSettingsRequest, ConfigApiGetSettingsRequest, ConfigApiResponse } from '../@types'
+import type { ConfigApiGetMergedSettingsRequest, ConfigApiGetSettingsRequest, ConfigApiResponse } from '../@types'
 
 export const getSettings = async (
   req: ConfigApiGetSettingsRequest | ConfigApiGetMergedSettingsRequest,

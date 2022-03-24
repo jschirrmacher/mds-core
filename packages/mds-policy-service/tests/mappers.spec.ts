@@ -1,4 +1,4 @@
-import { days, now, uuid, yesterday } from '@mds-core/mds-utils'
+import { days, hours, now, uuid, yesterday } from '@mds-core/mds-utils'
 import { derivePolicyStatus } from '../repository/mappers'
 import { PolicyFactory } from './helpers'
 
@@ -21,6 +21,7 @@ describe('Tests Model Mappers', () => {
         publish_date: null
       },
       superseded_by: null,
+      superseded_at: null,
       id: 0
     }
 
@@ -47,6 +48,7 @@ describe('Tests Model Mappers', () => {
         publish_date: yesterday()
       },
       superseded_by: null,
+      superseded_at: null,
       id: 0
     }
 
@@ -74,6 +76,7 @@ describe('Tests Model Mappers', () => {
           publish_date: yesterday()
         },
         superseded_by: null,
+        superseded_at: null,
         id: 0
       }
 
@@ -101,6 +104,7 @@ describe('Tests Model Mappers', () => {
         publish_date: now() - days(2)
       },
       superseded_by: null,
+      superseded_at: null,
       id: 0
     }
 
@@ -127,6 +131,7 @@ describe('Tests Model Mappers', () => {
         publish_date: yesterday()
       },
       superseded_by: [uuid()],
+      superseded_at: [now() - hours(1)],
       id: 0
     }
 

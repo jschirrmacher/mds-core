@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { RpcClient, RpcRequest, RpcRequestOptions } from '@mds-core/mds-rpc-common'
-import { ServiceClient } from '@mds-core/mds-service-helpers'
-import { ComplianceService, ComplianceServiceDefinition, ComplianceServiceRequestContext } from '../@types'
+import type { RpcRequestOptions } from '@mds-core/mds-rpc-common'
+import { RpcClient, RpcRequest } from '@mds-core/mds-rpc-common'
+import type { ServiceClient } from '@mds-core/mds-service-helpers'
+import type { ComplianceService, ComplianceServiceRequestContext } from '../@types'
+import { ComplianceServiceDefinition } from '../@types'
 
 // What the API layer, and any other clients, will invoke.
 export const ComplianceServiceClientFactory = (

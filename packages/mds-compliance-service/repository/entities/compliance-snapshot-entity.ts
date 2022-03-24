@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
-import { Timestamp, UUID } from '@mds-core/mds-types'
+import type { EntityCreateModel } from '@mds-core/mds-repository'
+import { BigintTransformer, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import type { Timestamp, UUID } from '@mds-core/mds-types'
 import { Column, Entity, Index } from 'typeorm'
-import { MatchedVehicleInformation } from '../../@types'
+import type { MatchedVehicleInformation } from '../../@types'
 
 export interface ComplianceSnapshotEntityModel extends IdentityColumn, RecordedColumn {
   compliance_snapshot_id: UUID

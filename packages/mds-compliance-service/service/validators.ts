@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { SchemaObject, SchemaValidator } from '@mds-core/mds-schema-validators'
+import type { SchemaObject } from '@mds-core/mds-schema-validators'
+import { SchemaValidator } from '@mds-core/mds-schema-validators'
 import { VEHICLE_EVENTS, VEHICLE_STATES } from '@mds-core/mds-types'
-import {
+import type {
   ComplianceSnapshotDomainModel,
   ComplianceViolationDomainModel,
   GetComplianceSnapshotsByTimeIntervalOptions,

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class DropRedundantIdentityColumnIndex1644684612646 implements MigrationInterface {
   name = 'DropRedundantIdentityColumnIndex1644684612646'

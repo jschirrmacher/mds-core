@@ -15,8 +15,8 @@
  */
 
 import { pathPrefix } from '@mds-core/mds-utils'
-import express from 'express'
-import { ConfigApiGetMergedSettingsRequest, ConfigApiGetSettingsRequest, ConfigApiResponse } from '../@types'
+import type express from 'express'
+import type { ConfigApiGetMergedSettingsRequest, ConfigApiGetSettingsRequest, ConfigApiResponse } from '../@types'
 import { getSettings } from '../handlers'
 
 const api = (app: express.Express): express.Express =>

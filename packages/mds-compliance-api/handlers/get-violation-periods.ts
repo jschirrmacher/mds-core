@@ -15,13 +15,14 @@
  */
 
 import { parseRequest } from '@mds-core/mds-api-helpers'
-import { ApiRequestQuery } from '@mds-core/mds-api-server'
-import { ComplianceServiceClient, ComplianceViolationPeriodDomainModel } from '@mds-core/mds-compliance-service'
+import type { ApiRequestQuery } from '@mds-core/mds-api-server'
+import type { ComplianceViolationPeriodDomainModel } from '@mds-core/mds-compliance-service'
+import { ComplianceServiceClient } from '@mds-core/mds-compliance-service'
 import { isError } from '@mds-core/mds-service-helpers'
-import { Timestamp } from '@mds-core/mds-types'
+import type { Timestamp } from '@mds-core/mds-types'
 import { AuthorizationError, BadParamsError, isDefined, now, ServerError } from '@mds-core/mds-utils'
-import express from 'express'
-import { ComplianceAggregate, ComplianceApiRequest, ComplianceApiResponse } from '../@types'
+import type express from 'express'
+import type { ComplianceAggregate, ComplianceApiRequest, ComplianceApiResponse } from '../@types'
 import { ComplianceApiLogger } from '../logger'
 import { base64EncodeArray } from './helpers'
 export type ComplianceApiGetViolationPeriodsRequest = ComplianceApiRequest &

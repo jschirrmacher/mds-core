@@ -15,7 +15,8 @@
  */
 
 import { ValidationError } from '@mds-core/mds-utils'
-import Ajv, { JSONSchemaType, Options, ValidateFunction } from 'ajv'
+import type { JSONSchemaType, Options, ValidateFunction } from 'ajv'
+import Ajv from 'ajv'
 import withErrors from 'ajv-errors'
 import withFormats from 'ajv-formats'
 import dynamicDefaults from 'ajv-keywords/dist/definitions/dynamicDefaults'

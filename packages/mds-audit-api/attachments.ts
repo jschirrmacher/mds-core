@@ -16,7 +16,7 @@
 
 import { AttachmentServiceClient } from '@mds-core/mds-attachment-service'
 import db from '@mds-core/mds-db'
-import { Attachment, AttachmentSummary, AuditAttachment, Recorded, UUID } from '@mds-core/mds-types'
+import type { Attachment, AttachmentSummary, AuditAttachment, Recorded, UUID } from '@mds-core/mds-types'
 import { AuditApiLogger } from './logger'
 
 /* eslint-disable-next-line */

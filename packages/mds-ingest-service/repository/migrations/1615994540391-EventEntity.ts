@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class EventEntity1615994540391 implements MigrationInterface {
   name = 'EventEntity1615994540391'

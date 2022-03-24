@@ -1,4 +1,4 @@
-import { SchemaObject } from 'ajv'
+import type { SchemaObject } from 'ajv'
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 
 /**

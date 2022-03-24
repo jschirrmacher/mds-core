@@ -15,7 +15,7 @@
  */
 
 import { ClientDisconnectedError } from '@mds-core/mds-utils'
-import { StreamProducer } from './stream-interface'
+import type { StreamProducer } from './stream-interface'
 
 /**
  * If the producer is disconnected, it re-initializes, tries to write again

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class CreateGeographyMetadataTable1602790946354 implements MigrationInterface {
   name = 'CreateGeographyMetadataTable1602790946354'

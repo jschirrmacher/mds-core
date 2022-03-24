@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Device } from './device'
-import { AUDIT_EVENT_TYPE, VehicleEvent, VEHICLE_EVENT } from './event'
-import { Telemetry, TelemetryData, WithGpsProperty } from './telemetry'
-import { Timestamp, UUID } from './utils'
+import type { Device } from './device'
+import type { AUDIT_EVENT_TYPE, VehicleEvent, VEHICLE_EVENT } from './event'
+import type { Telemetry, TelemetryData, WithGpsProperty } from './telemetry'
+import type { Timestamp, UUID } from './utils'
 
 // Represents a row in the "attachments" table
 export interface Attachment {

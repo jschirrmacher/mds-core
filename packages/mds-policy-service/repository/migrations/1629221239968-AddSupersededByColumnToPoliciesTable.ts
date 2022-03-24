@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddSupersededByColumnToPoliciesTable1629221239968 implements MigrationInterface {
   name = 'AddSupersededByColumnToPoliciesTable1629221239968'

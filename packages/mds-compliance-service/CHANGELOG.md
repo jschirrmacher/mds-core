@@ -1,5 +1,104 @@
 # @mds-core/mds-compliance-service
 
+## 0.10.29
+
+### Patch Changes
+
+- Updated dependencies [f9090232]
+- Updated dependencies [e66dced4]
+  - @mds-core/mds-providers@0.2.10
+  - @mds-core/mds-db@0.6.15
+  - @mds-core/mds-schema-validators@0.5.9
+  - @mds-core/mds-policy-service@0.11.26
+
+## 0.10.28
+
+### Patch Changes
+
+- Updated dependencies [f010700b]
+  - @mds-core/mds-rpc-common@0.3.17
+  - @mds-core/mds-policy-service@0.11.25
+  - @mds-core/mds-db@0.6.14
+
+## 0.10.27
+
+### Patch Changes
+
+- @mds-core/mds-rpc-common@0.3.16
+- @mds-core/mds-policy-service@0.11.24
+- @mds-core/mds-db@0.6.13
+
+## 0.10.26
+
+### Patch Changes
+
+- Updated dependencies [af3631da]
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-rpc-common@0.3.15
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-policy-service@0.11.23
+  - @mds-core/mds-db@0.6.12
+  - @mds-core/mds-repository@0.1.46
+  - @mds-core/mds-schema-validators@0.5.8
+  - @mds-core/mds-service-helpers@0.6.7
+  - @mds-core/mds-stream@0.3.1
+
+## 0.10.25
+
+### Patch Changes
+
+- Updated dependencies [88984496]
+- Updated dependencies [775efc9c]
+- Updated dependencies [3ca785d0]
+- Updated dependencies [88984496]
+  - @mds-core/mds-repository@0.1.45
+  - @mds-core/mds-stream@0.3.0
+  - @mds-core/mds-policy-service@0.11.22
+  - @mds-core/mds-db@0.6.11
+
+## 0.10.24
+
+### Patch Changes
+
+- Updated dependencies [bf1f3c4d]
+  - @mds-core/mds-rpc-common@0.3.14
+  - @mds-core/mds-policy-service@0.11.21
+  - @mds-core/mds-db@0.6.10
+  - @mds-core/mds-stream@0.2.13
+
+## 0.10.23
+
+### Patch Changes
+
+- Updated dependencies [e90243cd]
+  - @mds-core/mds-repository@0.1.44
+  - @mds-core/mds-policy-service@0.11.20
+  - @mds-core/mds-db@0.6.9
+  - @mds-core/mds-stream@0.2.12
+
+## 0.10.22
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [aaf3c1cf]
+- Updated dependencies [ade56b85]
+- Updated dependencies [1f6ccdab]
+- Updated dependencies [a93da2b6]
+- Updated dependencies [a5ab0aa5]
+- Updated dependencies [c4e78cc9]
+  - @mds-core/mds-policy-service@0.11.19
+  - @mds-core/mds-db@0.6.8
+  - @mds-core/mds-schema-validators@0.5.7
+  - @mds-core/mds-stream@0.2.11
+  - @mds-core/mds-repository@0.1.43
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-providers@0.2.9
+  - @mds-core/mds-rpc-common@0.3.13
+  - @mds-core/mds-service-helpers@0.6.6
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.10.21
 
 ### Patch Changes

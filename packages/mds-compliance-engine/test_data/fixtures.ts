@@ -1,8 +1,9 @@
-import { GeographyDomainModel } from '@mds-core/mds-geography-service'
-import { CountPolicy, RULE_TYPES, SpeedPolicy, TimePolicy } from '@mds-core/mds-policy-service'
+import type { GeographyDomainModel } from '@mds-core/mds-geography-service'
+import type { CountPolicy, SpeedPolicy, TimePolicy } from '@mds-core/mds-policy-service'
+import { RULE_TYPES } from '@mds-core/mds-policy-service'
 import { LA_CITY_BOUNDARY, restrictedAreas, veniceSpecOps } from '@mds-core/mds-test-data'
 import { days, now } from '@mds-core/mds-utils'
-import { Polygon } from 'geojson'
+import type { Polygon } from 'geojson'
 
 export const CITY_OF_LA = '1f943d59-ccc9-4d91-b6e2-0c5e771cbc49'
 export const LA_GEOGRAPHY = {
@@ -25,12 +26,13 @@ export const RESTRICTED_GEOGRAPHY = {
 export const COUNT_POLICY_UUID = '72971a3d-876c-41ea-8e48-c9bb965bbbcc'
 export const COUNT_POLICY_UUID_2 = '37637f96-2580-475a-89e7-cfc5d2e70f84'
 export const COUNT_POLICY_UUID_3 = 'e8f9a720-6c12-41c8-a31c-715e76d65ea1'
-export const COUNT_POLICY_JSON: CountPolicy = {
+export const COUNT_POLICY_JSON: Required<CountPolicy> = {
   name: 'LADOT Mobility Caps',
   description: 'Mobility caps as described in the One-Year Permit',
   policy_id: COUNT_POLICY_UUID,
   start_date: 1558389669540,
   publish_date: 1558389669540,
+  status: 'active',
   end_date: null,
   prev_policies: null,
   provider_ids: [],
@@ -248,7 +250,7 @@ export const HIGH_COUNT_POLICY: CountPolicy = {
   ]
 }
 
-export const ARBITRARY_EVENT_TYPES_POLICY: CountPolicy = {
+export const ARBITRARY_EVENT_TYPES_POLICY: Required<CountPolicy> = {
   policy_id: '6d7a9c7e-853c-4ff7-a86f-e17c06d3bd80',
   name: 'Very Low Count Limit',
   description: 'Very low count limit',
@@ -256,7 +258,8 @@ export const ARBITRARY_EVENT_TYPES_POLICY: CountPolicy = {
   end_date: null,
   prev_policies: null,
   provider_ids: [],
-  publish_date: null,
+  publish_date: 1552678594428,
+  status: 'active',
   currency: null,
   rules: [
     {
@@ -274,7 +277,7 @@ export const ARBITRARY_EVENT_TYPES_POLICY: CountPolicy = {
   ]
 }
 
-export const LOW_COUNT_POLICY: CountPolicy = {
+export const LOW_COUNT_POLICY: Required<CountPolicy> = {
   policy_id: '6d7a9c7e-853c-4ff7-a86f-e17c06d3bd80',
   name: 'Very Low Count Limit',
   description: 'Very low count limit',
@@ -282,7 +285,8 @@ export const LOW_COUNT_POLICY: CountPolicy = {
   end_date: null,
   prev_policies: null,
   provider_ids: [],
-  publish_date: null,
+  publish_date: 1552678594428,
+  status: 'active',
   currency: null,
   rules: [
     {
@@ -299,7 +303,7 @@ export const LOW_COUNT_POLICY: CountPolicy = {
   ]
 }
 
-export const EXPIRED_POLICY: CountPolicy = {
+export const EXPIRED_POLICY: Required<CountPolicy> = {
   policy_id: '6d7a9c7e-853c-4ff7-a86f-e17c06d3bd80',
   name: 'i expired',
   description: 'expired',
@@ -307,7 +311,8 @@ export const EXPIRED_POLICY: CountPolicy = {
   end_date: now() - days(1),
   prev_policies: null,
   provider_ids: [],
-  publish_date: null,
+  publish_date: now() - days(7),
+  status: 'expired',
   currency: null,
   rules: [
     {

@@ -16,7 +16,7 @@
 
 import stream from '@mds-core/mds-stream'
 import { uuid } from '@mds-core/mds-utils'
-import { ComplianceViolationDetailsDomainModel, TransactionDomainModel } from '../@types'
+import type { ComplianceViolationDetailsDomainModel, TransactionDomainModel } from '../@types'
 import { TransactionServiceClient } from '../client'
 import { TransactionRepository } from '../repository'
 import { TransactionServiceManager } from '../service/manager'

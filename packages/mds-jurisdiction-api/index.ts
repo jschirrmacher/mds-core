@@ -15,7 +15,7 @@
  */
 
 export { api } from './api'
-export {
+export type {
   JurisdictionApiCreateJurisdictionRequest,
   JurisdictionApiCreateJurisdictionResponseBody,
   JurisdictionApiDeleteJurisdictionResponseBody,

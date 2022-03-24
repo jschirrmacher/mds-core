@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddComplianceViolations1632935069192 implements MigrationInterface {
   name = 'AddComplianceViolations1632935069192'

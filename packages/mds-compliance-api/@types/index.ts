@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { ApiRequest, ApiResponseLocalsClaims, ApiVersionedResponse } from '@mds-core/mds-api-server'
-import { Timestamp, UUID } from '@mds-core/mds-types'
+import type { ApiRequest, ApiResponseLocalsClaims, ApiVersionedResponse } from '@mds-core/mds-api-server'
+import type { Timestamp, UUID } from '@mds-core/mds-types'
 
 export const COMPLIANCE_API_SUPPORTED_VERSIONS = ['1.1.0'] as const
 export type COMPLIANCE_API_SUPPORTED_VERSION = typeof COMPLIANCE_API_SUPPORTED_VERSIONS[number]

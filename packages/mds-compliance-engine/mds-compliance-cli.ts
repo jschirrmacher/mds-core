@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-import { GeographyDomainModel } from '@mds-core/mds-geography-service'
+import type { GeographyDomainModel } from '@mds-core/mds-geography-service'
 import { validateGeographyDomainModel } from '@mds-core/mds-geography-service/service/validators'
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
 import { validateEventDomainCreateModel } from '@mds-core/mds-ingest-service'
-import { PolicyDomainModel, validatePolicyDomainModel } from '@mds-core/mds-policy-service'
-import { Device, VehicleEvent } from '@mds-core/mds-types'
+import type { PolicyDomainModel } from '@mds-core/mds-policy-service'
+import { validatePolicyDomainModel } from '@mds-core/mds-policy-service'
+import type { VehicleEvent } from '@mds-core/mds-types'
 import * as fs from 'fs'
 import * as yargs from 'yargs'
-import { ComplianceEngineResult } from './@types'
+import type { ComplianceEngineResult } from './@types'
 import { createComplianceSnapshot } from './engine'
 import { filterEvents, generateDeviceMap, getSupersedingPolicies } from './engine/helpers'
 import { ComplianceEngineLogger } from './logger'
@@ -83,7 +85,7 @@ async function main(): Promise<(ComplianceEngineResult | undefined)[]> {
   const recentEvents = filterEvents(events)
 
   // read devices
-  const devices = generateDeviceMap((await readJson(args.devices)) as Device[])
+  const devices = generateDeviceMap((await readJson(args.devices)) as DeviceDomainModel[])
   // TODO Validate Devices
   if (!devices) {
     ComplianceEngineLogger.error('unable to read devices')

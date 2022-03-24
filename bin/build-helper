@@ -26,8 +26,12 @@ buildImage() {
   if [[ "$system_arch" == "x86_64" ]]; then
     docker build -t ${REGISTRY}${image} .
   else
-    docker buildx build --platform linux/$system_arch --output type=docker -t ${REGISTRY}${image}-$system_arch . # add arch tag to non-amd64 image
-    docker buildx build --platform linux/amd64 --output type=docker -t ${REGISTRY}${image} .
+    local BUILD_ARM=${BUILD_ARM:-''}
+    if [[ $BUILD_ARM ]]; then
+      docker buildx build --platform linux/$system_arch --output type=docker -t ${REGISTRY}${image}-$system_arch . # add arch tag to non-amd64 image
+    else
+      docker buildx build --platform linux/amd64 --output type=docker -t ${REGISTRY}${image} .
+    fi
   fi
 
   echo ${REGISTRY}${image} >> $BASE_DIR/dist/images.txt # even though we support arbitrary archs, we'll write out just the amd64 images to the list for now.

@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-cache",
-  "version": "0.0.33",
+  "version": "0.0.35",
   "description": "Cache Interface",
   "keywords": [],
   "license": "Apache-2.0",
@@ -14,9 +14,9 @@
     "test": "DOTENV_CONFIG_PATH=../../.env jest --runInBand"
   },
   "dependencies": {
-    "@mds-core/mds-logger": "workspace:0.5.6",
-    "@mds-core/mds-types": "workspace:0.9.1",
-    "@mds-core/mds-utils": "workspace:0.4.1",
+    "@mds-core/mds-logger": "workspace:0.5.7",
+    "@mds-core/mds-types": "workspace:0.9.2",
+    "@mds-core/mds-utils": "workspace:0.5.0",
     "@types/ioredis": "4.27.6",
     "envalid": "7.2.1",
     "ioredis": "4.27.10"

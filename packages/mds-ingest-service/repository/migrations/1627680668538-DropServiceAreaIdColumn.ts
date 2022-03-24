@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class DropServiceAreaIdColumn1627680668538 implements MigrationInterface {
   name = 'DropServiceAreaIdColumn1627680668538'

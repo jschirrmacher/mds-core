@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddEventsTimestampIdIndex1627315083728 implements MigrationInterface {
   name = 'AddEventsTimestampIdIndex1627315083728'

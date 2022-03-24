@@ -15,7 +15,8 @@
  */
 
 import { RpcServer } from '@mds-core/mds-rpc-common'
-import { AuditService, AuditServiceDefinition, AuditServiceRequestContext } from '../@types'
+import type { AuditService, AuditServiceRequestContext } from '../@types'
+import { AuditServiceDefinition } from '../@types'
 import { AuditServiceClient } from '../client'
 import { AuditServiceProvider } from './provider'
 

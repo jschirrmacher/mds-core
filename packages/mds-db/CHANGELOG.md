@@ -1,5 +1,99 @@
 # @mds-core/mds-db
 
+## 0.6.15
+
+### Patch Changes
+
+- e66dced4: await IngestServiceClient.getDevice in writeEvent method
+  - @mds-core/mds-attachment-service@0.5.24
+  - @mds-core/mds-audit-service@0.6.1
+  - @mds-core/mds-geography-service@0.10.20
+  - @mds-core/mds-ingest-service@0.10.8
+  - @mds-core/mds-policy-service@0.11.26
+
+## 0.6.14
+
+### Patch Changes
+
+- Updated dependencies [6868c2c4]
+  - @mds-core/mds-audit-service@0.6.0
+  - @mds-core/mds-attachment-service@0.5.23
+  - @mds-core/mds-geography-service@0.10.19
+  - @mds-core/mds-ingest-service@0.10.7
+  - @mds-core/mds-policy-service@0.11.25
+
+## 0.6.13
+
+### Patch Changes
+
+- @mds-core/mds-attachment-service@0.5.22
+- @mds-core/mds-audit-service@0.5.22
+- @mds-core/mds-geography-service@0.10.18
+- @mds-core/mds-ingest-service@0.10.6
+- @mds-core/mds-policy-service@0.11.24
+
+## 0.6.12
+
+### Patch Changes
+
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-attachment-service@0.5.21
+  - @mds-core/mds-audit-service@0.5.21
+  - @mds-core/mds-geography-service@0.10.17
+  - @mds-core/mds-ingest-service@0.10.5
+  - @mds-core/mds-policy-service@0.11.23
+
+## 0.6.11
+
+### Patch Changes
+
+- Updated dependencies [775efc9c]
+- Updated dependencies [3ca785d0]
+  - @mds-core/mds-ingest-service@0.10.4
+  - @mds-core/mds-attachment-service@0.5.20
+  - @mds-core/mds-audit-service@0.5.20
+  - @mds-core/mds-geography-service@0.10.16
+  - @mds-core/mds-policy-service@0.11.22
+
+## 0.6.10
+
+### Patch Changes
+
+- @mds-core/mds-attachment-service@0.5.19
+- @mds-core/mds-audit-service@0.5.19
+- @mds-core/mds-geography-service@0.10.15
+- @mds-core/mds-ingest-service@0.10.3
+- @mds-core/mds-policy-service@0.11.21
+
+## 0.6.9
+
+### Patch Changes
+
+- @mds-core/mds-attachment-service@0.5.18
+- @mds-core/mds-audit-service@0.5.18
+- @mds-core/mds-geography-service@0.10.14
+- @mds-core/mds-ingest-service@0.10.2
+- @mds-core/mds-policy-service@0.11.20
+
+## 0.6.8
+
+### Patch Changes
+
+- ade56b85: Replacing Device with DeviceDomainModel
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [aaf3c1cf]
+- Updated dependencies [ade56b85]
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-policy-service@0.11.19
+  - @mds-core/mds-ingest-service@0.10.1
+  - @mds-core/mds-attachment-service@0.5.17
+  - @mds-core/mds-audit-service@0.5.17
+  - @mds-core/mds-geography-service@0.10.13
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.6.7
 
 ### Patch Changes

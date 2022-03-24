@@ -15,7 +15,7 @@
  */
 
 import { days, now, uuid } from '@mds-core/mds-utils'
-import { GeographyDomainCreateModel } from '../@types'
+import type { GeographyDomainCreateModel } from '../@types'
 import { GeographyServiceClient } from '../client'
 import { GeographyRepository } from '../repository'
 import { GeographyServiceManager } from '../service/manager'

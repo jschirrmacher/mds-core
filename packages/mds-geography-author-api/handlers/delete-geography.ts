@@ -15,9 +15,9 @@
  */
 
 import { GeographyServiceClient } from '@mds-core/mds-geography-service'
-import express from 'express'
+import type express from 'express'
 import { GeographyAuthorLogger } from '../logger'
-import { GeographyAuthorApiDeleteGeographyRequest, GeographyAuthorApiDeleteGeographyResponse } from '../types'
+import type { GeographyAuthorApiDeleteGeographyRequest, GeographyAuthorApiDeleteGeographyResponse } from '../types'
 
 export const DeleteGeographyHandler = async (
   req: GeographyAuthorApiDeleteGeographyRequest,

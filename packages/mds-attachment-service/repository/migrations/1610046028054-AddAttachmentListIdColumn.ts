@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddAttachmentListIdColumn1610046028054 implements MigrationInterface {
   name = 'AddAttachmentListIdColumn1610046028054'

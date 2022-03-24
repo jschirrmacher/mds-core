@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { RpcClient, RpcRequest, RpcRequestOptions } from '@mds-core/mds-rpc-common'
-import { SerializedBuffers, ServiceClient } from '@mds-core/mds-service-helpers'
-import { ConfigService, ConfigServiceDefinition, ConfigServiceRequestContext } from '../@types'
+import type { RpcRequestOptions } from '@mds-core/mds-rpc-common'
+import { RpcClient, RpcRequest } from '@mds-core/mds-rpc-common'
+import type { SerializedBuffers, ServiceClient } from '@mds-core/mds-service-helpers'
+import type { ConfigService, ConfigServiceRequestContext } from '../@types'
+import { ConfigServiceDefinition } from '../@types'
 
 export const ConfigServiceClientFactory = <S = {}>(
   context: ConfigServiceRequestContext,

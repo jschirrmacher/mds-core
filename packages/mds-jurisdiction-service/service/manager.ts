@@ -15,7 +15,8 @@
  */
 
 import { RpcServer } from '@mds-core/mds-rpc-common'
-import { JurisdictionService, JurisdictionServiceDefinition, JurisdictionServiceRequestContext } from '../@types'
+import type { JurisdictionService, JurisdictionServiceRequestContext } from '../@types'
+import { JurisdictionServiceDefinition } from '../@types'
 import { JurisdictionServiceClient } from '../client'
 import { JurisdictionServiceProvider } from './provider'
 

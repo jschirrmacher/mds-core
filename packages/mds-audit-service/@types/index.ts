@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { DomainModelCreate } from '@mds-core/mds-repository'
-import { RpcEmptyRequestContext, RpcRoute, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
-import { AUDIT_EVENT_TYPE, Nullable, Telemetry, Timestamp, UUID, VEHICLE_EVENT } from '@mds-core/mds-types'
+import type { DomainModelCreate } from '@mds-core/mds-repository'
+import type { RpcEmptyRequestContext, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
+import { RpcRoute } from '@mds-core/mds-rpc-common'
+import type { AUDIT_EVENT_TYPE, Nullable, Telemetry, Timestamp, UUID, VEHICLE_EVENT } from '@mds-core/mds-types'
 
 export interface AuditDomainModel {
   audit_trip_id: UUID
@@ -31,6 +32,9 @@ export interface AuditDomainModel {
 
 export type AuditDomainCreateModel = DomainModelCreate<AuditDomainModel>
 
+// Telemetry from an auditor using the mobile audit app
+export type AuditTelemetry = Omit<Telemetry, 'provider_id' | 'device_id' | 'timestamp' | 'recorded'>
+
 export interface AuditEventDomainModel {
   audit_trip_id: UUID
   timestamp: Timestamp
@@ -39,7 +43,7 @@ export interface AuditEventDomainModel {
   audit_issue_code: Nullable<string>
   audit_subject_id: string
   note: Nullable<string>
-  telemetry: Omit<Telemetry, 'provider_id' | 'device_id' | 'timestamp' | 'recorded'>
+  telemetry: AuditTelemetry
 }
 
 export type AuditEventDomainCreateModel = DomainModelCreate<AuditEventDomainModel>

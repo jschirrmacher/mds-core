@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { EventDomainModel } from '@mds-core/mds-ingest-service'
-import { DomainModelCreate } from '@mds-core/mds-repository'
-import { RpcEmptyRequestContext, RpcRoute, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
-import { Nullable, Timestamp, UUID, VEHICLE_TYPE } from '@mds-core/mds-types'
-import { Cursor } from 'typeorm-cursor-pagination'
+import type { EventDomainModel } from '@mds-core/mds-ingest-service'
+import type { DomainModelCreate } from '@mds-core/mds-repository'
+import type { RpcEmptyRequestContext, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
+import { RpcRoute } from '@mds-core/mds-rpc-common'
+import type { Nullable, Timestamp, UUID, VEHICLE_TYPE } from '@mds-core/mds-types'
+import type { Cursor } from 'typeorm-cursor-pagination'
 
 export interface PaginationLinks {
   prev: string | null

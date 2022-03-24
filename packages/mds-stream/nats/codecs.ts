@@ -1,4 +1,5 @@
-import { Msg, StringCodec, SubOpts } from 'nats'
+import type { Msg, SubOpts } from 'nats'
+import { StringCodec } from 'nats'
 import { StreamLogger } from '../logger'
 
 /**

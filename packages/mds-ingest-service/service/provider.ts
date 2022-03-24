@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { ProcessController, ServiceException, ServiceProvider, ServiceResult } from '@mds-core/mds-service-helpers'
+import type { ProcessController, ServiceProvider } from '@mds-core/mds-service-helpers'
+import { ServiceException, ServiceResult } from '@mds-core/mds-service-helpers'
 import { NotFoundError } from '@mds-core/mds-utils'
-import { IngestService, IngestServiceRequestContext } from '../@types'
+import type { IngestService, IngestServiceRequestContext } from '../@types'
 import { IngestServiceLogger } from '../logger'
 import { IngestRepository } from '../repository'
 import {
@@ -26,6 +27,7 @@ import {
   validateGetDevicesOptions,
   validateGetEventsWithDeviceAndTelemetryInfoOptions,
   validateGetVehicleEventsFilterParams,
+  validateTelemetryAnnotationDomainCreateModel,
   validateUUIDs
 } from './validators'
 
@@ -135,6 +137,20 @@ export const IngestServiceProvider: ServiceProvider<IngestService, IngestService
     } catch (error) {
       const exception = ServiceException('Error in writeEventAnnotations', error)
       IngestServiceLogger.error('writeEventAnnotations exception', { exception, error })
+      return exception
+    }
+  },
+
+  writeTelemetryAnnotations: async (context, telemetryAnnotations) => {
+    try {
+      return ServiceResult(
+        await IngestRepository.createTelemetryAnnotations(
+          telemetryAnnotations.map(validateTelemetryAnnotationDomainCreateModel)
+        )
+      )
+    } catch (error) {
+      const exception = ServiceException('Error in writeTelemetryAnnotation', error)
+      IngestServiceLogger.error('writeTelemetryAnnotation exception', { exception, error })
       return exception
     }
   },

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { UUID } from '@mds-core/mds-types'
+import type { UUID } from '@mds-core/mds-types'
 import { now, uuid, yesterday } from '@mds-core/mds-utils'
-import { ComplianceViolationDomainModel } from '../@types'
+import type { ComplianceViolationDomainModel } from '../@types'
 import { ComplianceServiceClient } from '../client'
 import { ComplianceRepository } from '../repository'
 import { ComplianceServiceManager } from '../service/manager'

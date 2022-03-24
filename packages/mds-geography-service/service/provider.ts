@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { ProcessController, ServiceException, ServiceProvider, ServiceResult } from '@mds-core/mds-service-helpers'
+import type { ProcessController, ServiceProvider } from '@mds-core/mds-service-helpers'
+import { ServiceException, ServiceResult } from '@mds-core/mds-service-helpers'
 import { NotFoundError } from '@mds-core/mds-utils'
-import { GeographyDomainModel, GeographyService, GeographyServiceRequestContext } from '../@types'
+import type { GeographyDomainModel, GeographyService, GeographyServiceRequestContext } from '../@types'
 import { GeographyServiceLogger } from '../logger'
 import { GeographyRepository } from '../repository'
 import {

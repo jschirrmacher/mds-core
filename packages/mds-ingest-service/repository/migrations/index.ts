@@ -40,6 +40,7 @@ import { AddIndexToDeviceVehicleId1635174402366 } from './1635174402366-AddIndex
 import { ChangeRecordedColumnDefaultExpression1644682444725 } from './1644682444725-ChangeRecordedColumnDefaultExpression'
 import { CopyIngestMigrationMetadata1645465504597 } from './1645465504597-CopyIngestMigrationMetadata'
 import { DropMigrationIndices1646177244396 } from './1646177244396-DropMigrationIndices'
+import { AddTelemetryAnnotationEntity1646881807158 } from './1646881807158-AddTelemetryAnnotationEntity'
 
 export default [
   CreateDevicesTable1603212409274,
@@ -67,5 +68,6 @@ export default [
   AddIndexToDeviceVehicleId1635174402366,
   ChangeRecordedColumnDefaultExpression1644682444725,
   CopyIngestMigrationMetadata1645465504597,
-  DropMigrationIndices1646177244396
+  DropMigrationIndices1646177244396,
+  AddTelemetryAnnotationEntity1646881807158
 ]

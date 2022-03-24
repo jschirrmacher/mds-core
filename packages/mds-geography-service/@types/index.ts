@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { DomainModelCreate } from '@mds-core/mds-repository'
-import { RpcEmptyRequestContext, RpcRoute, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
-import { Nullable, Timestamp, UUID } from '@mds-core/mds-types'
-import { FeatureCollection } from 'geojson'
+import type { DomainModelCreate } from '@mds-core/mds-repository'
+import type { RpcEmptyRequestContext, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
+import { RpcRoute } from '@mds-core/mds-rpc-common'
+import type { Nullable, Timestamp, UUID } from '@mds-core/mds-types'
+import type { FeatureCollection } from 'geojson'
 
 export interface GeographyDomainModel {
   geography_id: UUID

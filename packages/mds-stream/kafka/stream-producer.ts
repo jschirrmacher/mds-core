@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-import { ExtendedKeys, Nullable, RequiredKeys } from '@mds-core/mds-types'
+import type { ExtendedKeys, Nullable, RequiredKeys } from '@mds-core/mds-types'
 import { ClientDisconnectedError, ExceptionMessages, isDefined } from '@mds-core/mds-utils'
-import { Kafka, Producer } from 'kafkajs'
+import type { Producer } from 'kafkajs'
+import { Kafka } from 'kafkajs'
 import { isArray } from 'util'
 import { StreamLogger } from '../logger'
-import { StreamProducer } from '../stream-interface'
+import type { StreamProducer } from '../stream-interface'
 import { getKafkaBrokers } from './helpers'
 
 /**

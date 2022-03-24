@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { RpcEmptyRequestContext, RpcRoute, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
+import type { RpcEmptyRequestContext, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
+import { RpcRoute } from '@mds-core/mds-rpc-common'
 
 export type GetSettingsOptions = Partial<{
   partial: boolean

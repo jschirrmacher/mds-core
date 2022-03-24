@@ -15,7 +15,7 @@
  */
 
 import { SchemaValidator } from '@mds-core/mds-schema-validators'
-import { AttachmentDomainModel } from '../@types'
+import type { AttachmentDomainModel } from '../@types'
 
 const uuidSchema = <const>{ type: 'string', format: 'uuid' }
 

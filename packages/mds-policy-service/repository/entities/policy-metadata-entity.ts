@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { EntityCreateModel, IdentityColumn } from '@mds-core/mds-repository'
+import type { EntityCreateModel } from '@mds-core/mds-repository'
+import { IdentityColumn } from '@mds-core/mds-repository'
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
-import { PolicyMetadataDomainModel } from '../../@types'
+import type { PolicyMetadataDomainModel } from '../../@types'
 import { PolicyEntity } from './policy-entity'
 
 export interface PolicyMetadataEntityModel extends IdentityColumn {

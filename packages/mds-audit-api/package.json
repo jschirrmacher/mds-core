@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-audit-api",
-  "version": "0.3.24",
+  "version": "0.4.1",
   "description": "Endpoint for auditing compliance with MDS",
   "keywords": [
     "mds",
@@ -15,23 +15,24 @@
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
     "start": "PATH_PREFIX=/audit pnpm watch server",
-    "test": "PATH_PREFIX=/audit DOTENV_CONFIG_PATH=../../.env nyc --use-spawn-wrap ts-mocha --project ../../tsconfig.json",
+    "test": "PATH_PREFIX=/audit DOTENV_CONFIG_PATH=../../.env jest --runInBand ",
     "ts-node": "pnpm build && DOTENV_CONFIG_PATH=../../.env ts-node -r dotenv/config",
     "watch": "nodemon --watch '../../packages' --ext 'ts' --ignore '*.d.ts' --exec pnpm ts-node --"
   },
   "dependencies": {
-    "@mds-core/mds-agency-cache": "workspace:0.4.19",
-    "@mds-core/mds-api-helpers": "workspace:0.2.15",
-    "@mds-core/mds-api-server": "workspace:0.4.7",
-    "@mds-core/mds-attachment-service": "workspace:0.5.16",
-    "@mds-core/mds-db": "workspace:0.6.7",
-    "@mds-core/mds-ingest-service": "0.10.0",
-    "@mds-core/mds-logger": "workspace:0.5.6",
-    "@mds-core/mds-providers": "workspace:0.2.8",
-    "@mds-core/mds-schema-validators": "workspace:0.5.6",
-    "@mds-core/mds-service-helpers": "workspace:0.6.5",
-    "@mds-core/mds-types": "workspace:0.9.1",
-    "@mds-core/mds-utils": "workspace:0.4.1",
+    "@mds-core/mds-agency-cache": "workspace:0.4.22",
+    "@mds-core/mds-api-helpers": "workspace:0.2.23",
+    "@mds-core/mds-api-server": "workspace:0.4.10",
+    "@mds-core/mds-attachment-service": "workspace:0.5.24",
+    "@mds-core/mds-audit-service": "workspace:0.6.1",
+    "@mds-core/mds-db": "workspace:0.6.15",
+    "@mds-core/mds-ingest-service": "0.10.8",
+    "@mds-core/mds-logger": "workspace:0.5.7",
+    "@mds-core/mds-providers": "workspace:0.2.10",
+    "@mds-core/mds-schema-validators": "workspace:0.5.9",
+    "@mds-core/mds-service-helpers": "workspace:0.6.7",
+    "@mds-core/mds-types": "workspace:0.9.2",
+    "@mds-core/mds-utils": "workspace:0.5.0",
     "@types/express": "4.17.13",
     "@types/multer": "1.4.7",
     "@types/sharp": "0.29.2",
@@ -41,7 +42,7 @@
     "sharp": "0.29.3"
   },
   "devDependencies": {
-    "@mds-core/mds-test-data": "workspace:0.4.18"
+    "@mds-core/mds-test-data": "workspace:0.4.26"
   },
   "publishConfig": {
     "main": "dist/index.js"

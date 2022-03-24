@@ -1,7 +1,8 @@
-import { Telemetry } from './telemetry'
-import { TRIP_STATE } from './trip'
-import { Enum, Nullable, Timestamp, UUID } from './utils'
-import {
+import type { Telemetry } from './telemetry'
+import type { TRIP_STATE } from './trip'
+import type { Nullable, Timestamp, UUID } from './utils'
+import { Enum } from './utils'
+import type {
   MICRO_MOBILITY_VEHICLE_STATE,
   TAXI_VEHICLE_STATE,
   TNC_VEHICLE_STATE,

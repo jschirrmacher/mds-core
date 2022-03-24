@@ -175,6 +175,10 @@ To enable multi-platform docker builds, you first need to configure a buildx bui
 docker buildx create --use
 ```
 
+Now, you should be able to run `pnpm image`, and generate amd64 images. In order to build arm64 images, you must set the environment variable `BUILD_ARM=true`; this will make _only_ arm64 be built during `pnpm image`.
+
+Building ARM images from x86 machines is not currently supported (to avoid x86 platform developers from having to install buildx on their machines).
+
 ##### Local Kubernetes for development
 
 Configure Kubernetes in Docker:

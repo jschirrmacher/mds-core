@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-import { RpcClient, RpcRequest, RpcRequestOptions } from '@mds-core/mds-rpc-common'
-import { ServiceClient, UnwrapServiceResult } from '@mds-core/mds-service-helpers'
-import { GeographyService, GeographyServiceDefinition, GeographyServiceRequestContext } from '../@types'
+import type { RpcRequestOptions } from '@mds-core/mds-rpc-common'
+import { RpcClient, RpcRequest } from '@mds-core/mds-rpc-common'
+import type { ServiceClient } from '@mds-core/mds-service-helpers'
+import { UnwrapServiceResult } from '@mds-core/mds-service-helpers'
+import type { GeographyService, GeographyServiceRequestContext } from '../@types'
+import { GeographyServiceDefinition } from '../@types'
 import { GeographyServiceProvider } from '../service/provider'
 // What the API layer, and any other clients, will invoke.
 export const GeographyServiceClientFactory = (

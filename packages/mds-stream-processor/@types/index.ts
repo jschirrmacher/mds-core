@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { StreamConsumer, StreamProducer } from '@mds-core/mds-stream'
-import { ParseError } from '@mds-core/mds-utils'
+import type { StreamConsumer, StreamProducer } from '@mds-core/mds-stream'
+import type { ParseError } from '@mds-core/mds-utils'
 
 export type StreamSource<TMessage> = (processor: (message: TMessage | ParseError) => Promise<void>) => StreamConsumer
 export type StreamSink<TMessage> = () => StreamProducer<TMessage>

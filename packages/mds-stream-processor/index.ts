@@ -15,7 +15,7 @@
  */
 
 import { asArray, ParseError } from '@mds-core/mds-utils'
-import { DeadLetterSink, StreamProcessorController, StreamSink, StreamSource, StreamTransform } from './@types'
+import type { DeadLetterSink, StreamProcessorController, StreamSink, StreamSource, StreamTransform } from './@types'
 import { StreamProcessorLogger } from './logger'
 
 // StreamProcessor - Read from source, apply transform to each message, and write to sink

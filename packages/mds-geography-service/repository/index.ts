@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-import { InsertReturning, ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
-import { UUID } from '@mds-core/mds-types'
+import type { InsertReturning } from '@mds-core/mds-repository'
+import { ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
+import type { UUID } from '@mds-core/mds-types'
 import { AlreadyPublishedError, NotFoundError, testEnvSafeguard } from '@mds-core/mds-utils'
-import { FindManyOptions, In, IsNull, MoreThan, Not } from 'typeorm'
-import {
+import type { FindManyOptions } from 'typeorm'
+import { In, IsNull, MoreThan, Not } from 'typeorm'
+import type {
   GeographyDomainCreateModel,
   GeographyDomainModel,
   GeographyMetadataDomainCreateModel,

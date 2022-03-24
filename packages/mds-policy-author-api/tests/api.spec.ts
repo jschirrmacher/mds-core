@@ -26,23 +26,23 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-enable prettier/prettier */
 /* eslint-enable @typescript-eslint/no-unused-vars */
-import { ApiServer } from '@mds-core/mds-api-server'
-import { GeographyFactory, GeographyServiceClient, GeographyServiceManager } from '@mds-core/mds-geography-service'
+import { ApiServer } from '@mds-core/mds-api-server';
+import { GeographyFactory, GeographyServiceClient, GeographyServiceManager } from '@mds-core/mds-geography-service';
 // eslint-disable-next-line prettier/prettier
-import { PolicyDomainCreateModel, PolicyMetadataDomainModel, PolicyServiceClient, PolicyStreamKafka } from '@mds-core/mds-policy-service'
-import { PolicyRepository } from '@mds-core/mds-policy-service/repository'
-import { PolicyServiceManager } from '@mds-core/mds-policy-service/service/manager'
-import { PolicyFactory } from '@mds-core/mds-policy-service/tests/helpers'
-import stream from '@mds-core/mds-stream'
-import { SCOPED_AUTH, venice } from '@mds-core/mds-test-data'
-import { Timestamp, UUID } from '@mds-core/mds-types'
-import { days, isUUID, now, pathPrefix, uuid } from '@mds-core/mds-utils'
-import { StatusCodes } from 'http-status-codes'
-import supertest from 'supertest'
-import test from 'unit.js'
-import { api } from '../api'
-import { injectVersionMiddleware } from '../middleware'
-import { POLICY_AUTHOR_API_DEFAULT_VERSION } from '../types'
+import type { PolicyDomainCreateModel, PolicyMetadataDomainModel } from '@mds-core/mds-policy-service';
+import { PolicyServiceClient, PolicyStreamKafka } from '@mds-core/mds-policy-service';
+import { PolicyRepository } from '@mds-core/mds-policy-service/repository';
+import { PolicyServiceManager } from '@mds-core/mds-policy-service/service/manager';
+import { PolicyFactory } from '@mds-core/mds-policy-service/tests/helpers';
+import stream from '@mds-core/mds-stream';
+import { SCOPED_AUTH, venice } from '@mds-core/mds-test-data';
+import type { Timestamp, UUID } from '@mds-core/mds-types';
+import { days, isUUID, now, pathPrefix, uuid } from '@mds-core/mds-utils';
+import { StatusCodes } from 'http-status-codes';
+import supertest from 'supertest';
+import { api } from '../api';
+import { injectVersionMiddleware } from '../middleware';
+import { POLICY_AUTHOR_API_DEFAULT_VERSION } from '../types';
 
 stream.mockStream(PolicyStreamKafka)
 
@@ -148,7 +148,7 @@ describe('Tests app', () => {
         .send(bad_policy)
         .expect(StatusCodes.BAD_REQUEST)
 
-      test.value(body.error.details).contains('rule_type')
+      expect(body.error.details).toContain('rule_type')
     })
 
     it('verifies cannot PUT policy (no auth)', async () => {
@@ -219,7 +219,7 @@ describe('Tests app', () => {
         .send(policy)
         .expect(200)
 
-      test.value(apiResult.body.version).is(POLICY_AUTHOR_API_DEFAULT_VERSION)
+      expect(apiResult.body.version).toStrictEqual(POLICY_AUTHOR_API_DEFAULT_VERSION)
 
       const {
         policies: [result]
@@ -228,7 +228,7 @@ describe('Tests app', () => {
         get_unpublished: true,
         get_published: null
       })
-      test.value(result?.name).is('a shiny new name')
+      expect(result?.name).toStrictEqual('a shiny new name')
     })
 
     it('creates one past policy', async () => {
@@ -286,7 +286,7 @@ describe('Tests app', () => {
         .post(pathPrefix(`/policies/${policy.policy_id}/publish`))
         .set('Authorization', POLICIES_PUBLISH_SCOPE)
         .expect(StatusCodes.FAILED_DEPENDENCY)
-      test.value(result).hasHeader('content-type', APP_JSON)
+      expect(result.headers).toHaveProperty('content-type', APP_JSON)
     })
 
     it('can publish a policy if the geo is published', async () => {
@@ -295,7 +295,7 @@ describe('Tests app', () => {
         .post(pathPrefix(`/policies/${policy?.policy_id}/publish`))
         .set('Authorization', POLICIES_PUBLISH_SCOPE)
         .expect(StatusCodes.OK)
-      test.value(result).hasHeader('content-type', APP_JSON)
+      expect(result.headers).toHaveProperty('content-type', APP_JSON)
     })
 
     it('cannot double-publish a policy', async () => {
@@ -365,8 +365,8 @@ describe('Tests app', () => {
 
       const body = result.body
       log('read back nonexistent policy response:', body)
-      test.value(result).hasHeader('content-type', APP_JSON)
-      test.value(result.body.version).is(POLICY_AUTHOR_API_DEFAULT_VERSION)
+      expect(result.headers).toHaveProperty('content-type', APP_JSON)
+      expect(result.body.version).toStrictEqual(POLICY_AUTHOR_API_DEFAULT_VERSION)
       const policies = await PolicyServiceClient.readPolicies({
         policy_ids: [policy.policy_id],
         get_published: null,
@@ -389,7 +389,7 @@ describe('Tests app', () => {
         .post(pathPrefix(`/policies/${policy.policy_id}/publish`))
         .set('Authorization', POLICIES_PUBLISH_SCOPE)
         .expect(StatusCodes.CONFLICT)
-      test.value(result.body.error.reason, 'Policies cannot be published after their start_date')
+      expect(result.body.error.details).toStrictEqual('Policies cannot be published after their start_date')
     })
 
     it('cannot GET policy metadata (no entries exist)', async () => {
@@ -539,9 +539,9 @@ describe('Tests app', () => {
         .set('Authorization', POLICIES_WRITE_SCOPE)
         .send(policy)
         .expect(400)
-      test.assert(result.body.error.name === `ValidationError`)
-      test.assert(result.body.error.reason.includes('publish_date'))
-      test.value(result).hasHeader('content-type', APP_JSON)
+      expect(result.body.error.name).toStrictEqual(`ValidationError`)
+      expect(result.body.error.reason.includes('publish_date')).toBeTruthy()
+      expect(result.headers).toHaveProperty('content-type', APP_JSON)
     })
 
     it('Cannot POST a policy with publish_date set', async () => {
@@ -551,9 +551,9 @@ describe('Tests app', () => {
         .set('Authorization', POLICIES_WRITE_SCOPE)
         .send(policy)
         .expect(400)
-      test.assert(result.body.error.name === `ValidationError`)
-      test.assert(result.body.error.reason.includes('publish_date'))
-      test.value(result).hasHeader('content-type', APP_JSON)
+      expect(result.body.error.name).toStrictEqual(`ValidationError`)
+      expect(result.body.error.reason.includes('publish_date')).toBeTruthy()
+      expect(result.headers).toHaveProperty('content-type', APP_JSON)
     })
   })
 })

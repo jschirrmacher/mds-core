@@ -30,8 +30,8 @@
 import cache from '@mds-core/mds-agency-cache'
 import { ApiServer } from '@mds-core/mds-api-server'
 import db from '@mds-core/mds-db'
-import { IngestServiceManager } from '@mds-core/mds-ingest-service'
-import stream from '@mds-core/mds-stream'
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
+import { IngestServiceManager, IngestStream } from '@mds-core/mds-ingest-service'
 import {
   JUMP_TEST_DEVICE_1,
   makeDevices,
@@ -40,20 +40,15 @@ import {
   TEST1_PROVIDER_ID,
   TEST2_PROVIDER_ID
 } from '@mds-core/mds-test-data'
+import type { TAXI_VEHICLE_EVENT, Timestamp, TripMetadata, TRIP_STATE, VehicleEvent } from '@mds-core/mds-types'
 import {
-  Device,
   MICRO_MOBILITY_EVENT_STATES_MAP,
   MICRO_MOBILITY_VEHICLE_EVENTS,
   TAXI_EVENT_STATES_MAP,
-  TAXI_VEHICLE_EVENT,
   TAXI_VEHICLE_EVENTS,
-  Timestamp,
   TNC_EVENT_STATES_MAP,
   TNC_VEHICLE_EVENT,
-  TripMetadata,
-  TRIP_STATE,
-  TRIP_STATES,
-  VehicleEvent
+  TRIP_STATES
 } from '@mds-core/mds-types'
 import { pathPrefix, uuid } from '@mds-core/mds-utils'
 import supertest from 'supertest'
@@ -99,7 +94,7 @@ const TEST_TELEMETRY2 = {
   timestamp: now() + 1000
 }
 
-const TEST_BICYCLE: Omit<Device, 'recorded' | 'accessibility_options'> = {
+const TEST_BICYCLE: Omit<DeviceDomainModel, 'recorded' | 'accessibility_options'> = {
   device_id: DEVICE_UUID,
   provider_id: TEST1_PROVIDER_ID,
   vehicle_id: 'test-id-1',
@@ -111,7 +106,7 @@ const TEST_BICYCLE: Omit<Device, 'recorded' | 'accessibility_options'> = {
   model: 'Mantaray'
 }
 
-const TEST_TAXI: Omit<Device, 'recorded'> = {
+const TEST_TAXI: Omit<DeviceDomainModel, 'recorded'> = {
   accessibility_options: ['wheelchair_accessible'],
   device_id: uuid(),
   provider_id: TEST1_PROVIDER_ID,
@@ -124,7 +119,7 @@ const TEST_TAXI: Omit<Device, 'recorded'> = {
   model: 'Mantaray'
 }
 
-const TEST_TNC: Omit<Device, 'recorded'> = {
+const TEST_TNC: Omit<DeviceDomainModel, 'recorded'> = {
   accessibility_options: ['wheelchair_accessible'],
   device_id: uuid(),
   provider_id: TEST1_PROVIDER_ID,
@@ -146,7 +141,7 @@ const test_event: Omit<VehicleEvent, 'recorded' | 'provider_id'> = {
   trip_state: null,
   timestamp: testTimestamp,
   telemetry_timestamp: testTimestamp,
-  telemetry: makeTelemetry([TEST_BICYCLE as Device], testTimestamp)[0]
+  telemetry: makeTelemetry([TEST_BICYCLE as DeviceDomainModel], testTimestamp)[0]
 }
 
 testTimestamp += 1
@@ -171,7 +166,7 @@ describe('Agency Tests', () => {
   })
 
   afterAll(async () => {
-    await Promise.all([db.shutdown(), cache.shutdown(), stream.shutdown()])
+    await Promise.all([db.shutdown(), cache.shutdown(), IngestStream.shutdown()])
     await IngestServer.stop()
   })
 

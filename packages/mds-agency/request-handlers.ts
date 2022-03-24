@@ -17,22 +17,14 @@
 import cache from '@mds-core/mds-agency-cache'
 import { parseRequest } from '@mds-core/mds-api-helpers'
 import db from '@mds-core/mds-db'
-import { IngestServiceClient, validateDeviceDomainModel } from '@mds-core/mds-ingest-service'
+import { IngestServiceClient, IngestStream, validateDeviceDomainModel } from '@mds-core/mds-ingest-service'
 import { SchemaValidator } from '@mds-core/mds-schema-validators'
-import stream from '@mds-core/mds-stream'
-import {
-  ACCESSIBILITY_OPTIONS,
-  PAYMENT_METHODS,
-  RESERVATION_METHODS,
-  RESERVATION_TYPES,
-  TripMetadata,
-  UUID,
-  VEHICLE_STATE
-} from '@mds-core/mds-types'
+import type { TripMetadata, UUID, VEHICLE_STATE } from '@mds-core/mds-types'
+import { ACCESSIBILITY_OPTIONS, PAYMENT_METHODS, RESERVATION_METHODS, RESERVATION_TYPES } from '@mds-core/mds-types'
 import { isDefined, NotFoundError, now, ServerError, ValidationError } from '@mds-core/mds-utils'
 import urls from 'url'
 import { AgencyLogger } from './logger'
-import {
+import type {
   AgencyAipGetVehicleByIdResponse,
   AgencyApiGetVehicleByIdRequest,
   AgencyApiGetVehiclesByProviderRequest,
@@ -43,9 +35,9 @@ import {
   AgencyApiRegisterVehicleResponse,
   AgencyApiRequest,
   AgencyApiUpdateVehicleRequest,
-  AgencyApiUpdateVehicleResponse,
-  AgencyServerError
+  AgencyApiUpdateVehicleResponse
 } from './types'
+import { AgencyServerError } from './types'
 import { agencyValidationErrorParser, computeCompositeVehicleData, getVehicles, readPayload } from './utils'
 
 export const registerVehicle = async (req: AgencyApiRegisterVehicleRequest, res: AgencyApiRegisterVehicleResponse) => {
@@ -92,7 +84,7 @@ export const registerVehicle = async (req: AgencyApiRegisterVehicleRequest, res:
     // DB Write is critical, and failures to write to the cache/stream should be considered non-critical (though they are likely indicative of a bug).
     await db.writeDevice(device)
     try {
-      await Promise.all([cache.writeDevices([device]), stream.writeDevice(device)])
+      await Promise.all([cache.writeDevices([device]), IngestStream.writeDevice(device)])
     } catch (error) {
       AgencyLogger.error('failed to write device stream/cache', { error })
     }
@@ -213,7 +205,7 @@ export const updateVehicle = async (req: AgencyApiUpdateVehicleRequest, res: Age
       const device = await db.updateDevice(device_id, provider_id, update)
       // TODO should we warn instead of fail if the cache/stream doesn't work?
       try {
-        await Promise.all([cache.writeDevices([device]), stream.writeDevice(device)])
+        await Promise.all([cache.writeDevices([device]), IngestStream.writeDevice(device)])
       } catch (error) {
         AgencyLogger.warn(`Error writing to cache/stream ${error}`)
       }
@@ -293,7 +285,7 @@ export const writeTripMetadata = async (
     const { provider_id } = res.locals
     /* TODO Add better validation once trip metadata proposal is solidified */
     const tripMetadata = { ...validateTripMetadata({ ...req.body, provider_id }), recorded: Date.now() }
-    await stream.writeTripMetadata(tripMetadata)
+    await IngestStream.writeTripMetadata(tripMetadata)
 
     return res.status(201).send(tripMetadata)
   } catch (error) {

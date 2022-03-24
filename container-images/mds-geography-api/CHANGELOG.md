@@ -1,5 +1,55 @@
 # @container-images/mds-geography-api
 
+## 0.0.71
+
+### Patch Changes
+
+- @mds-core/mds-geography-api@0.4.23
+
+## 0.0.70
+
+### Patch Changes
+
+- @mds-core/mds-geography-api@0.4.22
+
+## 0.0.69
+
+### Patch Changes
+
+- @mds-core/mds-geography-api@0.4.21
+
+## 0.0.68
+
+### Patch Changes
+
+- @mds-core/mds-geography-api@0.4.20
+
+## 0.0.67
+
+### Patch Changes
+
+- @mds-core/mds-geography-api@0.4.19
+
+## 0.0.66
+
+### Patch Changes
+
+- @mds-core/mds-geography-api@0.4.18
+
+## 0.0.65
+
+### Patch Changes
+
+- @mds-core/mds-geography-api@0.4.17
+
+## 0.0.64
+
+### Patch Changes
+
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-geography-api@0.4.16
+  - @mds-core/mds-webpack-config@0.1.12
+
 ## 0.0.63
 
 ### Patch Changes

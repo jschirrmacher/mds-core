@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import express from 'express'
+import type express from 'express'
 import httpContext from 'express-http-context'
 import morgan from 'morgan'
-import { ApiRequest, ApiResponse, ApiResponseLocalsClaims } from '../@types'
+import type { ApiRequest, ApiResponse, ApiResponseLocalsClaims } from '../@types'
 import { ApiServerLogger } from '../logger'
 
 export type RequestLoggingMiddlewareOptions = Partial<{

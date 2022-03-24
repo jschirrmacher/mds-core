@@ -1,5 +1,55 @@
 # @container-images/mds-jurisdiction-service
 
+## 0.0.57
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-service@0.5.24
+
+## 0.0.56
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-service@0.5.23
+
+## 0.0.55
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-service@0.5.22
+
+## 0.0.54
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-service@0.5.21
+
+## 0.0.53
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-service@0.5.20
+
+## 0.0.52
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-service@0.5.19
+
+## 0.0.51
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-service@0.5.18
+
+## 0.0.50
+
+### Patch Changes
+
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-jurisdiction-service@0.5.17
+  - @mds-core/mds-webpack-config@0.1.12
+
 ## 0.0.49
 
 ### Patch Changes

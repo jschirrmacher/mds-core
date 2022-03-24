@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddModalityColumn1616682680014 implements MigrationInterface {
   name = 'AddModalityColumn1616682680014'

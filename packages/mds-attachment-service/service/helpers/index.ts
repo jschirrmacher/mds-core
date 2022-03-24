@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { SerializedBuffers } from '@mds-core/mds-service-helpers'
-import { Attachment, AttachmentSummary } from '@mds-core/mds-types'
+import type { SerializedBuffers } from '@mds-core/mds-service-helpers'
+import type { Attachment, AttachmentSummary } from '@mds-core/mds-types'
 import { UnsupportedTypeError, uuid, ValidationError } from '@mds-core/mds-utils'
 import aws from 'aws-sdk'
 import path from 'path'

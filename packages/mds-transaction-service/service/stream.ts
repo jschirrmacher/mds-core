@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import stream, { StreamProducer } from '@mds-core/mds-stream'
+import type { StreamProducer } from '@mds-core/mds-stream'
+import stream from '@mds-core/mds-stream'
 import { getEnvVar } from '@mds-core/mds-utils'
-import { TransactionDomainModel } from '../@types'
+import type { TransactionDomainModel } from '../@types'
 
 const { TENANT_ID } = getEnvVar({
   TENANT_ID: 'mds'

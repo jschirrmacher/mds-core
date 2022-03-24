@@ -16,8 +16,8 @@
 
 import { PolicyServiceClient } from '@mds-core/mds-policy-service'
 import { ValidationError } from '@mds-core/mds-utils'
-import express from 'express'
-import { PolicyAuthorApiEditPolicyRequest, PolicyAuthorApiEditPolicyResponse } from '../types'
+import type express from 'express'
+import type { PolicyAuthorApiEditPolicyRequest, PolicyAuthorApiEditPolicyResponse } from '../types'
 
 export const UpdatePolicyHandler = async (
   req: PolicyAuthorApiEditPolicyRequest,

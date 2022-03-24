@@ -16,9 +16,9 @@
 
 import { GeographyServiceClient } from '@mds-core/mds-geography-service'
 import { InsufficientPermissionsError, NotFoundError } from '@mds-core/mds-utils'
-import express from 'express'
+import type express from 'express'
 import { GeographyAuthorLogger } from '../logger'
-import {
+import type {
   GeographyAuthorApiGetGeographyMetadatumRequest,
   GeographyAuthorApiGetGeographyMetadatumResponse
 } from '../types'

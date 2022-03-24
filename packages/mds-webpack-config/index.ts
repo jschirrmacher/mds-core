@@ -16,7 +16,8 @@
 
 import { GitRevisionPlugin } from 'git-revision-webpack-plugin'
 import { parse, resolve } from 'path'
-import { BannerPlugin, Configuration, ContextReplacementPlugin, IgnorePlugin } from 'webpack'
+import type { Configuration } from 'webpack'
+import { BannerPlugin, ContextReplacementPlugin, IgnorePlugin } from 'webpack'
 import { merge as WebpackMerge } from 'webpack-merge'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

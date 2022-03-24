@@ -1,5 +1,34 @@
 # @mds-core/mds-agency-cache
 
+## 0.4.22
+
+### Patch Changes
+
+- @mds-core/mds-schema-validators@0.5.9
+
+## 0.4.21
+
+### Patch Changes
+
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-cache@0.0.35
+  - @mds-core/mds-schema-validators@0.5.8
+
+## 0.4.20
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [ade56b85]
+- Updated dependencies [a93da2b6]
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-schema-validators@0.5.7
+  - @mds-core/mds-cache@0.0.34
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.4.19
 
 ### Patch Changes

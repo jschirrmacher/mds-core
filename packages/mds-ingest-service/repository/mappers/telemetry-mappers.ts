@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, ModelMapper, RecordedColumn } from '@mds-core/mds-repository'
-import { Timestamp } from '@mds-core/mds-types'
-import { TelemetryDomainCreateModel, TelemetryDomainModel } from '../../@types'
-import { TelemetryEntityModel } from '../entities/telemetry-entity'
-import { MigratedEntityModel } from '../mixins/migrated-entity'
+import type { IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { ModelMapper } from '@mds-core/mds-repository'
+import type { Timestamp } from '@mds-core/mds-types'
+import type { TelemetryDomainCreateModel, TelemetryDomainModel } from '../../@types'
+import type { TelemetryEntityModel } from '../entities/telemetry-entity'
+import type { MigratedEntityModel } from '../mixins/migrated-entity'
 
 type TelemetryEntityToDomainOptions = Partial<{}>
 

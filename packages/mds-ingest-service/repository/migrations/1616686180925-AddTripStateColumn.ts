@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddTripStateColumn1616686180925 implements MigrationInterface {
   name = 'AddTripStateColumn1616686180925'

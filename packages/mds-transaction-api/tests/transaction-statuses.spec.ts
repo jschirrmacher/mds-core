@@ -15,12 +15,9 @@
  */
 
 import { ApiServer } from '@mds-core/mds-api-server'
-import {
-  TransactionServiceClient,
-  TransactionStatusDomainModel,
-  transactionStatusesGenerator
-} from '@mds-core/mds-transaction-service'
-import { UUID } from '@mds-core/mds-types'
+import type { TransactionStatusDomainModel } from '@mds-core/mds-transaction-service'
+import { TransactionServiceClient, transactionStatusesGenerator } from '@mds-core/mds-transaction-service'
+import type { UUID } from '@mds-core/mds-types'
 import { hasAtLeastOneEntry, pathPrefix, uuid } from '@mds-core/mds-utils'
 import supertest from 'supertest'
 import { api } from '../api'

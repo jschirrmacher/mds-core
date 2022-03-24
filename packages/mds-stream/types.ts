@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { DeepPartial, Timestamp, UUID, VehicleEvent } from '@mds-core/mds-types'
-
 export type ReadStreamOptions = Partial<{
   count: number
   block: number
@@ -31,10 +29,3 @@ export type StreamItemType = string
 export type StreamItemData = string
 export type StreamItem = [StreamItemID, [StreamItemType, StreamItemData]]
 export type ReadStreamResult = [Stream, StreamItem[]]
-
-export interface BadDataError {
-  recorded: Timestamp
-  provider_id: UUID
-  error_message: string
-  data: DeepPartial<VehicleEvent>
-}

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { Recorded, Telemetry, Timestamp, UUID } from '@mds-core/mds-types'
+import type { Recorded, Telemetry, Timestamp, UUID } from '@mds-core/mds-types'
 import { csv, now } from '@mds-core/mds-utils'
 import { getReadOnlyClient, getWriteableClient } from './client'
 import { DbLogger } from './logger'
 import schema from './schema'
 import { cols_sql, logSql, SqlVals, to_sql, vals_list } from './sql-utils'
-import { TelemetryRecord } from './types'
+import type { TelemetryRecord } from './types'
 
 function convertTelemetryToTelemetryRecord(telemetry: Telemetry): TelemetryRecord {
   const {

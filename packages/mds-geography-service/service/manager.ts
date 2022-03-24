@@ -15,7 +15,8 @@
  */
 
 import { RpcServer } from '@mds-core/mds-rpc-common'
-import { GeographyService, GeographyServiceDefinition, GeographyServiceRequestContext } from '../@types'
+import type { GeographyService, GeographyServiceRequestContext } from '../@types'
+import { GeographyServiceDefinition } from '../@types'
 import { GeographyServiceClient } from '../client'
 import { GeographyServiceProvider } from './provider'
 

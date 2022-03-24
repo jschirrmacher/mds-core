@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { DomainModelCreate } from '@mds-core/mds-repository'
-import { RpcEmptyRequestContext, RpcRoute, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
-import { Timestamp, UUID } from '@mds-core/mds-types'
-import { SchemaObject } from 'ajv'
+import type { DomainModelCreate } from '@mds-core/mds-repository'
+import type { RpcEmptyRequestContext, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
+import { RpcRoute } from '@mds-core/mds-rpc-common'
+import type { Timestamp, UUID } from '@mds-core/mds-types'
+import type { SchemaObject } from 'ajv'
 
 export interface CollectorSchemaDomainModel {
   schema_id: string

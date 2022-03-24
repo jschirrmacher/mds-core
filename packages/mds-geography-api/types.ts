@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import {
+import type {
   ApiRequest,
   ApiRequestParams,
   ApiRequestQuery,
   ApiResponseLocalsClaims,
   ApiVersionedResponse
 } from '@mds-core/mds-api-server'
-import { GeographyDomainModel } from '@mds-core/mds-geography-service'
+import type { GeographyDomainModel } from '@mds-core/mds-geography-service'
 
 export const GEOGRAPHY_API_SUPPORTED_VERSIONS = ['1.0.0'] as const
 export type GEOGRAPHY_API_SUPPORTED_VERSION = typeof GEOGRAPHY_API_SUPPORTED_VERSIONS[number]

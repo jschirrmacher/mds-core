@@ -1,5 +1,22 @@
 # @mds-core/mds-service-helpers
 
+## 0.6.7
+
+### Patch Changes
+
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-utils@0.5.0
+
+## 0.6.6
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.6.5
 
 ### Patch Changes

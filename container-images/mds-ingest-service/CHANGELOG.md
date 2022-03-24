@@ -1,5 +1,58 @@
 # @container-images/mds-ingest-service
 
+## 0.0.66
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.8
+
+## 0.0.65
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.7
+
+## 0.0.64
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.6
+
+## 0.0.63
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.5
+
+## 0.0.62
+
+### Patch Changes
+
+- Updated dependencies [775efc9c]
+- Updated dependencies [3ca785d0]
+  - @mds-core/mds-ingest-service@0.10.4
+
+## 0.0.61
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.3
+
+## 0.0.60
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.2
+
+## 0.0.59
+
+### Patch Changes
+
+- Updated dependencies [ade56b85]
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-ingest-service@0.10.1
+  - @mds-core/mds-webpack-config@0.1.12
+
 ## 0.0.58
 
 ### Patch Changes

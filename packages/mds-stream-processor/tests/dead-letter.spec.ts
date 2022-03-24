@@ -1,5 +1,5 @@
 import { ParseError } from '@mds-core/mds-utils'
-import { StreamSink } from '../@types'
+import type { StreamSink } from '../@types'
 import { GeneratorSource } from '../connectors'
 import { StreamProcessor } from '../index'
 

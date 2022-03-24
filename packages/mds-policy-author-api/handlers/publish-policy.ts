@@ -16,9 +16,9 @@
 
 import { PolicyServiceClient } from '@mds-core/mds-policy-service'
 import { now } from '@mds-core/mds-utils'
-import express from 'express'
+import type express from 'express'
 import { PolicyAuthorApiLogger } from '../logger'
-import { PolicyAuthorApiPublishPolicyRequest, PolicyAuthorApiPublishPolicyResponse } from '../types'
+import type { PolicyAuthorApiPublishPolicyRequest, PolicyAuthorApiPublishPolicyResponse } from '../types'
 
 export const PublishPolicyHandler = async (
   req: PolicyAuthorApiPublishPolicyRequest,

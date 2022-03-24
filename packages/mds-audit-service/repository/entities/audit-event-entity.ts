@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import type { EntityCreateModel } from '@mds-core/mds-repository'
+import { BigintTransformer, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Column, Entity } from 'typeorm'
-import { AuditEventDomainModel } from '../../@types'
+import type { AuditEventDomainModel } from '../../@types'
 
 export interface AuditEventEntityModel extends IdentityColumn, RecordedColumn {
   audit_trip_id: AuditEventDomainModel['audit_trip_id']

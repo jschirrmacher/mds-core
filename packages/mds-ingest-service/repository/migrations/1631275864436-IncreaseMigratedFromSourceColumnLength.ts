@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class IncreaseMigratedFromSourceColumnLength1631275864436 implements MigrationInterface {
   name = 'IncreaseMigratedFromSourceColumnLength1631275864436'

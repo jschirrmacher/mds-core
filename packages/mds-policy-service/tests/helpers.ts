@@ -1,9 +1,10 @@
-import { GeographyFactory, GeographyService } from '@mds-core/mds-geography-service'
-import { ServiceClient } from '@mds-core/mds-service-helpers'
+import type { GeographyService } from '@mds-core/mds-geography-service'
+import { GeographyFactory } from '@mds-core/mds-geography-service'
+import type { ServiceClient } from '@mds-core/mds-service-helpers'
 import { venice } from '@mds-core/mds-test-data'
-import { Timestamp, UUID } from '@mds-core/mds-types'
+import type { Timestamp, UUID } from '@mds-core/mds-types'
 import { now, START_ONE_MONTH_FROM_NOW, uuid } from '@mds-core/mds-utils'
-import { PolicyDomainCreateModel, PolicyService, Rule } from '../@types'
+import type { PolicyDomainCreateModel, PolicyService, Rule } from '../@types'
 
 export const RulesFactory = (overrides = {}): Rule[] => [
   {

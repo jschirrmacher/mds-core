@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddEventsProviderIdIdIndex1627315276644 implements MigrationInterface {
   name = 'AddEventsProviderIdIdIndex1627315276644'

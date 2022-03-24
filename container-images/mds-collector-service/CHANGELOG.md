@@ -1,5 +1,55 @@
 # @container-images/mds-collector-service
 
+## 0.0.58
+
+### Patch Changes
+
+- @mds-core/mds-collector-service@0.4.24
+
+## 0.0.57
+
+### Patch Changes
+
+- @mds-core/mds-collector-service@0.4.23
+
+## 0.0.56
+
+### Patch Changes
+
+- @mds-core/mds-collector-service@0.4.22
+
+## 0.0.55
+
+### Patch Changes
+
+- @mds-core/mds-collector-service@0.4.21
+
+## 0.0.54
+
+### Patch Changes
+
+- @mds-core/mds-collector-service@0.4.20
+
+## 0.0.53
+
+### Patch Changes
+
+- @mds-core/mds-collector-service@0.4.19
+
+## 0.0.52
+
+### Patch Changes
+
+- @mds-core/mds-collector-service@0.4.18
+
+## 0.0.51
+
+### Patch Changes
+
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-collector-service@0.4.17
+  - @mds-core/mds-webpack-config@0.1.12
+
 ## 0.0.50
 
 ### Patch Changes

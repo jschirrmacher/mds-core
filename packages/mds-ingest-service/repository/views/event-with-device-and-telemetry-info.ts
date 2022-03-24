@@ -14,23 +14,13 @@
  * limitations under the License.
  */
 
-import {
-  ACCESSIBILITY_OPTION,
-  MODALITY,
-  Nullable,
-  PROPULSION_TYPE,
-  Timestamp,
-  TRIP_STATE,
-  UUID,
-  VEHICLE_EVENT,
-  VEHICLE_STATE,
-  VEHICLE_TYPE
-} from '@mds-core/mds-types'
+import type { ACCESSIBILITY_OPTION, PROPULSION_TYPE, TRIP_STATE, VEHICLE_EVENT } from '@mds-core/mds-types'
+import { MODALITY, Nullable, Timestamp, UUID, VEHICLE_STATE, VEHICLE_TYPE } from '@mds-core/mds-types'
 import { ViewColumn, ViewEntity } from 'typeorm'
 import { DeviceEntity } from '../entities/device-entity'
 import { EventEntity } from '../entities/event-entity'
 import { TelemetryEntity } from '../entities/telemetry-entity'
-import { MigratedEntityModel } from '../mixins/migrated-entity'
+import type { MigratedEntityModel } from '../mixins/migrated-entity'
 
 export type EventWithDeviceAndTelemetryInfoEntityModel = Omit<
   EventEntity & DeviceEntity & TelemetryEntity,

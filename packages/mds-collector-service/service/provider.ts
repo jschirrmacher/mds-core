@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-import { Schema, SchemaValidator } from '@mds-core/mds-schema-validators'
-import {
-  ProcessController,
-  ServiceError,
-  ServiceException,
-  ServiceProvider,
-  ServiceResult
-} from '@mds-core/mds-service-helpers'
-import stream, { StreamProducer } from '@mds-core/mds-stream'
-import { Nullable } from '@mds-core/mds-types'
+import type { Schema } from '@mds-core/mds-schema-validators'
+import { SchemaValidator } from '@mds-core/mds-schema-validators'
+import type { ProcessController, ServiceProvider } from '@mds-core/mds-service-helpers'
+import { ServiceError, ServiceException, ServiceResult } from '@mds-core/mds-service-helpers'
+import type { StreamProducer } from '@mds-core/mds-stream'
+import stream from '@mds-core/mds-stream'
+import type { Nullable } from '@mds-core/mds-types'
 import { getEnvVar, isUUID, pluralize, ServerError } from '@mds-core/mds-utils'
-import { ErrorObject } from 'ajv'
-import { CollectorService, CollectorServiceRequestContext } from '../@types'
+import type { ErrorObject } from 'ajv'
+import type { CollectorService, CollectorServiceRequestContext } from '../@types'
 import { CollectorServiceLogger } from '../logger'
 import { CollectorRepository } from '../repository'
 

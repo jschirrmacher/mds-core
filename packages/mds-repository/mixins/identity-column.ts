@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { AnyConstructor } from '@mds-core/mds-types'
+import type { AnyConstructor } from '@mds-core/mds-types'
 import { Column, Index } from 'typeorm'
-import { ColumnCommonOptions } from 'typeorm/decorator/options/ColumnCommonOptions'
-import { ColumnWithWidthOptions } from 'typeorm/decorator/options/ColumnWithWidthOptions'
+import type { ColumnCommonOptions } from 'typeorm/decorator/options/ColumnCommonOptions'
+import type { ColumnWithWidthOptions } from 'typeorm/decorator/options/ColumnWithWidthOptions'
 import { BigintTransformer } from '../transformers'
 
 export type IdentityColumn = { id: number }

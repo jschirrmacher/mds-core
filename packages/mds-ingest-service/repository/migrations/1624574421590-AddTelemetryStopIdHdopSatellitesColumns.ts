@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddTelemetryStopIdHdopSatellitesColumns1624574421590 implements MigrationInterface {
   name = 'AddTelemetryStopIdHdopSatellitesColumns1624574421590'

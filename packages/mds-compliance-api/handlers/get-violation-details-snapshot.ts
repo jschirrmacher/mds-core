@@ -15,15 +15,12 @@
  */
 
 import { parseRequest } from '@mds-core/mds-api-helpers'
-import { ApiRequestParams } from '@mds-core/mds-api-server'
-import {
-  ComplianceServiceClient,
-  ComplianceSnapshotDomainModel,
-  GetComplianceSnapshotOptions
-} from '@mds-core/mds-compliance-service'
+import type { ApiRequestParams } from '@mds-core/mds-api-server'
+import type { ComplianceSnapshotDomainModel, GetComplianceSnapshotOptions } from '@mds-core/mds-compliance-service'
+import { ComplianceServiceClient } from '@mds-core/mds-compliance-service'
 import { isError } from '@mds-core/mds-service-helpers'
 import { isDefined, NotFoundError, now, ServerError } from '@mds-core/mds-utils'
-import { ComplianceApiRequest, ComplianceApiResponse } from '../@types'
+import type { ComplianceApiRequest, ComplianceApiResponse } from '../@types'
 import { ComplianceApiLogger } from '../logger'
 
 export type ComplianceApiGetViolationDetailsSnapshotRequest = ComplianceApiRequest &

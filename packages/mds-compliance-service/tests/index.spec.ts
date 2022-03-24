@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { ServiceErrorDescriptor } from '@mds-core/mds-service-helpers'
+import type { ServiceErrorDescriptor } from '@mds-core/mds-service-helpers'
 import stream from '@mds-core/mds-stream'
 import { days, now } from '@mds-core/mds-utils'
-import { ConnectionOptions, createConnection } from 'typeorm'
-import { ComplianceAggregateDomainModel } from '../@types'
+import type { ConnectionOptions } from 'typeorm'
+import { createConnection } from 'typeorm'
+import type { ComplianceAggregateDomainModel } from '../@types'
 import { ComplianceServiceClient } from '../client'
 import { ComplianceServiceManager } from '../service/manager'
 import { ComplianceSnapshotStreamKafka } from '../service/stream'

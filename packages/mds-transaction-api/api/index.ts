@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { AccessTokenScopeValidator, ApiErrorHandlingMiddleware, checkAccess } from '@mds-core/mds-api-server'
+import type { AccessTokenScopeValidator } from '@mds-core/mds-api-server'
+import { ApiErrorHandlingMiddleware, checkAccess } from '@mds-core/mds-api-server'
 import { isUUID, pathPrefix } from '@mds-core/mds-utils'
-import express from 'express'
-import { TransactionApiAccessTokenScopes } from '../@types'
+import type express from 'express'
+import type { TransactionApiAccessTokenScopes } from '../@types'
 import { AddTransactionOperationHandler } from '../handlers/add-operation'
 import { CreateTransactionHandler } from '../handlers/create-transaction'
 import { CreateTransactionsHandler } from '../handlers/create-transactions'

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 import { MdsNamingStrategy } from './naming-strategies'
 
 const strategy = new MdsNamingStrategy()

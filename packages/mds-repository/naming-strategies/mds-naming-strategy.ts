@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { DefaultNamingStrategy, NamingStrategyInterface, Table } from 'typeorm'
+import type { NamingStrategyInterface, Table } from 'typeorm'
+import { DefaultNamingStrategy } from 'typeorm'
 
 const tableName = (tableOrName: Table | string) =>
   (typeof tableOrName === 'string' ? tableOrName : tableOrName.name).replace(/-/g, '_').replace(/ /g, '')

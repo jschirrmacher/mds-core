@@ -17,11 +17,8 @@
 import { ApiVersionMiddleware } from '@mds-core/mds-api-server'
 import { SchemaValidator } from '@mds-core/mds-schema-validators'
 import type { RequestHandler } from 'express'
-import {
-  TRANSACTION_API_DEFAULT_VERSION,
-  TRANSACTION_API_SUPPORTED_VERSION,
-  TRANSACTION_API_SUPPORTED_VERSIONS
-} from '../@types'
+import type { TRANSACTION_API_SUPPORTED_VERSION } from '../@types'
+import { TRANSACTION_API_DEFAULT_VERSION, TRANSACTION_API_SUPPORTED_VERSIONS } from '../@types'
 
 export const TransactionApiVersionMiddleware: RequestHandler = ApiVersionMiddleware(
   'application/vnd.mds.transaction+json',

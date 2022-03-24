@@ -15,8 +15,8 @@
  */
 
 import { hasAtLeastOneEntry } from '@mds-core/mds-utils'
-import express from 'express'
-import { ApiRequest, ApiVersionedResponse } from '../@types'
+import type express from 'express'
+import type { ApiRequest, ApiVersionedResponse } from '../@types'
 
 const MinorVersion = (version: string) => {
   const [major, minor] = version.split('.')

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import express from 'express'
-import { ApiRequest, ApiResponse } from '../@types'
+import type express from 'express'
+import type { ApiRequest, ApiResponse } from '../@types'
 import { healthInfo } from '../utils'
 
 export type MaintenanceModeMiddlewareOptions = Partial<{}>

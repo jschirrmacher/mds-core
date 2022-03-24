@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ApiRequest, ApiResponseLocalsClaims, ApiVersionedResponse } from '@mds-core/mds-api-server'
+import type { ApiRequest, ApiResponseLocalsClaims, ApiVersionedResponse } from '@mds-core/mds-api-server'
 
 export const TRANSACTION_API_SUPPORTED_VERSIONS = ['0.1.0'] as const
 export type TRANSACTION_API_SUPPORTED_VERSION = typeof TRANSACTION_API_SUPPORTED_VERSIONS[number]

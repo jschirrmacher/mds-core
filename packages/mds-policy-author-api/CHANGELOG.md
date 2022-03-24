@@ -1,5 +1,84 @@
 # @mds-core/mds-policy-author-api
 
+## 0.7.32
+
+### Patch Changes
+
+- Updated dependencies [f9090232]
+  - @mds-core/mds-providers@0.2.10
+  - @mds-core/mds-schema-validators@0.5.9
+  - @mds-core/mds-api-helpers@0.2.23
+  - @mds-core/mds-policy-service@0.11.26
+
+## 0.7.31
+
+### Patch Changes
+
+- @mds-core/mds-policy-service@0.11.25
+- @mds-core/mds-api-helpers@0.2.22
+
+## 0.7.30
+
+### Patch Changes
+
+- @mds-core/mds-api-server@0.4.10
+- @mds-core/mds-api-helpers@0.2.21
+- @mds-core/mds-policy-service@0.11.24
+
+## 0.7.29
+
+### Patch Changes
+
+- Updated dependencies [af3631da]
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-api-server@0.4.9
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-api-helpers@0.2.20
+  - @mds-core/mds-policy-service@0.11.23
+  - @mds-core/mds-schema-validators@0.5.8
+  - @mds-core/mds-service-helpers@0.6.7
+
+## 0.7.28
+
+### Patch Changes
+
+- @mds-core/mds-policy-service@0.11.22
+- @mds-core/mds-api-helpers@0.2.19
+
+## 0.7.27
+
+### Patch Changes
+
+- @mds-core/mds-policy-service@0.11.21
+- @mds-core/mds-api-helpers@0.2.18
+
+## 0.7.26
+
+### Patch Changes
+
+- @mds-core/mds-policy-service@0.11.20
+- @mds-core/mds-api-helpers@0.2.17
+
+## 0.7.25
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [aaf3c1cf]
+- Updated dependencies [ade56b85]
+- Updated dependencies [a93da2b6]
+- Updated dependencies [a5ab0aa5]
+- Updated dependencies [c4e78cc9]
+  - @mds-core/mds-policy-service@0.11.19
+  - @mds-core/mds-schema-validators@0.5.7
+  - @mds-core/mds-api-helpers@0.2.16
+  - @mds-core/mds-api-server@0.4.8
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-providers@0.2.9
+  - @mds-core/mds-service-helpers@0.6.6
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.7.24
 
 ### Patch Changes

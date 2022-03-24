@@ -15,7 +15,7 @@
  */
 import httpContext from 'express-http-context'
 import { inspect } from 'util'
-import { LogLevel } from './@types'
+import type { LogLevel } from './@types'
 import { debugLog, logger } from './loggers'
 import { normalize, redact } from './redaction'
 

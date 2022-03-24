@@ -14,18 +14,20 @@
     limitations under the License.
  */
 
-import { GeographyDomainModel, getPolygon } from '@mds-core/mds-geography-service'
-import { TimePolicy, TimeRule } from '@mds-core/mds-policy-service'
-import { Device, Telemetry, UUID, VehicleEvent } from '@mds-core/mds-types'
+import type { GeographyDomainModel } from '@mds-core/mds-geography-service'
+import { getPolygon } from '@mds-core/mds-geography-service'
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
+import type { TimePolicy, TimeRule } from '@mds-core/mds-policy-service'
+import type { Telemetry, UUID, VehicleEvent } from '@mds-core/mds-types'
 import { clone, now, pointInShape, RULE_UNIT_MAP } from '@mds-core/mds-utils'
-import { ComplianceEngineResult } from '../@types'
+import type { ComplianceEngineResult } from '../@types'
 import { ComplianceEngineLogger as logger } from '../logger'
 import { annotateVehicleMap, isInStatesOrEvents, isInVehicleTypes, isRuleActive } from './helpers'
 
 export function isTimeRuleMatch(
   rule: TimeRule,
   geographies: GeographyDomainModel[],
-  device: Device,
+  device: DeviceDomainModel,
   // We throw out events that have no telemetry.
   event: VehicleEvent & { telemetry: Telemetry }
 ) {
@@ -50,10 +52,10 @@ export function processTimePolicy(
   policy: TimePolicy,
   events: (VehicleEvent & { telemetry: Telemetry })[],
   geographies: GeographyDomainModel[],
-  devices: { [d: string]: Device }
+  devices: { [d: string]: DeviceDomainModel }
 ): ComplianceEngineResult | undefined {
   const matchedVehicles: {
-    [d: string]: { device: Device; rule_applied: UUID; rules_matched: UUID[] }
+    [d: string]: { device: DeviceDomainModel; rule_applied: UUID; rules_matched: UUID[] }
   } = {}
   // Necessary because we destructively modify the devices list to keep track of which devices we've seen.
   const devicesToCheck = clone(devices)

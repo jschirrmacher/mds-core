@@ -1,5 +1,35 @@
 # @mds-core/mds-api-server
 
+## 0.4.10
+
+### Patch Changes
+
+- Updated dependencies [abde42f5]
+  - @mds-core/mds-api-authorizer@0.1.65
+
+## 0.4.9
+
+### Patch Changes
+
+- af3631da: Stash API authorization context so it can be passed to RPC services without reparsing
+- Updated dependencies [af3631da]
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-api-authorizer@0.1.64
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-service-helpers@0.6.7
+
+## 0.4.8
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [ade56b85]
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-api-authorizer@0.1.63
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-service-helpers@0.6.6
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.4.7
 
 ### Patch Changes

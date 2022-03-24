@@ -16,7 +16,8 @@
 
 import { ApiServer } from '@mds-core/mds-api-server'
 import { ComplianceServiceClient, ComplianceViolationFactory } from '@mds-core/mds-compliance-service'
-import { PolicyDomainModel, PolicyServiceClient } from '@mds-core/mds-policy-service'
+import type { PolicyDomainModel } from '@mds-core/mds-policy-service'
+import { PolicyServiceClient } from '@mds-core/mds-policy-service'
 import { SCOPED_AUTH } from '@mds-core/mds-test-data'
 import { pathPrefix, uuid } from '@mds-core/mds-utils'
 import HttpStatus from 'http-status-codes'
@@ -52,9 +53,11 @@ const utils = require('@mds-core/mds-utils')
 describe('Test Compliances API', () => {
   beforeEach(() => {
     jest.spyOn(utils, 'now').mockImplementation(() => TIME + 500)
-    jest.spyOn(PolicyServiceClient, 'readActivePolicies').mockImplementation(async (): Promise<PolicyDomainModel[]> => {
-      return [POLICY1, POLICY2]
-    })
+    jest
+      .spyOn(PolicyServiceClient, 'readActivePolicies')
+      .mockImplementation(async (): Promise<Required<PolicyDomainModel>[]> => {
+        return [POLICY1, POLICY2]
+      })
   })
 
   afterEach(() => {

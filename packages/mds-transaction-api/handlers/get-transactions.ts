@@ -15,20 +15,18 @@
  */
 
 import { parseRequest, streamCsvToHttp } from '@mds-core/mds-api-helpers'
-import { ApiRequestParams, ApiResponse } from '@mds-core/mds-api-server'
+import type { ApiRequestParams, ApiResponse } from '@mds-core/mds-api-server'
 import { getProviders } from '@mds-core/mds-providers'
-import {
+import type {
   PaginationLinks,
-  SORTABLE_COLUMN,
-  SORT_DIRECTION,
   TransactionDomainModel,
-  TransactionSearchParams,
-  TransactionServiceClient
+  TransactionSearchParams
 } from '@mds-core/mds-transaction-service'
+import { SORTABLE_COLUMN, SORT_DIRECTION, TransactionServiceClient } from '@mds-core/mds-transaction-service'
 import { hasOwnProperty, ValidationError } from '@mds-core/mds-utils'
-import express from 'express'
-import { Cursor } from 'typeorm-cursor-pagination'
-import { TransactionApiRequest, TransactionApiResponse } from '../@types'
+import type express from 'express'
+import type { Cursor } from 'typeorm-cursor-pagination'
+import type { TransactionApiRequest, TransactionApiResponse } from '../@types'
 
 export type TransactionApiGetTransactionsRequest = TransactionApiRequest &
   ApiRequestParams<'provider_id' | 'start_timestamp' | 'end_timestamp'>

@@ -15,15 +15,18 @@
  */
 
 import { ModelMapper } from '@mds-core/mds-repository'
-import { Timestamp } from '@mds-core/mds-types'
-import {
+import type { Timestamp } from '@mds-core/mds-types'
+import type {
   CollectorMessageDomainCreateModel,
   CollectorMessageDomainModel,
   CollectorSchemaDomainCreateModel,
   CollectorSchemaDomainModel
 } from '../@types'
-import { CollectorMessageEntityCreateModel, CollectorMessageEntityModel } from './entities/collector-message-entity'
-import { CollectorSchemaEntityCreateModel, CollectorSchemaEntityModel } from './entities/collector-schema-entity'
+import type {
+  CollectorMessageEntityCreateModel,
+  CollectorMessageEntityModel
+} from './entities/collector-message-entity'
+import type { CollectorSchemaEntityCreateModel, CollectorSchemaEntityModel } from './entities/collector-schema-entity'
 
 type CollectorSchemaEntityCreateOptions = Partial<{ recorded: Timestamp }>
 

@@ -15,12 +15,12 @@
  */
 
 import type { ApiResponse } from '@mds-core/mds-api-server'
-import { Nullable } from '@mds-core/mds-types'
+import type { Nullable } from '@mds-core/mds-types'
 import { deepPickProperties } from '@mds-core/mds-utils'
 import { StatusCodes } from 'http-status-codes'
 import { Parser } from 'json2csv'
 import { DateTime } from 'luxon'
-import { DeepPickPath } from 'ts-deep-pick'
+import type { DeepPickPath } from 'ts-deep-pick'
 
 export type RowsWithCursor<Row, RowsKey extends string> = {
   [key in RowsKey]: Row[]

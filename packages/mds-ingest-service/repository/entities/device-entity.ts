@@ -15,7 +15,8 @@
  */
 
 import { IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
-import { ACCESSIBILITY_OPTION, MODALITY, Nullable, PROPULSION_TYPE, UUID, VEHICLE_TYPE } from '@mds-core/mds-types'
+import type { ACCESSIBILITY_OPTION, PROPULSION_TYPE } from '@mds-core/mds-types'
+import { MODALITY, Nullable, UUID, VEHICLE_TYPE } from '@mds-core/mds-types'
 import { Column, Entity } from 'typeorm'
 import { MigratedEntity } from '../mixins/migrated-entity'
 

@@ -17,8 +17,8 @@
 
 import { PolicyServiceClient } from '@mds-core/mds-policy-service'
 import { BadParamsError, isUUID } from '@mds-core/mds-utils'
-import express from 'express'
-import { PolicyAuthorApiGetPolicyMetadatumRequest, PolicyAuthorApiGetPolicyMetadatumResponse } from '../types'
+import type express from 'express'
+import type { PolicyAuthorApiGetPolicyMetadatumRequest, PolicyAuthorApiGetPolicyMetadatumResponse } from '../types'
 
 export const GetPolicyMetadataHandler = async (
   req: PolicyAuthorApiGetPolicyMetadatumRequest,

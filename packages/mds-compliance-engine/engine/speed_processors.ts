@@ -1,15 +1,17 @@
-import { GeographyDomainModel, getPolygon } from '@mds-core/mds-geography-service'
-import { SpeedPolicy, SpeedRule } from '@mds-core/mds-policy-service'
-import { Device, Telemetry, UUID, VehicleEvent } from '@mds-core/mds-types'
+import type { GeographyDomainModel } from '@mds-core/mds-geography-service'
+import { getPolygon } from '@mds-core/mds-geography-service'
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
+import type { SpeedPolicy, SpeedRule } from '@mds-core/mds-policy-service'
+import type { Telemetry, UUID, VehicleEvent } from '@mds-core/mds-types'
 import { clone, pointInShape } from '@mds-core/mds-utils'
-import { ComplianceEngineResult, VehicleEventWithTelemetry } from '../@types'
+import type { ComplianceEngineResult, VehicleEventWithTelemetry } from '../@types'
 import { ComplianceEngineLogger as logger } from '../logger'
 import { annotateVehicleMap, isInStatesOrEvents, isInVehicleTypes, isRuleActive } from './helpers'
 
 export function isSpeedRuleMatch(
   rule: SpeedRule,
   geographies: GeographyDomainModel[],
-  device: Device,
+  device: DeviceDomainModel,
   event: VehicleEventWithTelemetry
 ) {
   if (isRuleActive(rule)) {
@@ -32,10 +34,10 @@ export function processSpeedPolicy(
   policy: SpeedPolicy,
   events: (VehicleEvent & { telemetry: Telemetry })[],
   geographies: GeographyDomainModel[],
-  devices: { [d: string]: Device }
+  devices: { [d: string]: DeviceDomainModel }
 ): ComplianceEngineResult | undefined {
   const matchedVehicles: {
-    [d: string]: { device: Device; speed?: number; rule_applied: UUID; rules_matched: UUID[] }
+    [d: string]: { device: DeviceDomainModel; speed?: number; rule_applied: UUID; rules_matched: UUID[] }
   } = {}
   // Necessary because we destructively modify the devices list to keep track of which devices we've seen.
   const devicesToCheck = clone(devices)

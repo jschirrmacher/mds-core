@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { IdentityColumnCreateModel } from './identity-column'
-import { RecordedColumnCreateModel } from './recorded-column'
+import type { IdentityColumnCreateModel } from './identity-column'
+import type { RecordedColumnCreateModel } from './recorded-column'
 
 export * from './identity-column'
 export * from './recorded-column'

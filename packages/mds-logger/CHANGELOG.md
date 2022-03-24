@@ -1,5 +1,11 @@
 # @mds-core/mds-logger
 
+## 0.5.7
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+
 ## 0.5.6
 
 ### Patch Changes

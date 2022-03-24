@@ -1,7 +1,8 @@
-import { AccessTokenScopeValidator, ApiErrorHandlingMiddleware, checkAccess } from '@mds-core/mds-api-server'
+import type { AccessTokenScopeValidator } from '@mds-core/mds-api-server'
+import { ApiErrorHandlingMiddleware, checkAccess } from '@mds-core/mds-api-server'
 import { pathPrefix } from '@mds-core/mds-utils'
-import express from 'express'
-import { ComplianceApiAccessTokenScopes } from '../@types'
+import type express from 'express'
+import type { ComplianceApiAccessTokenScopes } from '../@types'
 import {
   GetComplianceSnapshotIDsHandler,
   GetViolationDetailsSnapshotHandler,

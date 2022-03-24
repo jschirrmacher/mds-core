@@ -17,8 +17,8 @@
 import type { Labels as PrometheusLabels, Opts as PrometheusOptions, TransformLabelsFn } from 'express-prom-bundle'
 import prometheus from 'express-prom-bundle'
 import promClient from 'prom-client'
-import { ApiRequest, ApiResponse } from '../../@types'
-import { PrometheusLabeler } from './@types'
+import type { ApiRequest, ApiResponse } from '../../@types'
+import type { PrometheusLabeler } from './@types'
 import { ProviderIdLabeler } from './provider-id-labeler'
 
 const PrometheusLabelTransformers = (...labelers: TransformLabelsFn[]) => {

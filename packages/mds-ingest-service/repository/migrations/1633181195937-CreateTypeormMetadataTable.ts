@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 /**
  * This migration was created to workaround a TypeORM bug where the "typeorm_metadata" table is created by

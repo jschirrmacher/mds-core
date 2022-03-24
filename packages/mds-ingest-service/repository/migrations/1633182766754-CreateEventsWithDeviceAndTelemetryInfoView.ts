@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class CreateEventsWithDeviceAndTelemetryInfoView1633182766754 implements MigrationInterface {
   name = 'CreateEventsWithDeviceAndTelemetryInfoView1633182766754'

@@ -15,23 +15,27 @@
  */
 
 import { EventSchema } from '@mds-core/mds-ingest-service'
-import { JSONSchemaType, SchemaObject, SchemaValidator } from '@mds-core/mds-schema-validators'
-import { UUID, VEHICLE_TYPES } from '@mds-core/mds-types'
-import {
+import type { JSONSchemaType, SchemaObject } from '@mds-core/mds-schema-validators'
+import { SchemaValidator } from '@mds-core/mds-schema-validators'
+import type { UUID } from '@mds-core/mds-types'
+import { VEHICLE_TYPES } from '@mds-core/mds-types'
+import type {
   ComplianceViolationDetailsDomainModel,
   CurbUseDetailsDomainModel,
   CustomReceiptDetailsDomainModel,
-  FEE_TYPE,
   ReceiptDomainModel,
-  SORTABLE_COLUMN,
-  SORT_DIRECTION,
   TransactionDomainModel,
   TransactionOperationDomainModel,
   TransactionSearchParams,
   TransactionStatusDomainModel,
-  TRANSACTION_OPERATION_TYPE,
-  TRANSACTION_STATUS_TYPE,
   TripReceiptDetailsDomainModel
+} from '../@types'
+import {
+  FEE_TYPE,
+  SORTABLE_COLUMN,
+  SORT_DIRECTION,
+  TRANSACTION_OPERATION_TYPE,
+  TRANSACTION_STATUS_TYPE
 } from '../@types'
 
 const uuidSchema = <const>{ type: 'string', format: 'uuid' }

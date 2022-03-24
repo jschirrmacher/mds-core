@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { UUID } from '@mds-core/mds-types'
+import type { UUID } from '@mds-core/mds-types'
 import {
   clone,
   ConflictError,
@@ -13,7 +13,7 @@ import {
   uuid,
   yesterday
 } from '@mds-core/mds-utils'
-import { PolicyDomainCreateModel, PolicyMetadataDomainModel } from '../@types'
+import type { PolicyDomainCreateModel, PolicyMetadataDomainModel } from '../@types'
 import { PolicyRepository } from '../repository'
 import {
   DELETEABLE_POLICY,
@@ -340,25 +340,30 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
     })
 
     it('can sort Policies by status', async () => {
-      const n = now()
-      const p1 = await PolicyRepository.writePolicy(PolicyFactory({ name: 'active', start_date: n }))
+      const thisNow = now()
+      const p1 = await PolicyRepository.writePolicy(PolicyFactory({ name: 'active', start_date: thisNow }))
       const p2 = await PolicyRepository.writePolicy(
-        PolicyFactory({ name: 'expired', start_date: n - days(14), end_date: n - days(7), publish_date: n - days(14) })
+        PolicyFactory({
+          name: 'expired',
+          start_date: thisNow - days(14),
+          end_date: thisNow - days(7),
+          publish_date: thisNow - days(14)
+        })
       )
       await PolicyRepository.writePolicy(PolicyFactory({ name: 'draft' }))
-      const p4 = await PolicyRepository.writePolicy(PolicyFactory({ name: 'pending', start_date: n + days(7) }))
+      const p4 = await PolicyRepository.writePolicy(PolicyFactory({ name: 'pending', start_date: thisNow + days(7) }))
 
-      const p5 = await PolicyRepository.writePolicy(PolicyFactory({ name: 'deactivated', start_date: n }))
+      const p5 = await PolicyRepository.writePolicy(PolicyFactory({ name: 'deactivated', start_date: thisNow }))
       const p6 = await PolicyRepository.writePolicy(
-        PolicyFactory({ name: 'active', start_date: n, prev_policies: [p5.policy_id] })
+        PolicyFactory({ name: 'active', start_date: thisNow, prev_policies: [p5.policy_id] })
       )
 
-      await PolicyRepository.publishPolicy(p1.policy_id, n)
-      await PolicyRepository.publishPolicy(p2.policy_id, n - days(14))
+      await PolicyRepository.publishPolicy(p1.policy_id, thisNow)
+      await PolicyRepository.publishPolicy(p2.policy_id, thisNow - days(14))
       await PolicyRepository.publishPolicy(p4.policy_id)
-      await PolicyRepository.publishPolicy(p5.policy_id, n)
-      await PolicyRepository.updatePolicySupersededByColumn(p5.policy_id, p6.policy_id)
-      await PolicyRepository.publishPolicy(p6.policy_id, n)
+      await PolicyRepository.publishPolicy(p5.policy_id, thisNow)
+      await PolicyRepository.updatePolicySupersededBy(p5.policy_id, p6.policy_id, thisNow)
+      await PolicyRepository.publishPolicy(p6.policy_id, thisNow)
       const { policies } = await PolicyRepository.readPolicies({ sort: 'status' }, {})
       const expected = ['active', 'active', 'pending', 'expired', 'deactivated', 'draft']
       policies.map(p => p.name).forEach((n, i) => expect(n).toEqual(expected[i]))

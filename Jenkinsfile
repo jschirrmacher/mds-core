@@ -23,7 +23,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        nvm('version': 'v16.11.1') {
+        nvm('version': 'v16.14.2') {
           sh '''
           pnpm clean
           pnpm lint
@@ -37,7 +37,7 @@ pipeline {
         NODE_OPTIONS = '--max_old_space_size=4096'  // fixes nodejs out-of-memory errors such as "Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory"
       }
       steps {
-        nvm('version': 'v16.11.1') {
+        nvm('version': 'v16.14.2') {
           sh '''
             # Fetch develop so we can only test the diff
             git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"

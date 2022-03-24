@@ -15,8 +15,8 @@
  */
 
 import { ModelMapper } from '@mds-core/mds-repository'
-import { Timestamp } from '@mds-core/mds-types'
-import {
+import type { Timestamp } from '@mds-core/mds-types'
+import type {
   TransactionDomainCreateModel,
   TransactionDomainModel,
   TransactionOperationDomainCreateModel,
@@ -24,9 +24,9 @@ import {
   TransactionStatusDomainCreateModel,
   TransactionStatusDomainModel
 } from '../@types'
-import { TransactionOperationEntity, TransactionOperationEntityCreateModel } from './entities/operation-entity'
-import { TransactionStatusEntity, TransactionStatusEntityCreateModel } from './entities/status-entity'
-import { TransactionEntity, TransactionEntityCreateModel } from './entities/transaction-entity'
+import type { TransactionOperationEntity, TransactionOperationEntityCreateModel } from './entities/operation-entity'
+import type { TransactionStatusEntity, TransactionStatusEntityCreateModel } from './entities/status-entity'
+import type { TransactionEntity, TransactionEntityCreateModel } from './entities/transaction-entity'
 
 type TransactionEntityToDomainOptions = Partial<{}>
 

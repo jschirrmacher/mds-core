@@ -21,8 +21,10 @@
 /* eslint-disable promise/catch-or-return */
 /* eslint-disable promise/prefer-await-to-callbacks */
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { GeographyDomainModel } from '@mds-core/mds-geography-service'
-import { CountPolicy, CountRule, RULE_TYPES } from '@mds-core/mds-policy-service'
+import type { GeographyDomainModel } from '@mds-core/mds-geography-service'
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
+import type { CountPolicy, CountRule } from '@mds-core/mds-policy-service'
+import { RULE_TYPES } from '@mds-core/mds-policy-service'
 import {
   LA_CITY_BOUNDARY,
   makeDevices,
@@ -30,12 +32,11 @@ import {
   makeTelemetryInArea,
   veniceSpecOps
 } from '@mds-core/mds-test-data'
-import { Device, Telemetry, UUID, VehicleEvent } from '@mds-core/mds-types'
+import type { Telemetry, UUID, VehicleEvent } from '@mds-core/mds-types'
 import { now, rangeRandomInt, uuid } from '@mds-core/mds-utils'
-import { Feature, FeatureCollection } from 'geojson'
+import type { Feature, FeatureCollection } from 'geojson'
 import MockDate from 'mockdate'
-import test from 'unit.js'
-import { ComplianceEngineResult, VehicleEventWithTelemetry } from '../../@types'
+import type { ComplianceEngineResult, VehicleEventWithTelemetry } from '../../@types'
 import { isCountRuleMatch, processCountPolicy } from '../../engine/count_processors'
 import { generateDeviceMap } from '../../engine/helpers'
 import {
@@ -102,7 +103,7 @@ const GEOGRAPHIES: GeographyDomainModel[] = [
 
 describe('Tests Compliance Engine Count Functionality:', () => {
   describe('basic count compliance cases', () => {
-    it('isCountRuleMatch is accurate', done => {
+    it('isCountRuleMatch is accurate', async () => {
       const LAdevices = makeDevices(1, now())
       const LAevents = makeEventsWithTelemetry(LAdevices, now(), CITY_OF_LA, {
         event_types: ['trip_end'],
@@ -117,27 +118,26 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         speed: rangeRandomInt(10)
       })
 
-      test.assert(
+      expect(
         isCountRuleMatch(
           COUNT_POLICY.rules[0] as CountRule,
           GEOGRAPHIES,
           LAdevices[0],
           LAevents[0] as VehicleEvent & { telemetry: Telemetry }
         )
-      )
-      test.assert(
+      ).toBeTruthy()
+      expect(
         !isCountRuleMatch(
           COUNT_POLICY.rules[0] as CountRule,
           GEOGRAPHIES,
           TZDevices[0],
           TZEvents[0] as VehicleEvent & { telemetry: Telemetry }
         )
-      )
-      done()
+      ).toBeTruthy()
     })
 
-    it('reports 0 violations if the number of vehicles is below the count limit', done => {
-      const devices: Device[] = makeDevices(7, now())
+    it('reports 0 violations if the number of vehicles is below the count limit', async () => {
+      const devices: DeviceDomainModel[] = makeDevices(7, now())
       const events = makeEventsWithTelemetry(devices, now() - 100000, CITY_OF_LA, {
         event_types: ['trip_end'],
         vehicle_state: 'available',
@@ -154,11 +154,10 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         [LA_GEOGRAPHY],
         deviceMap
       ) as ComplianceEngineResult
-      test.assert.deepEqual(resultNew.total_violations, 0)
-      done()
+      expect(resultNew.total_violations).toStrictEqual(0)
     })
 
-    it('Verifies count compliance', done => {
+    it('Verifies count compliance', async () => {
       const devices = makeDevices(800, now())
       const events = makeEventsWithTelemetry(devices, now(), CITY_OF_LA, {
         event_types: ['trip_start'],
@@ -166,15 +165,14 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         speed: 0
       }) as VehicleEventWithTelemetry[]
 
-      const deviceMap: { [d: string]: Device } = generateDeviceMap(devices)
+      const deviceMap: { [d: string]: DeviceDomainModel } = generateDeviceMap(devices)
 
       const result = processCountPolicy(HIGH_COUNT_POLICY, events, [LA_GEOGRAPHY], deviceMap) as ComplianceEngineResult
-      test.assert.deepEqual(result.total_violations, 0)
-      test.assert.deepEqual(result.vehicles_found.length, 800)
-      done()
+      expect(result.total_violations).toStrictEqual(0)
+      expect(result.vehicles_found.length).toStrictEqual(800)
     })
 
-    it('Verifies count compliance maximum violation', done => {
+    it('Verifies count compliance maximum violation', async () => {
       const devices = makeDevices(3001, now())
       const events = makeEventsWithTelemetry(devices, now(), CITY_OF_LA, {
         event_types: ['trip_start'],
@@ -182,16 +180,14 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         speed: 0
       }) as VehicleEventWithTelemetry[]
 
-      const deviceMap: { [d: string]: Device } = generateDeviceMap(devices)
+      const deviceMap: { [d: string]: DeviceDomainModel } = generateDeviceMap(devices)
 
       const result = processCountPolicy(HIGH_COUNT_POLICY, events, [LA_GEOGRAPHY], deviceMap) as ComplianceEngineResult
-      test.assert.deepEqual(result.total_violations, 1)
-      test.assert.deepEqual(result.vehicles_found.length, 3001)
-
-      done()
+      expect(result.total_violations).toStrictEqual(1)
+      expect(result.vehicles_found.length).toStrictEqual(3001)
     })
 
-    it('Verifies count compliance minimum violation', done => {
+    it('Verifies count compliance minimum violation', async () => {
       const matchingDevices = makeDevices(10, now())
       const notMatchingDevices = makeDevices(10, now())
       const matchingEvents = makeEventsWithTelemetry(matchingDevices, now(), CITY_OF_LA, {
@@ -206,7 +202,10 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         speed: 0
       }) as VehicleEventWithTelemetry[]
 
-      const deviceMap: { [d: string]: Device } = generateDeviceMap([...matchingDevices, ...notMatchingDevices])
+      const deviceMap: { [d: string]: DeviceDomainModel } = generateDeviceMap([
+        ...matchingDevices,
+        ...notMatchingDevices
+      ])
       const result = processCountPolicy(
         HIGH_COUNT_POLICY,
         [...matchingEvents, ...notMatchingEvents],
@@ -214,15 +213,14 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         deviceMap
       ) as ComplianceEngineResult
 
-      test.assert.deepEqual(result.total_violations, 490)
-      test.assert.deepEqual(result.vehicles_found.length, 10)
-      done()
+      expect(result.total_violations).toStrictEqual(490)
+      expect(result.vehicles_found.length).toStrictEqual(10)
     })
   })
 
   describe('Verifies day-based bans work properly', () => {
-    it('Reports violations accurately', done => {
-      const devices: Device[] = makeDevices(15, now())
+    it('Reports violations accurately', async () => {
+      const devices: DeviceDomainModel[] = makeDevices(15, now())
       const events = makeEventsWithTelemetry(devices, now() - 10, LA_BEACH, {
         event_types: ['trip_end'],
         vehicle_state: 'available',
@@ -233,8 +231,8 @@ describe('Tests Compliance Engine Count Functionality:', () => {
       devices.forEach(device => {
         telemetry.push(makeTelemetryInArea(device, now(), LA_BEACH, 10))
       })
-      const TuesdayDeviceMap = generateDeviceMap(devices)
-      const SaturdayDeviceMap = generateDeviceMap(devices)
+      const TuesdayDeviceDomainModelMap = generateDeviceMap(devices)
+      const SaturdayDeviceDomainModelMap = generateDeviceMap(devices)
 
       // Verifies on a Tuesday that vehicles are allowed
       MockDate.set('2019-05-21T20:00:00.000Z')
@@ -242,26 +240,25 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         COUNT_POLICY_JSON_2,
         events,
         [LA_BEACH_GEOGRAPHY],
-        TuesdayDeviceMap
+        TuesdayDeviceDomainModelMap
       ) as ComplianceEngineResult
-      test.assert(tuesdayResult.total_violations === 0)
+      expect(tuesdayResult.total_violations).toStrictEqual(0)
       // Verifies on a Saturday that vehicles are banned
       MockDate.set('2019-05-25T20:00:00.000Z')
       const saturdayResult = processCountPolicy(
         COUNT_POLICY_JSON_2,
         events,
         [LA_BEACH_GEOGRAPHY],
-        SaturdayDeviceMap
+        SaturdayDeviceDomainModelMap
       ) as ComplianceEngineResult
-      test.assert(saturdayResult.total_violations === 15)
+      expect(saturdayResult.total_violations).toStrictEqual(15)
       MockDate.reset()
-      done()
     })
   })
 
   describe('Verify that rules written for a particular event_type only apply to events of that event_type', () => {
     it('Verifies violations for on_hours events', () => {
-      const devices: Device[] = makeDevices(15, now())
+      const devices: DeviceDomainModel[] = makeDevices(15, now())
       const events = makeEventsWithTelemetry(devices, now() - 100000, CITY_OF_LA, {
         event_types: ['on_hours'],
         vehicle_state: 'available',
@@ -275,12 +272,12 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         deviceMap
       ) as ComplianceEngineResult
 
-      test.assert.deepEqual(result.vehicles_found.length, 15)
-      test.assert.deepEqual(result.total_violations, 5)
+      expect(result.vehicles_found.length).toStrictEqual(15)
+      expect(result.total_violations).toStrictEqual(5)
     })
 
-    it('Verifies no violations for a different event_type', done => {
-      const devices: Device[] = makeDevices(15, now())
+    it('Verifies no violations for a different event_type', async () => {
+      const devices: DeviceDomainModel[] = makeDevices(15, now())
       const events = makeEventsWithTelemetry(devices, now() - 100000, CITY_OF_LA, {
         event_types: ['trip_end'],
         vehicle_state: 'available',
@@ -294,14 +291,13 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         [LA_GEOGRAPHY],
         deviceMap
       ) as ComplianceEngineResult
-      test.assert.deepEqual(result.total_violations, 0)
-      done()
+      expect(result.total_violations).toStrictEqual(0)
     })
   })
 
   describe('Verifies max 0 count policy', () => {
-    it('exercises the max 0 compliance', done => {
-      const devices: Device[] = makeDevices(15, now())
+    it('exercises the max 0 compliance', async () => {
+      const devices: DeviceDomainModel[] = makeDevices(15, now())
       const events = makeEventsWithTelemetry(devices, now() - 10, LA_BEACH, {
         event_types: ['trip_start'],
         vehicle_state: 'on_trip',
@@ -316,13 +312,12 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         deviceMap
       ) as ComplianceEngineResult
 
-      test.assert.deepEqual(result.total_violations, 15)
-      done()
+      expect(result.total_violations).toStrictEqual(15)
     })
   })
 
   describe('Verifies count logic behaves properly when one geography is contained in another', () => {
-    it('has the correct number of matches per rule', done => {
+    it('has the correct number of matches per rule', async () => {
       const veniceSpecOpsPointIds: UUID[] = []
       const geographies = veniceSpecOps.features.map((feature: Feature) => {
         if (feature.geometry.type === 'Point') {
@@ -373,12 +368,12 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         ]
       }
 
-      const devices_a: Device[] = makeDevices(22, now())
+      const devices_a: DeviceDomainModel[] = makeDevices(22, now())
       let iter = 0
       const events_a: VehicleEvent[] = veniceSpecOps.features.reduce((acc: VehicleEvent[], feature: Feature) => {
         if (feature.geometry.type === 'Point') {
           acc.push(
-            ...makeEventsWithTelemetry([devices_a[iter++] as Device], now() - 10, feature.geometry, {
+            ...makeEventsWithTelemetry([devices_a[iter++] as DeviceDomainModel], now() - 10, feature.geometry, {
               event_types: ['provider_drop_off'],
               vehicle_state: 'available',
               speed: 0
@@ -388,7 +383,7 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         return acc
       }, [])
 
-      const devices_b: Device[] = makeDevices(10, now())
+      const devices_b: DeviceDomainModel[] = makeDevices(10, now())
       const events_b: VehicleEvent[] = makeEventsWithTelemetry(
         devices_b,
         now() - 10,
@@ -400,38 +395,37 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         }
       )
 
-      const deviceMap: { [d: string]: Device } = generateDeviceMap([...devices_a, ...devices_b])
+      const deviceMap: { [d: string]: DeviceDomainModel } = generateDeviceMap([...devices_a, ...devices_b])
       const result = processCountPolicy(
         VENICE_SPEC_OPS_POLICY,
         [...events_a, ...events_b] as VehicleEventWithTelemetry[],
         geographies,
         deviceMap
       ) as ComplianceEngineResult
-      test.assert(result.total_violations === 10)
-      done()
+      expect(result.total_violations).toStrictEqual(10)
     })
 
-    it('does overflow correctly', done => {
+    it('does overflow correctly', async () => {
       /* The polygons within which these events are being created do not overlap
        with each other at all. They are both contained within the greater Venice
        geography. The devices in INNER_POLYGON should overflow into the rule evaluation
        for the second rule.
        */
-      const devices_a: Device[] = makeDevices(3, now())
+      const devices_a: DeviceDomainModel[] = makeDevices(3, now())
       const events_a: VehicleEvent[] = makeEventsWithTelemetry(devices_a, now(), INNER_POLYGON, {
         event_types: ['provider_drop_off'],
         vehicle_state: 'available',
         speed: 0
       })
 
-      const devices_b: Device[] = makeDevices(2, now())
+      const devices_b: DeviceDomainModel[] = makeDevices(2, now())
       const events_b: VehicleEvent[] = makeEventsWithTelemetry(devices_b, now(), INNER_POLYGON_2, {
         event_types: ['provider_drop_off'],
         vehicle_state: 'available',
         speed: 0
       })
 
-      const deviceMap: { [d: string]: Device } = generateDeviceMap([...devices_a, ...devices_b])
+      const deviceMap: { [d: string]: DeviceDomainModel } = generateDeviceMap([...devices_a, ...devices_b])
       const result = processCountPolicy(
         VENICE_OVERFLOW_POLICY,
         [...events_a, ...events_b] as VehicleEventWithTelemetry[],
@@ -458,34 +452,34 @@ describe('Tests Compliance Engine Count Functionality:', () => {
         vehicle => vehicle.rule_applied === rule_1_id && vehicle.rules_matched.includes(rule_1_id)
       )
 
-      test.assert(vehiclesCapturedByRule0.length === 1)
-      test.assert(vehiclesCapturedByRule1.length === 2)
+      expect(vehiclesCapturedByRule0.length).toStrictEqual(1)
+      expect(vehiclesCapturedByRule1.length).toStrictEqual(2)
 
       const vehiclesMatchingBothRules = vehicles_found.filter(
         vehicle => vehicle.rules_matched.includes(rule_0_id) && vehicle.rules_matched.includes(rule_1_id)
       )
-      test.assert(vehiclesMatchingBothRules.length === 3)
+      expect(vehiclesMatchingBothRules.length).toStrictEqual(3)
 
       violatingVehicles.forEach(vehicle => {
-        test.assert(vehicle.rules_matched.includes(VENICE_OVERFLOW_POLICY.rules[1]!.rule_id))
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        expect(vehicle.rules_matched.includes(VENICE_OVERFLOW_POLICY.rules[1]!.rule_id)).toBeTruthy()
       })
 
-      test.assert.equal(result.total_violations, 2)
-      done()
+      expect(result.total_violations).toStrictEqual(2)
     })
   })
 
-  it('counts total_violations accurately when mixing count minumum and maximum violations', done => {
+  it('counts total_violations accurately when mixing count minumum and maximum violations', async () => {
     // The polygons within which these events are being created do not overlap
     // with each other at all.
-    const devices_a: Device[] = makeDevices(3, now())
+    const devices_a: DeviceDomainModel[] = makeDevices(3, now())
     const events_a: VehicleEvent[] = makeEventsWithTelemetry(devices_a, now() - 10, INNER_POLYGON, {
       event_types: ['provider_drop_off'],
       vehicle_state: 'available',
       speed: 0
     })
 
-    const devices_b: Device[] = makeDevices(2, now())
+    const devices_b: DeviceDomainModel[] = makeDevices(2, now())
     const events_b: VehicleEvent[] = makeEventsWithTelemetry(devices_b, now() - 10, INNER_POLYGON_2, {
       event_types: ['provider_drop_off'],
       vehicle_state: 'available',
@@ -493,7 +487,7 @@ describe('Tests Compliance Engine Count Functionality:', () => {
     })
 
     // The geo of the first rule is contained within the geo of the second rule.
-    const deviceMap: { [d: string]: Device } = generateDeviceMap([...devices_a, ...devices_b])
+    const deviceMap: { [d: string]: DeviceDomainModel } = generateDeviceMap([...devices_a, ...devices_b])
     const result = processCountPolicy(
       VENICE_MIXED_VIOLATIONS_POLICY,
       [...events_a, ...events_b] as VehicleEventWithTelemetry[],
@@ -501,27 +495,26 @@ describe('Tests Compliance Engine Count Functionality:', () => {
       deviceMap
     ) as ComplianceEngineResult
 
-    test.assert.equal(result.total_violations, 6)
-    done()
+    expect(result.total_violations).toStrictEqual(6)
   })
 
-  it('accurately tracks overflows per rule and marks each vehicle_found with the rules that apply or match', done => {
+  it('accurately tracks overflows per rule and marks each vehicle_found with the rules that apply or match', async () => {
     // The polygons within which these events are being created do not overlap
     // with each other at all.
-    const devices_a: Device[] = makeDevices(2, now())
+    const devices_a: DeviceDomainModel[] = makeDevices(2, now())
     const events_a: VehicleEvent[] = makeEventsWithTelemetry(devices_a, now() - 10, INNER_POLYGON, {
       event_types: ['provider_drop_off'],
       vehicle_state: 'available',
       speed: 0
     })
 
-    const devices_b: Device[] = makeDevices(4, now())
+    const devices_b: DeviceDomainModel[] = makeDevices(4, now())
     const events_b: VehicleEvent[] = makeEventsWithTelemetry(devices_b, now() - 10, TANZANIA_POLYGON, {
       event_types: ['provider_drop_off'],
       vehicle_state: 'available',
       speed: 0
     })
-    const deviceMap: { [d: string]: Device } = generateDeviceMap([...devices_a, ...devices_b])
+    const deviceMap: { [d: string]: DeviceDomainModel } = generateDeviceMap([...devices_a, ...devices_b])
     const result = processCountPolicy(
       MANY_OVERFLOWS_POLICY,
       [...events_a, ...events_b] as VehicleEventWithTelemetry[],
@@ -533,7 +526,7 @@ describe('Tests Compliance Engine Count Functionality:', () => {
      * from the first rule would have overflowed into evaluation for the
      * second rule, and there would be no violations at all.
      */
-    test.assert.equal(result.total_violations, 1)
+    expect(result.total_violations).toStrictEqual(1)
     const rule_0_id = MANY_OVERFLOWS_POLICY.rules[0]?.rule_id
     const rule_1_id = MANY_OVERFLOWS_POLICY.rules[1]?.rule_id
 
@@ -544,24 +537,23 @@ describe('Tests Compliance Engine Count Functionality:', () => {
     const rule_0_applied = result.vehicles_found.filter(vehicle => {
       return vehicle.rule_applied === rule_0_id && vehicle.rules_matched.includes(rule_0_id)
     }).length
-    test.assert.deepEqual(rule_0_applied, 1)
+    expect(rule_0_applied).toStrictEqual(1)
     const rule_0_matched = result.vehicles_found.filter(vehicle => {
       return vehicle.rules_matched.includes(rule_0_id)
     }).length
-    test.assert.deepEqual(rule_0_matched, 2)
+    expect(rule_0_matched).toStrictEqual(2)
     const rule_0_overflowed = result.vehicles_found.filter(vehicle => {
       return vehicle.rules_matched.includes(rule_0_id) && !!vehicle.rule_applied
     }).length
-    test.assert.deepEqual(rule_0_overflowed, 1)
+    expect(rule_0_overflowed).toStrictEqual(1)
 
     const rule_1_applied = result.vehicles_found.filter(vehicle => {
       return vehicle.rule_applied === rule_1_id && vehicle.rules_matched.includes(rule_1_id)
     }).length
-    test.assert.deepEqual(rule_1_applied, 4)
+    expect(rule_1_applied).toStrictEqual(4)
     const rule_1_matched = result.vehicles_found.filter(vehicle => {
       return vehicle.rules_matched.includes(rule_1_id)
     }).length
-    test.assert.deepEqual(rule_1_matched, 4)
-    done()
+    expect(rule_1_matched).toStrictEqual(4)
   })
 })

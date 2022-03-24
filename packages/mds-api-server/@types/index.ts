@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { AuthorizerClaims } from '@mds-core/mds-api-authorizer'
-import express from 'express'
+import type { AuthorizerClaims } from '@mds-core/mds-api-authorizer'
+import type express from 'express'
 
 export type ApiRequest<B = {}> = express.Request<{}, unknown, B, {}>
 
@@ -61,10 +61,11 @@ export type ApiResponseLocals<P extends string, T> = {
 }
 
 export type ApiResponseLocalsClaims<AccessTokenScope extends string = never> = ApiResponseLocals<
-  'scopes',
-  Array<AccessTokenScope>
+  'authorization',
+  AuthorizerClaims['authorization']
 > &
-  ApiResponseLocals<'claims', AuthorizerClaims | null>
+  ApiResponseLocals<'claims', AuthorizerClaims['claims']> &
+  ApiResponseLocals<'scopes', Array<AccessTokenScope>>
 
 export type ApiResponseLocalsVersion<V extends string> = ApiResponseLocals<'version', V>
 

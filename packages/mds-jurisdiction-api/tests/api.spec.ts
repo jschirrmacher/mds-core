@@ -15,7 +15,7 @@
  */
 
 import { ApiServer } from '@mds-core/mds-api-server'
-import { JurisdictionDomainModel } from '@mds-core/mds-jurisdiction-service'
+import type { JurisdictionDomainModel } from '@mds-core/mds-jurisdiction-service'
 import { JurisdictionServiceManager } from '@mds-core/mds-jurisdiction-service/service/manager'
 import { SCOPED_AUTH } from '@mds-core/mds-test-data'
 import { pathPrefix, uuid } from '@mds-core/mds-utils'

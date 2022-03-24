@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import { DomainModelCreate } from '@mds-core/mds-repository'
-import {
+import type { DomainModelCreate } from '@mds-core/mds-repository'
+import type {
   ACCESSIBILITY_OPTION,
   DAY_OF_WEEK,
-  Enum,
   MICRO_MOBILITY_VEHICLE_EVENT,
   MICRO_MOBILITY_VEHICLE_STATE,
   MODALITY,
@@ -34,6 +33,7 @@ import {
   UUID,
   VEHICLE_TYPE
 } from '@mds-core/mds-types'
+import { Enum } from '@mds-core/mds-types'
 
 export const RULE_TYPES = Enum('count', 'speed', 'time', 'user', 'rate')
 export const RULE_TYPE_LIST = <const>['count', 'speed', 'time', 'user', 'rate']

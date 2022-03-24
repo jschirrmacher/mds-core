@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {
-  Device,
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
+import type {
   MODALITY,
   PROPULSION_TYPE,
   Telemetry,
@@ -36,7 +36,7 @@ import {
   rangeRandomInt,
   uuid
 } from '@mds-core/mds-utils'
-import { Geometry } from 'geojson'
+import type { Geometry } from 'geojson'
 import { DISTRICT_SEVEN } from './test-areas/district-seven'
 import { LA_CITY_BOUNDARY } from './test-areas/la-city-boundary'
 import { restrictedAreas, serviceAreaMap, venice, veniceSpecOps } from './test-areas/test-areas'
@@ -59,7 +59,7 @@ const COMPLIANCE_AUTH =
 
 const BAD_PROVIDER_UUID = '5f7114d1-4091-46ee-b492-e55875f7de99'
 
-const JUMP_TEST_DEVICE_1: Device = {
+const JUMP_TEST_DEVICE_1: DeviceDomainModel = {
   accessibility_options: [],
   provider_id: JUMP_PROVIDER_ID,
   device_id: 'e9edbe74-f7be-48e0-a63a-92f4bc1af5ed',
@@ -73,7 +73,7 @@ const JUMP_TEST_DEVICE_1: Device = {
   recorded: now()
 }
 
-function makeTelemetry(devices: Device[], timestamp: Timestamp): [Telemetry, ...Telemetry[]] {
+function makeTelemetry(devices: DeviceDomainModel[], timestamp: Timestamp): [Telemetry, ...Telemetry[]] {
   let i = 0
   const serviceAreaKeys = Object.keys(serviceAreaMap)
 
@@ -170,7 +170,7 @@ function makeTelemetry(devices: Device[], timestamp: Timestamp): [Telemetry, ...
   return telemetries
 }
 
-function makeTelemetryInShape(device: Device, timestamp: number, shape: Geometry, speed: number) {
+function makeTelemetryInShape(device: DeviceDomainModel, timestamp: number, shape: Geometry, speed: number) {
   const point = makePointInShape(shape)
   return {
     device_id: device.device_id,
@@ -188,7 +188,7 @@ function makeTelemetryInShape(device: Device, timestamp: number, shape: Geometry
   }
 }
 
-function makeTelemetryInArea(device: Device, timestamp: Timestamp, area: UUID | Geometry, speed: number) {
+function makeTelemetryInArea(device: DeviceDomainModel, timestamp: Timestamp, area: UUID | Geometry, speed: number) {
   if (typeof area === 'string') {
     const serviceArea = serviceAreaMap[area]
     if (!serviceArea) {
@@ -226,7 +226,7 @@ function makeTelemetryStream(origin: Telemetry, steps: number) {
 }
 
 function makeEventsWithTelemetry(
-  devices: Device[],
+  devices: DeviceDomainModel[],
   timestamp: Timestamp,
   area: UUID | Geometry,
   makeEventsWithTelemetryOptions: {
@@ -259,7 +259,11 @@ function makeEventsWithTelemetry(
   })
 }
 
-function makeDevices(count: number, timestamp: Timestamp, provider_id = TEST1_PROVIDER_ID): [Device, ...Device[]] {
+function makeDevices(
+  count: number,
+  timestamp: Timestamp,
+  provider_id = TEST1_PROVIDER_ID
+): [DeviceDomainModel, ...DeviceDomainModel[]] {
   // make N devices, distributed across the regions
   const devices = []
   if (count === 0) {

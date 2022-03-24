@@ -21,5 +21,5 @@ declare module 'ioredis' {
   }
 }
 
-export { KeyType } from 'ioredis'
+export type { KeyType } from 'ioredis'
 export type OrderedFields = { [key: string]: number }

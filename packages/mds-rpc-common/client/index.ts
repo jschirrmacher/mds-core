@@ -16,13 +16,15 @@
 
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 import { ModuleRpcClient } from '@lacuna-tech/rpc_ts/lib/client'
-import { ModuleRpcCommon } from '@lacuna-tech/rpc_ts/lib/common'
+import type { ModuleRpcCommon } from '@lacuna-tech/rpc_ts/lib/common'
 import { ModuleRpcProtocolClient } from '@lacuna-tech/rpc_ts/lib/protocol/client'
 import { ModuleRpcProtocolGrpcWebCommon } from '@lacuna-tech/rpc_ts/lib/protocol/grpc_web/common'
-import { isServiceError, ServiceError, ServiceResponse } from '@mds-core/mds-service-helpers'
-import { AnyFunction } from '@mds-core/mds-types'
+import type { ServiceResponse } from '@mds-core/mds-service-helpers'
+import { isServiceError, ServiceError } from '@mds-core/mds-service-helpers'
+import type { AnyFunction } from '@mds-core/mds-types'
 import { seconds } from '@mds-core/mds-utils'
-import { RpcServiceDefinition, RPC_CONTEXT_KEY, RPC_HOST, RPC_PORT } from '../@types'
+import type { RpcServiceDefinition } from '../@types'
+import { RPC_CONTEXT_KEY, RPC_HOST, RPC_PORT } from '../@types'
 import { RpcCommonLogger } from '../logger'
 
 export type RpcClientOptions<RequestContext extends {}> = {

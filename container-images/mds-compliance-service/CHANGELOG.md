@@ -1,5 +1,55 @@
 # @container-images/mds-compliance-service
 
+## 0.0.69
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.29
+
+## 0.0.68
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.28
+
+## 0.0.67
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.27
+
+## 0.0.66
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.26
+
+## 0.0.65
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.25
+
+## 0.0.64
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.24
+
+## 0.0.63
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.23
+
+## 0.0.62
+
+### Patch Changes
+
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-compliance-service@0.10.22
+  - @mds-core/mds-webpack-config@0.1.12
+
 ## 0.0.61
 
 ### Patch Changes

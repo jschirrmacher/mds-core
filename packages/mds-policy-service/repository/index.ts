@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-import { InsertReturning, ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
-import { Timestamp, UUID } from '@mds-core/mds-types'
+import type { InsertReturning } from '@mds-core/mds-repository'
+import { ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
+import type { Timestamp, UUID } from '@mds-core/mds-types'
 import { ConflictError, hasAtLeastOneEntry, NotFoundError, now, testEnvSafeguard } from '@mds-core/mds-utils'
 import { buildPaginator } from 'typeorm-cursor-pagination'
-import {
+import type {
   FILTER_POLICY_STATUS,
   PolicyDomainCreateModel,
   PolicyDomainModel,
   PolicyMetadataDomainModel,
+  POLICY_STATUS,
   PresentationOptions,
   ReadPoliciesResponse,
   ReadPolicyQueryParams
@@ -68,15 +70,25 @@ export const PolicyRepository = ReadWriteRepository.Create('policies', { entitie
     })()
 
     /** Turns statuses into expressions with params */
+    const DELIMITER = ' AND '
     const PUBLISHED = 'publish_date IS NOT NULL'
     const NOT_PUBLISHED = 'publish_date IS NULL'
     const START_DATE_IN_PAST = 'start_date IS NOT NULL AND start_date <= :now'
     const START_DATE_IN_FUTURE = 'start_date IS NOT NULL AND start_date > :now'
     const END_DATE_IN_PAST = 'end_date IS NOT NULL AND end_date <= :now'
     const END_DATE_NULL_OR_IN_FUTURE = '(end_date IS NULL OR end_date > :now)'
-    const SUPERSEDED = 'superseded_by IS NOT NULL AND array_length(superseded_by, 1) >= 1'
-    const NOT_SUPERSEDED = 'superseded_by IS NULL'
-    const DELIMITER = ' AND '
+    const SUPERSEDED = [
+      'superseded_by IS NOT NULL',
+      'array_length(superseded_by, 1) >= 1',
+      '(select min(x) from unnest(superseded_at) x) < extract(epoch from now())*1000'
+    ].join(DELIMITER)
+    const NOT_SUPERSEDED =
+      '(superseded_by IS NULL) OR ' +
+      [
+        'superseded_by IS NOT NULL',
+        'array_length(superseded_by, 1) >= 1',
+        '(select max(x) from unnest(superseded_at) x) > extract(epoch from now())*1000'
+      ].join(DELIMITER)
 
     const STATUS_ORDER = `CASE
       WHEN ${[NOT_PUBLISHED].join(DELIMITER)} THEN 5
@@ -258,7 +270,7 @@ export const PolicyRepository = ReadWriteRepository.Create('policies', { entitie
     readActivePolicies: async (timestamp: Timestamp = now()) => {
       try {
         const { policies } = await readPolicies({ statuses: ['active'] }, { withStatus: true }, timestamp)
-        return policies
+        return policies as (Omit<PolicyDomainModel, 'status'> & Required<{ status: POLICY_STATUS }>)[]
       } catch (error) {
         throw RepositoryError(error)
       }
@@ -502,13 +514,16 @@ export const PolicyRepository = ReadWriteRepository.Create('policies', { entitie
      * @param {UUID} policy_id policy_id which is being superseded
      * @param {UUID} superseding_policy_id policy_id which is superseding the original policy_id
      */
-    updatePolicySupersededByColumn: async (policy_id: UUID, superseding_policy_id: UUID) => {
+    updatePolicySupersededBy: async (policy_id: UUID, superseding_policy_id: UUID, policy_superseded_at: Timestamp) => {
       try {
         const connection = await repository.connect('rw')
 
-        const { superseded_by } = await connection.getRepository(PolicyEntity).findOneOrFail({ policy_id })
+        const { superseded_by, superseded_at } = await connection
+          .getRepository(PolicyEntity)
+          .findOneOrFail({ policy_id })
 
         const updatedSupersededBy = superseded_by ? [...superseded_by, superseding_policy_id] : [superseding_policy_id]
+        const updatedSupersededAt = superseded_at ? [...superseded_at, policy_superseded_at] : [policy_superseded_at]
 
         const {
           raw: [updated]
@@ -516,7 +531,7 @@ export const PolicyRepository = ReadWriteRepository.Create('policies', { entitie
           .getRepository(PolicyEntity)
           .createQueryBuilder()
           .update()
-          .set({ superseded_by: updatedSupersededBy })
+          .set({ superseded_by: updatedSupersededBy, superseded_at: updatedSupersededAt })
           .where('policy_id = :policy_id', { policy_id })
           .returning('*')
           .execute()

@@ -15,8 +15,9 @@
  */
 
 import type { ApiResponse } from '@mds-core/mds-api-server'
-import { Nullable } from '@mds-core/mds-types'
-import { RowsWithCursor, streamCsvToHttp } from '../csv-stream'
+import type { Nullable } from '@mds-core/mds-types'
+import type { RowsWithCursor } from '../csv-stream'
+import { streamCsvToHttp } from '../csv-stream'
 
 describe('csvStreamFromRepository', () => {
   type Row = { a: string; b: number; c: Nullable<string> }

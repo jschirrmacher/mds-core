@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Nullable, SingleOrArray } from '@mds-core/mds-types'
-import { NatsConnection, SubscriptionOptions } from 'nats'
-import { StreamConsumer } from '../stream-interface'
-import { NatsProcessorFn } from './codecs'
+import type { Nullable, SingleOrArray } from '@mds-core/mds-types'
+import type { NatsConnection, SubscriptionOptions } from 'nats'
+import type { StreamConsumer } from '../stream-interface'
+import type { NatsProcessorFn } from './codecs'
 import { createStreamConsumer, disconnectClient } from './helpers'
 
 export const NatsStreamConsumer = (

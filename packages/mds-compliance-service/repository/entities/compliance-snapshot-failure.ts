@@ -17,7 +17,7 @@
 import { BigintTransformer, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Timestamp, UUID } from '@mds-core/mds-types'
 import { Column, Entity } from 'typeorm'
-import { ComplianceSnapshotKafkaFailureDomainModel as ComplianceSnapshotFailureDomainModel } from '../../@types'
+import type { ComplianceSnapshotKafkaFailureDomainModel as ComplianceSnapshotFailureDomainModel } from '../../@types'
 
 export interface ComplianceSnapshotFailureEntityModel extends IdentityColumn, RecordedColumn {
   compliance_snapshot_id: ComplianceSnapshotFailureDomainModel['compliance_snapshot_id']

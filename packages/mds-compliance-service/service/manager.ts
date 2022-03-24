@@ -15,7 +15,8 @@
  */
 
 import { RpcServer } from '@mds-core/mds-rpc-common'
-import { ComplianceService, ComplianceServiceDefinition, ComplianceServiceRequestContext } from '../@types'
+import type { ComplianceService, ComplianceServiceRequestContext } from '../@types'
+import { ComplianceServiceDefinition } from '../@types'
 import { ComplianceServiceClient } from '../client'
 import { ComplianceServiceProvider } from './provider'
 

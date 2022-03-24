@@ -15,7 +15,7 @@
  */
 
 import { KafkaStreamProducer } from '../kafka'
-import { StreamProducer } from '../stream-interface'
+import type { StreamProducer } from '../stream-interface'
 import { mockStream } from '../test-utils'
 
 type FakeStreamPayload = { a: 'foo' }

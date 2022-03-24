@@ -1,5 +1,55 @@
 # @container-images/mds-policy
 
+## 0.1.68
+
+### Patch Changes
+
+- @mds-core/mds-policy@0.7.32
+
+## 0.1.67
+
+### Patch Changes
+
+- @mds-core/mds-policy@0.7.31
+
+## 0.1.66
+
+### Patch Changes
+
+- @mds-core/mds-policy@0.7.30
+
+## 0.1.65
+
+### Patch Changes
+
+- @mds-core/mds-policy@0.7.29
+
+## 0.1.64
+
+### Patch Changes
+
+- @mds-core/mds-policy@0.7.28
+
+## 0.1.63
+
+### Patch Changes
+
+- @mds-core/mds-policy@0.7.27
+
+## 0.1.62
+
+### Patch Changes
+
+- @mds-core/mds-policy@0.7.26
+
+## 0.1.61
+
+### Patch Changes
+
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-policy@0.7.25
+  - @mds-core/mds-webpack-config@0.1.12
+
 ## 0.1.60
 
 ### Patch Changes

@@ -1,5 +1,67 @@
 # @mds-core/mds-test-data
 
+## 0.4.26
+
+### Patch Changes
+
+- Updated dependencies [f9090232]
+  - @mds-core/mds-providers@0.2.10
+  - @mds-core/mds-ingest-service@0.10.8
+
+## 0.4.25
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.7
+
+## 0.4.24
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.6
+
+## 0.4.23
+
+### Patch Changes
+
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-ingest-service@0.10.5
+
+## 0.4.22
+
+### Patch Changes
+
+- Updated dependencies [775efc9c]
+- Updated dependencies [3ca785d0]
+  - @mds-core/mds-ingest-service@0.10.4
+
+## 0.4.21
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.3
+
+## 0.4.20
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.2
+
+## 0.4.19
+
+### Patch Changes
+
+- ade56b85: Replacing Device with DeviceDomainModel
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [ade56b85]
+- Updated dependencies [a5ab0aa5]
+- Updated dependencies [c4e78cc9]
+  - @mds-core/mds-ingest-service@0.10.1
+  - @mds-core/mds-providers@0.2.9
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.4.18
 
 ### Patch Changes

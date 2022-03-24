@@ -1,5 +1,5 @@
 import { now, uuid } from '@mds-core/mds-utils'
-import { ComplianceViolationDomainModel } from '../@types'
+import type { ComplianceViolationDomainModel } from '../@types'
 
 export const ComplianceViolationFactory = (
   overrides: Partial<ComplianceViolationDomainModel> = {}

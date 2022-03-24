@@ -15,7 +15,7 @@
  */
 
 import { GracefulShutdownManager } from '@moebius/http-graceful-shutdown'
-import express from 'express'
+import type express from 'express'
 import { ApiServerLogger } from './logger'
 import { serverVersion } from './utils'
 

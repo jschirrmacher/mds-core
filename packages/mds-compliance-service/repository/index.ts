@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-import { InsertReturning, ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
-import { UUID } from '@mds-core/mds-types'
+import type { InsertReturning } from '@mds-core/mds-repository'
+import { ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
+import type { UUID } from '@mds-core/mds-types'
 import { isDefined, NotFoundError, now, testEnvSafeguard } from '@mds-core/mds-utils'
-import { EntityManager, getManager } from 'typeorm'
-import {
+import type { EntityManager } from 'typeorm'
+import { getManager } from 'typeorm'
+import type {
   ComplianceSnapshotDomainModel,
   ComplianceViolationDomainModel,
   ComplianceViolationPeriodEntityModel,

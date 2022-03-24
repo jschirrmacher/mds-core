@@ -1,21 +1,22 @@
-import { MatchedVehicleInformation } from '@mds-core/mds-compliance-service'
-import { GeographyDomainModel } from '@mds-core/mds-geography-service'
+import type { MatchedVehicleInformation } from '@mds-core/mds-compliance-service'
+import type { GeographyDomainModel } from '@mds-core/mds-geography-service'
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
 import { IngestServiceClient } from '@mds-core/mds-ingest-service'
-import {
+import type {
   CountPolicy,
   PolicyDomainModel,
   Rule,
   RULE_TYPE,
   SpeedPolicy,
-  TimePolicy,
-  TIME_FORMAT
+  TimePolicy
 } from '@mds-core/mds-policy-service'
+import { TIME_FORMAT } from '@mds-core/mds-policy-service'
 import { getProviders } from '@mds-core/mds-providers'
-import { Device, UUID, VehicleEvent } from '@mds-core/mds-types'
+import type { UUID, VehicleEvent } from '@mds-core/mds-types'
 import { areThereCommonElements, days, isDefined, now, RuntimeError } from '@mds-core/mds-utils'
 import { DateTime } from 'luxon'
 import moment from 'moment-timezone'
-import { ProviderInputs, VehicleEventWithTelemetry } from '../@types'
+import type { ProviderInputs, VehicleEventWithTelemetry } from '../@types'
 import { ComplianceEngineLogger as logger } from '../logger'
 const { env } = process
 
@@ -36,8 +37,8 @@ export const isTimePolicy = (policy: PolicyDomainModel): policy is TimePolicy =>
 export const isSpeedPolicy = (policy: PolicyDomainModel): policy is SpeedPolicy =>
   policy.rules.every(({ rule_type }) => rule_type === 'speed')
 
-export function generateDeviceMap(devices: Device[]): { [d: string]: Device } {
-  return [...devices].reduce((deviceMapAcc: { [d: string]: Device }, device: Device) => {
+export function generateDeviceMap(devices: DeviceDomainModel[]): { [d: string]: DeviceDomainModel } {
+  return [...devices].reduce((deviceMapAcc: { [d: string]: DeviceDomainModel }, device: DeviceDomainModel) => {
     return Object.assign(deviceMapAcc, { [device.device_id]: device })
   }, {})
 }
@@ -85,7 +86,7 @@ export async function getProviderInputs(provider_id: string, timestamp: number =
   }
 
   const deviceMap = (await IngestServiceClient.getDevices(eventsAcc.map(({ device_id }) => device_id))).reduce<{
-    [k: string]: Device
+    [k: string]: DeviceDomainModel
   }>((acc, device) => {
     acc[device.device_id] = device
     return acc
@@ -98,11 +99,11 @@ export async function getProviderInputs(provider_id: string, timestamp: number =
   }
 }
 
-export function isPolicyActive(policy: PolicyDomainModel, end_time: number = now()): boolean {
-  if (policy.end_date === null) {
-    return end_time >= policy.start_date
+export function isPolicyActive(policy: Required<PolicyDomainModel>, end_time: number = now()): boolean {
+  if (policy.status === undefined) {
+    throw new Error('Policy has no defined status')
   }
-  return end_time >= policy.start_date && end_time <= policy.end_date
+  return policy.status === 'active'
 }
 
 /**
@@ -115,6 +116,7 @@ const numericalWeekdayToLocale = (weekdayNum: number) => {
 
   const weekdayList = <const>['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return weekdayList[weekdayNum - 1]! // subtract 1 cause arrays are 0 indexed, but luxon provides weekdays in 1 | 2 | 3 | 4 | 5 | 6 | 7 form. (1 = monday) (7 = sunday)
 }
 
@@ -176,7 +178,7 @@ export function isRuleActive({ start_time, end_time, days }: Pick<Rule, 'start_t
   return isCurrentDayInDays({ days }) && isCurrentTimeInInterval({ start_time, end_time })
 }
 
-export function isInVehicleTypes(rule: Rule, device: Pick<Device, 'vehicle_type'>): boolean {
+export function isInVehicleTypes(rule: Rule, device: Pick<DeviceDomainModel, 'vehicle_type'>): boolean {
   return (
     !rule.vehicle_types ||
     rule.vehicle_types.length === 0 ||
@@ -187,7 +189,7 @@ export function isInVehicleTypes(rule: Rule, device: Pick<Device, 'vehicle_type'
 // Take a list of policies, and eliminate all those that have been superseded. Returns
 // policies that have not been superseded.
 // TODO: move to mds-policly-service
-export function getSupersedingPolicies(policies: PolicyDomainModel[]): PolicyDomainModel[] {
+export function getSupersedingPolicies<P extends PolicyDomainModel>(policies: P[]): P[] {
   const prev_policies: string[] = policies.reduce((prev_policies_acc: string[], policy: PolicyDomainModel) => {
     if (policy.prev_policies) {
       prev_policies_acc.push(...policy.prev_policies)
@@ -214,7 +216,7 @@ export function filterEvents(events: VehicleEvent[], end_time = now()): VehicleE
 }
 
 export function createMatchedVehicleInformation(
-  device: Device,
+  device: DeviceDomainModel,
   event: VehicleEventWithTelemetry,
   speed?: number,
   rule_applied_id?: UUID,
@@ -239,11 +241,13 @@ export function annotateVehicleMap<T extends Rule<Exclude<RULE_TYPE, 'rate'>>>(
   policy: PolicyDomainModel,
   events: VehicleEventWithTelemetry[],
   geographies: GeographyDomainModel[],
-  vehicleMap: { [d: string]: { device: Device; speed?: number; rule_applied?: UUID; rules_matched?: UUID[] } },
+  vehicleMap: {
+    [d: string]: { device: DeviceDomainModel; speed?: number; rule_applied?: UUID; rules_matched?: UUID[] }
+  },
   matcherFunction: (
     rule: T,
     geographyArr: GeographyDomainModel[],
-    device: Device,
+    device: DeviceDomainModel,
     event: VehicleEventWithTelemetry
   ) => boolean
 ): MatchedVehicleInformation[] {
@@ -307,7 +311,7 @@ export async function getProviderIDs(provider_ids: UUID[] | undefined | null) {
  */
 export function isInStatesOrEvents(
   rule: Pick<Rule, 'states'>,
-  device: Pick<Device, 'modality'>,
+  device: Pick<DeviceDomainModel, 'modality'>,
   event: VehicleEvent
 ): boolean {
   const { states } = rule

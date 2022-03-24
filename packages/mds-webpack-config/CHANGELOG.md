@@ -1,5 +1,11 @@
 # @mds-core/mds-webpack-config
 
+## 0.1.12
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+
 ## 0.1.11
 
 ### Patch Changes

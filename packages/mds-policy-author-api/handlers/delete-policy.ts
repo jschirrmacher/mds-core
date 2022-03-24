@@ -15,9 +15,9 @@
  */
 
 import { PolicyServiceClient } from '@mds-core/mds-policy-service'
-import express from 'express'
+import type express from 'express'
 import { PolicyAuthorApiLogger } from '../logger'
-import { PolicyAuthorApiDeletePolicyRequest, PolicyAuthorApiDeletePolicyResponse } from '../types'
+import type { PolicyAuthorApiDeletePolicyRequest, PolicyAuthorApiDeletePolicyResponse } from '../types'
 
 export const DeletePolicyHandler = async (
   req: PolicyAuthorApiDeletePolicyRequest,

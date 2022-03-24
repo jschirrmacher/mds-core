@@ -1,4 +1,4 @@
-import { Timestamp, UUID } from './utils'
+import type { Timestamp, UUID } from './utils'
 
 // Standard telemetry columns (used in more than one table)
 export interface GpsData {

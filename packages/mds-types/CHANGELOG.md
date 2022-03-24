@@ -1,5 +1,11 @@
 # @mds-core/mds-types
 
+## 0.9.2
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+
 ## 0.9.1
 
 ### Patch Changes

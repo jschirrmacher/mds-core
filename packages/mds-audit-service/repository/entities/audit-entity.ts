@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
-import { Nullable, Timestamp } from '@mds-core/mds-types'
+import type { EntityCreateModel } from '@mds-core/mds-repository'
+import { BigintTransformer, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import type { Nullable, Timestamp } from '@mds-core/mds-types'
 import { Column, Entity } from 'typeorm'
-import { AuditDomainModel } from '../../@types'
+import type { AuditDomainModel } from '../../@types'
 
 export interface AuditEntityModel extends IdentityColumn, RecordedColumn {
   audit_trip_id: AuditDomainModel['audit_trip_id']

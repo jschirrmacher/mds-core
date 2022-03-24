@@ -1,4 +1,4 @@
-import { DeepPick, DeepPickPath } from 'ts-deep-pick'
+import type { DeepPick, DeepPickPath } from 'ts-deep-pick'
 
 /**
  * deepPickProperties exists as a way to extract deeply nested properties from an object.

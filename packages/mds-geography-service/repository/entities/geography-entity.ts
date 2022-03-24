@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, EntityCreateModel, IdentityColumn } from '@mds-core/mds-repository'
+import type { EntityCreateModel } from '@mds-core/mds-repository'
+import { BigintTransformer, IdentityColumn } from '@mds-core/mds-repository'
 import { Column, Entity, Index } from 'typeorm'
-import { GeographyDomainModel } from '../../@types'
+import type { GeographyDomainModel } from '../../@types'
 
 export interface GeographyEntityModel extends IdentityColumn {
   geography_id: GeographyDomainModel['geography_id']

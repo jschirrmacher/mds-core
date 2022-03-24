@@ -15,13 +15,13 @@
  */
 
 import { parseRequest } from '@mds-core/mds-api-helpers'
-import { ApiRequestQuery } from '@mds-core/mds-api-server'
+import type { ApiRequestQuery } from '@mds-core/mds-api-server'
 import { TransactionServiceClient } from '@mds-core/mds-transaction-service'
-import { TransactionStatusDomainModel } from '@mds-core/mds-transaction-service/@types'
-import { UUID } from '@mds-core/mds-types'
+import type { TransactionStatusDomainModel } from '@mds-core/mds-transaction-service/@types'
+import type { UUID } from '@mds-core/mds-types'
 import { isUUID, ValidationError } from '@mds-core/mds-utils'
-import express from 'express'
-import { TransactionApiRequest, TransactionApiResponse } from '../@types'
+import type express from 'express'
+import type { TransactionApiRequest, TransactionApiResponse } from '../@types'
 
 export type TransactionApiGetTransactionsStatusesRequest = TransactionApiRequest & ApiRequestQuery<'transaction_id'>
 

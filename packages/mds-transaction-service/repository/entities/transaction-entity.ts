@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-import {
-  BigintTransformer,
-  DesignType,
-  EntityCreateModel,
-  IdentityColumn,
-  RecordedColumn
-} from '@mds-core/mds-repository'
+import type { EntityCreateModel } from '@mds-core/mds-repository'
+import { BigintTransformer, DesignType, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Nullable, Timestamp, UUID } from '@mds-core/mds-types'
 import { Column, Entity, Index } from 'typeorm'
 import { FEE_TYPE } from '../../@types'

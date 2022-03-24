@@ -16,7 +16,7 @@
 
 import { ApiErrorHandlingMiddleware } from '@mds-core/mds-api-server'
 import { pathPrefix } from '@mds-core/mds-utils'
-import express from 'express'
+import type express from 'express'
 import { GetPoliciesHandler } from './handlers/get-policies'
 import { GetPolicyHandler } from './handlers/get-policy'
 import { PolicyApiVersionMiddleware } from './middleware'

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddAccessibilityOptionsColumn1616681612878 implements MigrationInterface {
   name = 'AddAccessibilityOptionsColumn1616681612878'

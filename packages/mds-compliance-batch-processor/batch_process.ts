@@ -15,11 +15,13 @@
  */
 
 import { getProviderInputs, getSupersedingPolicies, processPolicy } from '@mds-core/mds-compliance-engine'
-import { ComplianceServiceClient, ComplianceSnapshotDomainModel } from '@mds-core/mds-compliance-service'
-import { GeographyDomainModel, GeographyServiceClient } from '@mds-core/mds-geography-service'
-import { PolicyDomainModel, PolicyServiceClient } from '@mds-core/mds-policy-service'
+import type { ComplianceSnapshotDomainModel } from '@mds-core/mds-compliance-service'
+import { ComplianceServiceClient } from '@mds-core/mds-compliance-service'
+import type { GeographyDomainModel } from '@mds-core/mds-geography-service'
+import { GeographyServiceClient } from '@mds-core/mds-geography-service'
+import { PolicyServiceClient } from '@mds-core/mds-policy-service'
 import { getProviders } from '@mds-core/mds-providers'
-import { SerializedBuffers } from '@mds-core/mds-service-helpers'
+import type { SerializedBuffers } from '@mds-core/mds-service-helpers'
 import { now } from '@mds-core/mds-utils'
 import { ComplianceBatchProcessorLogger } from './logger'
 
@@ -37,7 +39,7 @@ async function batchComplianceSnapshots(snapshots: ComplianceSnapshotDomainModel
 }
 
 export async function computeSnapshot() {
-  const policies: PolicyDomainModel[] = getSupersedingPolicies(await PolicyServiceClient.readActivePolicies(now()))
+  const policies = getSupersedingPolicies(await PolicyServiceClient.readActivePolicies(now()))
   const geographies: GeographyDomainModel[] = await GeographyServiceClient.getPublishedGeographies({
     includeMetadata: false
   })

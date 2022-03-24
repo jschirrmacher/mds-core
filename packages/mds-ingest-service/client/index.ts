@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-import { RpcClient, RpcRequest, RpcRequestOptions } from '@mds-core/mds-rpc-common'
-import { ServiceClient, UnwrapServiceResult } from '@mds-core/mds-service-helpers'
-import { IngestService, IngestServiceDefinition, IngestServiceRequestContext } from '../@types'
+import type { RpcRequestOptions } from '@mds-core/mds-rpc-common'
+import { RpcClient, RpcRequest } from '@mds-core/mds-rpc-common'
+import type { ServiceClient } from '@mds-core/mds-service-helpers'
+import { UnwrapServiceResult } from '@mds-core/mds-service-helpers'
+import type { IngestService, IngestServiceRequestContext } from '../@types'
+import { IngestServiceDefinition } from '../@types'
 import { IngestServiceProvider } from '../service/provider'
 
 // What the API layer, and any other clients, will invoke.
@@ -47,6 +50,7 @@ export const IngestServiceClientFactory = (
       RpcRequest(options, IngestServiceRpcClient.getLatestTelemetryForDevices, args),
     writeEvents: (...args) => RpcRequest(options, IngestServiceRpcClient.writeEvents, args),
     writeEventAnnotations: (...args) => RpcRequest(options, IngestServiceRpcClient.writeEventAnnotations, args),
+    writeTelemetryAnnotations: (...args) => RpcRequest(options, IngestServiceRpcClient.writeTelemetryAnnotations, args),
     getTripEvents: (...args) =>
       process.env.ENABLE_RPC === 'true'
         ? RpcRequest(options, IngestServiceRpcClient.getTripEvents, args)

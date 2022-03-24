@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { RpcEmptyRequestContext, RpcRoute, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
-import { Optional, Timestamp, UUID } from '@mds-core/mds-types'
+import type { RpcEmptyRequestContext, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
+import { RpcRoute } from '@mds-core/mds-rpc-common'
+import type { Optional, Timestamp, UUID } from '@mds-core/mds-types'
 
 export interface JurisdictionDomainModel {
   jurisdiction_id: UUID

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class CreateComplianceSnapshotFailuresTable1634323054883 implements MigrationInterface {
   name = 'CreateComplianceSnapshotFailuresTable1634323054883'

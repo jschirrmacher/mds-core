@@ -15,7 +15,8 @@
  */
 
 import { RpcServer } from '@mds-core/mds-rpc-common'
-import { AttachmentService, AttachmentServiceDefinition, AttachmentServiceRequestContext } from '../@types'
+import type { AttachmentService, AttachmentServiceRequestContext } from '../@types'
+import { AttachmentServiceDefinition } from '../@types'
 import { AttachmentServiceClient } from '../client'
 import { AttachmentServiceProvider } from './provider'
 

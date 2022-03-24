@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { MatchedVehicleInformation } from '@mds-core/mds-compliance-service/@types'
-import { GeographyDomainModel } from '@mds-core/mds-geography-service'
-import { TimePolicy, TimeRule } from '@mds-core/mds-policy-service'
+import type { MatchedVehicleInformation } from '@mds-core/mds-compliance-service/@types'
+import type { GeographyDomainModel } from '@mds-core/mds-geography-service'
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
+import type { TimePolicy, TimeRule } from '@mds-core/mds-policy-service'
 import { LA_CITY_BOUNDARY, makeDevices, makeEventsWithTelemetry } from '@mds-core/mds-test-data'
-import { Device, Telemetry, VehicleEvent } from '@mds-core/mds-types'
+import type { Telemetry, VehicleEvent } from '@mds-core/mds-types'
 import { minutes } from '@mds-core/mds-utils'
-import { FeatureCollection } from 'geojson'
-import test from 'unit.js'
-import { ComplianceEngineResult, VehicleEventWithTelemetry } from '../../@types'
+import type { FeatureCollection } from 'geojson'
+import type { ComplianceEngineResult, VehicleEventWithTelemetry } from '../../@types'
 import { generateDeviceMap } from '../../engine/helpers'
 import { isTimeRuleMatch, processTimePolicy } from '../../engine/time_processors'
 import {
@@ -72,7 +72,7 @@ const TIME_POLICY: TimePolicy = {
 }
 
 describe('Tests Compliance Engine Time Functionality', () => {
-  it('Verifies time compliance', done => {
+  it('Verifies time compliance', async () => {
     const devices = makeDevices(400, now())
     const events = makeEventsWithTelemetry(devices, now(), CITY_OF_LA, {
       event_types: ['trip_end'],
@@ -80,16 +80,14 @@ describe('Tests Compliance Engine Time Functionality', () => {
       speed: 0
     }) as VehicleEventWithTelemetry[]
 
-    const deviceMap: { [d: string]: Device } = generateDeviceMap(devices)
+    const deviceMap: { [d: string]: DeviceDomainModel } = generateDeviceMap(devices)
 
     const result = processTimePolicy(TIME_POLICY, events, geographies, deviceMap) as ComplianceEngineResult
-    test.assert.deepEqual(result.vehicles_found.length, 0)
-    test.assert.deepEqual(result.total_violations, 0)
-
-    done()
+    expect(result.vehicles_found.length).toStrictEqual(0)
+    expect(result.total_violations).toStrictEqual(0)
   })
 
-  it('Verifies time compliance violation (simple case)', done => {
+  it('Verifies time compliance violation (simple case)', async () => {
     const badDevices = makeDevices(400, now())
     const badEvents = makeEventsWithTelemetry(badDevices, now() - minutes(21), CITY_OF_LA, {
       event_types: ['trip_end'],
@@ -104,7 +102,7 @@ describe('Tests Compliance Engine Time Functionality', () => {
       speed: 0
     })
 
-    const deviceMap: { [d: string]: Device } = generateDeviceMap([...badDevices, ...goodDevices])
+    const deviceMap: { [d: string]: DeviceDomainModel } = generateDeviceMap([...badDevices, ...goodDevices])
 
     const result = processTimePolicy(
       TIME_POLICY,
@@ -112,8 +110,8 @@ describe('Tests Compliance Engine Time Functionality', () => {
       geographies,
       deviceMap
     ) as ComplianceEngineResult
-    test.assert.deepEqual(result.vehicles_found.length, 400)
-    test.assert.deepEqual(result.total_violations, 400)
+    expect(result.vehicles_found.length).toStrictEqual(400)
+    expect(result.total_violations).toStrictEqual(400)
 
     const { rule_id } = TIME_POLICY.rules[0]!
 
@@ -125,11 +123,10 @@ describe('Tests Compliance Engine Time Functionality', () => {
       }
       return count
     }, 0)
-    test.assert.deepEqual(finalCount, 400)
-    done()
+    expect(finalCount).toStrictEqual(400)
   })
 
-  it('Verifies time compliance violation with overlapping geographies and rules_matched and rule_applied are correct', done => {
+  it('Verifies time compliance violation with overlapping geographies and rules_matched and rule_applied are correct', async () => {
     const devicesA = makeDevices(4, now())
     const eventsA = makeEventsWithTelemetry(devicesA, now() - minutes(30), INNER_POLYGON, {
       event_types: ['trip_end'],
@@ -144,7 +141,7 @@ describe('Tests Compliance Engine Time Functionality', () => {
       speed: 0
     })
 
-    const deviceMap: { [d: string]: Device } = generateDeviceMap([...devicesA, ...devicesB])
+    const deviceMap: { [d: string]: DeviceDomainModel } = generateDeviceMap([...devicesA, ...devicesB])
 
     const result = processTimePolicy(
       OVERLAPPING_GEOS_TIME_POLICY,
@@ -152,8 +149,8 @@ describe('Tests Compliance Engine Time Functionality', () => {
       [INNER_GEO, OUTER_GEO],
       deviceMap
     ) as ComplianceEngineResult
-    test.assert.deepEqual(result.vehicles_found.length, 9)
-    test.assert.deepEqual(result.total_violations, 9)
+    expect(result.vehicles_found.length).toStrictEqual(9)
+    expect(result.total_violations).toStrictEqual(9)
 
     const { rule_id } = OVERLAPPING_GEOS_TIME_POLICY.rules[0]!
     const rule_id_2 = OVERLAPPING_GEOS_TIME_POLICY.rules[1]!.rule_id
@@ -172,7 +169,7 @@ describe('Tests Compliance Engine Time Functionality', () => {
       }
       return count
     }, 0)
-    test.assert.deepEqual(rule_count_1, 4)
+    expect(rule_count_1).toStrictEqual(4)
 
     const rule_count_2 = result.vehicles_found.reduce((count: number, vehicle: MatchedVehicleInformation) => {
       if (
@@ -185,11 +182,10 @@ describe('Tests Compliance Engine Time Functionality', () => {
       }
       return count
     }, 0)
-    test.assert.deepEqual(rule_count_2, 5)
-    done()
+    expect(rule_count_2).toStrictEqual(5)
   })
 
-  it('verifies time match rule', done => {
+  it('verifies time match rule', async () => {
     const { 0: rule } = TIME_POLICY.rules
     const goodDevices = makeDevices(1, now())
     const goodEvents = makeEventsWithTelemetry(goodDevices, now(), CITY_OF_LA, {
@@ -204,23 +200,22 @@ describe('Tests Compliance Engine Time Functionality', () => {
       speed: 0
     })
 
-    test.assert(
+    expect(
       !isTimeRuleMatch(
         rule as TimeRule,
         geographies,
         goodDevices[0],
         goodEvents[0] as VehicleEvent & { telemetry: Telemetry }
       )
-    )
+    ).toBeTruthy()
 
-    test.assert(
+    expect(
       isTimeRuleMatch(
         rule as TimeRule,
         geographies,
         badDevices[0],
         badEvents[0] as VehicleEvent & { telemetry: Telemetry }
       )
-    )
-    done()
+    ).toBeTruthy()
   })
 })

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddIndexToDeviceVehicleId1635174402366 implements MigrationInterface {
   name = 'AddIndexToDeviceVehicleId1635174402366'

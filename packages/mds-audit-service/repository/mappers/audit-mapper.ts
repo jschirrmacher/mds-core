@@ -15,9 +15,9 @@
  */
 
 import { ModelMapper } from '@mds-core/mds-repository'
-import { Timestamp } from '@mds-core/mds-types'
-import { AuditDomainCreateModel, AuditDomainModel } from '../../@types'
-import { AuditEntityCreateModel, AuditEntityModel } from '../entities/audit-entity'
+import type { Timestamp } from '@mds-core/mds-types'
+import type { AuditDomainCreateModel, AuditDomainModel } from '../../@types'
+import type { AuditEntityCreateModel, AuditEntityModel } from '../entities/audit-entity'
 
 type AuditEntityToDomainOptions = Partial<{}>
 

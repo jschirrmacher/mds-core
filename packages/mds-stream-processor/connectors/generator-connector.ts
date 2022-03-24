@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { StreamSource } from '../@types'
+import type { StreamSource } from '../@types'
 
 export const GeneratorSource =
   <TMessage>(generator: () => AsyncGenerator<TMessage>): StreamSource<TMessage> =>

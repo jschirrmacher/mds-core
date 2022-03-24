@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-import {
+import type {
   MicroMobilityVehicleEvent,
-  MICRO_MOBILITY_EVENT_STATES_MAP,
   MICRO_MOBILITY_VEHICLE_EVENT,
   MICRO_MOBILITY_VEHICLE_STATE,
-  MICRO_MOBILITY_VEHICLE_STATES,
   TAXI_VEHICLE_EVENT,
   TAXI_VEHICLE_STATE,
   VehicleEvent,
   VEHICLE_EVENT,
   VEHICLE_STATE
 } from '@mds-core/mds-types'
+import { MICRO_MOBILITY_EVENT_STATES_MAP, MICRO_MOBILITY_VEHICLE_STATES } from '@mds-core/mds-types'
 import { IndexError } from './exceptions/exceptions'
 
 /* Start with a state, then there's a list of valid event_types by which one

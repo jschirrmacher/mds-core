@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddColumnsToPoliciesTable1634142716521 implements MigrationInterface {
   name = 'AddColumnsToPoliciesTable1634142716521'

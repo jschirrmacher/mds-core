@@ -16,9 +16,12 @@
 import { GeographyServiceClient } from '@mds-core/mds-geography-service'
 import { ErrorCheckFunction } from '@mds-core/mds-service-helpers'
 import { DependencyMissingError, NotFoundError } from '@mds-core/mds-utils'
-import express from 'express'
+import type express from 'express'
 import { GeographyAuthorLogger } from '../logger'
-import { GeographyAuthorApiPutGeographyMetadataRequest, GeographyAuthorApiPutGeographyMetadataResponse } from '../types'
+import type {
+  GeographyAuthorApiPutGeographyMetadataRequest,
+  GeographyAuthorApiPutGeographyMetadataResponse
+} from '../types'
 
 export const UpdateGeographyMetadataHandler = async (
   req: GeographyAuthorApiPutGeographyMetadataRequest,

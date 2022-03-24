@@ -16,27 +16,32 @@
 
 import { ModelMapper } from '@mds-core/mds-repository'
 import { now } from '@mds-core/mds-utils'
-import {
+import type {
   PolicyDomainCreateModel,
   PolicyDomainModel,
   PolicyMetadataDomainCreateModel,
   PolicyMetadataDomainModel,
   POLICY_STATUS
 } from '../@types'
-import { PolicyEntityCreateModel, PolicyEntityModel } from './entities/policy-entity'
-import { PolicyMetadataEntityCreateModel, PolicyMetadataEntityModel } from './entities/policy-metadata-entity'
+import type { PolicyEntityCreateModel, PolicyEntityModel } from './entities/policy-entity'
+import type { PolicyMetadataEntityCreateModel, PolicyMetadataEntityModel } from './entities/policy-metadata-entity'
 
 type PolicyEntityToDomainOptions = Partial<{ withStatus: boolean }>
 
 export const derivePolicyStatus = (policy: PolicyEntityModel): POLICY_STATUS => {
-  const { superseded_by, start_date, publish_date, end_date } = policy
+  const { superseded_by, superseded_at, start_date, publish_date, end_date } = policy
   const currentTime = now()
 
   if (publish_date === null) {
     return 'draft'
   }
 
-  if (superseded_by !== null && superseded_by.length >= 1) {
+  if (
+    superseded_by !== null &&
+    superseded_by.length >= 1 &&
+    superseded_at !== null &&
+    Math.min(...superseded_at) < now()
+  ) {
     return 'deactivated'
   }
 
@@ -88,6 +93,7 @@ export const PolicyDomainToEntityCreate = ModelMapper<
   return {
     policy_id,
     superseded_by: null,
+    superseded_at: null,
     end_date,
     publish_date: null,
     start_date,

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { ProcessController, ServiceException, ServiceProvider, ServiceResult } from '@mds-core/mds-service-helpers'
-import { TransactionService, TransactionServiceRequestContext } from '../@types'
+import type { ProcessController, ServiceProvider } from '@mds-core/mds-service-helpers'
+import { ServiceException, ServiceResult } from '@mds-core/mds-service-helpers'
+import type { TransactionService, TransactionServiceRequestContext } from '../@types'
 import { TransactionServiceLogger } from '../logger'
 import { TransactionRepository } from '../repository'
 import { TransactionStreamKafka } from './stream'

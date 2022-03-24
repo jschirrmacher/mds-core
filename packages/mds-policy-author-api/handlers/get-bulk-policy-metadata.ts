@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-import { PolicyMetadataDomainModel, PolicyServiceClient } from '@mds-core/mds-policy-service'
+import type { PolicyMetadataDomainModel } from '@mds-core/mds-policy-service'
+import { PolicyServiceClient } from '@mds-core/mds-policy-service'
 import { NotFoundError } from '@mds-core/mds-utils'
-import express from 'express'
-import { PolicyAuthorApiGetPolicyMetadataRequest, PolicyAuthorApiGetPolicyMetadataResponse } from '../types'
+import type express from 'express'
+import type { PolicyAuthorApiGetPolicyMetadataRequest, PolicyAuthorApiGetPolicyMetadataResponse } from '../types'
 
 export const GetBulkPolicyMetadataHandler = async (
   req: PolicyAuthorApiGetPolicyMetadataRequest,

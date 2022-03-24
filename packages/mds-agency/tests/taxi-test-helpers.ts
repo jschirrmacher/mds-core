@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
 import { PROVIDER_SCOPES, TEST1_PROVIDER_ID } from '@mds-core/mds-test-data'
-import { Device, TripMetadata, UUID, VehicleEvent } from '@mds-core/mds-types'
+import type { TripMetadata, UUID, VehicleEvent } from '@mds-core/mds-types'
 import { now, uuid } from '@mds-core/mds-utils'
 import { StatusCodes } from 'http-status-codes'
 import type supertest from 'supertest'
@@ -10,7 +11,7 @@ export type POSTableVehicleEvent = Omit<VehicleEvent, 'provider_id' | 'recorded'
 const AUTH =
   process.env.AUTH_TOKEN ?? `basic ${Buffer.from(`${TEST1_PROVIDER_ID}|${PROVIDER_SCOPES}`).toString('base64')}`
 
-const TEST_TAXI: () => Omit<Device, 'recorded'> = () => ({
+const TEST_TAXI: () => Omit<DeviceDomainModel, 'recorded'> = () => ({
   accessibility_options: ['wheelchair_accessible'],
   device_id: uuid(),
   provider_id: TEST1_PROVIDER_ID,
@@ -23,7 +24,7 @@ const TEST_TAXI: () => Omit<Device, 'recorded'> = () => ({
   model: 'Mantaray'
 })
 
-const TEST_TELEMETRY = ({ device_id }: Pick<Device, 'device_id'>) => ({
+const TEST_TELEMETRY = ({ device_id }: Pick<DeviceDomainModel, 'device_id'>) => ({
   device_id,
   provider_id: TEST1_PROVIDER_ID,
   gps: {
@@ -37,9 +38,11 @@ const TEST_TELEMETRY = ({ device_id }: Pick<Device, 'device_id'>) => ({
   timestamp: now()
 })
 
-export const fakeVehicle = (overrides?: Partial<Device>) => ({ ...TEST_TAXI(), ...overrides })
+export const fakeVehicle = (overrides?: Partial<DeviceDomainModel>) => ({ ...TEST_TAXI(), ...overrides })
 
-export const fakeEvent = ({ device_id }: Pick<Device, 'device_id'>): Omit<VehicleEvent, 'recorded' | 'provider_id'> => {
+export const fakeEvent = ({
+  device_id
+}: Pick<DeviceDomainModel, 'device_id'>): Omit<VehicleEvent, 'recorded' | 'provider_id'> => {
   const telemetry = TEST_TELEMETRY({ device_id })
 
   return {
@@ -55,7 +58,7 @@ export const fakeEvent = ({ device_id }: Pick<Device, 'device_id'>): Omit<Vehicl
 
 export const registerVehicleRequest = (
   request: supertest.SuperTest<supertest.Test>,
-  vehicle: Omit<Device, 'recorded'>
+  vehicle: Omit<DeviceDomainModel, 'recorded'>
 ) => request.post(`/agency/vehicles`).set('Authorization', AUTH).send(vehicle)
 
 export const postEventRequest = (
@@ -66,7 +69,7 @@ export const postEventRequest = (
 export const postEvent = (
   request: supertest.SuperTest<supertest.Test>,
   eventsContext: POSTableVehicleEvent[],
-  device: Omit<Device, 'recorded'>,
+  device: Omit<DeviceDomainModel, 'recorded'>,
   expectStatusResponse: StatusCodes,
   overrides?: Partial<POSTableVehicleEvent>
 ) => {
@@ -148,7 +151,7 @@ export const constructTripMetadata = (
 export const basicTripFlow = async (
   request: supertest.SuperTest<supertest.Test>,
   eventsContext: POSTableVehicleEvent[],
-  vehicle: Omit<Device, 'recorded'>,
+  vehicle: Omit<DeviceDomainModel, 'recorded'>,
   trip_id: UUID = uuid()
 ) => {
   await postEvent(request, eventsContext, vehicle, StatusCodes.CREATED, {

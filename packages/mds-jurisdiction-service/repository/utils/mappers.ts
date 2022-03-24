@@ -15,10 +15,10 @@
  */
 
 import { ModelMapper } from '@mds-core/mds-repository'
-import { Nullable, Timestamp } from '@mds-core/mds-types'
+import type { Nullable, Timestamp } from '@mds-core/mds-types'
 import { uuid } from '@mds-core/mds-utils'
-import { CreateJurisdictionDomainModel, JurisdictionDomainModel } from '../../@types'
-import { JurisdictionEntityCreateModel, JurisdictionEntityModel } from '../entities/jurisdiction-entity'
+import type { CreateJurisdictionDomainModel, JurisdictionDomainModel } from '../../@types'
+import type { JurisdictionEntityCreateModel, JurisdictionEntityModel } from '../entities/jurisdiction-entity'
 
 type MapJurisdictionEntityToDomainModelOptions = Partial<{
   effective: Timestamp

@@ -15,9 +15,9 @@
  */
 
 import { parseRequest } from '@mds-core/mds-api-helpers'
-import { UUID } from '@mds-core/mds-types'
+import type { UUID } from '@mds-core/mds-types'
 import { isDefined, ServerError } from '@mds-core/mds-utils'
-import { ComplianceApiRequest, ComplianceApiResponse } from '../@types'
+import type { ComplianceApiRequest, ComplianceApiResponse } from '../@types'
 import { ComplianceApiLogger } from '../logger'
 import { base64DecodeComplianceIDsToken } from './helpers'
 export type ComplianceApiGetComplianceSnapshotIDsRequest = ComplianceApiRequest

@@ -1,8 +1,11 @@
-import { ComplianceSnapshotDomainModel } from '@mds-core/mds-compliance-service'
-import { Device, Telemetry, UUID, VehicleEvent } from '@mds-core/mds-types'
+import type { ComplianceSnapshotDomainModel } from '@mds-core/mds-compliance-service'
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
+import type { Telemetry, UUID, VehicleEvent } from '@mds-core/mds-types'
 
 export type VehicleEventWithTelemetry = VehicleEvent & { telemetry: Telemetry }
-export type MatchedVehicleWithRule = { [d: string]: { device: Device; rule_applied?: UUID; rules_matched?: UUID[] } }
+export type MatchedVehicleWithRule = {
+  [d: string]: { device: DeviceDomainModel; rule_applied?: UUID; rules_matched?: UUID[] }
+}
 
 export type ComplianceEngineResult = Pick<
   ComplianceSnapshotDomainModel,
@@ -13,7 +16,7 @@ export interface ProviderInputs {
   [key: string]: {
     filteredEvents: VehicleEvent[]
     deviceMap: {
-      [d: string]: Device
+      [d: string]: DeviceDomainModel
     }
     provider_id: string
   }

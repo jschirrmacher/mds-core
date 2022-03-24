@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { Audit, AuditEvent, Recorded, UUID } from '@mds-core/mds-types'
+import type { Audit, AuditEvent, Recorded, UUID } from '@mds-core/mds-types'
 import { now } from '@mds-core/mds-utils'
 import { getReadOnlyClient, getWriteableClient } from './client'
 import { DbLogger } from './logger'
 import schema from './schema'
 import { cols_sql, logSql, SqlVals, vals_list, vals_sql } from './sql-utils'
-import { ReadAuditsQueryParams } from './types'
+import type { ReadAuditsQueryParams } from './types'
 
 export async function readAudit(audit_trip_id: UUID) {
   const client = await getReadOnlyClient()

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
-import { Nullable, Timestamp, UUID } from '@mds-core/mds-types'
+import type { EntityCreateModel } from '@mds-core/mds-repository'
+import { BigintTransformer, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import type { Nullable, Timestamp, UUID } from '@mds-core/mds-types'
 import { Column, Entity } from 'typeorm'
 
 export interface ComplianceViolationEntityModel extends IdentityColumn, RecordedColumn {

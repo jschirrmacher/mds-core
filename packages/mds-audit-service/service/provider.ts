@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { ProcessController, ServiceProvider, ServiceResult } from '@mds-core/mds-service-helpers'
-import { AuditService, AuditServiceRequestContext } from '../@types'
+import type { ProcessController, ServiceProvider } from '@mds-core/mds-service-helpers'
+import { ServiceResult } from '@mds-core/mds-service-helpers'
+import type { AuditService, AuditServiceRequestContext } from '../@types'
 import { AuditRepository } from '../repository'
 
 export const AuditServiceProvider: ServiceProvider<AuditService, AuditServiceRequestContext> & ProcessController = {

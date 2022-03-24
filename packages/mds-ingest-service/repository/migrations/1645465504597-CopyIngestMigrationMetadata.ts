@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class CopyIngestMigrationMetadata1645465504597 implements MigrationInterface {
   name = 'CopyIngestMigrationMetadata1645465504597'

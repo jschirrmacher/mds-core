@@ -8,9 +8,10 @@
  */
 
 import { Column } from 'typeorm'
-import { ColumnCommonOptions } from 'typeorm/decorator/options/ColumnCommonOptions'
-import { ColumnWithLengthOptions } from 'typeorm/decorator/options/ColumnWithLengthOptions'
-import { BigintTransformer, LowercaseTransformer, TransformerOptions, UppercaseTransformer } from '../transformers'
+import type { ColumnCommonOptions } from 'typeorm/decorator/options/ColumnCommonOptions'
+import type { ColumnWithLengthOptions } from 'typeorm/decorator/options/ColumnWithLengthOptions'
+import type { TransformerOptions } from '../transformers'
+import { BigintTransformer, LowercaseTransformer, UppercaseTransformer } from '../transformers'
 
 type DesignTypeValue = Parameters<typeof Reflect.metadata>[1]
 export const DesignType = (value: DesignTypeValue): PropertyDecorator => Reflect.metadata('design:type', value)

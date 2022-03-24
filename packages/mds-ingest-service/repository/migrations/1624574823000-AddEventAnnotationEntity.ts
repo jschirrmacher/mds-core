@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddEventAnnotationEntity1624574823000 implements MigrationInterface {
   name = 'AddEventAnnotationEntity1624574823000'

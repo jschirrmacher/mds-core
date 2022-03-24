@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { AccessTokenScopeValidator, checkAccess } from '@mds-core/mds-api-server'
+import type { AccessTokenScopeValidator } from '@mds-core/mds-api-server'
+import { checkAccess } from '@mds-core/mds-api-server'
 import { pathPrefix } from '@mds-core/mds-utils'
-import express from 'express'
-import { JurisdictionApiAccessTokenScopes } from './@types'
+import type express from 'express'
+import type { JurisdictionApiAccessTokenScopes } from './@types'
 import {
   CreateJurisdictionHandler,
   DeleteJurisdictionHandler,

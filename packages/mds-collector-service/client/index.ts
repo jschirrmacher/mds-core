@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { RpcClient, RpcRequest, RpcRequestOptions } from '@mds-core/mds-rpc-common'
-import { ServiceClient } from '@mds-core/mds-service-helpers'
-import { CollectorService, CollectorServiceRequestContext, CollectorServiceRpcDefinition } from '../@types'
+import type { RpcRequestOptions } from '@mds-core/mds-rpc-common'
+import { RpcClient, RpcRequest } from '@mds-core/mds-rpc-common'
+import type { ServiceClient } from '@mds-core/mds-service-helpers'
+import type { CollectorService, CollectorServiceRequestContext } from '../@types'
+import { CollectorServiceRpcDefinition } from '../@types'
 
 export const CollectorServiceClientFactory = (
   context: CollectorServiceRequestContext,

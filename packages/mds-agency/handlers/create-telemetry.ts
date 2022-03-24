@@ -1,10 +1,10 @@
 import db from '@mds-core/mds-db'
 import { IngestServiceClient, validateTelemetryDomainModel } from '@mds-core/mds-ingest-service'
 import { isError } from '@mds-core/mds-service-helpers'
-import { Telemetry, Timestamp, UUID } from '@mds-core/mds-types'
+import type { Telemetry, Timestamp, UUID } from '@mds-core/mds-types'
 import { isDefined, NotFoundError, now, ServerError, ValidationError } from '@mds-core/mds-utils'
 import { AgencyLogger } from '../logger'
-import { AgencyApiSubmitVehicleTelemetryRequest, AgencyApiSubmitVehicleTelemetryResponse } from '../types'
+import type { AgencyApiSubmitVehicleTelemetryRequest, AgencyApiSubmitVehicleTelemetryResponse } from '../types'
 import { agencyValidationErrorParser, writeTelemetry } from '../utils'
 
 type TelemetryFailures = { telemetry: Object; reason: string }[]

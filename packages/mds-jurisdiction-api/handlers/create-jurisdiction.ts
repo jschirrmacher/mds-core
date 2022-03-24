@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-import {
-  CreateJurisdictionDomainModel,
-  JurisdictionDomainModel,
-  JurisdictionServiceClient
-} from '@mds-core/mds-jurisdiction-service'
+import type { CreateJurisdictionDomainModel, JurisdictionDomainModel } from '@mds-core/mds-jurisdiction-service'
+import { JurisdictionServiceClient } from '@mds-core/mds-jurisdiction-service'
 import { isServiceError } from '@mds-core/mds-service-helpers'
-import { JurisdictionApiRequest, JurisdictionApiResponse } from '../@types'
+import type { JurisdictionApiRequest, JurisdictionApiResponse } from '../@types'
 
 export type JurisdictionApiCreateJurisdictionRequest = JurisdictionApiRequest<
   CreateJurisdictionDomainModel | CreateJurisdictionDomainModel[]

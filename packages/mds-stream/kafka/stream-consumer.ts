@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { Nullable, SingleOrArray } from '@mds-core/mds-types'
+import type { Nullable, SingleOrArray } from '@mds-core/mds-types'
 import { asArray, isDefined } from '@mds-core/mds-utils'
-import { Consumer, EachMessagePayload, Kafka } from 'kafkajs'
+import type { Consumer, EachMessagePayload } from 'kafkajs'
+import { Kafka } from 'kafkajs'
 import { StreamLogger } from '../logger'
-import { StreamConsumer } from '../stream-interface'
+import type { StreamConsumer } from '../stream-interface'
 import { getKafkaBrokers } from './helpers'
 
 export interface KafkaStreamConsumerOptions {

@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-import { InsertReturning, ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
+import type { InsertReturning } from '@mds-core/mds-repository'
+import { ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
 import { NotFoundError } from '@mds-core/mds-utils'
-import {
+import type {
   CollectorMessageDomainCreateModel,
   CollectorMessageDomainModel,
   CollectorSchemaDomainCreateModel,
   CollectorSchemaDomainModel
 } from '../@types'
-import { CollectorMessageEntity, CollectorMessageEntityModel } from './entities/collector-message-entity'
-import { CollectorSchemaEntity, CollectorSchemaEntityModel } from './entities/collector-schema-entity'
+import type { CollectorMessageEntityModel } from './entities/collector-message-entity'
+import { CollectorMessageEntity } from './entities/collector-message-entity'
+import type { CollectorSchemaEntityModel } from './entities/collector-schema-entity'
+import { CollectorSchemaEntity } from './entities/collector-schema-entity'
 import {
   CollectorMessageDomainToEntityCreate,
   CollectorMessageEntityToDomain,

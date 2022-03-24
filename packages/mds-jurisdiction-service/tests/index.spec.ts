@@ -15,7 +15,6 @@
  */
 
 import { days, uuid } from '@mds-core/mds-utils'
-import test from 'unit.js'
 import { JurisdictionServiceClient } from '../index'
 import { JurisdictionRepository } from '../repository'
 import { JurisdictionServiceManager } from '../service/manager'
@@ -63,19 +62,19 @@ describe('Jurisdiction Service Tests', () => {
           geography_id: uuid()
         }))
       )
-      test.value(jurisdictions[0]?.jurisdiction_id).is(JURISDICTION_ID)
+      expect(jurisdictions[0]?.jurisdiction_id).toStrictEqual(JURISDICTION_ID)
     } catch (error) {
-      test.value(error).is(null)
+      expect(error).toStrictEqual(null)
     }
   })
 
   it(`Read ${records} Jurisdiction${records > 1 ? 's' : ''}`, async () => {
     try {
       const jurisdictions = await JurisdictionServiceClient.getJurisdictions()
-      test.value(jurisdictions.length).is(records)
-      test.value(jurisdictions[0]?.jurisdiction_id).is(JURISDICTION_ID)
+      expect(jurisdictions.length).toStrictEqual(records)
+      expect(jurisdictions[0]?.jurisdiction_id).toStrictEqual(JURISDICTION_ID)
     } catch (error) {
-      test.value(error).is(null)
+      expect(error).toStrictEqual(null)
     }
   })
 
@@ -86,11 +85,11 @@ describe('Jurisdiction Service Tests', () => {
         agency_name: 'Agency Name One',
         geography_id: uuid()
       })
-      test.value(jurisdiction).isNot(null)
-      test.value(jurisdiction.jurisdiction_id).isNot(null)
-      test.value(jurisdiction.timestamp).isNot(null)
+      expect(jurisdiction).not.toStrictEqual(null)
+      expect(jurisdiction.jurisdiction_id).not.toStrictEqual(null)
+      expect(jurisdiction.timestamp).not.toStrictEqual(null)
     } catch (error) {
-      test.value(error).is(null)
+      expect(error).toStrictEqual(null)
     }
   })
 
@@ -102,9 +101,9 @@ describe('Jurisdiction Service Tests', () => {
         agency_name: 'Agency Name One',
         geography_id: uuid()
       })
-      test.value(result).is(null)
+      expect(result).toStrictEqual(null)
     } catch (error: any) {
-      test.value(error.type).is('ConflictError')
+      expect(error.type).toStrictEqual('ConflictError')
     }
   })
 
@@ -115,9 +114,9 @@ describe('Jurisdiction Service Tests', () => {
         agency_name: 'Agency Name One',
         geography_id: uuid()
       })
-      test.value(result).is(null)
+      expect(result).toStrictEqual(null)
     } catch (error: any) {
-      test.value(error.type).is('ConflictError')
+      expect(error.type).toStrictEqual('ConflictError')
     }
   })
 
@@ -128,9 +127,9 @@ describe('Jurisdiction Service Tests', () => {
         agency_name: 'Agency Name One',
         geography_id: uuid()
       })
-      test.value(result).is(null)
+      expect(result).toStrictEqual(null)
     } catch (error: any) {
-      test.value(error.type).is('ValidationError')
+      expect(error.type).toStrictEqual('ValidationError')
     }
   })
 
@@ -141,9 +140,9 @@ describe('Jurisdiction Service Tests', () => {
         agency_name: 'Some New Name',
         timestamp: TODAY
       })
-      test.value(result).is(null)
+      expect(result).toStrictEqual(null)
     } catch (error: any) {
-      test.value(error.type).is('ConflictError')
+      expect(error.type).toStrictEqual('ConflictError')
     }
   })
 
@@ -153,9 +152,9 @@ describe('Jurisdiction Service Tests', () => {
         agency_name: 'Some New Name',
         timestamp: LAST_WEEK
       })
-      test.value(result).is(null)
+      expect(result).toStrictEqual(null)
     } catch (error: any) {
-      test.value(error.type).is('ValidationError')
+      expect(error.type).toStrictEqual('ValidationError')
     }
   })
 
@@ -165,9 +164,9 @@ describe('Jurisdiction Service Tests', () => {
         agency_name: 'Some New Name',
         timestamp: TODAY
       })
-      test.value(result).is(null)
+      expect(result).toStrictEqual(null)
     } catch (error: any) {
-      test.value(error.type).is('NotFoundError')
+      expect(error.type).toStrictEqual('NotFoundError')
     }
   })
 
@@ -177,22 +176,22 @@ describe('Jurisdiction Service Tests', () => {
         agency_name: 'Some New Name',
         timestamp: TODAY
       })
-      test.value(jurisdiction).isNot(null)
-      test.value(jurisdiction.jurisdiction_id).is(JURISDICTION_ID)
-      test.value(jurisdiction.timestamp).is(TODAY)
+      expect(jurisdiction).not.toStrictEqual(null)
+      expect(jurisdiction.jurisdiction_id).toStrictEqual(JURISDICTION_ID)
+      expect(jurisdiction.timestamp).toStrictEqual(TODAY)
     } catch (error) {
-      test.value(error).is(null)
+      expect(error).toStrictEqual(null)
     }
   })
 
   it('Read Specific Jurisdiction (current version)', async () => {
     try {
       const jurisdiction = await JurisdictionServiceClient.getJurisdiction(JURISDICTION_ID)
-      test.value(jurisdiction).isNot(null)
-      test.value(jurisdiction.jurisdiction_id).is(JURISDICTION_ID)
-      test.value(jurisdiction.timestamp).is(TODAY)
+      expect(jurisdiction).not.toStrictEqual(null)
+      expect(jurisdiction.jurisdiction_id).toStrictEqual(JURISDICTION_ID)
+      expect(jurisdiction.timestamp).toStrictEqual(TODAY)
     } catch (error) {
-      test.value(error).is(null)
+      expect(error).toStrictEqual(null)
     }
   })
 
@@ -201,11 +200,11 @@ describe('Jurisdiction Service Tests', () => {
       const jurisdiction = await JurisdictionServiceClient.getJurisdiction(JURISDICTION_ID, {
         effective: YESTERDAY
       })
-      test.value(jurisdiction).isNot(null)
-      test.value(jurisdiction.jurisdiction_id).is(JURISDICTION_ID)
-      test.value(jurisdiction.timestamp).is(YESTERDAY)
+      expect(jurisdiction).not.toStrictEqual(null)
+      expect(jurisdiction.jurisdiction_id).toStrictEqual(JURISDICTION_ID)
+      expect(jurisdiction.timestamp).toStrictEqual(YESTERDAY)
     } catch (error) {
-      test.value(error).is(null)
+      expect(error).toStrictEqual(null)
     }
   })
 
@@ -214,37 +213,37 @@ describe('Jurisdiction Service Tests', () => {
       const result = await JurisdictionServiceClient.getJurisdiction(JURISDICTION_ID, {
         effective: LAST_WEEK
       })
-      test.value(result).is(null)
+      expect(result).toStrictEqual(null)
     } catch (error: any) {
-      test.value(error.type).is('NotFoundError')
+      expect(error.type).toStrictEqual('NotFoundError')
     }
   })
 
   it('Read Missing Jurisdiction', async () => {
     try {
       const result = await JurisdictionServiceClient.getJurisdiction(uuid())
-      test.value(result).is(null)
+      expect(result).toStrictEqual(null)
     } catch (error: any) {
-      test.value(error.type).is('NotFoundError')
+      expect(error.type).toStrictEqual('NotFoundError')
     }
   })
 
   it('Delete One Jurisdiction', async () => {
     try {
       const jurisdiction = await JurisdictionServiceClient.deleteJurisdiction(JURISDICTION_ID)
-      test.value(jurisdiction).isNot(null)
-      test.value(jurisdiction.jurisdiction_id).is(JURISDICTION_ID)
+      expect(jurisdiction).not.toStrictEqual(null)
+      expect(jurisdiction.jurisdiction_id).toStrictEqual(JURISDICTION_ID)
     } catch (error) {
-      test.value(error).is(null)
+      expect(error).toStrictEqual(null)
     }
   })
 
   it('Delete One Jurisdiction (not found)', async () => {
     try {
       const result = await JurisdictionServiceClient.deleteJurisdiction(JURISDICTION_ID)
-      test.value(result).is(null)
+      expect(result).toStrictEqual(null)
     } catch (error: any) {
-      test.value(error.type).is('NotFoundError')
+      expect(error.type).toStrictEqual('NotFoundError')
     }
   })
 

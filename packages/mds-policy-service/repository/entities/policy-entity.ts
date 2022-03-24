@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-import { BigintTransformer, EntityCreateModel, IdentityColumn } from '@mds-core/mds-repository'
-import { Nullable, Timestamp, UUID } from '@mds-core/mds-types'
+import type { EntityCreateModel } from '@mds-core/mds-repository'
+import { BigintTransformer, IdentityColumn } from '@mds-core/mds-repository'
+import type { UUID } from '@mds-core/mds-types'
+import { Nullable, Timestamp } from '@mds-core/mds-types'
 import { Column, Entity, Index } from 'typeorm'
-import { PolicyDomainModel } from '../../@types'
+import type { PolicyDomainModel } from '../../@types'
 
 export interface PolicyEntityModel extends IdentityColumn {
   policy_id: PolicyDomainModel['policy_id']
   policy_json: Omit<PolicyDomainModel, 'start_date' | 'end_date' | 'publish_date'>
   superseded_by: Nullable<UUID[]>
+  superseded_at: Nullable<Timestamp[]>
   start_date: Timestamp
   end_date: Nullable<Timestamp>
   publish_date: Nullable<Timestamp>
@@ -38,6 +41,9 @@ export class PolicyEntity extends IdentityColumn(class {}) implements PolicyEnti
 
   @Column('uuid', { nullable: true, array: true })
   superseded_by: PolicyEntityModel['superseded_by']
+
+  @Column('bigint', { nullable: true, array: true, transformer: BigintTransformer })
+  superseded_at: PolicyEntityModel['superseded_at']
 
   @Column('bigint', { transformer: BigintTransformer })
   @Index()

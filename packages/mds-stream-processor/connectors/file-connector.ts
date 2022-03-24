@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-import { Nullable } from '@mds-core/mds-types'
-import { MapStream, mapSync, split } from 'event-stream'
-import { createReadStream, createWriteStream, WriteStream } from 'fs'
-import { StreamSink, StreamSource } from '../@types'
+import type { Nullable } from '@mds-core/mds-types'
+import type { MapStream } from 'event-stream'
+import { mapSync, split } from 'event-stream'
+import type { WriteStream } from 'fs'
+import { createReadStream, createWriteStream } from 'fs'
+import type { StreamSink, StreamSource } from '../@types'
 
 export const FileSource =
   <TMessage>(path: string): StreamSource<TMessage> =>

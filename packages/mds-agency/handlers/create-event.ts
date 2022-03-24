@@ -1,11 +1,12 @@
 import cache from '@mds-core/mds-agency-cache'
 import db from '@mds-core/mds-db'
-import { IngestServiceClient, validateEventDomainModel } from '@mds-core/mds-ingest-service'
-import stream from '@mds-core/mds-stream'
-import { DeepPartial, Device, UUID, VehicleEvent } from '@mds-core/mds-types'
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
+import { IngestServiceClient, IngestStream, validateEventDomainModel } from '@mds-core/mds-ingest-service'
+import type { DeepPartial, UUID, VehicleEvent } from '@mds-core/mds-types'
 import { isDefined, normalizeToArray, NotFoundError, now, ValidationError } from '@mds-core/mds-utils'
 import { AgencyLogger } from '../logger'
-import { AgencyApiSubmitVehicleEventRequest, AgencyApiSubmitVehicleEventResponse, AgencyServerError } from '../types'
+import type { AgencyApiSubmitVehicleEventRequest, AgencyApiSubmitVehicleEventResponse } from '../types'
+import { AgencyServerError } from '../types'
 import { agencyValidationErrorParser, eventValidForMode } from '../utils'
 
 const handleDbError = async (
@@ -17,7 +18,7 @@ const handleDbError = async (
 ): Promise<void> => {
   const message = err.message || String(err)
 
-  await stream.writeEventError({
+  await IngestStream.writeEventError({
     provider_id,
     data: event,
     recorded: now(),
@@ -80,12 +81,12 @@ const sendSuccess = (
  * @param device MDS Device
  * @param event MDS VehicleEvent
  */
-const refreshDeviceCache = async (device: Device, event: VehicleEvent) => {
+const refreshDeviceCache = async (device: DeviceDomainModel, event: VehicleEvent) => {
   try {
     await cache.readDevice(event.device_id)
   } catch (refreshError) {
     try {
-      await Promise.all([cache.writeDevices([device]), stream.writeDevice(device)])
+      await Promise.all([cache.writeDevices([device]), IngestStream.writeDevice(device)])
       AgencyLogger.debug('Re-adding previously deregistered device to cache', { error: refreshError })
     } catch (error) {
       AgencyLogger.warn(`Error writing to cache/stream`, { error })
@@ -136,9 +137,7 @@ export const createEventHandler = async (
     await refreshDeviceCache(device, event)
 
     const { telemetry } = event
-    if (telemetry) {
-      await db.writeTelemetry(normalizeToArray(telemetry))
-    }
+    const recorded_telemetry = await db.writeTelemetry(normalizeToArray(telemetry))
 
     // database write is crucial; failures of cache/stream should be noted and repaired
     const recorded_event = await db.writeEvent(event)
@@ -146,9 +145,9 @@ export const createEventHandler = async (
     try {
       await Promise.all([
         cache.writeEvents([recorded_event]),
-        stream.writeEvent(recorded_event),
+        IngestStream.writeEvent(recorded_event),
         cache.writeTelemetry([telemetry]),
-        stream.writeTelemetry([telemetry])
+        IngestStream.writeTelemetry(recorded_telemetry)
       ])
     } catch (eventPersistenceError) {
       AgencyLogger.warn('/event exception cache/stream', { error: eventPersistenceError })

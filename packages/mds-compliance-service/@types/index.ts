@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { RpcEmptyRequestContext, RpcRoute, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
-import { Nullable, Timestamp, UUID, VEHICLE_EVENT, VEHICLE_STATE } from '@mds-core/mds-types'
+import type { RpcEmptyRequestContext, RpcServiceDefinition } from '@mds-core/mds-rpc-common'
+import { RpcRoute } from '@mds-core/mds-rpc-common'
+import type { Nullable, Timestamp, UUID, VEHICLE_EVENT, VEHICLE_STATE } from '@mds-core/mds-types'
 
 export interface MatchedVehicleInformation {
   device_id: UUID

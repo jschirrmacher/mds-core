@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { AnyFunction } from '@mds-core/mds-types'
-import { ServiceErrorDescriptor, ServiceErrorDescriptorType, ServiceResponse } from '../@types'
+import type { AnyFunction } from '@mds-core/mds-types'
+import type { ServiceErrorDescriptor, ServiceErrorDescriptorType, ServiceResponse } from '../@types'
 
 export const isServiceError = <E extends string = ServiceErrorDescriptorType>(
   error: unknown,

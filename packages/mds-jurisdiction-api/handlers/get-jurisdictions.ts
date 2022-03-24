@@ -15,9 +15,10 @@
  */
 
 import { parseRequest } from '@mds-core/mds-api-helpers'
-import { ApiRequestQuery } from '@mds-core/mds-api-server'
-import { JurisdictionDomainModel, JurisdictionServiceClient } from '@mds-core/mds-jurisdiction-service'
-import { JurisdictionApiRequest, JurisdictionApiResponse } from '../@types'
+import type { ApiRequestQuery } from '@mds-core/mds-api-server'
+import type { JurisdictionDomainModel } from '@mds-core/mds-jurisdiction-service'
+import { JurisdictionServiceClient } from '@mds-core/mds-jurisdiction-service'
+import type { JurisdictionApiRequest, JurisdictionApiResponse } from '../@types'
 import { HasJurisdictionClaim } from './utils'
 
 export type JurisdictionApiGetJurisdictionsRequest = JurisdictionApiRequest & ApiRequestQuery<'effective'>

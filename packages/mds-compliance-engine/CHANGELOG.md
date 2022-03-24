@@ -1,5 +1,128 @@
 # @mds-core/mds-compliance-engine
 
+## 0.8.22
+
+### Patch Changes
+
+- Updated dependencies [f9090232]
+- Updated dependencies [e66dced4]
+  - @mds-core/mds-providers@0.2.10
+  - @mds-core/mds-db@0.6.15
+  - @mds-core/mds-compliance-service@0.10.29
+  - @mds-core/mds-schema-validators@0.5.9
+  - @mds-core/mds-api-helpers@0.2.23
+  - @mds-core/mds-geography-service@0.10.20
+  - @mds-core/mds-ingest-service@0.10.8
+  - @mds-core/mds-policy-service@0.11.26
+
+## 0.8.21
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.28
+- @mds-core/mds-geography-service@0.10.19
+- @mds-core/mds-ingest-service@0.10.7
+- @mds-core/mds-policy-service@0.11.25
+- @mds-core/mds-db@0.6.14
+- @mds-core/mds-api-helpers@0.2.22
+
+## 0.8.20
+
+### Patch Changes
+
+- @mds-core/mds-api-server@0.4.10
+- @mds-core/mds-api-helpers@0.2.21
+- @mds-core/mds-compliance-service@0.10.27
+- @mds-core/mds-geography-service@0.10.18
+- @mds-core/mds-ingest-service@0.10.6
+- @mds-core/mds-policy-service@0.11.24
+- @mds-core/mds-db@0.6.13
+
+## 0.8.19
+
+### Patch Changes
+
+- Updated dependencies [af3631da]
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-api-server@0.4.9
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-api-helpers@0.2.20
+  - @mds-core/mds-compliance-service@0.10.26
+  - @mds-core/mds-geography-service@0.10.17
+  - @mds-core/mds-ingest-service@0.10.5
+  - @mds-core/mds-policy-service@0.11.23
+  - @mds-core/mds-db@0.6.12
+  - @mds-core/mds-schema-validators@0.5.8
+  - @mds-core/mds-service-helpers@0.6.7
+  - @mds-core/mds-stream@0.3.1
+
+## 0.8.18
+
+### Patch Changes
+
+- Updated dependencies [775efc9c]
+- Updated dependencies [775efc9c]
+- Updated dependencies [3ca785d0]
+- Updated dependencies [3ca785d0]
+  - @mds-core/mds-stream@0.3.0
+  - @mds-core/mds-ingest-service@0.10.4
+  - @mds-core/mds-compliance-service@0.10.25
+  - @mds-core/mds-geography-service@0.10.16
+  - @mds-core/mds-policy-service@0.11.22
+  - @mds-core/mds-db@0.6.11
+  - @mds-core/mds-api-helpers@0.2.19
+
+## 0.8.17
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.24
+- @mds-core/mds-geography-service@0.10.15
+- @mds-core/mds-ingest-service@0.10.3
+- @mds-core/mds-policy-service@0.11.21
+- @mds-core/mds-db@0.6.10
+- @mds-core/mds-stream@0.2.13
+- @mds-core/mds-api-helpers@0.2.18
+
+## 0.8.16
+
+### Patch Changes
+
+- @mds-core/mds-compliance-service@0.10.23
+- @mds-core/mds-geography-service@0.10.14
+- @mds-core/mds-ingest-service@0.10.2
+- @mds-core/mds-policy-service@0.11.20
+- @mds-core/mds-db@0.6.9
+- @mds-core/mds-stream@0.2.12
+- @mds-core/mds-api-helpers@0.2.17
+
+## 0.8.15
+
+### Patch Changes
+
+- aaf3c1cf: Updates Policy to add a new SupersededAt attribute, and compute pending/expired/active statuses based on when a policy actually supersedes another
+- ade56b85: Replacing Device with DeviceDomainModel
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [aaf3c1cf]
+- Updated dependencies [ade56b85]
+- Updated dependencies [a93da2b6]
+- Updated dependencies [a5ab0aa5]
+- Updated dependencies [c4e78cc9]
+  - @mds-core/mds-policy-service@0.11.19
+  - @mds-core/mds-db@0.6.8
+  - @mds-core/mds-ingest-service@0.10.1
+  - @mds-core/mds-schema-validators@0.5.7
+  - @mds-core/mds-stream@0.2.11
+  - @mds-core/mds-api-helpers@0.2.16
+  - @mds-core/mds-api-server@0.4.8
+  - @mds-core/mds-compliance-service@0.10.22
+  - @mds-core/mds-geography-service@0.10.13
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-providers@0.2.9
+  - @mds-core/mds-service-helpers@0.6.6
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.8.14
 
 ### Patch Changes

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Timestamp, UUID } from '@mds-core/mds-types'
+import type { Timestamp, UUID } from '@mds-core/mds-types'
 import { getReadOnlyClient } from './client'
 import { DbLogger } from './logger'
 import schema from './schema'

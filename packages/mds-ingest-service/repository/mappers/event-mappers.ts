@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, ModelMapper, RecordedColumn } from '@mds-core/mds-repository'
-import { Nullable, Timestamp } from '@mds-core/mds-types'
-import {
+import type { IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { ModelMapper } from '@mds-core/mds-repository'
+import type { Nullable, Timestamp } from '@mds-core/mds-types'
+import type {
   EventAnnotationDomainModel,
   EventDomainCreateModel,
   EventDomainModel,
   MigratedEventDomainModel,
   TelemetryDomainModel
 } from '../../@types'
-import { EventEntityModel } from '../entities/event-entity'
-import { MigratedEntityModel } from '../mixins/migrated-entity'
+import type { EventEntityModel } from '../entities/event-entity'
+import type { MigratedEntityModel } from '../mixins/migrated-entity'
 import { EventAnnotationEntityToDomain } from './event-annotation-mappers'
 import { TelemetryEntityToDomain } from './telemetry-mappers'
 

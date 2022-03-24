@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import type { EntityCreateModel } from '@mds-core/mds-repository'
+import { IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { SchemaObject } from 'ajv'
 import { Column, Entity } from 'typeorm'
 

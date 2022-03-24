@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
-import { Nullable } from '@mds-core/mds-types'
+import type { EntityCreateModel } from '@mds-core/mds-repository'
+import { IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import type { Nullable } from '@mds-core/mds-types'
 import { Column, Entity, Index } from 'typeorm'
-import { JurisdictionDomainModel } from '../../@types'
+import type { JurisdictionDomainModel } from '../../@types'
 
 export interface JurisdictionVersionedProperties {
   timestamp: JurisdictionDomainModel['timestamp']

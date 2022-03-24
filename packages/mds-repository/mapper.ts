@@ -24,3 +24,10 @@ export const ModelMapper = <From, To, Options = Partial<{}>>(
   map,
   mapper: options => model => map(model, options)
 })
+
+export const MapModels = <From>(models: Array<From>) => {
+  return {
+    using: <To, Options = Partial<{}>>({ mapper }: ModelMapper<From, To, Options>, options?: Options): Array<To> =>
+      models.map(mapper(options))
+  }
+}

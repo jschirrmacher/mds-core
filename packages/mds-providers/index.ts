@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { UUID } from '@mds-core/mds-types'
+import type { UUID } from '@mds-core/mds-types'
 
 // Officially recognized providers, from:
 // https://github.com/CityOfLosAngeles/mobility-data-specification/blob/dev/providers.csv
@@ -40,6 +40,7 @@ export const SUPERPEDESTRIAN_PROVIDER_ID = '420e6e94-55a6-4946-b6b3-4398fe22e912
 export const BOAZ_BIKES_PROVIDER_ID = '7c96bc58-fb63-433a-b77f-84ccb1c9d737'
 export const HELBIZ_PROVIDER_ID = '3aece8c6-416a-4d39-bcc4-d02524cb8004'
 export const TUKTUK_PROVIDER_ID = '1a99bf67-14a0-48a1-98d1-77147a88c3d2'
+export const VEO_RIDE_PROVIDER_ID = '6e39f9db-751b-5cea-ae7e-486f579a56bc'
 
 // Additional provider IDs in use (should be registered)
 export const LADOT_PROVIDER_ID = '33bbcec3-f91b-4461-bc41-61711afb9460'
@@ -47,6 +48,11 @@ export const BLUE_SYSTEMS_PROVIDER_ID = '5674ea42-a2ab-42e0-b9fd-cbade6cb2561'
 export const TEST1_PROVIDER_ID = '5f7114d1-4091-46ee-b492-e55875f7de00'
 export const TEST2_PROVIDER_ID = '45f37d69-73ca-4ca6-a461-e7283cffa01a'
 export const LA_YELLOW_CAB_PROVIDER_ID = '286b317e-3c6c-498e-8920-94f7bd1bb3e7'
+export const UNITED_CHECKER_CAB_PROVIDER_ID = 'dfd96a1e-b785-42f3-9f47-9dbfd83ce62e'
+export const UNITED_INDEPENDENTS_TAXI_DRIVERS_PROVIDER_ID = '6402f0ec-f5dd-4617-9114-acccd36a1b91'
+export const BEVERLY_HILLS_CAB_CO_PROVIDER_ID = '94e63f1b-22ee-41e2-871d-cca6f778c042'
+export const INDEPENDENT_TAXI_OWNERS_PROVIDER_ID = 'cc753448-0479-4fac-9ca2-4ae3db19fb36'
+export const DIVVY_PROVIDER_ID = '00ae867e-661f-4da0-9f79-e0f41930aea0'
 
 // PROVIDER_ID value for Jest Testing
 export const JEST_PROVIDER_ID = 'c8051767-4b14-4794-abc1-85aad48baff1'
@@ -79,9 +85,15 @@ const PROVIDER_IDS = <const>[
   BOAZ_BIKES_PROVIDER_ID,
   HELBIZ_PROVIDER_ID,
   TUKTUK_PROVIDER_ID,
+  VEO_RIDE_PROVIDER_ID,
   BLUE_SYSTEMS_PROVIDER_ID,
   LADOT_PROVIDER_ID,
   LA_YELLOW_CAB_PROVIDER_ID,
+  UNITED_CHECKER_CAB_PROVIDER_ID,
+  UNITED_INDEPENDENTS_TAXI_DRIVERS_PROVIDER_ID,
+  BEVERLY_HILLS_CAB_CO_PROVIDER_ID,
+  INDEPENDENT_TAXI_OWNERS_PROVIDER_ID,
+  DIVVY_PROVIDER_ID,
   JEST_PROVIDER_ID,
   SUPPORT1_PROVIDER_ID,
   SUPPORT2_PROVIDER_ID,
@@ -237,6 +249,11 @@ const providers: { [k in PROVIDER_ID]: ProviderInfo } = {
     provider_name: 'TukTuk',
     url: 'https://tuktukscooters.com/'
   },
+  [VEO_RIDE_PROVIDER_ID]: {
+    provider_id: VEO_RIDE_PROVIDER_ID,
+    provider_name: 'VeoRide INC.',
+    url: 'https://www.veoride.com/'
+  },
   [LADOT_PROVIDER_ID]: {
     provider_id: LADOT_PROVIDER_ID,
     provider_name: 'LADOT',
@@ -247,12 +264,31 @@ const providers: { [k in PROVIDER_ID]: ProviderInfo } = {
     provider_name: 'Blue Systems',
     url: 'https://www.bluesystems.ai'
   },
-  /*
-   * Keeping these test IDs in for now, because removing them would require mocking out
-   * .getProviders, which is necessary for the compliance engine tests. However, the engine
-   * tests are still on mocha, and I don't want to create a sinon mock when there's a ticket
-   * in the backlog for migrating the remaining packages not on jest yet.
-   */
+  [LA_YELLOW_CAB_PROVIDER_ID]: {
+    provider_id: LA_YELLOW_CAB_PROVIDER_ID,
+    provider_name: 'LA Yellow Cab'
+  },
+  [UNITED_CHECKER_CAB_PROVIDER_ID]: {
+    provider_id: UNITED_CHECKER_CAB_PROVIDER_ID,
+    provider_name: 'United Checker Cab'
+  },
+  [UNITED_INDEPENDENTS_TAXI_DRIVERS_PROVIDER_ID]: {
+    provider_id: UNITED_INDEPENDENTS_TAXI_DRIVERS_PROVIDER_ID,
+    provider_name: 'United Independents Taxi Drivers'
+  },
+  [BEVERLY_HILLS_CAB_CO_PROVIDER_ID]: {
+    provider_id: BEVERLY_HILLS_CAB_CO_PROVIDER_ID,
+    provider_name: 'Beverly Hills Cab Co.'
+  },
+  [INDEPENDENT_TAXI_OWNERS_PROVIDER_ID]: {
+    provider_id: INDEPENDENT_TAXI_OWNERS_PROVIDER_ID,
+    provider_name: 'Independent Taxi Owners'
+  },
+  [DIVVY_PROVIDER_ID]: {
+    provider_id: DIVVY_PROVIDER_ID,
+    provider_name: 'Divvy',
+    gbfs_api_url: 'https://gbfs.divvybikes.com'
+  },
   [TEST1_PROVIDER_ID]: {
     provider_id: TEST1_PROVIDER_ID,
     provider_name: 'Test 1'
@@ -260,10 +296,6 @@ const providers: { [k in PROVIDER_ID]: ProviderInfo } = {
   [TEST2_PROVIDER_ID]: {
     provider_id: TEST2_PROVIDER_ID,
     provider_name: 'Test 2'
-  },
-  [LA_YELLOW_CAB_PROVIDER_ID]: {
-    provider_id: LA_YELLOW_CAB_PROVIDER_ID,
-    provider_name: 'LA Yellow Cab'
   },
   [JEST_PROVIDER_ID]: {
     provider_id: JEST_PROVIDER_ID,

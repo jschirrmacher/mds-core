@@ -17,8 +17,8 @@
 import { parseRequest } from '@mds-core/mds-api-helpers'
 import { PolicyServiceClient, SortPolicyColumn, SortPolicyDirection } from '@mds-core/mds-policy-service'
 import { now, ValidationError } from '@mds-core/mds-utils'
-import express from 'express'
-import { PolicyApiGetPoliciesRequest, PolicyApiGetPoliciesResponse } from '../types'
+import type express from 'express'
+import type { PolicyApiGetPoliciesRequest, PolicyApiGetPoliciesResponse } from '../types'
 
 const getQueryParamsPublished = (req: PolicyApiGetPoliciesRequest, scopes: Array<string>) => {
   /*

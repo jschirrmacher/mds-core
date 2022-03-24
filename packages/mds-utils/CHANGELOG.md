@@ -1,5 +1,20 @@
 # @mds-core/mds-utils
 
+## 0.5.0
+
+### Minor Changes
+
+- 03a110c1: removed date-time-utils, refactored tests from mocha to jest
+
+## 0.4.2
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-types@0.9.2
+
 ## 0.4.1
 
 ### Patch Changes

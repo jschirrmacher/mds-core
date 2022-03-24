@@ -1,5 +1,43 @@
 # @mds-core/mds-repository
 
+## 0.1.46
+
+### Patch Changes
+
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-config-files@0.1.4
+
+## 0.1.45
+
+### Patch Changes
+
+- 88984496: Add MapModels helper function for invoking model mappers
+- 88984496: Allow using data files from different locations for seeding repository tables
+- Updated dependencies [88984496]
+  - @mds-core/mds-config-files@0.1.3
+
+## 0.1.44
+
+### Patch Changes
+
+- e90243cd: Add yaml support to mds-config-service
+- Updated dependencies [e90243cd]
+  - @mds-core/mds-config-files@0.1.2
+
+## 0.1.43
+
+### Patch Changes
+
+- 1f6ccdab: Add support for initial repository data seeding from JSON files
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [cde3743c]
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-config-files@0.1.1
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.1.42
 
 ### Patch Changes

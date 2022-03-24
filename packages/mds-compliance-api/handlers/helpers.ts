@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { UUID } from '@mds-core/mds-types'
+import type { UUID } from '@mds-core/mds-types'
 
 export const base64EncodeArray = (ids: string[]): string => {
   const buffer = Buffer.from(ids.join(','))

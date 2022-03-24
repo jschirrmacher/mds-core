@@ -17,9 +17,10 @@
 import { AttachmentRepository } from '@mds-core/mds-attachment-service'
 import { AuditRepository } from '@mds-core/mds-audit-service'
 import { GeographyRepository } from '@mds-core/mds-geography-service'
+import type { DeviceDomainModel } from '@mds-core/mds-ingest-service'
 import { IngestRepository } from '@mds-core/mds-ingest-service'
 import { PolicyRepository } from '@mds-core/mds-policy-service'
-import { Device, Telemetry, VehicleEvent } from '@mds-core/mds-types'
+import type { Telemetry, VehicleEvent } from '@mds-core/mds-types'
 import * as attachments from './attachments'
 import * as audit from './audits'
 import { getReadOnlyClient, getWriteableClient, makeReadOnlyQuery } from './client'
@@ -108,7 +109,7 @@ async function shutdown(): Promise<void> {
 }
 
 async function seed(data: {
-  devices?: Device[]
+  devices?: DeviceDomainModel[]
   events?: VehicleEvent[]
   // Making this parameter optional is necessary because if you map over an array of events to get an array of
   // telemetry objects, not every event has a corresponding telemetry object.
@@ -118,7 +119,7 @@ async function seed(data: {
   if (data) {
     DbLogger.info('postgres seed start')
     if (data.devices) {
-      await Promise.all(data.devices.map(async (device: Device) => writeDevice(device)))
+      await Promise.all(data.devices.map(async (device: DeviceDomainModel) => writeDevice(device)))
     }
     DbLogger.info('postgres devices seeded')
     if (data.events) await Promise.all(data.events.map(async (event: VehicleEvent) => writeEvent(event)))

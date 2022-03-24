@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { EntityCreateModel, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import type { EntityCreateModel } from '@mds-core/mds-repository'
+import { IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
 import { Column, Entity } from 'typeorm'
-import { AuditAttachmentDomainModel } from '../../@types'
+import type { AuditAttachmentDomainModel } from '../../@types'
 
 export interface AuditAttachmentEntityModel extends IdentityColumn, RecordedColumn {
   audit_trip_id: AuditAttachmentDomainModel['audit_trip_id']

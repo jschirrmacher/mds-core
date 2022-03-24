@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-import { ServiceError, ServiceProvider, ServiceResult } from '@mds-core/mds-service-helpers'
-import { ConfigService, ConfigServiceRequestContext } from '../@types'
-import { readJsonFile } from './utils'
+import { ConfigFileReader } from '@mds-core/mds-config-files'
+import type { ServiceProvider } from '@mds-core/mds-service-helpers'
+import { ServiceError, ServiceResult } from '@mds-core/mds-service-helpers'
+import type { ConfigService, ConfigServiceRequestContext } from '../@types'
 
 export const ConfigServiceProvider: ServiceProvider<ConfigService, ConfigServiceRequestContext> = {
   getSettings: async (context, properties, options) => {
+    const config = ConfigFileReader.mount()
     const { partial = false } = options ?? {}
-    const responses = await Promise.all(properties.map(property => readJsonFile(property)))
-    const result = responses.reduce<{ found: string[]; missing: string[] }>(
-      (info, response, index) => {
+    const files = await Promise.allSettled(properties.map(property => config.readConfigFile(property)))
+    const result = files.reduce<{ found: string[]; missing: string[] }>(
+      (info, { status }, index) => {
         const property = properties[index]
         if (property) {
-          return response.error
-            ? { ...info, missing: [...info.missing, property] }
-            : { ...info, found: [...info.found, property] }
+          if (status === 'fulfilled') {
+            return { ...info, found: [...info.found, property] }
+          }
+          return { ...info, missing: [...info.missing, property] }
         }
         return info
       },
@@ -40,12 +43,13 @@ export const ConfigServiceProvider: ServiceProvider<ConfigService, ConfigService
           message: `Settings Not Found: ${result.missing}`
         })
       : ServiceResult(
-          responses.reduce((merged, response, index) => {
-            if (response.error) {
-              const property = properties[index]
-              return property ? Object.assign(merged, { [property]: null }) : merged
+          files.reduce((merged, file, index) => {
+            const property = properties[index]
+            if (property) {
+              const value = file.status === 'fulfilled' ? file.value : { [property]: null }
+              return Object.assign(merged, value)
             }
-            return Object.assign(merged, response.result)
+            return merged
           }, {})
         )
   }

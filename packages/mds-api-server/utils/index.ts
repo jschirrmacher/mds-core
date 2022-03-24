@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { AuthorizerClaims } from '@mds-core/mds-api-authorizer'
+import type { AuthorizerClaims } from '@mds-core/mds-api-authorizer'
 import { AuthorizationError } from '@mds-core/mds-utils'
-import express from 'express'
-import { ApiRequest, ApiResponse, ApiResponseLocalsClaims } from '../@types'
+import type express from 'express'
+import type { ApiRequest, ApiResponse, ApiResponseLocalsClaims } from '../@types'
 
 export const healthInfo = () => {
   const {
@@ -52,7 +52,7 @@ export const serverVersion = () => {
 
 export type AccessTokenScopeValidator<AccessTokenScope extends string = never> = (
   scopes: AccessTokenScope[],
-  claims: AuthorizerClaims | null
+  claims: AuthorizerClaims['claims']
 ) => boolean | Promise<boolean>
 
 /* istanbul ignore next */

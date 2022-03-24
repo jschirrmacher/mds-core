@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-import { IdentityColumn, ModelMapper, RecordedColumn } from '@mds-core/mds-repository'
-import { Device, Telemetry, VehicleEvent } from '@mds-core/mds-types'
-import { DeviceEntityModel } from '../entities/device-entity'
-import { EventEntityModel } from '../entities/event-entity'
-import { TelemetryEntityModel } from '../entities/telemetry-entity'
-import { MigratedEntityModel } from '../mixins/migrated-entity'
+import type { IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
+import { ModelMapper } from '@mds-core/mds-repository'
+import type { Telemetry, VehicleEvent } from '@mds-core/mds-types'
+import type { DeviceDomainModel } from '../../@types'
+import type { DeviceEntityModel } from '../entities/device-entity'
+import type { EventEntityModel } from '../entities/event-entity'
+import type { TelemetryEntityModel } from '../entities/telemetry-entity'
+import type { MigratedEntityModel } from '../mixins/migrated-entity'
 
 type MigratedEntityCreateOptions = {
   migrated_from: MigratedEntityModel
@@ -28,7 +30,7 @@ type MigratedEntityCreateOptions = {
 export type MigratedDeviceEntityCreateModel = Omit<DeviceEntityModel, keyof IdentityColumn>
 
 export const MigratedDeviceToEntityCreate = ModelMapper<
-  Device,
+  DeviceDomainModel,
   MigratedDeviceEntityCreateModel,
   MigratedEntityCreateOptions
 >(({ year = null, mfgr = null, model = null, accessibility_options = null, ...migrated }, options) => {

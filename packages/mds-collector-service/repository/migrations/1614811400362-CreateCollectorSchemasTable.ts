@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class CreateCollectorSchemasTable1614811400362 implements MigrationInterface {
   name = 'CreateCollectorSchemasTable1614811400362'

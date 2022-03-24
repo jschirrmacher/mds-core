@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class ChangeRecordedColumnDefaultExpression1644682444725 implements MigrationInterface {
   name = 'ChangeRecordedColumnDefaultExpression1644682444725'

@@ -15,8 +15,8 @@
  */
 
 import { ApiServer } from '@mds-core/mds-api-server'
+import type { GeographyDomainModel } from '@mds-core/mds-geography-service'
 import {
-  GeographyDomainModel,
   GeographyFactory,
   GeographyRepository,
   GeographyServiceManager,

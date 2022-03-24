@@ -14,21 +14,31 @@
  * limitations under the License.
  */
 
-import { UUID } from '@mds-core/mds-types'
+import type { UUID } from '@mds-core/mds-types'
 import { AuthorizationError, getEnvVar } from '@mds-core/mds-utils'
-import express from 'express'
+import type express from 'express'
 import jwt from 'jsonwebtoken'
 
-export interface AuthorizerClaims {
-  principalId: string
-  scope: string
-  provider_id: UUID | null
-  user_email: string | null
-  jurisdictions: string | null
+export interface AuthorizationContext {
+  token_type: 'None' | 'Basic' | 'Bearer'
+  access_token?: string
 }
 
-export type Authorizer = (authorization: string) => AuthorizerClaims | null
-export type ApiAuthorizer = (req: express.Request) => AuthorizerClaims | null
+export interface AuthorizerClaims {
+  authorization: AuthorizationContext
+  claims?: {
+    principalId: string
+    scope: string
+    provider_id: UUID | null
+    user_email: string | null
+    jurisdictions: string | null
+  }
+}
+
+export const NoAuthorizerClaims: AuthorizerClaims = { authorization: { token_type: 'None' } }
+
+export type Authorizer = (authorization: string) => AuthorizerClaims
+export type ApiAuthorizer = (req: express.Request) => AuthorizerClaims
 
 export const CustomClaim = (claim: 'provider_id' | 'user_email' | 'jurisdictions') => {
   const { TOKEN_CUSTOM_CLAIM_NAMESPACE } = getEnvVar({
@@ -58,13 +68,13 @@ export const JurisdictionsClaim = () => {
   return TOKEN_JURISDICTIONS_CLAIM
 }
 
-const decode = (token: string) => {
-  const decoded = jwt.decode(token)
+const decode = (access_token: string) => {
+  const decoded = jwt.decode(access_token)
   return typeof decoded === 'string' || decoded === null ? {} : decoded
 }
 
-const decoders: { [scheme: string]: (token: string) => AuthorizerClaims } = {
-  bearer: (token: string) => {
+const decoders: { [scheme: string]: (access_token: string) => AuthorizerClaims } = {
+  bearer: (access_token: string): AuthorizerClaims => {
     const {
       sub: principalId = '',
       scope,
@@ -72,37 +82,47 @@ const decoders: { [scheme: string]: (token: string) => AuthorizerClaims } = {
       [UserEmailClaim()]: user_email = null,
       [JurisdictionsClaim()]: jurisdictions = null,
       ...claims
-    } = decode(token)
+    } = decode(access_token)
 
     return {
-      principalId,
-      scope,
-      provider_id,
-      user_email,
-      jurisdictions,
-      ...claims
+      authorization: { token_type: 'Bearer', access_token },
+      claims: { principalId, scope, provider_id, user_email, jurisdictions, ...claims }
     }
   },
-  basic: (token: string) => {
-    const [principalId, scope] = Buffer.from(token, 'base64').toString().split('|')
-    if (principalId === undefined || scope === undefined) {
-      throw new AuthorizationError('Invalid basic token')
+  basic: (access_token: string): AuthorizerClaims => {
+    const [principalId, scope] = Buffer.from(access_token, 'base64').toString().split('|')
+    if (principalId !== undefined && scope !== undefined) {
+      return {
+        authorization: { token_type: 'Basic', access_token },
+        claims:
+          principalId === 'Bearer'
+            ? JSON.parse(scope)
+            : {
+                principalId,
+                scope,
+                provider_id: principalId,
+                user_email: principalId,
+                jurisdictions: principalId
+              }
+      }
     }
-    return { principalId, scope, provider_id: principalId, user_email: principalId, jurisdictions: principalId }
+    throw new AuthorizationError('Invalid basic token')
   }
 }
 
 const BaseAuthorizer: Authorizer = authorization => {
-  const [scheme, token] = authorization.split(' ')
-  if (!scheme || !token) {
-    return null
+  const [scheme, access_token] = authorization.split(' ')
+  if (scheme && access_token) {
+    const decoder = decoders[scheme.toLowerCase()]
+    if (decoder) {
+      return decoder(access_token)
+    }
   }
-  const decoder = decoders[scheme.toLowerCase()]
-  return decoder ? decoder(token) : null
+  return NoAuthorizerClaims
 }
 
 export const AuthorizationHeaderApiAuthorizer: ApiAuthorizer = req => {
-  return req.headers?.authorization ? BaseAuthorizer(req.headers.authorization) : null
+  return req.headers?.authorization ? BaseAuthorizer(req.headers.authorization) : NoAuthorizerClaims
 }
 
 export const WebSocketAuthorizer = BaseAuthorizer

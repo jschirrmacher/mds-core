@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-import { Device, Telemetry, TripMetadata, VehicleEvent } from '@mds-core/mds-types'
+import stream from '@mds-core/mds-stream'
+import type { Recorded, Telemetry, TripMetadata, VehicleEvent } from '@mds-core/mds-types'
 import { getEnvVar } from '@mds-core/mds-utils'
-import { AgencyStreamInterface } from '../agency-stream-interface'
-import { safeWrite } from '../helpers'
-import { NatsStreamProducer } from './stream-producer'
+import type { DeviceDomainModel } from '../../@types'
+import type { IngestStreamInterface } from '../types'
 
 const { TENANT_ID } = getEnvVar({
   TENANT_ID: 'mds'
 })
-const deviceProducer = NatsStreamProducer<Device>(`${TENANT_ID}.device`)
-const eventProducer = NatsStreamProducer<VehicleEvent>(`${TENANT_ID}.event`)
-const eventErrorProducer = NatsStreamProducer<Partial<VehicleEvent>>(`${TENANT_ID}.event.error`)
-const telemetryProducer = NatsStreamProducer<Telemetry>(`${TENANT_ID}.telemetry`)
-const tripMetadataProducer = NatsStreamProducer<TripMetadata>(`${TENANT_ID}.trip_metadata`)
 
-export const AgencyStreamNats: AgencyStreamInterface = {
+const deviceProducer = stream.NatsStreamProducer<DeviceDomainModel>(`${TENANT_ID}.device`)
+const eventProducer = stream.NatsStreamProducer<VehicleEvent>(`${TENANT_ID}.event`)
+const eventErrorProducer = stream.NatsStreamProducer<Partial<VehicleEvent>>(`${TENANT_ID}.event.error`)
+const telemetryProducer = stream.NatsStreamProducer<Recorded<Telemetry>>(`${TENANT_ID}.telemetry`)
+const tripMetadataProducer = stream.NatsStreamProducer<TripMetadata>(`${TENANT_ID}.trip_metadata`)
+
+export const IngestStreamNats: IngestStreamInterface = {
   initialize: async () => {
     await Promise.all([
       deviceProducer.initialize(),
@@ -39,11 +40,11 @@ export const AgencyStreamNats: AgencyStreamInterface = {
       tripMetadataProducer.initialize()
     ])
   },
-  writeEventError: async msg => await safeWrite(eventErrorProducer, msg),
-  writeEvent: async msg => await safeWrite(eventProducer, msg),
-  writeTelemetry: async msg => await safeWrite(telemetryProducer, msg),
-  writeDevice: async msg => await safeWrite(deviceProducer, msg),
-  writeTripMetadata: async msg => await safeWrite(tripMetadataProducer, msg),
+  writeEventError: async msg => await stream.safeWrite(eventErrorProducer, msg),
+  writeEvent: async msg => await stream.safeWrite(eventProducer, msg),
+  writeTelemetry: async msg => await stream.safeWrite(telemetryProducer, msg),
+  writeDevice: async msg => await stream.safeWrite(deviceProducer, msg),
+  writeTripMetadata: async msg => await stream.safeWrite(tripMetadataProducer, msg),
   shutdown: async () => {
     await Promise.all([
       deviceProducer.shutdown(),

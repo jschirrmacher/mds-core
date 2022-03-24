@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-import { RpcClient, RpcRequest, RpcRequestOptions } from '@mds-core/mds-rpc-common'
-import { ServiceClient } from '@mds-core/mds-service-helpers'
-import { AuditService, AuditServiceDefinition, AuditServiceRequestContext } from '../@types'
+import type { RpcRequestOptions } from '@mds-core/mds-rpc-common'
+import { RpcClient, RpcRequest } from '@mds-core/mds-rpc-common'
+import type { ServiceClient } from '@mds-core/mds-service-helpers'
+import type { AuditService, AuditServiceRequestContext } from '../@types'
+import { AuditServiceDefinition } from '../@types'
 
 // What the API layer, and any other clients, will invoke.
 export const AuditServiceClientFactory = (

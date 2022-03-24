@@ -15,7 +15,7 @@
  */
 
 import { convert_v0_4_1_telemetry_to_1_0_0 } from '../../transformers'
-import { Telemetry_v0_4_1 } from '../../transformers/@types'
+import type { Telemetry_v0_4_1 } from '../../transformers/@types'
 
 const telemetry: Telemetry_v0_4_1 = {
   provider_id: 'baf215d4-8b4b-4be4-8189-980171a964ba',

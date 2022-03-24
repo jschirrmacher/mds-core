@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { ProcessController, ServiceException, ServiceProvider, ServiceResult } from '@mds-core/mds-service-helpers'
+import type { ProcessController, ServiceProvider } from '@mds-core/mds-service-helpers'
+import { ServiceException, ServiceResult } from '@mds-core/mds-service-helpers'
 import { NotFoundError } from '@mds-core/mds-utils'
-import { AttachmentService, AttachmentServiceRequestContext } from '../@types'
+import type { AttachmentService, AttachmentServiceRequestContext } from '../@types'
 import { AttachmentServiceLogger } from '../logger'
 import { AttachmentRepository } from '../repository'
 import { deleteAttachmentS3, validateFile, writeAttachmentS3 } from './helpers'

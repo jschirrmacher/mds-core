@@ -1,5 +1,29 @@
 # @mds-core/mds-api-authorizer
 
+## 0.1.65
+
+### Patch Changes
+
+- abde42f5: Redefine AuthorizationContext type so that it can be passed as part of a tuple or spread parameter
+
+## 0.1.64
+
+### Patch Changes
+
+- af3631da: Stash API authorization context so it can be passed to RPC services without reparsing
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-utils@0.5.0
+
+## 0.1.63
+
+### Patch Changes
+
+- ade56b85: Replacing Device with DeviceDomainModel
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.1.62
 
 ### Patch Changes

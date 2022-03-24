@@ -1,0 +1,27 @@
+{
+  "name": "@mds-core/mds-config-files",
+  "version": "0.1.4",
+  "description": "Mobility Data Specification config file reader",
+  "keywords": [
+    "mds",
+    "config"
+  ],
+  "license": "Apache-2.0",
+  "author": "City of Los Angeles",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "test": "DOTENV_CONFIG_PATH=../../.env jest"
+  },
+  "dependencies": {
+    "@mds-core/mds-utils": "workspace:0.5.0",
+    "@types/yamljs": "0.2.31",
+    "envalid": "7.2.1",
+    "json5": "2.2.0",
+    "yamljs": "0.3.0"
+  }
+}

@@ -1,5 +1,81 @@
 # @mds-core/mds-geography-api
 
+## 0.4.23
+
+### Patch Changes
+
+- Updated dependencies [f9090232]
+  - @mds-core/mds-providers@0.2.10
+  - @mds-core/mds-schema-validators@0.5.9
+  - @mds-core/mds-api-helpers@0.2.23
+  - @mds-core/mds-geography-service@0.10.20
+
+## 0.4.22
+
+### Patch Changes
+
+- @mds-core/mds-geography-service@0.10.19
+- @mds-core/mds-api-helpers@0.2.22
+
+## 0.4.21
+
+### Patch Changes
+
+- @mds-core/mds-api-server@0.4.10
+- @mds-core/mds-api-helpers@0.2.21
+- @mds-core/mds-geography-service@0.10.18
+
+## 0.4.20
+
+### Patch Changes
+
+- Updated dependencies [af3631da]
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-api-server@0.4.9
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-api-helpers@0.2.20
+  - @mds-core/mds-geography-service@0.10.17
+  - @mds-core/mds-schema-validators@0.5.8
+
+## 0.4.19
+
+### Patch Changes
+
+- @mds-core/mds-geography-service@0.10.16
+- @mds-core/mds-api-helpers@0.2.19
+
+## 0.4.18
+
+### Patch Changes
+
+- @mds-core/mds-geography-service@0.10.15
+- @mds-core/mds-api-helpers@0.2.18
+
+## 0.4.17
+
+### Patch Changes
+
+- @mds-core/mds-geography-service@0.10.14
+- @mds-core/mds-api-helpers@0.2.17
+
+## 0.4.16
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [ade56b85]
+- Updated dependencies [a93da2b6]
+- Updated dependencies [a5ab0aa5]
+- Updated dependencies [c4e78cc9]
+  - @mds-core/mds-schema-validators@0.5.7
+  - @mds-core/mds-api-helpers@0.2.16
+  - @mds-core/mds-api-server@0.4.8
+  - @mds-core/mds-geography-service@0.10.13
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-providers@0.2.9
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.4.15
 
 ### Patch Changes

@@ -15,10 +15,10 @@
  */
 
 import { SchemaValidator, ValidationError } from '@mds-core/mds-schema-validators'
-import { UUID } from '@mds-core/mds-types'
+import type { UUID } from '@mds-core/mds-types'
 import Ajv from 'ajv'
 import gjv from 'geojson-validation'
-import {
+import type {
   GeographyDomainCreateModel,
   GeographyDomainModel,
   GeographyMetadataDomainCreateModel,

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { FeatureCollection, Geometry } from 'geojson'
-import { GeographyDomainModel } from './@types'
+import type { FeatureCollection, Geometry } from 'geojson'
+import type { GeographyDomainModel } from './@types'
 
 function getPolygon(geographies: GeographyDomainModel[], geography: string): Geometry | FeatureCollection {
   const res = geographies.find((location: GeographyDomainModel) => {

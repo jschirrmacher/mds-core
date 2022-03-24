@@ -16,8 +16,8 @@
 
 import { venice } from '@mds-core/mds-test-data'
 import { uuid, yesterday } from '@mds-core/mds-utils'
-import { FeatureCollection } from 'geojson'
-import { GeographyDomainModel } from '../@types'
+import type { FeatureCollection } from 'geojson'
+import type { GeographyDomainModel } from '../@types'
 import { GeographyServiceClient } from '../client'
 
 export const writePublishedGeography = async (geography: GeographyDomainModel) => {

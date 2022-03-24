@@ -15,9 +15,10 @@
  */
 
 import { GeographyServiceClient } from '@mds-core/mds-geography-service'
-import { ProcessController, ServiceException, ServiceProvider, ServiceResult } from '@mds-core/mds-service-helpers'
+import type { ProcessController, ServiceProvider } from '@mds-core/mds-service-helpers'
+import { ServiceException, ServiceResult } from '@mds-core/mds-service-helpers'
 import { BadParamsError, DependencyMissingError } from '@mds-core/mds-utils'
-import { PolicyService, PolicyServiceRequestContext } from '../@types'
+import type { PolicyService, PolicyServiceRequestContext } from '../@types'
 import { PolicyServiceLogger } from '../logger'
 import { PolicyRepository } from '../repository'
 import { PolicyStreamKafka } from './stream'
@@ -92,7 +93,7 @@ export const PolicyServiceProvider: ServiceProvider<PolicyService, PolicyService
       if (prev_policies) {
         await Promise.all(
           prev_policies.map(superseded_policy_id =>
-            PolicyRepository.updatePolicySupersededByColumn(superseded_policy_id, policy_id)
+            PolicyRepository.updatePolicySupersededBy(superseded_policy_id, policy_id, publishedPolicy.start_date)
           )
         )
       }

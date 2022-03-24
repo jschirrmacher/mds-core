@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class CreateMigrationColumns1625241719659 implements MigrationInterface {
   name = 'CreateMigrationColumns1625241719659'

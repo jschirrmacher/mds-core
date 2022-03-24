@@ -15,7 +15,8 @@
  */
 
 import { BigintTransformer } from '@mds-core/mds-repository'
-import { AnyConstructor, Nullable } from '@mds-core/mds-types'
+import type { AnyConstructor } from '@mds-core/mds-types'
+import { Nullable } from '@mds-core/mds-types'
 import { Column } from 'typeorm'
 
 export interface MigratedEntityModel {

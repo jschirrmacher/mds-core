@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Attachment, AuditAttachment, Recorded, UUID } from '@mds-core/mds-types'
+import type { Attachment, AuditAttachment, Recorded, UUID } from '@mds-core/mds-types'
 import { NotFoundError, now } from '@mds-core/mds-utils'
 import { getReadOnlyClient, getWriteableClient } from './client'
 import schema from './schema'

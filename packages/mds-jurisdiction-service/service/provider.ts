@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { ProcessController, ServiceException, ServiceProvider, ServiceResult } from '@mds-core/mds-service-helpers'
-import { JurisdictionService, JurisdictionServiceRequestContext } from '../@types'
+import type { ProcessController, ServiceProvider } from '@mds-core/mds-service-helpers'
+import { ServiceException, ServiceResult } from '@mds-core/mds-service-helpers'
+import type { JurisdictionService, JurisdictionServiceRequestContext } from '../@types'
 import { JurisdictionServiceLogger } from '../logger'
 import { JurisdictionRepository } from '../repository'
 import { ValidateJurisdictionForCreate } from './validators'

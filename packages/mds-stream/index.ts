@@ -14,121 +14,21 @@
  * limitations under the License.
  */
 
-import { Device, Telemetry, TripMetadata, VehicleEvent } from '@mds-core/mds-types'
+import { safeWrite } from './helpers'
 import { KafkaStreamConsumer, KafkaStreamProducer } from './kafka'
-import { AgencyStreamKafka } from './kafka/agency-stream-kafka'
-import { StreamLogger } from './logger'
-import { AgencyStreamNats } from './nats/agency-stream-nats'
 import { NatsStreamConsumer } from './nats/stream-consumer'
 import { NatsStreamProducer } from './nats/stream-producer'
 import { mockStream } from './test-utils'
-import { BadDataError } from './types'
 
-export { KafkaStreamConsumerOptions, KafkaStreamProducerOptions } from './kafka'
-export { NatsProcessorFn } from './nats/codecs'
-export { StreamConsumer, StreamProducer } from './stream-interface'
-
-const { env } = process
-
-const { now } = Date
-
-async function initialize() {
-  if (process.env.KAFKA_HOST) {
-    await AgencyStreamKafka.initialize()
-  }
-  if (process.env.NATS) {
-    await AgencyStreamNats.initialize()
-  }
-}
-async function shutdown() {
-  await AgencyStreamKafka.shutdown()
-  await AgencyStreamNats.shutdown()
-}
-
-// put basics of vehicle in the cache
-async function writeDevice(device: Device) {
-  if (env.NATS) {
-    try {
-      await AgencyStreamNats.writeDevice(device)
-    } catch (err) {
-      StreamLogger.error('Failed to write device to NATS', { err })
-      throw err
-    }
-  }
-  if (env.KAFKA_HOST) {
-    try {
-      await AgencyStreamKafka.writeDevice(device)
-    } catch (err) {
-      StreamLogger.error('Failed to write device to Kafka', { err })
-      throw err
-    }
-  }
-  return
-}
-
-async function writeEvent(event: VehicleEvent) {
-  if (env.NATS) {
-    await AgencyStreamNats.writeEvent(event)
-  }
-  if (env.KAFKA_HOST) {
-    await AgencyStreamKafka.writeEvent(event)
-  }
-  return
-}
-
-async function writeEventError(error: BadDataError) {
-  if (env.NATS) {
-    await AgencyStreamNats.writeEventError(error)
-  }
-  if (env.KAFKA_HOST) {
-    await AgencyStreamKafka.writeEventError(error)
-  }
-  return
-}
-
-// put latest locations in the cache
-async function writeTelemetry(telemetry: Telemetry[]) {
-  if (env.NATS) {
-    try {
-      await AgencyStreamNats.writeTelemetry(telemetry)
-    } catch (err) {
-      StreamLogger.error('Failed to write telemetry to NATS', { err })
-      throw err
-    }
-  }
-  if (env.KAFKA_HOST) {
-    try {
-      await AgencyStreamKafka.writeTelemetry(telemetry)
-    } catch (err) {
-      StreamLogger.error('Failed to write telemetry to Kafka', { err })
-      throw err
-    }
-  }
-  const start = now()
-  const delta = now() - start
-  if (delta > 200) {
-    StreamLogger.debug('writeTelemetry', { pointsInserted: telemetry.length, executionTime: delta })
-  }
-}
-
-const writeTripMetadata = async (metadata: TripMetadata) => {
-  return Promise.all([
-    ...(env.NATS ? [AgencyStreamNats.writeTripMetadata(metadata)] : []),
-    ...(env.KAFKA_HOST ? [AgencyStreamKafka.writeTripMetadata(metadata)] : [])
-  ])
-}
+export type { KafkaStreamConsumerOptions, KafkaStreamProducerOptions } from './kafka'
+export type { NatsProcessorFn } from './nats/codecs'
+export type { StreamConsumer, StreamProducer } from './stream-interface'
 
 export default {
-  initialize,
-  shutdown,
-  writeDevice,
-  writeEvent,
-  writeEventError,
-  writeTelemetry,
   KafkaStreamConsumer,
   KafkaStreamProducer,
   NatsStreamConsumer,
   NatsStreamProducer,
   mockStream,
-  writeTripMetadata
+  safeWrite
 }

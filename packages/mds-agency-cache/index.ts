@@ -15,7 +15,7 @@
  */
 
 import { RedisCache } from '@mds-core/mds-cache'
-import { BoundingBox, Device, Telemetry, Timestamp, UUID, VehicleEvent } from '@mds-core/mds-types'
+import type { BoundingBox, Device, Telemetry, Timestamp, UUID, VehicleEvent } from '@mds-core/mds-types'
 import {
   filterDefined,
   isInsideBoundingBox,
@@ -28,9 +28,9 @@ import {
   tail
 } from '@mds-core/mds-utils'
 import flatten, { unflatten } from 'flat'
-import Redis from 'ioredis'
+import type Redis from 'ioredis'
 import { AgencyCacheLogger } from './logger'
-import {
+import type {
   CachedItem,
   CacheReadDeviceResult,
   StringifiedCacheReadDeviceResult,

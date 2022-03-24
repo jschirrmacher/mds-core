@@ -1,9 +1,10 @@
 import { parseRequest } from '@mds-core/mds-api-helpers'
-import { ComplianceServiceClient, ComplianceViolationDomainModel } from '@mds-core/mds-compliance-service'
+import type { ComplianceViolationDomainModel } from '@mds-core/mds-compliance-service'
+import { ComplianceServiceClient } from '@mds-core/mds-compliance-service'
 import { isUUID, NotFoundError, ValidationError } from '@mds-core/mds-utils'
-import express from 'express'
+import type express from 'express'
 import HttpStatus from 'http-status-codes'
-import { ComplianceApiRequest, ComplianceApiResponse } from '../@types'
+import type { ComplianceApiRequest, ComplianceApiResponse } from '../@types'
 
 export type ComplianceApiGetViolationResponse = ComplianceApiResponse<{
   violation: ComplianceViolationDomainModel

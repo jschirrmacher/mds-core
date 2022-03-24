@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { SingleOrArray } from '@mds-core/mds-types'
+import type { SingleOrArray } from '@mds-core/mds-types'
 
 export type ValueTransformer<From, To = From> = (value: SingleOrArray<From>) => SingleOrArray<To>
 

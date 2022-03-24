@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {
+import type {
   ApiRequest,
   ApiRequestParams,
   ApiResponse,
@@ -22,7 +22,7 @@ import {
   ApiResponseLocalsClaims,
   ApiResponseLocalsVersion
 } from '@mds-core/mds-api-server'
-import {
+import type {
   Device,
   Recorded,
   Telemetry,

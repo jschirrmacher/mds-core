@@ -1,6 +1,6 @@
-import { Nullable, Timestamp, UUID } from './utils'
-import { VEHICLE_STATE } from './vehicle/vehicle_states'
-import { VEHICLE_TYPE } from './vehicle/vehicle_types'
+import type { Nullable, Timestamp, UUID } from './utils'
+import type { VEHICLE_STATE } from './vehicle/vehicle_states'
+import type { VEHICLE_TYPE } from './vehicle/vehicle_types'
 
 export const PROPULSION_TYPES = ['human', 'electric', 'electric_assist', 'hybrid', 'combustion'] as const
 export type PROPULSION_TYPE = typeof PROPULSION_TYPES[number]

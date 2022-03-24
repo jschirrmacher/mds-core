@@ -15,7 +15,7 @@
  */
 
 import { SchemaValidator } from '@mds-core/mds-schema-validators'
-import { CreateJurisdictionDomainModel } from '../@types'
+import type { CreateJurisdictionDomainModel } from '../@types'
 
 const uuidSchema = <const>{ type: 'string', format: 'uuid' }
 const stringSchema = <const>{ type: 'string', transform: ['trim'], minLength: 1 }

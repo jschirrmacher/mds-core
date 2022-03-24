@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-import { SingleOrArray } from '@mds-core/mds-types'
+import type { SingleOrArray } from '@mds-core/mds-types'
 import { asArray, getEnvVar } from '@mds-core/mds-utils'
-import { connect, NatsConnection, SubscriptionOptions } from 'nats'
+import type { NatsConnection, SubscriptionOptions } from 'nats'
+import { connect } from 'nats'
 import { StreamLogger } from '../logger'
-import { natsCbWrapper, NatsProcessorFn } from './codecs'
+import type { NatsProcessorFn } from './codecs'
+import { natsCbWrapper } from './codecs'
 
 const initializeNatsClient = () => {
   const { NATS } = getEnvVar({ NATS: 'localhost' })

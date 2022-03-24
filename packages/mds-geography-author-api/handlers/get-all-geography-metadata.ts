@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import {
-  GeographyMetadataDomainModel,
-  GeographyServiceClient,
-  GeographyWithMetadataDomainModel
-} from '@mds-core/mds-geography-service'
+import type { GeographyMetadataDomainModel, GeographyWithMetadataDomainModel } from '@mds-core/mds-geography-service'
+import { GeographyServiceClient } from '@mds-core/mds-geography-service'
 import { InsufficientPermissionsError } from '@mds-core/mds-utils'
-import express from 'express'
+import type express from 'express'
 import { GeographyAuthorLogger } from '../logger'
-import { GeographyAuthorApiGetGeographyMetadataRequest, GeographyAuthorApiGetGeographyMetadataResponse } from '../types'
+import type {
+  GeographyAuthorApiGetGeographyMetadataRequest,
+  GeographyAuthorApiGetGeographyMetadataResponse
+} from '../types'
 
 export const GetAllGeographyMetadataHandler = async (
   req: GeographyAuthorApiGetGeographyMetadataRequest,

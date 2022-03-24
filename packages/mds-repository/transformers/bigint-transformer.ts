@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { Nullable } from '@mds-core/mds-types'
-import { OneWayTransformer, ValueTransformer } from './types'
+import type { Nullable } from '@mds-core/mds-types'
+import type { ValueTransformer } from './types'
+import { OneWayTransformer } from './types'
 
 const toNumber: ValueTransformer<Nullable<string>, Nullable<number>> = value => {
   const transform = (item: Nullable<string>) => (item === null ? item : Number(item))

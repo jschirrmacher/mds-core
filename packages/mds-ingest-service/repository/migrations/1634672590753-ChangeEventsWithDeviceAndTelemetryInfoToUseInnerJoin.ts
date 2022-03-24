@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class ChangeEventsWithDeviceAndTelemetryInfoToUseInnerJoin1634672590753 implements MigrationInterface {
   name = 'ChangeEventsWithDeviceAndTelemetryInfoToUseInnerJoin1634672590753'

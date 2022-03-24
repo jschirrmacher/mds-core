@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { StreamSink } from '../@types'
+import type { StreamSink } from '../@types'
 import { StreamProcessorLogger } from '../logger'
 
 export const ConsoleSink =

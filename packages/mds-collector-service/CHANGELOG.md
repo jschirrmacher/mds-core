@@ -1,5 +1,82 @@
 # @mds-core/mds-collector-service
 
+## 0.4.24
+
+### Patch Changes
+
+- @mds-core/mds-schema-validators@0.5.9
+
+## 0.4.23
+
+### Patch Changes
+
+- Updated dependencies [f010700b]
+  - @mds-core/mds-rpc-common@0.3.17
+
+## 0.4.22
+
+### Patch Changes
+
+- @mds-core/mds-rpc-common@0.3.16
+
+## 0.4.21
+
+### Patch Changes
+
+- Updated dependencies [af3631da]
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-rpc-common@0.3.15
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-repository@0.1.46
+  - @mds-core/mds-schema-validators@0.5.8
+  - @mds-core/mds-service-helpers@0.6.7
+  - @mds-core/mds-stream@0.3.1
+
+## 0.4.20
+
+### Patch Changes
+
+- Updated dependencies [88984496]
+- Updated dependencies [775efc9c]
+- Updated dependencies [3ca785d0]
+- Updated dependencies [88984496]
+  - @mds-core/mds-repository@0.1.45
+  - @mds-core/mds-stream@0.3.0
+
+## 0.4.19
+
+### Patch Changes
+
+- Updated dependencies [bf1f3c4d]
+  - @mds-core/mds-rpc-common@0.3.14
+  - @mds-core/mds-stream@0.2.13
+
+## 0.4.18
+
+### Patch Changes
+
+- Updated dependencies [e90243cd]
+  - @mds-core/mds-repository@0.1.44
+  - @mds-core/mds-stream@0.2.12
+
+## 0.4.17
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [ade56b85]
+- Updated dependencies [1f6ccdab]
+- Updated dependencies [a93da2b6]
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-schema-validators@0.5.7
+  - @mds-core/mds-stream@0.2.11
+  - @mds-core/mds-repository@0.1.43
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-rpc-common@0.3.13
+  - @mds-core/mds-service-helpers@0.6.6
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.4.16
 
 ### Patch Changes

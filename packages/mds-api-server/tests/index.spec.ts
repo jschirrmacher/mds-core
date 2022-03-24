@@ -20,7 +20,7 @@
 import { pathPrefix } from '@mds-core/mds-utils'
 import HttpStatus from 'http-status-codes'
 import supertest from 'supertest'
-import { ApiVersionedResponse } from '../@types'
+import type { ApiVersionedResponse } from '../@types'
 import { ApiServer } from '../api-server'
 import { HttpServer } from '../http-server'
 import { ApiVersionMiddleware } from '../middleware/api-version'

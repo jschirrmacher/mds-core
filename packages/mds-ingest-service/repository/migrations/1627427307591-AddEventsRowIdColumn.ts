@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import type { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class AddEventsRowIdColumn1627427307591 implements MigrationInterface {
   name = 'AddEventsRowIdColumn1627427307591'

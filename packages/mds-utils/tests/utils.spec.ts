@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
+import type { MicroMobilityVehicleEvent } from '@mds-core/mds-types'
 import {
-  MicroMobilityVehicleEvent,
   MICRO_MOBILITY_EVENT_STATES_MAP,
   MICRO_MOBILITY_VEHICLE_EVENTS,
   MICRO_MOBILITY_VEHICLE_STATES
 } from '@mds-core/mds-types'
-import assert from 'assert'
-import test from 'unit.js'
 import { isEventValid, stateTransitionDict } from '../state-machine'
 import { filterDefined, isEventSequenceValid, normalizeToArray, routeDistance } from '../utils'
 
@@ -30,19 +28,16 @@ const LosAngeles = { lat: 34.052235, lng: -118.243683 }
 const BostonToLA = 4169605.469765776
 
 describe('Tests Utilities', () => {
-  it('routeDistance: Verifies single point', done => {
-    test.value(routeDistance([Boston])).is(0)
-    done()
+  it('routeDistance: Verifies single point', () => {
+    expect(routeDistance([Boston])).toStrictEqual(0)
   })
 
-  it('routeDistance: Verifies 2 points', done => {
-    test.value(routeDistance([Boston, LosAngeles])).is(BostonToLA)
-    done()
+  it('routeDistance: Verifies 2 points', () => {
+    expect(routeDistance([Boston, LosAngeles])).toStrictEqual(BostonToLA)
   })
 
-  it('routeDistance: Verifies 2+ points', done => {
-    test.value(routeDistance([Boston, LosAngeles, Boston])).is(BostonToLA * 2)
-    done()
+  it('routeDistance: Verifies 2+ points', () => {
+    expect(routeDistance([Boston, LosAngeles, Boston])).toStrictEqual(BostonToLA * 2)
   })
 
   describe('Filter empty', () => {
@@ -50,14 +45,14 @@ describe('Tests Utilities', () => {
       const arr = [1, 2, null, 3, undefined, 4]
       const actual = arr.filter(filterDefined())
       const expected = [1, 2, 3, 4]
-      assert.deepStrictEqual(actual, expected)
+      expect(actual).toStrictEqual(expected)
     })
 
     it('Does not filter 0 or "" (empty string) or [] (empty array)', () => {
       const arr = [1, 2, '', 3, [], 0]
       const actual = arr.filter(filterDefined())
       const expected = arr
-      assert.deepStrictEqual(actual, expected)
+      expect(actual).toStrictEqual(expected)
     })
 
     // Can't seem to get TS to go along with Sinon.spy()
@@ -80,13 +75,13 @@ describe('Tests Utilities', () => {
 
   describe('Normalize to array', () => {
     it('Normalizes undefined to empty array', () => {
-      assert.deepStrictEqual(normalizeToArray(undefined), [])
+      expect(normalizeToArray(undefined)).toStrictEqual([])
     })
     it('Normalizes single element into singleton array', () => {
-      assert.deepStrictEqual(normalizeToArray('test'), ['test'])
+      expect(normalizeToArray('test')).toStrictEqual(['test'])
     })
     it('Leaves array untouched', () => {
-      assert.deepStrictEqual(normalizeToArray(['test1', 'test2']), ['test1', 'test2'])
+      expect(normalizeToArray(['test1', 'test2'])).toStrictEqual(['test1', 'test2'])
     })
   })
 
@@ -97,20 +92,18 @@ describe('Tests Utilities', () => {
       for (const event_type_A of events) {
         for (const eventAState of states) {
           const eventA = { vehicle_state: eventAState, event_types: [event_type_A] } as MicroMobilityVehicleEvent
-          assert.strictEqual(isEventValid(eventA), MICRO_MOBILITY_EVENT_STATES_MAP[event_type_A].includes(eventAState))
+          expect(isEventValid(eventA)).toStrictEqual(
+            MICRO_MOBILITY_EVENT_STATES_MAP[event_type_A].includes(eventAState)
+          )
           for (const event_type_B of events) {
             for (const eventBState of states) {
               const eventB = { vehicle_state: eventBState, event_types: [event_type_B] } as MicroMobilityVehicleEvent
-              assert.strictEqual(
-                isEventValid(eventB),
+              expect(isEventValid(eventB)).toStrictEqual(
                 MICRO_MOBILITY_EVENT_STATES_MAP[event_type_B].includes(eventBState)
               )
               const actual = isEventSequenceValid(eventA, eventB, 'micromobility')
-              const transitionKey =
-                `eventA :{ vehicle_state: ${eventAState}, event_types: [${event_type_A}] }, ` +
-                `eventB: { vehicle_state: ${eventBState}, event_types: [${event_type_B} }]`
               const stateTransitionValidity = !!stateTransitionDict[eventAState][event_type_B]?.includes(eventBState)
-              assert.strictEqual(actual, stateTransitionValidity, transitionKey)
+              expect(actual).toStrictEqual(stateTransitionValidity)
             }
           }
         }
@@ -123,7 +116,7 @@ describe('Tests Utilities', () => {
         vehicle_state: 'unknown',
         event_types: ['trip_leave_jurisdiction', 'comms_lost']
       } as MicroMobilityVehicleEvent
-      assert(isEventSequenceValid(eventA, eventB, 'micromobility'))
+      expect(isEventSequenceValid(eventA, eventB, 'micromobility')).toBeTruthy()
     })
 
     it('isEventSequenceValid returns false when the multiple event_types are invalid', () => {
@@ -132,7 +125,7 @@ describe('Tests Utilities', () => {
         vehicle_state: 'unknown',
         event_types: ['comms_lost', 'comms_lost']
       } as MicroMobilityVehicleEvent
-      assert(!isEventSequenceValid(eventA, eventB, 'micromobility'))
+      expect(!isEventSequenceValid(eventA, eventB, 'micromobility')).toBeTruthy()
     })
   })
 })

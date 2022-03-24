@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { StreamProducer } from './stream-interface'
+import type { StreamProducer } from './stream-interface'
 
 type MockedStream<T> = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

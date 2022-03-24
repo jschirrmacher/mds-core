@@ -1,11 +1,11 @@
-import {
+import type {
   TRANSFORMER_EVENT_TYPE_REASON,
   TRANSFORMER_VEHICLE_EVENT,
   VehicleEvent_v0_4_1,
   VEHICLE_EVENT_v0_4_1,
   VEHICLE_REASON_v0_4_1
 } from '../@types'
-import { VehicleEvent_v1_0_0, VEHICLE_EVENT_v1_0_0, VEHICLE_STATE_v1_0_0 } from '../@types/1_0_0'
+import type { VehicleEvent_v1_0_0, VEHICLE_EVENT_v1_0_0, VEHICLE_STATE_v1_0_0 } from '../@types/1_0_0'
 import { convert_v0_4_1_telemetry_to_1_0_0 } from './telemetry'
 
 export class UnsupportedEventTypeError extends Error {

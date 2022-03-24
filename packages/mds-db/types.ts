@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {
+import type {
   Nullable,
   PROPULSION_TYPE,
   Recorded,
@@ -24,7 +24,7 @@ import {
   VehicleEvent,
   VEHICLE_TYPE
 } from '@mds-core/mds-types'
-import { FeatureCollection } from 'geojson'
+import type { FeatureCollection } from 'geojson'
 
 export interface ReadEventsResult {
   events: Recorded<VehicleEvent>[]

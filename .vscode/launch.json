@@ -540,14 +540,12 @@
       "name": "Tests: mds-audit-api",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "--project",
-        "${workspaceFolder}/tsconfig.json",
-        "-r",
-        "ts-node/register",
-        "--timeout",
-        "0"
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/jest/bin/jest",
+        "--runInBand",
+        "--coverage",
+        "false"
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
@@ -585,7 +583,7 @@
       "request": "launch",
       "runtimeArgs": [
         "--inspect-brk",
-        "${workspaceRoot}/node_modules/.bin/jest",
+        "${workspaceRoot}/node_modules/jest/bin/jest",
         "--runInBand",
         "--coverage",
         "false"
@@ -606,7 +604,7 @@
       "request": "launch",
       "runtimeArgs": [
         "--inspect-brk",
-        "${workspaceRoot}/node_modules/.bin/jest",
+        "${workspaceRoot}/node_modules/jest/bin/jest",
         "--runInBand",
         "--coverage",
         "false"
@@ -624,14 +622,12 @@
       "name": "Tests: mds-compliance-engine",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "--project",
-        "${workspaceFolder}/tsconfig.json",
-        "-r",
-        "ts-node/register",
-        "--timeout",
-        "0"
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/jest/bin/jest",
+        "--runInBand",
+        "--coverage",
+        "false"
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
@@ -681,6 +677,26 @@
         "DOTENV_CONFIG_PATH": "${workspaceFolder}/.env",
         "npm_package_name": "@lacuna-core/mds-config-api",
         "PATH_PREFIX": "/config"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Tests: mds-config-files",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/jest/bin/jest",
+        "--runInBand",
+        "--coverage",
+        "false"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "protocol": "inspector",
+      "cwd": "${workspaceFolder}/packages/mds-config-files",
+      "env": {
+        "DOTENV_CONFIG_PATH": "${workspaceFolder}/.env",
+        "npm_package_name": "@lacuna-core/mds-config-files"
       }
     },
     {
@@ -748,14 +764,12 @@
       "name": "Tests: mds-geography-author-api",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "--project",
-        "${workspaceFolder}/tsconfig.json",
-        "-r",
-        "ts-node/register",
-        "--timeout",
-        "0"
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/jest/bin/jest",
+        "--runInBand",
+        "--coverage",
+        "false"
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
@@ -763,8 +777,7 @@
       "cwd": "${workspaceFolder}/packages/mds-geography-author-api",
       "env": {
         "DOTENV_CONFIG_PATH": "${workspaceFolder}/.env",
-        "npm_package_name": "@mds-core/mds-geography-author-api",
-        "PATH_PREFIX": "/geography-author"
+        "npm_package_name": "@mds-core/mds-geography-author-api"
       }
     },
     {
@@ -1111,25 +1124,22 @@
       }
     },
     {
-      "name": "Tests: mds-utils",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "--project",
-        "${workspaceFolder}/tsconfig.json",
-        "-r",
-        "ts-node/register",
-        "--timeout",
-        "0"
+      "name": "Tests: mds-utils",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/jest/bin/jest",
+        "--runInBand",
+        "--coverage",
+        "false"
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "protocol": "inspector",
       "cwd": "${workspaceFolder}/packages/mds-utils",
       "env": {
-        "DOTENV_CONFIG_PATH": "${workspaceFolder}/.env",
-        "npm_package_name": "@mds-core/mds-utils"
+        "DOTENV_CONFIG_PATH": "${workspaceFolder}/.env"
       }
     },
     {

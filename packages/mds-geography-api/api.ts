@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { AccessTokenScopeValidator, ApiRequest, ApiResponse, checkAccess } from '@mds-core/mds-api-server'
+import type { AccessTokenScopeValidator, ApiRequest, ApiResponse } from '@mds-core/mds-api-server'
+import { checkAccess } from '@mds-core/mds-api-server'
 import { GeographyServiceClient } from '@mds-core/mds-geography-service'
 import {
   BadParamsError,
@@ -23,10 +24,11 @@ import {
   pathPrefix,
   ServerError
 } from '@mds-core/mds-utils'
-import express, { NextFunction } from 'express'
+import type express from 'express'
+import type { NextFunction } from 'express'
 import { GeographyLogger } from './logger'
 import { GeographyApiVersionMiddleware } from './middleware'
-import {
+import type {
   GeographyApiAccessTokenScopes,
   GeographyApiGetGeographiesRequest,
   GeographyApiGetGeographiesResponse,

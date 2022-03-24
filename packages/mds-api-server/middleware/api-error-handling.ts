@@ -11,7 +11,7 @@ import {
 } from '@mds-core/mds-utils'
 import type express from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { ApiRequest, ApiResponse } from '../@types'
+import type { ApiRequest, ApiResponse } from '../@types'
 import { ApiServerLogger } from '../logger'
 
 const isValidationError = ErrorCheckFunction(ValidationError)

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { JSONSchemaType, SchemaValidator } from '@mds-core/mds-schema-validators'
-import { AUDIT_EVENTS, Telemetry, VEHICLE_EVENTS } from '@mds-core/mds-types'
-import { AuditAttachmentDomainModel, AuditDomainModel, AuditEventDomainModel } from '../@types'
+import type { JSONSchemaType } from '@mds-core/mds-schema-validators'
+import { SchemaValidator } from '@mds-core/mds-schema-validators'
+import { AUDIT_EVENTS, VEHICLE_EVENTS } from '@mds-core/mds-types'
+import type { AuditAttachmentDomainModel, AuditDomainModel, AuditEventDomainModel, AuditTelemetry } from '../@types'
 
 const uuidSchema = <const>{ type: 'string', format: 'uuid' }
 const enumSchema = <T>(enumType: T[]) => <const>{ type: 'string', enum: enumType }
@@ -42,17 +43,14 @@ export const { validate: validateAuditDomainModel, isValid: isValidAuditDomainMo
       'audit_subject_id',
       'provider_id',
       'provider_name',
-      'provider_vehicle_id',
-      'audit_device_id'
+      'provider_vehicle_id'
     ]
   })
 
 const nullableFloat = <const>{ type: 'number', format: 'float', nullable: true, default: null }
 const nullableInteger = <const>{ type: 'integer', nullable: true, default: null }
 
-const telemetryDomainCreateModelSchema: JSONSchemaType<
-  Omit<Telemetry, 'provider_id' | 'device_id' | 'timestamp' | 'recorded'>
-> = <const>{
+export const auditTelemetryDomainCreateModelSchema: JSONSchemaType<AuditTelemetry> = <const>{
   $id: 'Telemetry',
   type: 'object',
   properties: {
@@ -90,7 +88,7 @@ export const { validate: validateAuditEventDomainModel, isValid: isValidAuditEve
       audit_issue_code: { type: 'string', nullable: true, default: null },
       audit_subject_id: { type: 'string' },
       note: { type: 'string', nullable: true, default: null },
-      telemetry: telemetryDomainCreateModelSchema
+      telemetry: auditTelemetryDomainCreateModelSchema
     },
     required: ['audit_trip_id', 'timestamp', 'audit_event_id', 'audit_event_type', 'audit_subject_id']
   })
@@ -104,4 +102,9 @@ export const { validate: validateAuditAttachmentDomainModel, isValid: isValidAud
       attachment_id: uuidSchema
     },
     required: ['audit_trip_id', 'attachment_id']
+  })
+
+export const { validate: validateAuditTelemetryDomainCreateModel, isValid: isValidAuditTelemetryDomainCreateModel } =
+  SchemaValidator<AuditTelemetry>(auditTelemetryDomainCreateModelSchema, {
+    useDefaults: true
   })

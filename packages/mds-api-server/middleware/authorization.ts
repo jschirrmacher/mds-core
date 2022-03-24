@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { ApiAuthorizer, AuthorizationHeaderApiAuthorizer } from '@mds-core/mds-api-authorizer'
-import express from 'express'
-import { ApiRequest, ApiResponse, ApiResponseLocalsClaims } from '../@types'
+import type { ApiAuthorizer } from '@mds-core/mds-api-authorizer'
+import { AuthorizationHeaderApiAuthorizer } from '@mds-core/mds-api-authorizer'
+import type express from 'express'
+import type { ApiRequest, ApiResponse, ApiResponseLocalsClaims } from '../@types'
 
 export type AuthorizationMiddlewareOptions = Partial<{ authorizer: ApiAuthorizer }>
 
@@ -27,8 +28,9 @@ export const AuthorizationMiddleware =
     res: ApiResponse & ApiResponseLocalsClaims<AccessTokenScope>,
     next: express.NextFunction
   ) => {
-    const claims = authorizer(req)
-    res.locals.claims = claims
-    res.locals.scopes = claims && claims.scope ? (claims.scope.split(' ') as AccessTokenScope[]) : []
+    const result = authorizer(req)
+    res.locals.authorization = result.authorization
+    res.locals.claims = result.claims
+    res.locals.scopes = result.claims?.scope ? (result.claims.scope.split(' ') as AccessTokenScope[]) : []
     next()
   }

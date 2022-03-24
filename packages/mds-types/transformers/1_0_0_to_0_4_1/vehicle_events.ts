@@ -1,4 +1,4 @@
-import {
+import type {
   TRANSFORMER_VEHICLE_EVENT,
   VehicleEvent_v0_4_1,
   VehicleEvent_v1_0_0,

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { AnyFunction, Nullable } from '@mds-core/mds-types'
+import type { AnyFunction, Nullable } from '@mds-core/mds-types'
 
 export const ServiceErrorDescriptorTypes = [
   'BadParamsError',

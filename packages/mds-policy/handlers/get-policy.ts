@@ -17,8 +17,8 @@
 import { parseRequest } from '@mds-core/mds-api-helpers'
 import { PolicyServiceClient } from '@mds-core/mds-policy-service'
 import { BadParamsError, hasAtLeastOneEntry, isUUID, NotFoundError } from '@mds-core/mds-utils'
-import express from 'express'
-import { PolicyApiGetPolicyRequest, PolicyApiGetPolicyResponse } from '../types'
+import type express from 'express'
+import type { PolicyApiGetPolicyRequest, PolicyApiGetPolicyResponse } from '../types'
 
 export const GetPolicyHandler = async (
   req: PolicyApiGetPolicyRequest,

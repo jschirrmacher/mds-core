@@ -15,7 +15,7 @@
  */
 
 import { HasPropertyAssertion } from '@mds-core/mds-schema-validators'
-import {
+import type {
   ACCESSIBILITY_OPTION,
   Device,
   MODALITY,
@@ -28,7 +28,7 @@ import {
   VEHICLE_TYPE
 } from '@mds-core/mds-types'
 import { ParseError } from '@mds-core/mds-utils'
-import {
+import type {
   CachedItem,
   StringifiedCacheReadDeviceResult,
   StringifiedEventWithTelemetry,

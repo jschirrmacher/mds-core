@@ -24,9 +24,8 @@
 import { ApiServer } from '@mds-core/mds-api-server'
 import { GeographyServiceManager } from '@mds-core/mds-geography-service'
 import { GeographyFactory, writePublishedGeography } from '@mds-core/mds-geography-service/tests/helpers'
+import type { PolicyDomainCreateModel, PolicyDomainModel } from '@mds-core/mds-policy-service/'
 import {
-  PolicyDomainCreateModel,
-  PolicyDomainModel,
   PolicyFactory,
   PolicyRepository,
   PolicyServiceClient,

@@ -1,4 +1,5 @@
 # Config API
+
 The Config API provides system-wide configruation and metadata for `organization` assets.  The objects exposed are often organized hierarchichally: organizations contain jurisdictions with associated agencies, jurisdictions contain geographies which represent everything from geofence boundaries to curb assets in the form of stops and spots.
 
 ## Get Organizations Endpoint
@@ -12,14 +13,17 @@ Method: `GET`
 Auth required: yes
 
 ### Example
+
 Request:
-```
+
+```sh
 curl --request GET --url 'https://<tenant_url>/config/organizations' --header
 'Authorization: Bearer <token>'
 ```
 
 Response:
-```
+
+```json
 [
   {
     "name": "Los Angeles World Airports",

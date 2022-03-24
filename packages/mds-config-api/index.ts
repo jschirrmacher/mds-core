@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-export { ConfigApiResponse } from './@types'
+export type { ConfigApiResponse } from './@types'
 export { api } from './api'

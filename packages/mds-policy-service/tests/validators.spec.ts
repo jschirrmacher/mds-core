@@ -1,6 +1,6 @@
 import { ValidationError } from '@mds-core/mds-schema-validators'
 import { MICRO_MOBILITY_VEHICLE_EVENTS, TAXI_VEHICLE_EVENTS, TNC_VEHICLE_EVENT } from '@mds-core/mds-types'
-import { PolicyDomainCreateModel } from '../@types'
+import type { PolicyDomainCreateModel } from '../@types'
 import { isValidPolicyDomainModel, validatePolicyDomainModel, validateRuleSchema } from '../service/validators'
 import { PolicyFactory, RulesFactory } from './helpers'
 

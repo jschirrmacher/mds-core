@@ -15,7 +15,8 @@
  */
 
 import { BigintTransformer, IdentityColumn, RecordedColumn } from '@mds-core/mds-repository'
-import { PROPULSION_TYPE, Timestamp, UUID, VEHICLE_TYPE } from '@mds-core/mds-types'
+import type { PROPULSION_TYPE } from '@mds-core/mds-types'
+import { Timestamp, UUID, VEHICLE_TYPE } from '@mds-core/mds-types'
 import { Column, Entity, Index, JoinColumn, OneToOne } from 'typeorm'
 import { EventEntity, EventEntityModel } from './event-entity'
 

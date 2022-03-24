@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { DeleteReturning, InsertReturning, ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
-import { UUID } from '@mds-core/mds-types'
+import type { DeleteReturning, InsertReturning } from '@mds-core/mds-repository'
+import { ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
+import type { UUID } from '@mds-core/mds-types'
 import { In } from 'typeorm'
-import { AttachmentDomainModel, ReadAttachmentsOptions } from '../@types'
+import type { AttachmentDomainModel, ReadAttachmentsOptions } from '../@types'
 import entities from './entities'
 import { AttachmentEntity } from './entities/attachment-entity'
 import { AttachmentDomainToEntityCreate, AttachmentEntityToDomain } from './mappers'

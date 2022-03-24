@@ -15,7 +15,8 @@
  */
 
 import { RpcServer } from '@mds-core/mds-rpc-common'
-import { CollectorService, CollectorServiceRequestContext, CollectorServiceRpcDefinition } from '../@types'
+import type { CollectorService, CollectorServiceRequestContext } from '../@types'
+import { CollectorServiceRpcDefinition } from '../@types'
 import { CollectorServiceClient } from '../client'
 import { CollectorServiceProvider } from './provider'
 

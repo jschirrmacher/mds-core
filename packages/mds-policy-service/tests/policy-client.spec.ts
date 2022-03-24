@@ -6,9 +6,9 @@ import {
   writePublishedGeography
 } from '@mds-core/mds-geography-service'
 import stream from '@mds-core/mds-stream'
+import type { UUID } from '@mds-core/mds-types'
 import { clone, days, now, START_ONE_MONTH_AGO, START_ONE_MONTH_FROM_NOW, uuid, yesterday } from '@mds-core/mds-utils'
-import { UUID } from 'packages/mds-types'
-import { PolicyMetadataDomainModel } from '../@types'
+import type { PolicyMetadataDomainModel } from '../@types'
 import { PolicyServiceClient } from '../client'
 import { PolicyRepository } from '../repository'
 import { PolicyServiceManager } from '../service/manager'
@@ -648,6 +648,82 @@ describe('spot check unit test policy functions with SimplePolicy', () => {
           const { policies: results } = await PolicyServiceClient.readPolicies({ statuses: ['expired', 'active'] })
 
           expect(results.length).toStrictEqual(2)
+        })
+
+        describe('Superseding a policy changes its status', () => {
+          it('Policy A is superseded by B, starting now', async () => {
+            const [policyA, policyB] = (() => {
+              const policyA = PolicyFactory({ start_date: yesterday() })
+              const policyB = PolicyFactory({ start_date: yesterday(), prev_policies: [policyA.policy_id] })
+
+              return [policyA, policyB]
+            })()
+            const policies = [policyA, policyB]
+
+            await Promise.all(
+              policies.map(policy =>
+                createPolicyAndGeographyFactory(PolicyServiceClient, GeographyServiceClient, policy, {
+                  publish_date: now()
+                })
+              )
+            )
+            /* publishing A turns it from 'draft' to 'active' */
+            await PolicyServiceClient.publishPolicy(policyA.policy_id, policyA.start_date)
+
+            const { policies: policies1 } = await PolicyServiceClient.readPolicies(
+              { policy_ids: [policyA.policy_id, policyB.policy_id] },
+              { withStatus: true }
+            )
+            expect(policies1.map(({ status }) => status)).toStrictEqual(['active', 'draft'])
+
+            /* publishing B turns it from 'draft' to 'active', and turns A to 'deactivated' */
+            await PolicyServiceClient.publishPolicy(policyB.policy_id, policyB.start_date)
+
+            const { policies: policies2 } = await PolicyServiceClient.readPolicies(
+              { policy_ids: [policyA.policy_id, policyB.policy_id], statuses: ['deactivated', 'active'] },
+              { withStatus: true }
+            )
+            const policies2map = new Map(policies2.map(({ policy_id, status }) => [policy_id, status]))
+            expect(policies2map.get(policyA.policy_id)).toStrictEqual('deactivated')
+            expect(policies2map.get(policyB.policy_id)).toStrictEqual('active')
+          })
+
+          it('Policy A is superseded by B, but not deactivated until B-start_date', async () => {
+            const [policyA, policyB] = (() => {
+              const policyA = PolicyFactory({ start_date: yesterday() })
+              const policyB = PolicyFactory({ start_date: now() + days(1), prev_policies: [policyA.policy_id] })
+
+              return [policyA, policyB]
+            })()
+            const policies = [policyA, policyB]
+
+            await Promise.all(
+              policies.map(policy =>
+                createPolicyAndGeographyFactory(PolicyServiceClient, GeographyServiceClient, policy, {
+                  publish_date: now()
+                })
+              )
+            )
+            /* publishing A turns it from 'draft' to 'active' */
+            await PolicyServiceClient.publishPolicy(policyA.policy_id, policyA.start_date)
+
+            const { policies: policies1 } = await PolicyServiceClient.readPolicies(
+              { policy_ids: [policyA.policy_id, policyB.policy_id] },
+              { withStatus: true }
+            )
+            expect(policies1.map(({ status }) => status)).toStrictEqual(['active', 'draft'])
+
+            /* publishing B turns it from 'draft' to 'pending', and A is /still/ active */
+            await PolicyServiceClient.publishPolicy(policyB.policy_id, now())
+
+            const { policies: policies2 } = await PolicyServiceClient.readPolicies(
+              { policy_ids: [policyA.policy_id, policyB.policy_id], statuses: ['active', 'pending'] },
+              { withStatus: true }
+            )
+            const policies2map = new Map(policies2.map(({ policy_id, status }) => [policy_id, status]))
+            expect(policies2map.get(policyA.policy_id)).toStrictEqual('active')
+            expect(policies2map.get(policyB.policy_id)).toStrictEqual('pending')
+          })
         })
       })
     })

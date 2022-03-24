@@ -16,7 +16,8 @@
 
 import AwaitLock from 'await-lock'
 import { DbLogger } from './logger'
-import { configureClient, logSql, MDSPostgresClient, SqlVals } from './sql-utils'
+import type { MDSPostgresClient, SqlVals } from './sql-utils'
+import { configureClient, logSql } from './sql-utils'
 
 const { env } = process
 

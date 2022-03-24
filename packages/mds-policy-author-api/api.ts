@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { AccessTokenScopeValidator, ApiErrorHandlingMiddleware, checkAccess } from '@mds-core/mds-api-server'
+import type { AccessTokenScopeValidator } from '@mds-core/mds-api-server'
+import { ApiErrorHandlingMiddleware, checkAccess } from '@mds-core/mds-api-server'
 import { pathPrefix } from '@mds-core/mds-utils'
-import express from 'express'
+import type express from 'express'
 import { DeletePolicyHandler } from './handlers/delete-policy'
 import { GetBulkPolicyMetadataHandler } from './handlers/get-bulk-policy-metadata'
 import { GetPolicyMetadataHandler } from './handlers/get-policy-metadata'
@@ -25,7 +26,7 @@ import { UpdatePolicyHandler } from './handlers/update-policy'
 import { UpdatePolicyMetadataHandler } from './handlers/update-policy-metadata'
 import { WritePolicyHandler } from './handlers/write-policy'
 import { PolicyAuthorApiVersionMiddleware } from './policy-author-api-version'
-import { PolicyAuthorApiAccessTokenScopes } from './types'
+import type { PolicyAuthorApiAccessTokenScopes } from './types'
 
 const checkPolicyAuthorApiAccess = (validator: AccessTokenScopeValidator<PolicyAuthorApiAccessTokenScopes>) =>
   checkAccess(validator)

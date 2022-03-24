@@ -18,9 +18,9 @@
 import { PolicyServiceClient } from '@mds-core/mds-policy-service'
 import { isError } from '@mds-core/mds-service-helpers'
 import { NotFoundError } from '@mds-core/mds-utils'
-import express from 'express'
+import type express from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { PolicyAuthorApiEditPolicyMetadataRequest, PolicyAuthorApiEditPolicyMetadataResponse } from '../types'
+import type { PolicyAuthorApiEditPolicyMetadataRequest, PolicyAuthorApiEditPolicyMetadataResponse } from '../types'
 
 export const UpdatePolicyMetadataHandler = async (
   req: PolicyAuthorApiEditPolicyMetadataRequest,

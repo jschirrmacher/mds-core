@@ -15,11 +15,8 @@
  */
 
 import { ApiServer } from '@mds-core/mds-api-server'
-import {
-  TransactionDomainModel,
-  TransactionServiceClient,
-  transactionsGenerator
-} from '@mds-core/mds-transaction-service'
+import type { TransactionDomainModel } from '@mds-core/mds-transaction-service'
+import { TransactionServiceClient, transactionsGenerator } from '@mds-core/mds-transaction-service'
 // import { SCOPED_AUTH } from '@mds-core/mds-test-data'
 import { hasOwnProperty, NotFoundError, pathPrefix, uuid } from '@mds-core/mds-utils'
 import supertest from 'supertest'

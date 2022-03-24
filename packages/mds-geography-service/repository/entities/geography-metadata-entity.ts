@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { EntityCreateModel, IdentityColumn } from '@mds-core/mds-repository'
+import type { EntityCreateModel } from '@mds-core/mds-repository'
+import { IdentityColumn } from '@mds-core/mds-repository'
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
-import { GeographyMetadataDomainModel } from '../../@types'
+import type { GeographyMetadataDomainModel } from '../../@types'
 import { GeographyEntity } from './geography-entity'
 
 export interface GeographyMetadataEntityModel extends IdentityColumn {

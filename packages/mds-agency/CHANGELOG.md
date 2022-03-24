@@ -1,5 +1,102 @@
 # @mds-core/mds-agency
 
+## 0.5.10
+
+### Patch Changes
+
+- Updated dependencies [f9090232]
+- Updated dependencies [e66dced4]
+  - @mds-core/mds-providers@0.2.10
+  - @mds-core/mds-db@0.6.15
+  - @mds-core/mds-schema-validators@0.5.9
+  - @mds-core/mds-api-helpers@0.2.23
+  - @mds-core/mds-agency-cache@0.4.22
+  - @mds-core/mds-ingest-service@0.10.8
+
+## 0.5.9
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.7
+- @mds-core/mds-db@0.6.14
+- @mds-core/mds-api-helpers@0.2.22
+
+## 0.5.8
+
+### Patch Changes
+
+- @mds-core/mds-api-server@0.4.10
+- @mds-core/mds-api-helpers@0.2.21
+- @mds-core/mds-ingest-service@0.10.6
+- @mds-core/mds-db@0.6.13
+
+## 0.5.7
+
+### Patch Changes
+
+- Updated dependencies [af3631da]
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-api-server@0.4.9
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-api-helpers@0.2.20
+  - @mds-core/mds-ingest-service@0.10.5
+  - @mds-core/mds-agency-cache@0.4.21
+  - @mds-core/mds-db@0.6.12
+  - @mds-core/mds-schema-validators@0.5.8
+  - @mds-core/mds-service-helpers@0.6.7
+
+## 0.5.6
+
+### Patch Changes
+
+- 775efc9c: Stream writes telemetry with id
+- Updated dependencies [775efc9c]
+- Updated dependencies [3ca785d0]
+  - @mds-core/mds-ingest-service@0.10.4
+  - @mds-core/mds-db@0.6.11
+  - @mds-core/mds-api-helpers@0.2.19
+
+## 0.5.5
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.3
+- @mds-core/mds-db@0.6.10
+- @mds-core/mds-stream@0.2.13
+- @mds-core/mds-api-helpers@0.2.18
+
+## 0.5.4
+
+### Patch Changes
+
+- @mds-core/mds-ingest-service@0.10.2
+- @mds-core/mds-db@0.6.9
+- @mds-core/mds-stream@0.2.12
+- @mds-core/mds-api-helpers@0.2.17
+
+## 0.5.3
+
+### Patch Changes
+
+- ade56b85: Replacing Device with DeviceDomainModel
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [ade56b85]
+- Updated dependencies [a93da2b6]
+- Updated dependencies [a5ab0aa5]
+- Updated dependencies [c4e78cc9]
+  - @mds-core/mds-db@0.6.8
+  - @mds-core/mds-ingest-service@0.10.1
+  - @mds-core/mds-schema-validators@0.5.7
+  - @mds-core/mds-stream@0.2.11
+  - @mds-core/mds-agency-cache@0.4.20
+  - @mds-core/mds-api-helpers@0.2.16
+  - @mds-core/mds-api-server@0.4.8
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-providers@0.2.9
+  - @mds-core/mds-service-helpers@0.6.6
+  - @mds-core/mds-types@0.9.2
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.5.2
 
 ### Patch Changes

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { AccessTokenScopeValidator, ApiErrorHandlingMiddleware, checkAccess } from '@mds-core/mds-api-server'
+import type { AccessTokenScopeValidator } from '@mds-core/mds-api-server'
+import { ApiErrorHandlingMiddleware, checkAccess } from '@mds-core/mds-api-server'
 import { pathPrefix } from '@mds-core/mds-utils'
-import express from 'express'
+import type express from 'express'
 import { CreateGeographyHandler } from './handlers/create-geography'
 import { DeleteGeographyHandler } from './handlers/delete-geography'
 import { GetAllGeographyMetadataHandler } from './handlers/get-all-geography-metadata'
@@ -25,7 +26,7 @@ import { PublishGeographyHandler } from './handlers/publish-geography'
 import { UpdateGeographyHandler } from './handlers/update-geography'
 import { UpdateGeographyMetadataHandler } from './handlers/update-geography-metadata'
 import { GeographyAuthorApiVersionMiddleware } from './middleware'
-import { GeographyAuthorApiAccessTokenScopes } from './types'
+import type { GeographyAuthorApiAccessTokenScopes } from './types'
 
 const checkGeographyAuthorApiAccess = (validator: AccessTokenScopeValidator<GeographyAuthorApiAccessTokenScopes>) =>
   checkAccess(validator)

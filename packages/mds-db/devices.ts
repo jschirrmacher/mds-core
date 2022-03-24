@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { DeviceDomainModel, IngestServiceClient } from '@mds-core/mds-ingest-service'
-import { Device, DeviceID, Recorded, UUID } from '@mds-core/mds-types'
+import type { DeviceDomainCreateModel, DeviceDomainModel } from '@mds-core/mds-ingest-service'
+import { IngestServiceClient } from '@mds-core/mds-ingest-service'
+import type { DeviceID, UUID } from '@mds-core/mds-types'
 import { csv, isDefined, isUUID, NotFoundError, now } from '@mds-core/mds-utils'
-import { QueryResult } from 'pg'
+import type { QueryResult } from 'pg'
 import { getReadOnlyClient, getWriteableClient } from './client'
 import { DbLogger } from './logger'
 import schema from './schema'
@@ -27,7 +28,7 @@ export async function readDevicesByVehicleId(
   provider_id: UUID,
   vehicle_id: UUID,
   ...alternate_vehicle_ids: UUID[]
-): Promise<Recorded<Device>[]> {
+): Promise<DeviceDomainModel[]> {
   const client = await getReadOnlyClient()
   const vehicle_ids = [...new Set([vehicle_id, ...alternate_vehicle_ids])]
   const vals = new SqlVals()
@@ -49,7 +50,7 @@ export async function readDevicesByVehicleId(
   if (result.rows.length === 0) {
     throw new NotFoundError('No device found', { provider_id, vehicle_ids })
   }
-  return result.rows as Recorded<Device>[]
+  return result.rows as DeviceDomainModel[]
 }
 
 export async function readDeviceIds(provider_id?: UUID, skip?: number, take?: number): Promise<DeviceID[]> {
@@ -73,7 +74,7 @@ export async function readDeviceIds(provider_id?: UUID, skip?: number, take?: nu
   return res.rows
 }
 
-export async function readDeviceList(device_ids: UUID[]): Promise<Recorded<Device>[]> {
+export async function readDeviceList(device_ids: UUID[]): Promise<DeviceDomainModel[]> {
   if (device_ids.length === 0) {
     return []
   }
@@ -88,7 +89,7 @@ export async function readDeviceList(device_ids: UUID[]): Promise<Recorded<Devic
   return result.rows
 }
 
-export async function writeDevice(device: Device): Promise<Recorded<Device>> {
+export async function writeDevice(device: DeviceDomainModel): Promise<DeviceDomainModel> {
   const client = await getWriteableClient()
   const sql = `INSERT INTO ${schema.TABLE.devices} (${cols_sql(schema.TABLE_COLUMNS.devices)}) VALUES (${vals_sql(
     schema.TABLE_COLUMNS.devices
@@ -97,7 +98,7 @@ export async function writeDevice(device: Device): Promise<Recorded<Device>> {
   await logSql(sql, values)
   const {
     rows: [recorded_device]
-  }: { rows: Recorded<Device>[] } = await client.query(sql, values)
+  }: { rows: DeviceDomainModel[] } = await client.query(sql, values)
 
   if (!recorded_device) {
     throw new Error('Failed to write device')
@@ -109,7 +110,7 @@ export async function writeDevice(device: Device): Promise<Recorded<Device>> {
 export async function updateDevice(
   device_id: UUID,
   provider_id: UUID,
-  changes: Partial<Device>
+  changes: Partial<DeviceDomainCreateModel>
 ): Promise<DeviceDomainModel> {
   const client = await getWriteableClient()
 

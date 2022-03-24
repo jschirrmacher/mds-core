@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ApiRequest, ApiResponse, ApiResponseLocalsClaims } from '@mds-core/mds-api-server'
+import type { ApiRequest, ApiResponse, ApiResponseLocalsClaims } from '@mds-core/mds-api-server'
 
 export const COLLECTOR_API_MIME_TYPE = 'application/vnd.mds.collector+json'
 

@@ -14,33 +14,30 @@
  * limitations under the License.
  */
 
-import { JSONSchemaType, SchemaValidator } from '@mds-core/mds-schema-validators'
+import type { JSONSchemaType } from '@mds-core/mds-schema-validators'
+import { SchemaValidator } from '@mds-core/mds-schema-validators'
+import type {
+  MICRO_MOBILITY_VEHICLE_EVENT,
+  MICRO_MOBILITY_VEHICLE_STATE,
+  TAXI_VEHICLE_EVENT,
+  TAXI_VEHICLE_STATE
+} from '@mds-core/mds-types'
 import {
   ACCESSIBILITY_OPTIONS,
   DAYS_OF_WEEK,
-  MICRO_MOBILITY_VEHICLE_EVENT,
   MICRO_MOBILITY_VEHICLE_EVENTS,
-  MICRO_MOBILITY_VEHICLE_STATE,
   MICRO_MOBILITY_VEHICLE_STATES,
   PROPULSION_TYPES,
   SERVICE_TYPE,
-  TAXI_VEHICLE_EVENT,
   TAXI_VEHICLE_EVENTS,
-  TAXI_VEHICLE_STATE,
   TAXI_VEHICLE_STATES,
   TNC_VEHICLE_EVENT,
   TNC_VEHICLE_STATE,
   TRANSACTION_TYPE,
   VEHICLE_TYPES
 } from '@mds-core/mds-types'
-import {
-  PolicyDomainCreateModel,
-  PolicyMetadataDomainModel,
-  PresentationOptions,
-  RATE_RECURRENCE_VALUES,
-  Rule,
-  RULE_TYPE_LIST
-} from '../@types'
+import type { PolicyDomainCreateModel, PolicyMetadataDomainModel, PresentationOptions, Rule } from '../@types'
+import { RATE_RECURRENCE_VALUES, RULE_TYPE_LIST } from '../@types'
 
 const uuidSchema = <const>{ type: 'string', format: 'uuid' }
 

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { InsertReturning, ReadWriteRepository, RepositoryError, UpdateReturning } from '@mds-core/mds-repository'
+import type { InsertReturning, UpdateReturning } from '@mds-core/mds-repository'
+import { ReadWriteRepository, RepositoryError } from '@mds-core/mds-repository'
 import { ConflictError, filterDefined, NotFoundError, ValidationError } from '@mds-core/mds-utils'
-import {
+import type {
   CreateJurisdictionDomainModel,
   GetJurisdictionsOptions,
   JurisdictionDomainModel,

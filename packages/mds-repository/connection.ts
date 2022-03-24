@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import { Nullable, UUID } from '@mds-core/mds-types'
+import type { Nullable, UUID } from '@mds-core/mds-types'
 import { uuid } from '@mds-core/mds-utils'
 import AwaitLock from 'await-lock'
 import { types as PostgresTypes } from 'pg'
-import { Connection, ConnectionOptions, createConnection } from 'typeorm'
-import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
-import { LoggerOptions } from 'typeorm/logger/LoggerOptions'
+import type { Connection, ConnectionOptions } from 'typeorm'
+import { createConnection } from 'typeorm'
+import type { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
+import type { LoggerOptions } from 'typeorm/logger/LoggerOptions'
 import { RepositoryError } from './exceptions'
 import { RepositoryLogger } from './logger'
 import { MdsNamingStrategy } from './naming-strategies'

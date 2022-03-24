@@ -15,8 +15,8 @@
  */
 
 import { ModelMapper } from '@mds-core/mds-repository'
-import { EventWithDeviceAndTelemetryInfoDomainModel } from '../../@types'
-import { EventWithDeviceAndTelemetryInfoEntityModel } from '../views/event-with-device-and-telemetry-info'
+import type { EventWithDeviceAndTelemetryInfoDomainModel } from '../../@types'
+import type { EventWithDeviceAndTelemetryInfoEntityModel } from '../views/event-with-device-and-telemetry-info'
 
 type EventWithDeviceAndTelemetryInfoEntityToDomainOptions = Partial<{}>
 

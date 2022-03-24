@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import stream, { KafkaStreamConsumerOptions, KafkaStreamProducerOptions } from '@mds-core/mds-stream'
-import { SingleOrArray } from '@mds-core/mds-types'
+import type { KafkaStreamConsumerOptions, KafkaStreamProducerOptions } from '@mds-core/mds-stream'
+import stream from '@mds-core/mds-stream'
+import type { SingleOrArray } from '@mds-core/mds-types'
 import { ParseError } from '@mds-core/mds-utils'
-import { StreamSink, StreamSource } from '../@types'
+import type { StreamSink, StreamSource } from '../@types'
 import { StreamProcessorLogger } from '../logger'
 
 /** Counts the number of messages consumed so far, logs & resets once it hits 100 */

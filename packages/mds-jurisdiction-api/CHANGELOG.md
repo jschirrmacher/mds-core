@@ -1,5 +1,73 @@
 # @mds-core/mds-jurisdiction-api
 
+## 0.1.69
+
+### Patch Changes
+
+- @mds-core/mds-api-helpers@0.2.23
+- @mds-core/mds-jurisdiction-service@0.5.24
+
+## 0.1.68
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-service@0.5.23
+- @mds-core/mds-api-helpers@0.2.22
+
+## 0.1.67
+
+### Patch Changes
+
+- @mds-core/mds-api-server@0.4.10
+- @mds-core/mds-api-helpers@0.2.21
+- @mds-core/mds-jurisdiction-service@0.5.22
+
+## 0.1.66
+
+### Patch Changes
+
+- Updated dependencies [af3631da]
+- Updated dependencies [03a110c1]
+  - @mds-core/mds-api-server@0.4.9
+  - @mds-core/mds-utils@0.5.0
+  - @mds-core/mds-api-helpers@0.2.20
+  - @mds-core/mds-jurisdiction-service@0.5.21
+  - @mds-core/mds-service-helpers@0.6.7
+
+## 0.1.65
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-service@0.5.20
+- @mds-core/mds-api-helpers@0.2.19
+
+## 0.1.64
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-service@0.5.19
+- @mds-core/mds-api-helpers@0.2.18
+
+## 0.1.63
+
+### Patch Changes
+
+- @mds-core/mds-jurisdiction-service@0.5.18
+- @mds-core/mds-api-helpers@0.2.17
+
+## 0.1.62
+
+### Patch Changes
+
+- a5ab0aa5: Upgrade to Typescript 4.2 and require import/export type usage
+- Updated dependencies [a5ab0aa5]
+  - @mds-core/mds-api-helpers@0.2.16
+  - @mds-core/mds-api-server@0.4.8
+  - @mds-core/mds-jurisdiction-service@0.5.17
+  - @mds-core/mds-logger@0.5.7
+  - @mds-core/mds-service-helpers@0.6.6
+  - @mds-core/mds-utils@0.4.2
+
 ## 0.1.61
 
 ### Patch Changes

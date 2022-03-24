@@ -15,9 +15,9 @@
  */
 
 import { ModelMapper } from '@mds-core/mds-repository'
-import { Timestamp } from '@mds-core/mds-types'
-import { AttachmentDomainCreateModel, AttachmentDomainModel } from '../@types'
-import { AttachmentEntityCreateModel, AttachmentEntityModel } from './entities/attachment-entity'
+import type { Timestamp } from '@mds-core/mds-types'
+import type { AttachmentDomainCreateModel, AttachmentDomainModel } from '../@types'
+import type { AttachmentEntityCreateModel, AttachmentEntityModel } from './entities/attachment-entity'
 
 type AttachmentEntityToDomainOptions = Partial<{}>
 
