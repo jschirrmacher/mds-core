@@ -1,5 +1,11 @@
 # @container-images/mds-audit-api
 
+## 0.3.4-hotfix-v11-1.0
+
+### Patch Changes
+
+- @mds-core/mds-audit-api@0.4.8-hotfix-v11-1.0
+
 ## 0.3.3
 
 ### Patch Changes

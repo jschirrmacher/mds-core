@@ -1,5 +1,14 @@
 # @mds-core/mds-db
 
+## 0.6.22-hotfix-v11-1.0
+
+### Patch Changes
+
+- Updated dependencies [f9d9e0da]
+  - @mds-core/mds-ingest-service@0.10.15-hotfix-v11-1.0
+  - @mds-core/mds-policy-service@0.12.4-hotfix-v11-1.0
+  - @mds-core/mds-geography-service@0.10.27-hotfix-v11-1.0
+
 ## 0.6.21
 
 ### Patch Changes
