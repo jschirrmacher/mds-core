@@ -1,11 +1,5 @@
 # @mds-core/mds-geography-service
 
-## 0.10.27-hotfix-v11.0
-
-### Patch Changes
-
-- @mds-core/mds-test-data@0.4.33-hotfix-v11.0
-
 ## 0.10.26
 
 ### Patch Changes

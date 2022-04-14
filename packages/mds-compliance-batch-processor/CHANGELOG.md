@@ -1,17 +1,5 @@
 # @mds-core/mds-compliance-batch-processor
 
-## 0.2.29-hotfix-v11.0
-
-### Patch Changes
-
-- Updated dependencies [f9d9e0da]
-  - @mds-core/mds-ingest-service@0.10.15-hotfix-v11.0
-  - @mds-core/mds-policy-service@0.12.4-hotfix-v11.0
-  - @mds-core/mds-compliance-engine@0.8.29-hotfix-v11.0
-  - @mds-core/mds-db@0.6.22-hotfix-v11.0
-  - @mds-core/mds-compliance-service@0.10.36-hotfix-v11.0
-  - @mds-core/mds-geography-service@0.10.27-hotfix-v11.0
-
 ## 0.2.28
 
 ### Patch Changes

@@ -1,12 +1,5 @@
 # @container-images/mds-transaction-api
 
-## 0.2.4-hotfix-v11.0
-
-### Patch Changes
-
-- Updated dependencies [f9d9e0da]
-  - @mds-core/mds-transaction-api@0.2.39-hotfix-v11.0
-
 ## 0.2.3
 
 ### Patch Changes

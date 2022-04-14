@@ -1,11 +1,5 @@
 # @container-images/mds-policy
 
-## 0.3.4-hotfix-v11.0
-
-### Patch Changes
-
-- @mds-core/mds-policy@0.8.4-hotfix-v11.0
-
 ## 0.3.3
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-ingest-service",
-  "version": "0.10.15-hotfix-v11.0",
+  "version": "0.10.14",
   "description": "Mobility Data Specification Ingest Service",
   "keywords": [
     "mds",

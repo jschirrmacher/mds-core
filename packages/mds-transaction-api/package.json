@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-transaction-api",
-  "version": "0.2.39-hotfix-v11.0",
+  "version": "0.2.38",
   "description": "MDS Transaction API",
   "license": "Apache-2.0",
   "author": "City of Los Angeles",
@@ -21,13 +21,13 @@
     "watch": "pnpm build && nodemon --watch '../../packages' --ext 'ts' --ignore '*.d.ts' --exec pnpm ts-node --"
   },
   "dependencies": {
-    "@mds-core/mds-api-helpers": "workspace:0.2.30-hotfix-v11.0",
+    "@mds-core/mds-api-helpers": "workspace:0.2.29",
     "@mds-core/mds-api-server": "workspace:0.4.13",
     "@mds-core/mds-logger": "workspace:0.5.7",
     "@mds-core/mds-providers": "workspace:0.2.11",
     "@mds-core/mds-schema-validators": "workspace:0.5.12",
     "@mds-core/mds-service-helpers": "workspace:0.6.10",
-    "@mds-core/mds-transaction-service": "workspace:0.6.30-hotfix-v11.0",
+    "@mds-core/mds-transaction-service": "workspace:0.6.29",
     "@mds-core/mds-types": "workspace:0.9.2",
     "@mds-core/mds-utils": "workspace:0.5.2",
     "@types/express": "4.17.13",
@@ -39,7 +39,7 @@
     "typeorm-cursor-pagination": "0.6.1"
   },
   "devDependencies": {
-    "@mds-core/mds-test-data": "workspace:0.4.33-hotfix-v11.0"
+    "@mds-core/mds-test-data": "workspace:0.4.32"
   },
   "publishConfig": {
     "main": "dist/index.js"

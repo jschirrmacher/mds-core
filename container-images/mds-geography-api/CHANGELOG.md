@@ -1,11 +1,5 @@
 # @container-images/mds-geography-api
 
-## 0.2.4-hotfix-v11.0
-
-### Patch Changes
-
-- @mds-core/mds-geography-api@0.4.30-hotfix-v11.0
-
 ## 0.2.3
 
 ### Patch Changes
