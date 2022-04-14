@@ -1,6 +1,6 @@
 {
   "name": "@mds-core/mds-jurisdiction-api",
-  "version": "0.1.75",
+  "version": "0.1.76-hotfix-v11.0",
   "description": "MDS Jurisdictions API",
   "license": "Apache-2.0",
   "author": "City of Los Angeles",
@@ -18,7 +18,7 @@
     "watch": "nodemon --watch '../../packages' --ext 'ts' --ignore '*.d.ts' --exec pnpm ts-node --"
   },
   "dependencies": {
-    "@mds-core/mds-api-helpers": "workspace:0.2.29",
+    "@mds-core/mds-api-helpers": "workspace:0.2.30-hotfix-v11.0",
     "@mds-core/mds-api-server": "workspace:0.4.13",
     "@mds-core/mds-jurisdiction-service": "workspace:0.5.30",
     "@mds-core/mds-logger": "workspace:0.5.7",
@@ -28,7 +28,7 @@
     "express": "4.17.1"
   },
   "devDependencies": {
-    "@mds-core/mds-test-data": "workspace:0.4.32"
+    "@mds-core/mds-test-data": "workspace:0.4.33-hotfix-v11.0"
   },
   "publishConfig": {
     "main": "dist/index.js"

@@ -1,5 +1,11 @@
 # @container-images/mds-agency
 
+## 0.3.4-hotfix-v11.0
+
+### Patch Changes
+
+- @mds-core/mds-agency@0.5.17-hotfix-v11.0
+
 ## 0.3.3
 
 ### Patch Changes

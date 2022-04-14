@@ -1,5 +1,13 @@
 # @mds-core/mds-transaction-service
 
+## 0.6.30-hotfix-v11.0
+
+### Patch Changes
+
+- f9d9e0da: Downgrade typeorm-cursor-pagination to fix regression introduced in v0.8.0
+- Updated dependencies [f9d9e0da]
+  - @mds-core/mds-ingest-service@0.10.15-hotfix-v11.0
+
 ## 0.6.29
 
 ### Patch Changes

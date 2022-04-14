@@ -1,5 +1,12 @@
 # @mds-core/mds-test-data
 
+## 0.4.33-hotfix-v11.0
+
+### Patch Changes
+
+- Updated dependencies [f9d9e0da]
+  - @mds-core/mds-ingest-service@0.10.15-hotfix-v11.0
+
 ## 0.4.32
 
 ### Patch Changes

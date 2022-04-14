@@ -1,5 +1,12 @@
 # @container-images/mds-policy-service
 
+## 0.2.4-hotfix-v11.0
+
+### Patch Changes
+
+- Updated dependencies [f9d9e0da]
+  - @mds-core/mds-policy-service@0.12.4-hotfix-v11.0
+
 ## 0.2.3
 
 ### Patch Changes
