@@ -1090,7 +1090,7 @@ importers:
       '@mds-core/mds-utils': workspace:0.5.2
       pg: 8.7.3
       typeorm: 0.3.4
-      typeorm-cursor-pagination: 0.8.1
+      typeorm-cursor-pagination: 0.6.1
     dependencies:
       '@mds-core/mds-logger': link:../mds-logger
       '@mds-core/mds-repository': link:../mds-repository
@@ -1102,7 +1102,7 @@ importers:
       '@mds-core/mds-utils': link:../mds-utils
       pg: 8.7.3
       typeorm: 0.3.4_pg@8.7.3+ts-node@10.7.0
-      typeorm-cursor-pagination: 0.8.1_typeorm@0.3.4
+      typeorm-cursor-pagination: 0.6.1_typeorm@0.3.4
 
   packages/mds-jurisdiction-api:
     specifiers:
@@ -1247,7 +1247,7 @@ importers:
       '@mds-core/mds-utils': workspace:0.5.2
       pg: 8.7.3
       typeorm: 0.3.4
-      typeorm-cursor-pagination: 0.8.1
+      typeorm-cursor-pagination: 0.6.1
     dependencies:
       '@mds-core/mds-geography-service': link:../mds-geography-service
       '@mds-core/mds-logger': link:../mds-logger
@@ -1260,7 +1260,7 @@ importers:
       '@mds-core/mds-utils': link:../mds-utils
       pg: 8.7.3
       typeorm: 0.3.4_pg@8.7.3+ts-node@10.7.0
-      typeorm-cursor-pagination: 0.8.1_typeorm@0.3.4
+      typeorm-cursor-pagination: 0.6.1_typeorm@0.3.4
     devDependencies:
       '@mds-core/mds-test-data': link:../mds-test-data
 
@@ -1415,7 +1415,7 @@ importers:
       http-status-codes: 2.1.4
       json2csv: 5.0.6
       luxon: 2.3.0
-      typeorm-cursor-pagination: 0.8.1
+      typeorm-cursor-pagination: 0.6.1
     dependencies:
       '@mds-core/mds-api-helpers': link:../mds-api-helpers
       '@mds-core/mds-api-server': link:../mds-api-server
@@ -1432,7 +1432,7 @@ importers:
       http-status-codes: 2.1.4
       json2csv: 5.0.6
       luxon: 2.3.0
-      typeorm-cursor-pagination: 0.8.1
+      typeorm-cursor-pagination: 0.6.1
     devDependencies:
       '@mds-core/mds-test-data': link:../mds-test-data
 
@@ -1449,7 +1449,7 @@ importers:
       '@mds-core/mds-utils': workspace:0.5.2
       pg: 8.7.3
       typeorm: 0.3.4
-      typeorm-cursor-pagination: 0.8.1
+      typeorm-cursor-pagination: 0.6.1
     dependencies:
       '@mds-core/mds-ingest-service': link:../mds-ingest-service
       '@mds-core/mds-logger': link:../mds-logger
@@ -1462,7 +1462,7 @@ importers:
       '@mds-core/mds-utils': link:../mds-utils
       pg: 8.7.3
       typeorm: 0.3.4_pg@8.7.3+ts-node@10.7.0
-      typeorm-cursor-pagination: 0.8.1_typeorm@0.3.4
+      typeorm-cursor-pagination: 0.6.1_typeorm@0.3.4
 
   packages/mds-types:
     specifiers:
@@ -10704,14 +10704,14 @@ packages:
       typescript: 4.6.2
     dev: true
 
-  /typeorm-cursor-pagination/0.8.1:
-    resolution: {integrity: sha512-DbgwEII71QoFdhArB+c2lcFcWZK60r9FjwDyeAx64lRf5EOPcqc36GqOFhSWRGLG2p7ufNDpL8nb8Vl0RAdmZg==}
+  /typeorm-cursor-pagination/0.6.1:
+    resolution: {integrity: sha512-lqlvXBG2prsYFsBVZrWz2/wgoAcYzWCks/EMxP4wIVTISEO70dHQtQuaWWQP528lnW+rQNRwIK8sUuXMKJKavw==}
     peerDependencies:
       typeorm: ^0.2
     dev: false
 
-  /typeorm-cursor-pagination/0.8.1_typeorm@0.3.4:
-    resolution: {integrity: sha512-DbgwEII71QoFdhArB+c2lcFcWZK60r9FjwDyeAx64lRf5EOPcqc36GqOFhSWRGLG2p7ufNDpL8nb8Vl0RAdmZg==}
+  /typeorm-cursor-pagination/0.6.1_typeorm@0.3.4:
+    resolution: {integrity: sha512-lqlvXBG2prsYFsBVZrWz2/wgoAcYzWCks/EMxP4wIVTISEO70dHQtQuaWWQP528lnW+rQNRwIK8sUuXMKJKavw==}
     peerDependencies:
       typeorm: ^0.2
     dependencies:

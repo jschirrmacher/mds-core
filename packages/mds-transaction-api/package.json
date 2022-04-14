@@ -36,7 +36,7 @@
     "http-status-codes": "2.1.4",
     "json2csv": "5.0.6",
     "luxon": "2.3.0",
-    "typeorm-cursor-pagination": "0.8.1"
+    "typeorm-cursor-pagination": "0.6.1"
   },
   "devDependencies": {
     "@mds-core/mds-test-data": "workspace:0.4.32"

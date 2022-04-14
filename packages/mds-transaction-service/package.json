@@ -34,7 +34,7 @@
     "@mds-core/mds-utils": "workspace:0.5.2",
     "pg": "8.7.3",
     "typeorm": "0.3.4",
-    "typeorm-cursor-pagination": "0.8.1"
+    "typeorm-cursor-pagination": "0.6.1"
   },
   "publishConfig": {
     "main": "dist/index.js"
