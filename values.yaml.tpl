@@ -43,3 +43,5 @@ deployments:
     version: ${TRANSACTION_SERVICE_VERSION}
   mds-ingest-migration-processor:
     version: ${INGEST_MIGRATION_PROCESSOR_VERSION}
+  mds-provider-service:
+    version: ${PROVIDER_SERVICE_VERSION}
