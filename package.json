@@ -80,7 +80,7 @@
     "wtfnode": "0.9.1"
   },
   "engines": {
-    "node": "16.14.2"
+    "node": "16.17.1"
   },
   "pnpm": {
     "overrides": {
