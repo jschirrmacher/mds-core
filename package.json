@@ -58,7 +58,7 @@
     "mockdate": "3.0.5",
     "node-loader": "2.0.0",
     "node-rsa": "1.1.1",
-    "nodemon": "2.0.16",
+    "nodemon": "2.0.22",
     "nyc": "15.1.0",
     "pls-changeset-me": "0.0.9",
     "pnpm-ci-tools": "2.0.2",
