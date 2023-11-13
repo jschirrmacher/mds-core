@@ -18,7 +18,7 @@
     "test": "pnpm _test"
   },
   "dependencies": {
-    "@types/geojson": "7946.0.8"
+    "@types/geojson": "7946.0.13"
   },
   "publishConfig": {
     "main": "dist/index.js"
