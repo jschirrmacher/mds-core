@@ -23,7 +23,7 @@
     "@mds-core/mds-config-service": "workspace:0.4.18",
     "@mds-core/mds-webpack-config": "workspace:0.1.15",
     "dd-trace": "2.6.0",
-    "express": "4.18.1",
+    "express": "4.19.2",
     "pg": "8.7.3",
     "pino": "7.11.0"
   }
